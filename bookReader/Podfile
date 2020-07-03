@@ -6,7 +6,7 @@ source 'https://github.com/rongfei3380/Specs.git'
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
 
-workspace '../bookReader.xcodeproj'
+workspace '../bookReader.xcworkspace'
 
 target 'bookReader' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -15,5 +15,11 @@ target 'bookReader' do
   # Pods for bookReader
   pod 'CFFoundation', :path => 'Vendor/CFFoundation'
   pod 'CFNetworkKit', :path => 'Vendor/CFNetworkKit'
-  
+  pod 'Masonry'
+  pod 'IQKeyboardManager'
+  pod 'YYWebImage'
+  pod 'MJExtension'
+  pod 'MJRefresh'
+  pod 'FMDB'
+  pod 'YYModel'
 end

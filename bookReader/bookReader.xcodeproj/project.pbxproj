@@ -3,10 +3,19 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		407CA2BA7C0F983708305874 /* Pods_bookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3C52A0DBADC223E7494EA0 /* Pods_bookReader.framework */; };
+		C51A82E924A9F2590078CB37 /* BRSite.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A82E824A9F2590078CB37 /* BRSite.m */; };
+		C51A82ED24AA08250078CB37 /* BRDataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A82EC24AA08250078CB37 /* BRDataBaseManager.m */; };
+		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
+		C549888624A5A48700887AEE /* BRChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapter.m */; };
+		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
+		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
+		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
+		C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16824879CC700E4AF55 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16724879CC700E4AF55 /* SceneDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
@@ -36,6 +45,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		279BA9DC590A91C1CEA07738 /* Pods-bookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookReader.debug.xcconfig"; path = "Target Support Files/Pods-bookReader/Pods-bookReader.debug.xcconfig"; sourceTree = "<group>"; };
+		BAA7E16F446E0AE0E16CF0F6 /* Pods-bookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookReader.release.xcconfig"; path = "Target Support Files/Pods-bookReader/Pods-bookReader.release.xcconfig"; sourceTree = "<group>"; };
+		C51A82E724A9F2590078CB37 /* BRSite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSite.h; sourceTree = "<group>"; };
+		C51A82E824A9F2590078CB37 /* BRSite.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSite.m; sourceTree = "<group>"; };
+		C51A82EB24AA08250078CB37 /* BRDataBaseManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRDataBaseManager.h; sourceTree = "<group>"; };
+		C51A82EC24AA08250078CB37 /* BRDataBaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRDataBaseManager.m; sourceTree = "<group>"; };
+		C51A82EE24AA0D870078CB37 /* BRDatabaseMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRDatabaseMacros.h; sourceTree = "<group>"; };
+		C549888124A33A0B00887AEE /* BRBookCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookCategory.h; sourceTree = "<group>"; };
+		C549888224A33A0B00887AEE /* BRBookCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookCategory.m; sourceTree = "<group>"; };
+		C549888424A5A48700887AEE /* BRChapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapter.h; sourceTree = "<group>"; };
+		C549888524A5A48700887AEE /* BRChapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRChapter.m; sourceTree = "<group>"; };
+		C5714BD024A0681500DE0277 /* BRBookInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoModel.h; sourceTree = "<group>"; };
+		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
+		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
+		C5714BD424A0A21000DE0277 /* BRBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBaseModel.m; sourceTree = "<group>"; };
+		C5834BEB2488B06E00AFA146 /* BRAPIClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAPIClient.h; sourceTree = "<group>"; };
+		C5834BEC2488B06E00AFA146 /* BRAPIClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAPIClient.m; sourceTree = "<group>"; };
+		C5834BEE2488F84600AFA146 /* BRHTTPSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRHTTPSessionManager.h; sourceTree = "<group>"; };
+		C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRHTTPSessionManager.m; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* bookReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bookReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -54,6 +82,7 @@
 		C5F3C18624879CCD00E4AF55 /* bookReaderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bookReaderUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C18A24879CCD00E4AF55 /* bookReaderUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bookReaderUITests.m; sourceTree = "<group>"; };
 		C5F3C18C24879CCD00E4AF55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA3C52A0DBADC223E7494EA0 /* Pods_bookReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bookReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				407CA2BA7C0F983708305874 /* Pods_bookReader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +111,89 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		221D6696AA4BBA68612E44E3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA3C52A0DBADC223E7494EA0 /* Pods_bookReader.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		61FB9BB862C77A8BB0F7638E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				279BA9DC590A91C1CEA07738 /* Pods-bookReader.debug.xcconfig */,
+				BAA7E16F446E0AE0E16CF0F6 /* Pods-bookReader.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C51A82EA24AA01650078CB37 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				C51A82EB24AA08250078CB37 /* BRDataBaseManager.h */,
+				C51A82EC24AA08250078CB37 /* BRDataBaseManager.m */,
+				C51A82EE24AA0D870078CB37 /* BRDatabaseMacros.h */,
+			);
+			path = DataBase;
+			sourceTree = "<group>";
+		};
+		C5834BE52488950000AFA146 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		C5834BE62488AFC200AFA146 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				C5834BEB2488B06E00AFA146 /* BRAPIClient.h */,
+				C5834BEC2488B06E00AFA146 /* BRAPIClient.m */,
+				C5834BEE2488F84600AFA146 /* BRHTTPSessionManager.h */,
+				C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		C5834BE72488AFDB00AFA146 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C5834BE82488B00600AFA146 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		C5834BE92488B01800AFA146 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C5714BD024A0681500DE0277 /* BRBookInfoModel.h */,
+				C5714BD124A0681500DE0277 /* BRBookInfoModel.m */,
+				C5714BD324A0A21000DE0277 /* BRBaseModel.h */,
+				C5714BD424A0A21000DE0277 /* BRBaseModel.m */,
+				C549888124A33A0B00887AEE /* BRBookCategory.h */,
+				C549888224A33A0B00887AEE /* BRBookCategory.m */,
+				C549888424A5A48700887AEE /* BRChapter.h */,
+				C549888524A5A48700887AEE /* BRChapter.m */,
+				C51A82E724A9F2590078CB37 /* BRSite.h */,
+				C51A82E824A9F2590078CB37 /* BRSite.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C5834BEA2488B02900AFA146 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +201,8 @@
 				C5F3C17E24879CCD00E4AF55 /* bookReaderTests */,
 				C5F3C18924879CCD00E4AF55 /* bookReaderUITests */,
 				C5F3C16124879CC700E4AF55 /* Products */,
+				61FB9BB862C77A8BB0F7638E /* Pods */,
+				221D6696AA4BBA68612E44E3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +219,13 @@
 		C5F3C16224879CC700E4AF55 /* bookReader */ = {
 			isa = PBXGroup;
 			children = (
+				C51A82EA24AA01650078CB37 /* DataBase */,
+				C5834BEA2488B02900AFA146 /* Layout */,
+				C5834BE92488B01800AFA146 /* Models */,
+				C5834BE82488B00600AFA146 /* Extensions */,
+				C5834BE72488AFDB00AFA146 /* Controllers */,
+				C5834BE62488AFC200AFA146 /* API */,
+				C5834BE52488950000AFA146 /* Helper */,
 				C5F3C16324879CC700E4AF55 /* AppDelegate.h */,
 				C5F3C16424879CC700E4AF55 /* AppDelegate.m */,
 				C5F3C16624879CC700E4AF55 /* SceneDelegate.h */,
@@ -144,9 +266,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C5F3C18F24879CCD00E4AF55 /* Build configuration list for PBXNativeTarget "bookReader" */;
 			buildPhases = (
+				26C080DBA93B8D2093B40D36 /* [CP] Check Pods Manifest.lock */,
 				C5F3C15C24879CC700E4AF55 /* Sources */,
 				C5F3C15D24879CC700E4AF55 /* Frameworks */,
 				C5F3C15E24879CC700E4AF55 /* Resources */,
+				BB33D0EA556A6F8FFB82469E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -262,15 +386,65 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		26C080DBA93B8D2093B40D36 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-bookReader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BB33D0EA556A6F8FFB82469E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C5F3C15C24879CC700E4AF55 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */,
+				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
+				C51A82ED24AA08250078CB37 /* BRDataBaseManager.m in Sources */,
 				C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */,
+				C51A82E924A9F2590078CB37 /* BRSite.m in Sources */,
+				C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */,
+				C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */,
 				C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */,
 				C5F3C17624879CCC00E4AF55 /* main.m in Sources */,
+				C549888624A5A48700887AEE /* BRChapter.m in Sources */,
 				C5F3C16824879CC700E4AF55 /* SceneDelegate.m in Sources */,
+				C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -437,6 +611,7 @@
 		};
 		C5F3C19024879CCD00E4AF55 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 279BA9DC590A91C1CEA07738 /* Pods-bookReader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -454,6 +629,7 @@
 		};
 		C5F3C19124879CCD00E4AF55 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAA7E16F446E0AE0E16CF0F6 /* Pods-bookReader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
