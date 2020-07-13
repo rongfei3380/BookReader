@@ -3,6 +3,7 @@ bookReader.xcworkspace/contents.xcworkspacedata
 bookReader.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 bookReader.xcworkspace/xcuserdata/jobs.xcuserdatad/UserInterfaceState.xcuserstate
 bookReader.xcworkspace/xcuserdata/jobs.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+bookReader/Pods/**
 bookReader/Pods/AFNetworking/LICENSE
 bookReader/Pods/AFNetworking/README.md
 bookReader/Pods/AFNetworking/AFNetworking/AFCompatibilityMacros.h
@@ -388,3 +389,15 @@ bookReader/Pods/YYWebImage/YYWebImage/Categories/UIImage+YYWebImage.h
 bookReader/Pods/YYWebImage/YYWebImage/Categories/UIImage+YYWebImage.m
 bookReader/Pods/YYWebImage/YYWebImage/Categories/UIImageView+YYWebImage.h
 bookReader/Pods/YYWebImage/YYWebImage/Categories/UIImageView+YYWebImage.m
+bookReader/Pods/DZNEmptyDataSet/LICENSE
+bookReader/Pods/DZNEmptyDataSet/README.md
+bookReader/Pods/DZNEmptyDataSet/Source/UIScrollView+EmptyDataSet.h
+bookReader/Pods/DZNEmptyDataSet/Source/UIScrollView+EmptyDataSet.m
+bookReader/Pods/Pods.xcodeproj/xcuserdata/jobs.xcuserdatad/xcschemes/DZNEmptyDataSet.xcscheme
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-dummy.m
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-Info.plist
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-prefix.pch
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet-umbrella.h
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet.debug.xcconfig
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet.modulemap
+bookReader/Pods/Target Support Files/DZNEmptyDataSet/DZNEmptyDataSet.release.xcconfig
