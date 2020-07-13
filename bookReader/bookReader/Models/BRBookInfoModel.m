@@ -73,6 +73,24 @@
     }];
 }
 
+
++ (void)getBookListWithCategory:(NSInteger)categoryId
+                           page:(NSInteger)page
+                           size:(NSInteger)size
+                         sucess:(BRObjectSuccessBlock)successBlock
+                   failureBlock:(BRObjectFailureBlock)failureBlock {
+    [[BRAPIClient sharedInstance] getBookListWithCategory:categoryId page:page size:size sucess:^(id  _Nonnull dataBody) {
+        if (successBlock) {
+            successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
+        }
+    } failureBlock:^(NSError * _Nonnull error) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }];
+}
+
+
 + (void)searchBookWithName:(NSString *)name
                       page:(NSInteger)page
                       size:(NSInteger)size

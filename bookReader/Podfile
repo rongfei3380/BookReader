@@ -16,6 +16,7 @@ target 'bookReader' do
   pod 'CFFoundation', :path => 'Vendor/CFFoundation'
   pod 'CFNetworkKit', :path => 'Vendor/CFNetworkKit'
   pod 'Masonry'
+  pod 'DZNEmptyDataSet'
   pod 'IQKeyboardManager'
   pod 'YYWebImage'
   pod 'MJExtension'

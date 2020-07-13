@@ -141,12 +141,12 @@
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
        
     [paramDic setObject:[NSNumber numberWithInteger:categoryId] forKey:@"id"];
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , page] forKey:@"page"];
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , size] forKey:@"size"];
+    [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
+    [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {

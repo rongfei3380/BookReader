@@ -47,6 +47,19 @@ NS_ASSUME_NONNULL_BEGIN
                  failureBlock:(BRObjectFailureBlock)failureBlock;
 
 
+
+/// 获取分类下的书籍列表
+/// @param categoryId 分类id
+/// @param page 页码,默认为0
+/// @param size 每页显示数量,默认为10
+/// @param successBlock
+/// @param failureBlock
++ (void)getBookListWithCategory:(NSInteger)categoryId
+                           page:(NSInteger)page
+                           size:(NSInteger)size
+                         sucess:(BRObjectSuccessBlock)successBlock
+                   failureBlock:(BRObjectFailureBlock)failureBlock;
+
 /// 搜索书籍
 /// @param name 搜索关键字 书名
 /// @param page 页码,默认0
