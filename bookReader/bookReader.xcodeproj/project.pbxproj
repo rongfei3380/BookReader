@@ -32,12 +32,24 @@
 		C51A833124B764270078CB37 /* BRMineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833024B764270078CB37 /* BRMineViewController.m */; };
 		C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833324B78E040078CB37 /* BRBookInfoViewController.m */; };
 		C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51A833524BCC2F50078CB37 /* NavBar.xcassets */; };
+		C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833824BDB1370078CB37 /* CFDataUtils.m */; };
+		C51A834024BDBA990078CB37 /* NSDate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833F24BDBA990078CB37 /* NSDate+Utilities.m */; };
+		C51A834524BDDC600078CB37 /* Button.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51A834424BDDC600078CB37 /* Button.xcassets */; };
+		C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A834924BDF9290078CB37 /* CFButtonUpDwon.m */; };
 		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
 		C549888624A5A48700887AEE /* BRChapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapter.m */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
 		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
 		C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */; };
+		C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D061C24C2083E00A8237F /* BRBookReadViewModel.m */; };
+		C59D062124C2120D00A8237F /* BRBookReadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D062024C2120D00A8237F /* BRBookReadViewController.m */; };
+		C59D062424C2A5D500A8237F /* BRBookReadTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D062324C2A5D500A8237F /* BRBookReadTextView.m */; };
+		C59D062724C2A92800A8237F /* BRChaptersView.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D062624C2A92800A8237F /* BRChaptersView.m */; };
+		C59D062A24C2DCB400A8237F /* BRBookSetingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D062924C2DCB400A8237F /* BRBookSetingView.m */; };
+		C59D063124C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D063024C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m */; };
+		C59D063824C2F34900A8237F /* BRBookPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D063724C2F34900A8237F /* BRBookPageViewController.m */; };
+		C59D063B24C2F48D00A8237F /* BRBookReadContenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D063A24C2F48D00A8237F /* BRBookReadContenViewController.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
 		C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F3C16F24879CCC00E4AF55 /* Assets.xcassets */; };
@@ -116,6 +128,13 @@
 		C51A833224B78E040078CB37 /* BRBookInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoViewController.h; sourceTree = "<group>"; };
 		C51A833324B78E040078CB37 /* BRBookInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoViewController.m; sourceTree = "<group>"; };
 		C51A833524BCC2F50078CB37 /* NavBar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = NavBar.xcassets; sourceTree = "<group>"; };
+		C51A833724BDB1370078CB37 /* CFDataUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFDataUtils.h; sourceTree = "<group>"; };
+		C51A833824BDB1370078CB37 /* CFDataUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFDataUtils.m; sourceTree = "<group>"; };
+		C51A833E24BDBA990078CB37 /* NSDate+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+Utilities.h"; sourceTree = "<group>"; };
+		C51A833F24BDBA990078CB37 /* NSDate+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Utilities.m"; sourceTree = "<group>"; };
+		C51A834424BDDC600078CB37 /* Button.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Button.xcassets; sourceTree = "<group>"; };
+		C51A834824BDF9290078CB37 /* CFButtonUpDwon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFButtonUpDwon.h; sourceTree = "<group>"; };
+		C51A834924BDF9290078CB37 /* CFButtonUpDwon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFButtonUpDwon.m; sourceTree = "<group>"; };
 		C549888124A33A0B00887AEE /* BRBookCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookCategory.h; sourceTree = "<group>"; };
 		C549888224A33A0B00887AEE /* BRBookCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookCategory.m; sourceTree = "<group>"; };
 		C549888424A5A48700887AEE /* BRChapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapter.h; sourceTree = "<group>"; };
@@ -128,6 +147,24 @@
 		C5834BEC2488B06E00AFA146 /* BRAPIClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAPIClient.m; sourceTree = "<group>"; };
 		C5834BEE2488F84600AFA146 /* BRHTTPSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRHTTPSessionManager.h; sourceTree = "<group>"; };
 		C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRHTTPSessionManager.m; sourceTree = "<group>"; };
+		C59D061A24C0492400A8237F /* CFBookReadVMDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFBookReadVMDelegate.h; sourceTree = "<group>"; };
+		C59D061B24C2083E00A8237F /* BRBookReadViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookReadViewModel.h; sourceTree = "<group>"; };
+		C59D061C24C2083E00A8237F /* BRBookReadViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadViewModel.m; sourceTree = "<group>"; };
+		C59D061F24C2120D00A8237F /* BRBookReadViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookReadViewController.h; sourceTree = "<group>"; };
+		C59D062024C2120D00A8237F /* BRBookReadViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadViewController.m; sourceTree = "<group>"; };
+		C59D062224C2A5D500A8237F /* BRBookReadTextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookReadTextView.h; sourceTree = "<group>"; };
+		C59D062324C2A5D500A8237F /* BRBookReadTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadTextView.m; sourceTree = "<group>"; };
+		C59D062524C2A92800A8237F /* BRChaptersView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChaptersView.h; sourceTree = "<group>"; };
+		C59D062624C2A92800A8237F /* BRChaptersView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRChaptersView.m; sourceTree = "<group>"; };
+		C59D062824C2DCB400A8237F /* BRBookSetingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookSetingView.h; sourceTree = "<group>"; };
+		C59D062924C2DCB400A8237F /* BRBookSetingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookSetingView.m; sourceTree = "<group>"; };
+		C59D062F24C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GVUserDefaults+BRUserDefaults.h"; sourceTree = "<group>"; };
+		C59D063024C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "GVUserDefaults+BRUserDefaults.m"; sourceTree = "<group>"; };
+		C59D063624C2F34900A8237F /* BRBookPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookPageViewController.h; sourceTree = "<group>"; };
+		C59D063724C2F34900A8237F /* BRBookPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookPageViewController.m; sourceTree = "<group>"; };
+		C59D063924C2F48D00A8237F /* BRBookReadContenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookReadContenViewController.h; sourceTree = "<group>"; };
+		C59D063A24C2F48D00A8237F /* BRBookReadContenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadContenViewController.m; sourceTree = "<group>"; };
+		C59D063C24C2F81800A8237F /* BRNotificationMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRNotificationMacros.h; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* bookReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bookReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -233,10 +270,49 @@
 			path = ZJScrollPageView;
 			sourceTree = "<group>";
 		};
+		C51A833A24BDB8680078CB37 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				C51A833E24BDBA990078CB37 /* NSDate+Utilities.h */,
+				C51A833F24BDBA990078CB37 /* NSDate+Utilities.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		C51A834724BDF8F50078CB37 /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				C51A834E24BEA9320078CB37 /* ReadBookView */,
+				C51A834824BDF9290078CB37 /* CFButtonUpDwon.h */,
+				C51A834924BDF9290078CB37 /* CFButtonUpDwon.m */,
+			);
+			path = CustomView;
+			sourceTree = "<group>";
+		};
+		C51A834E24BEA9320078CB37 /* ReadBookView */ = {
+			isa = PBXGroup;
+			children = (
+				C59D061A24C0492400A8237F /* CFBookReadVMDelegate.h */,
+				C59D061B24C2083E00A8237F /* BRBookReadViewModel.h */,
+				C59D061C24C2083E00A8237F /* BRBookReadViewModel.m */,
+				C59D062224C2A5D500A8237F /* BRBookReadTextView.h */,
+				C59D062324C2A5D500A8237F /* BRBookReadTextView.m */,
+				C59D062524C2A92800A8237F /* BRChaptersView.h */,
+				C59D062624C2A92800A8237F /* BRChaptersView.m */,
+				C59D062824C2DCB400A8237F /* BRBookSetingView.h */,
+				C59D062924C2DCB400A8237F /* BRBookSetingView.m */,
+			);
+			path = ReadBookView;
+			sourceTree = "<group>";
+		};
 		C5834BE52488950000AFA146 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				C59D062B24C2E35100A8237F /* UserDefaults */,
 				C51A830024B71EE30078CB37 /* CFCustomMacros.h */,
+				C51A833724BDB1370078CB37 /* CFDataUtils.h */,
+				C51A833824BDB1370078CB37 /* CFDataUtils.m */,
+				C59D063C24C2F81800A8237F /* BRNotificationMacros.h */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -255,6 +331,7 @@
 		C5834BE72488AFDB00AFA146 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C59D061E24C211E900A8237F /* ReadBookVC */,
 				C51A82EF24B4367F0078CB37 /* BRBaseViewController.h */,
 				C51A82F024B4367F0078CB37 /* BRBaseViewController.m */,
 				C51A82F724B623990078CB37 /* BRTableVIewViewController.h */,
@@ -305,11 +382,42 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		C59D061E24C211E900A8237F /* ReadBookVC */ = {
+			isa = PBXGroup;
+			children = (
+				C59D063224C2F2ED00A8237F /* PageVC */,
+				C59D061F24C2120D00A8237F /* BRBookReadViewController.h */,
+				C59D062024C2120D00A8237F /* BRBookReadViewController.m */,
+				C59D063924C2F48D00A8237F /* BRBookReadContenViewController.h */,
+				C59D063A24C2F48D00A8237F /* BRBookReadContenViewController.m */,
+			);
+			path = ReadBookVC;
+			sourceTree = "<group>";
+		};
+		C59D062B24C2E35100A8237F /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				C59D062F24C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.h */,
+				C59D063024C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m */,
+			);
+			path = UserDefaults;
+			sourceTree = "<group>";
+		};
+		C59D063224C2F2ED00A8237F /* PageVC */ = {
+			isa = PBXGroup;
+			children = (
+				C59D063624C2F34900A8237F /* BRBookPageViewController.h */,
+				C59D063724C2F34900A8237F /* BRBookPageViewController.m */,
+			);
+			path = PageVC;
+			sourceTree = "<group>";
+		};
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
 				C51A833524BCC2F50078CB37 /* NavBar.xcassets */,
 				C51A82F524B5D2F00078CB37 /* Tabbar.xcassets */,
+				C51A834424BDDC600078CB37 /* Button.xcassets */,
 				C5F3C16224879CC700E4AF55 /* bookReader */,
 				C5F3C17E24879CCD00E4AF55 /* bookReaderTests */,
 				C5F3C18924879CCD00E4AF55 /* bookReaderUITests */,
@@ -332,6 +440,8 @@
 		C5F3C16224879CC700E4AF55 /* bookReader */ = {
 			isa = PBXGroup;
 			children = (
+				C51A834724BDF8F50078CB37 /* CustomView */,
+				C51A833A24BDB8680078CB37 /* Category */,
 				C51A830524B72A6C0078CB37 /* Extensions */,
 				C51A82EA24AA01650078CB37 /* DataBase */,
 				C5834BEA2488B02900AFA146 /* Layout */,
@@ -476,6 +586,7 @@
 			files = (
 				C5F3C17324879CCC00E4AF55 /* LaunchScreen.storyboard in Resources */,
 				C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */,
+				C51A834524BDDC600078CB37 /* Button.xcassets in Resources */,
 				C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */,
 				C51A82F624B5D2F00078CB37 /* Tabbar.xcassets in Resources */,
 			);
@@ -545,9 +656,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */,
+				C59D062A24C2DCB400A8237F /* BRBookSetingView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
 				C51A831E24B72A6D0078CB37 /* ZJContentView.m in Sources */,
+				C59D063824C2F34900A8237F /* BRBookPageViewController.m in Sources */,
 				C51A832E24B763EB0078CB37 /* BRRankBooksViewController.m in Sources */,
+				C51A834024BDBA990078CB37 /* NSDate+Utilities.m in Sources */,
 				C51A831A24B72A6D0078CB37 /* UIView+ZJFrame.m in Sources */,
 				C51A832224B72A6D0078CB37 /* ZJScrollPageView.m in Sources */,
 				C51A82ED24AA08250078CB37 /* BRDataBaseManager.m in Sources */,
@@ -556,15 +670,19 @@
 				C51A82E924A9F2590078CB37 /* BRSite.m in Sources */,
 				C51A82F924B623990078CB37 /* BRTableVIewViewController.m in Sources */,
 				C51A82FC24B623BE0078CB37 /* BRBaseCollectionViewController.m in Sources */,
+				C59D062424C2A5D500A8237F /* BRBookReadTextView.m in Sources */,
 				C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */,
 				C51A832024B72A6D0078CB37 /* ZJSegmentStyle.m in Sources */,
 				C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */,
 				C51A832B24B762A70078CB37 /* BRBookshelfViewController.m in Sources */,
 				C51A831B24B72A6D0078CB37 /* ZJTitleView.m in Sources */,
 				C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */,
+				C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */,
+				C59D063B24C2F48D00A8237F /* BRBookReadContenViewController.m in Sources */,
 				C5F3C17624879CCC00E4AF55 /* main.m in Sources */,
 				C51A82FF24B70C6B0078CB37 /* BRBaseTableViewController.m in Sources */,
 				C51A82F424B5B3220078CB37 /* BRTabBarViewController.m in Sources */,
+				C59D063124C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m in Sources */,
 				C51A833124B764270078CB37 /* BRMineViewController.m in Sources */,
 				C51A831C24B72A6D0078CB37 /* UIViewController+ZJScrollPageController.m in Sources */,
 				C549888624A5A48700887AEE /* BRChapter.m in Sources */,
@@ -572,7 +690,11 @@
 				C51A830324B726330078CB37 /* BRCategoryBooksViewController.m in Sources */,
 				C51A831F24B72A6D0078CB37 /* ZJCollectionView.m in Sources */,
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
+				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,
+				C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */,
 				C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */,
+				C59D062724C2A92800A8237F /* BRChaptersView.m in Sources */,
+				C59D062124C2120D00A8237F /* BRBookReadViewController.m in Sources */,
 				C51A831D24B72A6D0078CB37 /* OBTabControlScrollSegmentView.m in Sources */,
 				C51A832124B72A6D0078CB37 /* ZJScrollSegmentView.m in Sources */,
 			);

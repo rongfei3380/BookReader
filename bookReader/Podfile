@@ -23,4 +23,6 @@ target 'bookReader' do
   pod 'MJRefresh'
   pod 'FMDB'
   pod 'YYModel'
+  pod 'MBProgressHUD'
+  pod 'GVUserDefaults'
 end

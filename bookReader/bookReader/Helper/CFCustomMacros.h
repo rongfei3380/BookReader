@@ -55,6 +55,10 @@ static inline CGFloat  kStatusBarHeight (){
 #define kDSystemVersion          ([[[UIDevice currentDevice] systemVersion] doubleValue])
 #define kSSystemVersion          ([[UIDevice currentDevice] systemVersion])
 
+/* 内存管理 相关 */
+#define kWeakSelf(type)  __weak typeof(type) weak##type = type;
+#define kStrongSelf(type)  __strong typeof(type) type = weak##type;
+
 
 
 #endif /* CFCustomMacros_h */

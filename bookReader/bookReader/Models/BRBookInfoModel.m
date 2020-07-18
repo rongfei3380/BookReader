@@ -59,7 +59,7 @@
 
 + (void)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
-                       sucess:(BRDataBodyObjectSuccessBlock)successBlock
+                       sucess:(void(^)(BRBookInfoModel *bookInfo))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock {
     [[BRAPIClient sharedInstance] getbookinfoWithBookId:bookid isSelect:isSelect sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {

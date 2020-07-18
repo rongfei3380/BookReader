@@ -43,7 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param failureBlock error
 + (void)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
-                       sucess:(BRDataBodyObjectSuccessBlock)successBlock
+                       sucess:(void(^)(BRBookInfoModel *bookInfo))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock;
 
 

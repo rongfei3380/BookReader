@@ -84,14 +84,19 @@
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
       NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
          
-      [paramDic setObject:[NSString stringWithFormat:@"%ld" , bookid] forKey:@"id"];
-      [paramDic setObject:[NSNumber numberWithBool:isSelect] forKey:@"is_select"];
+      [paramDic setObject:[NSNumber numberWithInteger:bookid] forKey:@"id"];
+    if (isSelect) {
+         [paramDic setObject:@1 forKey:@"is_select"];
+    } else {
+         [paramDic setObject:@0 forKey:@"is_select"];
+    }
+     
 
     
       BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
          
 
-      [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+      [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
               if (successBlock) {
                   NSDictionary *dict = (NSDictionary *)dataBody;
