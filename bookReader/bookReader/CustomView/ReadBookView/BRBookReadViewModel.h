@@ -16,8 +16,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithBookModel:(BRBookInfoModel*)model;
 
-@property (nonatomic,strong,readonly) BRBookInfoModel* model;
-
+@property (nonatomic,strong,readonly) BRBookInfoModel* bookModel;
+@property (nonatomic, strong) NSArray<BRSite *> *sitesArray;
+/// 当前是那个章节
+@property(nonatomic, assign) NSInteger currentIndex;
 
 @end
 

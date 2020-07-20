@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CFCustomMacros.h"
 #import "Masonry.h"
+#import "NSError+BRError.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

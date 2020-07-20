@@ -7,6 +7,7 @@
 //
 
 #import "BRBaseViewController.h"
+#import "CFBookReadVMDelegate.h"
 @class BRBookInfoModel;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface BRBookInfoViewController : BRBaseViewController
 
 @property(nonatomic, strong) BRBookInfoModel *bookInfo;
+
+@property (nonatomic,strong) id<CFBookReadVMDelegate> viewModel;
+
 
 @end
 

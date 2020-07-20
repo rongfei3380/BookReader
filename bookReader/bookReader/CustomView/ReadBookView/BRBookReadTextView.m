@@ -7,6 +7,8 @@
 //
 
 #import "BRBookReadTextView.h"
+#import "CFCustomMacros.h"
+#import "GVUserDefaults+BRUserDefaults.h"
 #import <CoreText/CoreText.h>
 
 @implementation BRBookReadTextView
@@ -15,7 +17,9 @@
     self = [super init];
     if (self){
         self.text = text;
-//        self.backgroundColor = BRUserDefault.readBackColor?:UIHexColor(0xa39e8b);
+        self.backgroundColor = [UIColor redColor];
+
+//        self.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     }
     return self;
 }
@@ -36,11 +40,10 @@
     CGContextTranslateCTM(context, 0, self.bounds.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
     
-//    NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
-    NSMutableDictionary* dic = [NSMutableDictionary dictionary];
-//    if (BRUserDefault.isNightStyle){
-//        [dic setObject:UIHexColor(0x576071) forKey:NSForegroundColorAttributeName];
-//    }
+    NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
+    if (BRUserDefault.isNightStyle){
+        [dic setObject:CFUIColorFromRGBAInHex(0x576071, 1) forKey:NSForegroundColorAttributeName];
+    }
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:self.text?:@"" attributes:dic];
     

@@ -14,6 +14,7 @@
 #import "CFCustomMacros.h"
 #import "GVUserDefaults+BRUserDefaults.h"
 #import <Masonry.h>
+#import "BRNotificationMacros.h"
 
 @interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource>
 
@@ -23,6 +24,7 @@
 @property(nonatomic, strong) BRBookSetingView *settingView;
 @property (nonatomic,strong) UIView* brightnessView;
 @property (nonatomic,assign) BOOL isFirstLoad;
+@property(nonatomic, strong) UIView *toolbarView;
 
 @end
 
@@ -31,99 +33,93 @@
 
 #pragma mark- init View
 
-- (void)initialNavi
-{
-    
-    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    self.navigationController.navigationBar.backgroundColor = CFUIColorFromRGBAInHex(0xf1f1f1, 1);
-    
-    UIButton* button = [[UIButton alloc] init];
-    button.titleLabel.font = [UIFont systemFontOfSize:14];
-    CGSize strSize = [[self.viewModel getBookName] sizeWithAttributes:@{NSFontAttributeName:button.titleLabel.font}];
-    button.frame = CGRectMake(0, 0, strSize.width + 15, 40);
-    button.tintColor = CFUIColorFromRGBAInHex(0x696969, 1);
-    [button setTitleColor:CFUIColorFromRGBAInHex(0x696969, 1) forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"navi_backbtnImage_white"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(naviLeftBarItemClick) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:[self.viewModel getBookName] forState:UIControlStateNormal];
-    
-
-    UIBarButtonItem* left = [[UIBarButtonItem alloc] initWithCustomView:button];
-    left.tintColor = CFUIColorFromRGBAInHex(0x696969, 1);
-    self.navigationItem.leftBarButtonItem = left;
-    
-    UIBarButtonItem* right = [[UIBarButtonItem alloc] initWithTitle:@"换源" style:UIBarButtonItemStyleDone target:self action:@selector(naviRightBarItemClick)];
-    
-    right.tintColor =CFUIColorFromRGBAInHex(0x696969, 1);
-    [right setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:14], NSFontAttributeName,nil] forState:(UIControlStateNormal)];
-    [right setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:14], NSFontAttributeName,nil] forState:(UIControlStateSelected)];
-    
-    self.navigationItem.rightBarButtonItem = right;
+- (void)initialToolBar {
     
     
-    self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
-    self.navigationController.navigationBar.barTintColor = CFUIColorFromRGBAInHex(0xf1f1f1, 1);
+    _toolbarView = [[UIView alloc] init];
+    _toolbarView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    _toolbarView.layer.borderColor = CFUIColorFromRGBAInHex(0xEEEEEE, 1).CGColor;
+    _toolbarView.layer.borderWidth = 0.5;
+    [self.view addSubview:_toolbarView];
+    [_toolbarView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, BOTTOM_HEIGHT));
+        make.bottom.mas_equalTo(0);
+        make.left.right.mas_equalTo(0);
+    }];
     
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)initialToolBar
-{
-    UIToolbar* tabBar = self.navigationController.toolbar;
-    CGRect frame = CGRectMake(0.0, 0, SCREEN_WIDTH,tabBar.frame.size.height);
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = CFUIColorFromRGBAInHex(0xf1f1f1, 1);
-    [tabBar insertSubview:view atIndex:0];
-    UIBarButtonItem* fixed = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-
+    
+    CFButtonUpDwon *muluButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [muluButton setTitle:@"目录" forState:UIControlStateNormal];
+    [muluButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    muluButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [muluButton setImage:[UIImage imageNamed:@"btn_mune_normal"] forState:UIControlStateNormal];
+    [muluButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
+    [muluButton addTarget:self action:@selector(showMulu) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:muluButton];
     
     CFButtonUpDwon *nightButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
     [nightButton setTitle:@"白天" forState:UIControlStateNormal];
     [nightButton setTitle:@"黑夜" forState:UIControlStateSelected];
-    [nightButton setImage:[UIImage imageNamed:@"toolbar_day"] forState:UIControlStateNormal];
-    [nightButton setImage:[UIImage imageNamed:@"toolbar_night"] forState:UIControlStateSelected];
+    nightButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [nightButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [nightButton setImage:[UIImage imageNamed:@"btn_nightread_normal"] forState:UIControlStateNormal];
+//    [nightButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
     [nightButton addTarget:self action:@selector(changeNightStyle) forControlEvents:UIControlEventTouchUpInside];
     self.nightButton = nightButton;
+    [_toolbarView addSubview:nightButton];
     
-    CFButtonUpDwon *muluButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [muluButton setTitle:@"目录" forState:UIControlStateNormal];
-    [muluButton setImage:[UIImage imageNamed:@"toolbar_mulu"] forState:UIControlStateNormal];
-    [muluButton addTarget:self action:@selector(showMulu) forControlEvents:UIControlEventTouchUpInside];
+  
     
     CFButtonUpDwon *setButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
     [setButton setTitle:@"设置" forState:UIControlStateNormal];
-    [setButton setImage:[UIImage imageNamed:@"toolbar_setting"] forState:UIControlStateNormal];
+    setButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [setButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateNormal];
+//    [setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateSelected];
     [setButton addTarget:self action:@selector(showSettingView) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:setButton];
     
     CFButtonUpDwon *readButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [readButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
     [readButton setTitle:@"缓存" forState:UIControlStateNormal];
-    [readButton setImage:[UIImage imageNamed:@"toolbar_caching"] forState:UIControlStateNormal];
+    readButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [readButton setImage:[UIImage imageNamed:@"btn_download_normal"] forState:UIControlStateNormal];
     [readButton addTarget:self action:@selector(showWait) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:readButton];
     
-    CFButtonUpDwon *backButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [backButton setTitle:@"反馈" forState:UIControlStateNormal];
-    [backButton setImage:[UIImage imageNamed:@"toolbar_feedback"] forState:UIControlStateNormal];
-    [backButton addTarget:self action:@selector(showBackAlert) forControlEvents:UIControlEventTouchUpInside];
-    self.toolbarItems = @[muluButton,fixed,nightButton,fixed,setButton,fixed,readButton,fixed,backButton];
+    
+    NSArray *masonryViewArray = @[muluButton, nightButton, setButton, readButton];
+    
+    // 实现masonry水平固定控件宽度方法
+    [masonryViewArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:30 tailSpacing:30];
+    
+    // 设置array的垂直方向的约束
+    [masonryViewArray mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(5);
+        make.height.mas_equalTo(40);
+    }];
+    
 }
 
-- (void)initialSubViews
-{
+- (void)initialSubViews {
     self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
     
     [self addChildViewController:self.bookPageVC];
     [self.view addSubview:_bookPageVC.view];
     
-    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, 0, SCREEN_HEIGHT)];
+    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight() +100, SCREEN_WIDTH, SCREEN_HEIGHT -(kStatusBarHeight() +100))];
+    self.chaptersView.chapters = self.viewModel.getAllChapters;
+    self.chaptersView.bookName = self.viewModel.getBookName;
     kWeakSelf(self);
     self.chaptersView.didSelectChapter = ^(NSInteger index) {
         kStrongSelf(self);
+        self.chaptersView.hidden = YES;
         [self.viewModel loadChapterWithIndex:index];
     };
     [self.view addSubview:self.chaptersView];
+    self.chaptersView.hidden = YES;
     
-    self.settingView = [[BRBookSetingView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 370, SCREEN_WIDTH, 330)];
+    self.settingView = [[BRBookSetingView alloc] init];
     
     self.settingView.block = ^{
         kStrongSelf(self);
@@ -136,6 +132,11 @@
     };
     
     [self.view addSubview:self.settingView];
+    [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(self.toolbarView.mas_top).offset(0);
+        make.height.mas_equalTo(300);
+    }];
     self.settingView.hidden = YES;
     
     self.brightnessView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
@@ -143,18 +144,30 @@
     self.brightnessView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:BRUserDefault.readBrightness];
     [self.view addSubview:self.brightnessView];
     
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNaviBarHidenWithAnimated) name:kNotifyReadContentTouchEnd object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNaviBarHidenWithAnimated) name:kNotifyReadContentTouchEnd object:nil];
 }
 
 #pragma mark- Life Cycle
 
+- (id)init {
+    if ([self superclass]) {
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleBackBtn ;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+   [self initialToolBar];
+   [self initialSubViews];
+   [self initialSubViewConstraints];
+   [self initialData];
+    self.isFirstLoad = YES;
 }
 
-- (void)initialData
-{
+- (void)initialData {
 #pragma mark - 设置ViewModel的反向回调
     /* 数据加载*/
     kWeakSelf(self);
@@ -182,6 +195,9 @@
     
     /* 通知VM,开始获取数据*/
     [self.viewModel startInit];
+    if (self.index > 0) {
+        [self.viewModel loadChapterWithIndex:self.index];
+    }
 }
 
 - (void)initialSubViewConstraints {
@@ -195,8 +211,7 @@
 //    [MBProgressHUD showSuccess:@"暂未完成" toView:self.view];
 }
 
-- (void)showBackAlert
-{
+- (void)showBackAlert {
     UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:@"功能" preferredStyle:UIAlertControllerStyleActionSheet];
     
     [alert addAction:[UIAlertAction actionWithTitle:@"删除当前章节缓存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -212,41 +227,19 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)naviLeftBarItemClick
-{
-    if (![self.navigationController popViewControllerAnimated:YES]){
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
-- (void)naviRightBarItemClick {
-//    BookSourceListVC* vc = [[BookSourceListVC alloc] initWithModel:[self.viewModel getBookInfoModel]];
-//    vc.block = ^{
-//        [self.viewModel startInit];
-//    };
-//    UINavigationController* navi = [[UINavigationController alloc] initWithRootViewController:vc];
-//    [self presentViewController:navi animated:YES completion:nil];
-}
-
-- (void)showMulu
-{
-    if (!self.chaptersView.isShowMulu){
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.navigationController.toolbarHidden = YES;
-        
+- (void)showMulu {
+    if (self.chaptersView.hidden){
         self.chaptersView.currentIndex = [self.viewModel getCurrentChapterIndex];
         self.chaptersView.bookName = [self.viewModel getBookName];
         self.chaptersView.chapters = [self.viewModel getAllChapters];
     }
+  
     
     self.settingView.hidden = YES;
-    self.chaptersView.isShowMulu = !self.chaptersView.isShowMulu;
+    self.chaptersView.hidden = !self.chaptersView.hidden;
 }
 
-- (void)showSettingView
-{
+- (void)showSettingView {
     self.settingView.hidden = !self.settingView.hidden;
 }
 
@@ -264,19 +257,13 @@
     [self.viewModel reloadContentViews];
 }
 
-- (void)changeNaviBarHidenWithAnimated
-{
-    self.settingView.hidden = YES;
-    if (self.navigationController.navigationBarHidden){
-        
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.navigationController.toolbarHidden = NO;
-    }else{
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
-        [self setNeedsStatusBarAppearanceUpdate];
-        self.navigationController.toolbarHidden = YES;
+- (void)changeNaviBarHidenWithAnimated {
+    if (_toolbarView.hidden) {
+        _toolbarView.hidden = NO;
+    } else {
+        _toolbarView.hidden = YES;
     }
+    self.settingView.hidden = YES;
 }
 
 - (void)hidenNaviBar
@@ -309,7 +296,7 @@
     _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
     
     
-    [self.pageViewController setViewControllers:viewControllers
+    [self.bookPageVC setViewControllers:viewControllers
                                       direction:UIPageViewControllerNavigationDirectionReverse
                                        animated:NO
                                      completion:nil];
@@ -337,7 +324,7 @@
 }
 
 #pragma mark - lazyLoad
--(UIPageViewController *)pageViewController
+-(UIPageViewController *)bookPageVC
 {
     if (!_bookPageVC) {
         _bookPageVC = [[BRBookPageViewController  alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
@@ -356,14 +343,14 @@
 }
 
 
--(UIStatusBarStyle)preferredStatusBarStyle{
-    
-    return UIStatusBarStyleLightContent;
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.navigationController.navigationBarHidden;
-}
+//-(UIStatusBarStyle)preferredStatusBarStyle{
+//
+//    return UIStatusBarStyleLightContent;
+//}
+//
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return self.navigationController.navigationBarHidden;
+//}
 
 @end

@@ -16,14 +16,16 @@
 
 /* 字号*/
 @property (nonatomic,strong) UILabel* fontTitleLabel;
-@property (nonatomic,strong) UIButton* fontAddBtn;
 @property (nonatomic,strong) UIButton* fontSubBtn;
+@property (nonatomic,strong) UILabel* fontSizeLabel;
+@property (nonatomic,strong) UIButton* fontAddBtn;
 
 /* 间距*/
 @property (nonatomic,strong) UILabel* spaceTitleLabel;
 @property (nonatomic,strong) UIButton* spaceBtn1;
 @property (nonatomic,strong) UIButton* spaceBtn2;
 @property (nonatomic,strong) UIButton* spaceBtn3;
+@property (nonatomic,strong) UIButton* spaceBtn4;
 
 /* 翻页*/
 @property (nonatomic,strong) UILabel* transitionTitleLabel;
@@ -46,23 +48,38 @@
 @implementation BRBookSetingView
 
 #pragma mark- super
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    
+}
 
+- (instancetype)init{
+    self = [super init];
+    if (self){
+        [self initialSubViews];
+        [self initSubViewConstraints];
+    }
+    return self;
+}
 
 #pragma mark- private
 
 - (void)initialSubViews {
-    self.backgroundColor = CFUIColorFromRGBAInHex(0xf1f1f1, 1);
+    self.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
-    _fontTitleLabel = [self titleLabelWithTitle:@"字体"];
+    _fontTitleLabel = [self titleLabelWithTitle:@"字号"];
     [self addSubview:_fontTitleLabel];
+
+    _fontSubBtn = [self btnWithTitle:@"A-"];
+    [_fontSubBtn addTarget:self action:@selector(fontSizeDownClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_fontSubBtn];
+    
+    _fontSizeLabel = [self titleLabelWithTitle:@"14"];
+    [self addSubview:_fontSizeLabel];
     
     _fontAddBtn = [self btnWithTitle:@"A+"];
     [_fontAddBtn addTarget:self action:@selector(fontSizeUpClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_fontAddBtn];
-    
-    _fontSubBtn = [self btnWithTitle:@"A-"];
-    [_fontSubBtn addTarget:self action:@selector(fontSizeDownClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_fontSubBtn];
     
     _spaceTitleLabel = [self titleLabelWithTitle:@"间距"];
     [self addSubview:_spaceTitleLabel];
@@ -82,17 +99,22 @@
     [_spaceBtn3 setImage:[UIImage imageNamed:@"space_3"] forState:UIControlStateNormal];
     [self addSubview:_spaceBtn3];
     
+    _spaceBtn4 = [self btnWithTitle:@""];
+    [_spaceBtn4 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_spaceBtn4 setImage:[UIImage imageNamed:@"space_4"] forState:UIControlStateNormal];
+    [self addSubview:_spaceBtn4];
+    
     _transitionTitleLabel = [self titleLabelWithTitle:@"翻页"];
     [self addSubview:_transitionTitleLabel];
     
     _tranPageCurlBtn = [self btnWithTitle:@"仿真"];
     [_tranPageCurlBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
-    _tranPageCurlBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    _tranPageCurlBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_tranPageCurlBtn];
     
     _tranScrollBtn = [self btnWithTitle:@"滑动"];
     [_tranScrollBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
-    _tranScrollBtn.titleLabel.font = [UIFont systemFontOfSize:18];
+    _tranScrollBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_tranScrollBtn];
     
     _lightTitleLabel = [self titleLabelWithTitle:@"亮度"];
@@ -101,7 +123,7 @@
     _lightSlider = [[UISlider alloc] init];
     _lightSlider.minimumValue = 0;
     _lightSlider.maximumValue = 0.7;
-//    _lightSlider.value = BRUserDefault.readBrightness;
+    _lightSlider.value = BRUserDefault.readBrightness;
     _lightSlider.minimumValueImage = [UIImage imageNamed:@"setting_sun_l"];
     _lightSlider.maximumValueImage = [UIImage imageNamed:@"setting_sun_s"];
     _lightSlider.minimumTrackTintColor = CFUIColorFromRGBAInHex(0x44b750, 1);
@@ -134,125 +156,139 @@
     [self reloadBackColor];
 }
 
-- (void)initSubViewConstraints
-{
+- (void)initSubViewConstraints {
     [_fontTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(28);
         make.left.mas_equalTo(20);
-        make.width.mas_equalTo(40);
-        make.centerY.equalTo(self.fontAddBtn.mas_centerY);
+        make.width.mas_equalTo(30);
         make.height.mas_equalTo(22);
     }];
     
     [_fontSubBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(20);
+        make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.fontTitleLabel.mas_right).offset(20);
-        make.height.mas_equalTo(45);
-        make.width.mas_equalTo((SCREEN_WIDTH-118)/2);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(70);
+    }];
+    
+    [_fontSizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_fontSubBtn.mas_right).offset(5);
+        make.width.mas_equalTo(20);
+        make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
+        make.height.mas_equalTo(22);
     }];
     
     [_fontAddBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(20);
-        make.left.equalTo(self.fontSubBtn.mas_right).offset(8);
-        make.height.mas_equalTo(45);
-        make.width.mas_equalTo((SCREEN_WIDTH-118)/2);
+        make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
+        make.left.equalTo(_fontSizeLabel.mas_right).offset(5);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(70);
     }];
     
     [_spaceTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(20);
-        make.width.mas_equalTo(40);
-        make.centerY.equalTo(self.spaceBtn1.mas_centerY);
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.centerY.equalTo(_fontTitleLabel.mas_bottom).offset(35);
         make.height.mas_equalTo(22);
     }];
     
     [_spaceBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.fontAddBtn.mas_bottom).offset(20);
+        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.spaceTitleLabel.mas_right).offset(20);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo((SCREEN_WIDTH-126)/3);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
     }];
     
     [_spaceBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.fontAddBtn.mas_bottom).offset(20);
+        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.spaceBtn1.mas_right).offset(8);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo((SCREEN_WIDTH-126)/3);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
+        
     }];
     
     [_spaceBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.fontAddBtn.mas_bottom).offset(20);
+        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.spaceBtn2.mas_right).offset(8);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo((SCREEN_WIDTH-126)/3);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
+    }];
+    
+    [_spaceBtn4 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
+        make.left.equalTo(self.spaceBtn3.mas_right).offset(8);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
     }];
     
     [_transitionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(20);
-        make.width.mas_equalTo(40);
-        make.centerY.equalTo(self.tranScrollBtn.mas_centerY);
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.top.equalTo(_spaceTitleLabel.mas_bottom).offset(35);
         make.height.mas_equalTo(22);
     }];
     
     [_tranPageCurlBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.spaceBtn1.mas_bottom).offset(20);
+        make.centerY.equalTo(_transitionTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.transitionTitleLabel.mas_right).offset(20);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo((SCREEN_WIDTH-118)/2);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
     }];
     
     [_tranScrollBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.spaceBtn1.mas_bottom).offset(20);
-        make.left.equalTo(self.tranPageCurlBtn.mas_right).offset(20);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo((SCREEN_WIDTH-118)/2);
+        make.centerY.equalTo(_transitionTitleLabel.mas_centerY).offset(0);
+        make.left.equalTo(self.tranPageCurlBtn.mas_right).offset(8);
+        make.height.mas_equalTo(28);
+        make.width.mas_equalTo(60);
     }];
     
     [_lightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(20);
-        make.width.mas_equalTo(40);
-        make.centerY.equalTo(self.lightSlider.mas_centerY);
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.top.equalTo(_transitionTitleLabel.mas_bottom).offset(35);
         make.height.mas_equalTo(22);
     }];
     
     [_lightSlider mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tranPageCurlBtn.mas_bottom).offset(20);
+        make.centerY.equalTo(_lightTitleLabel.mas_centerY).offset(0);
         make.height.mas_equalTo(50);
         make.left.mas_equalTo(self.lightTitleLabel.mas_right).offset(20);
         make.width.mas_equalTo(SCREEN_WIDTH-110);
     }];
     
     [_backTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(20);
-        make.width.mas_equalTo(40);
-        make.centerY.equalTo(self.backBtn1.mas_centerY);
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.top.equalTo(_lightTitleLabel.mas_bottom).offset(35);
         make.height.mas_equalTo(22);
     }];
     
     [_backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lightSlider.mas_bottom).offset(20);
-        make.height.mas_equalTo(40);
+        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
+        make.height.mas_equalTo(28);
         make.left.mas_equalTo(self.backTitleLabel.mas_right).offset(20);
-        make.width.mas_equalTo((SCREEN_WIDTH-134)/4);
+        make.width.mas_equalTo(60);
     }];
     
     [_backBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lightSlider.mas_bottom).offset(20);
-        make.height.mas_equalTo(40);
+        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
+        make.height.mas_equalTo(28);
         make.left.mas_equalTo(self.backBtn1.mas_right).offset(8);
-        make.width.mas_equalTo((SCREEN_WIDTH-134)/4);
+        make.width.mas_equalTo(60);
     }];
     
     [_backBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lightSlider.mas_bottom).offset(20);
-        make.height.mas_equalTo(40);
+        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
+        make.height.mas_equalTo(28);
         make.left.mas_equalTo(self.backBtn2.mas_right).offset(8);
-        make.width.mas_equalTo((SCREEN_WIDTH-134)/4);
+        make.width.mas_equalTo(60);
     }];
     
     [_backBtn4 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.lightSlider.mas_bottom).offset(20);
-        make.height.mas_equalTo(40);
+        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
+        make.height.mas_equalTo(28);
         make.left.mas_equalTo(self.backBtn3.mas_right).offset(8);
-        make.width.mas_equalTo((SCREEN_WIDTH-134)/4);
+        make.width.mas_equalTo(60);
     }];
 }
 
@@ -261,7 +297,7 @@
     UILabel* label = [[UILabel alloc] init];
     label.font = [UIFont systemFontOfSize:14];
     label.text = title;
-    label.textColor = CFUIColorFromRGBAInHex(0x838383, 1);
+    label.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
     label.textAlignment = NSTextAlignmentCenter;
     
     return label;
@@ -270,28 +306,27 @@
 - (UIButton*)btnWithTitle:(NSString*)title {
     UIButton* btn = [[UIButton alloc] init];
     btn.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
-    btn.layer.cornerRadius = 3;
-    btn.titleLabel.font = [UIFont systemFontOfSize:25];
-    btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    btn.layer.cornerRadius = 14;
+    btn.titleLabel.font = [UIFont systemFontOfSize:14];
+    btn.layer.borderColor = CFUIColorFromRGBAInHex(0x838D97, 1).CGColor;
     btn.layer.borderWidth = 0.5;
     [btn setTitle:title forState:UIControlStateNormal];
-    [btn setTitleColor:CFUIColorFromRGBAInHex(0x838383, 1) forState:UIControlStateNormal];
+    [btn setTitleColor:CFUIColorFromRGBAInHex(0x313E51, 1) forState:UIControlStateNormal];
     return btn;
 }
 
 - (UIButton*)backBtnWithColor:(UIColor*)color {
     UIButton* btn = [[UIButton alloc] init];
-    btn.layer.cornerRadius = 5;
+    btn.layer.cornerRadius = 14;
     btn.backgroundColor = color;
-    btn.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    btn.layer.borderColor = CFUIColorFromRGBAInHex(0x838D97, 1).CGColor;
     btn.layer.borderWidth = 0.5;
     return btn;
 }
 
 #pragma mark - reloadView
 
-- (void)reloadSpaceBtn
-{
+- (void)reloadSpaceBtn {
     NSDictionary* dic = BRUserDefault.userReadAttConfig;
     NSMutableParagraphStyle *paragraphStyle = [dic objectForKey:NSParagraphStyleAttributeName];
     
@@ -308,8 +343,7 @@
     }
 }
 
-- (void)reloadTransition
-{
+- (void)reloadTransition {
     UIPageViewControllerTransitionStyle PageTransitionStyle = BRUserDefault.PageTransitionStyle;
     
     self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
@@ -322,8 +356,7 @@
     }
 }
 
-- (void)reloadBackColor
-{
+- (void)reloadBackColor {
     UIColor* backColor = BRUserDefault.readBackColor;
     
     _backBtn1.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -359,16 +392,14 @@
 }
 
 #pragma mark - target
-- (void)sliderValueChange
-{
+- (void)sliderValueChange {
     BRUserDefault.readBrightness = self.lightSlider.value;
     if (self.sliderValueBlock){
         self.sliderValueBlock();
     }
 }
 
-- (void)colorBtnClick:(UIButton*)btn
-{
+- (void)colorBtnClick:(UIButton*)btn {
     if (btn==self.backBtn1){
         BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xf5f5f2, 1);
     }else if (btn==self.backBtn2){
@@ -386,8 +417,7 @@
     [self reloadBackColor];
 }
 
-- (void)transitionClick:(UIButton*)btn
-{
+- (void)transitionClick:(UIButton*)btn {
     if (btn==self.tranPageCurlBtn){
         BRUserDefault.PageTransitionStyle = UIPageViewControllerTransitionStylePageCurl;
     }else if (btn==self.tranScrollBtn){
@@ -401,8 +431,7 @@
     [self reloadTransition];
 }
 
-- (void)lineSpacingClick:(UIButton*)btn
-{
+- (void)lineSpacingClick:(UIButton*)btn {
     NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     
@@ -423,8 +452,7 @@
     [self reloadSpaceBtn];
 }
 
-- (void)fontSizeDownClick
-{
+- (void)fontSizeDownClick {
     NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
     UIFont* font = [dic objectForKey:NSFontAttributeName];
     float size = font.pointSize;
@@ -438,8 +466,7 @@
     }
 }
 
-- (void)fontSizeUpClick
-{
+- (void)fontSizeUpClick {
     NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
     UIFont* font = [dic objectForKey:NSFontAttributeName];
     float size = font.pointSize;

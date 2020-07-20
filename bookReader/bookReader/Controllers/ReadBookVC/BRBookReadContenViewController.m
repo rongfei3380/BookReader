@@ -13,6 +13,7 @@
 #import "CFCustomMacros.h"
 #import <Masonry.h>
 #import "NSDate+Utilities.h"
+#import "CFReadViewMacros.h"
 
 @interface BRBookReadContenViewController ()
 
@@ -42,22 +43,45 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self initialSubViews];
+    [self initialSubViewConstraints];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (BRUserDefault.isNightStyle){
+        self.view.backgroundColor   = CFUIColorFromRGBAInHex(0x171a21, 1);
+        _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0x576071, 1);
+        _indexLabel.textColor       = CFUIColorFromRGBAInHex(0x576071, 1);
+        _timeLabel.textColor        = CFUIColorFromRGBAInHex(0x576071, 1);
+    }
+    
+    [self initialData];
+}
+
+
 - (void)initialSubViews
 {
     _contentView = [[BRBookReadTextView alloc] initWithText:_text];
     _contentView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_contentView];
     
-    self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
+    self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
     _chapterNameLabel = [[UILabel alloc] init];
     _chapterNameLabel.text = self.chapterName;
     _chapterNameLabel.font = [UIFont systemFontOfSize:12];
-    _chapterNameLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x655a46, 1);
+    _chapterNameLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
     [self.view addSubview:_chapterNameLabel];
     
     _indexLabel = [[UILabel alloc] init];
-    _indexLabel.textColor  = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x655a46, 1);
+    _indexLabel.textColor  = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
     _indexLabel.text = [NSString stringWithFormat:@"第%ld/%ld页",self.index,self.totalNum];
     _indexLabel.font = [UIFont systemFontOfSize:12];
     _indexLabel.textAlignment = NSTextAlignmentRight;
@@ -65,25 +89,18 @@
     
     _timeLabel = [[UILabel alloc] init];
     _timeLabel.font = [UIFont systemFontOfSize:12];
-    _timeLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x655a46, 1);
+    _timeLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
     [self.view addSubview:_timeLabel];
     
     [self initialData];
 }
 
-- (void)initialSubViewConstraints
-{
-    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(15);
-        make.right.mas_equalTo(-15);
-        make.top.mas_equalTo(30);
-        make.bottom.mas_equalTo(-30);
-    }];
-    
+- (void)initialSubViewConstraints {
     [_chapterNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(8);
+        make.top.mas_equalTo(kStatusBarHeight());
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
+        make.height.mas_equalTo(kChapterNameLabelHeight);
     }];
     
     [_indexLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -97,6 +114,16 @@
         make.left.mas_equalTo(15);
         make.right.equalTo(self->_indexLabel.mas_left).offset(-8);
     }];
+    
+    CGFloat offSetBottom = kReadStatusHeight*(-1);
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(15);
+        make.right.mas_equalTo(-15);
+        make.top.mas_equalTo(_chapterNameLabel.mas_bottom).offset(kReadContentOffSetY);
+        make.bottom.mas_equalTo(offSetBottom);
+    }];
+    
+    
 }
 
 - (void)initialData {

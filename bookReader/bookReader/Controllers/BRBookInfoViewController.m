@@ -10,6 +10,10 @@
 #import "BRBookInfoModel.h"
 #import "CFDataUtils.h"
 #import "CFButtonUpDwon.h"
+#import "BRBookReadViewController.h"
+#import "BRSite.h"
+#import "BRChaptersView.h"
+#import "BRDataBaseManager.h"
 
 
 @interface BRBookInfoViewController () {
@@ -22,7 +26,13 @@
     UILabel *_scoreLabel;
     
     UIView *_infoActionView;
+    CFButtonUpDwon *_addShelfBtn;
+    
+    BRChaptersView *_chaptersView;
 }
+
+/// 小说源
+@property(nonatomic, strong)NSArray *sitesArray;
 
 @end
 
@@ -104,21 +114,25 @@
     _bookNameLabel.text = self.bookInfo.bookName;
     _categoryLabel.text = self.bookInfo.categoryName;
     _authorLabel.text = self.bookInfo.author;
-    _updateTimeLabel.text = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdate] stringByAppendingString:@"更新"];
+    _updateTimeLabel.text = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
 }
 
 - (void)createActionButtons {
-    CFButtonUpDwon *addShelfBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [addShelfBtn setImage:[UIImage imageNamed:@"btn_detail_joinShelf"] forState:UIControlStateNormal];
-    [addShelfBtn setTitle:@"加入书架" forState:UIControlStateNormal];
-    addShelfBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [addShelfBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    [_infoActionView addSubview:addShelfBtn];
+    _addShelfBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [_addShelfBtn setImage:[UIImage imageNamed:@"btn_detail_joinShelf"] forState:UIControlStateNormal];
+    [_addShelfBtn setTitle:@"加入书架" forState:UIControlStateNormal];
+    [_addShelfBtn setTitle:@"移除书架" forState:UIControlStateSelected];
+    [_addShelfBtn addTarget:self action:@selector(clickAddShelfBtn:) forControlEvents:UIControlEventTouchUpInside];
+    _addShelfBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [_addShelfBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [_infoActionView addSubview:_addShelfBtn];
+    [self changeSddShelfBtnStatus];
     
     CFButtonUpDwon *chapterBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
     [chapterBtn setImage:[UIImage imageNamed:@"btn_detail_chapter"] forState:UIControlStateNormal];
     [chapterBtn setTitle:@"章节列表" forState:UIControlStateNormal];
     chapterBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [chapterBtn addTarget:self action:@selector(clickChapterButton:) forControlEvents:UIControlEventTouchUpInside];
     [chapterBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
     [_infoActionView addSubview:chapterBtn];
     
@@ -136,7 +150,7 @@
     [downloadBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
     [_infoActionView addSubview:downloadBtn];
     
-    NSArray *masonryViewArray = @[addShelfBtn, chapterBtn, likeBtn, downloadBtn];
+    NSArray *masonryViewArray = @[_addShelfBtn, chapterBtn, likeBtn, downloadBtn];
     
     // 实现masonry水平固定控件宽度方法
     [masonryViewArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:70 leadSpacing:20 tailSpacing:20];
@@ -165,6 +179,7 @@
     startBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [startBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFFFFF, 1) forState:UIControlStateNormal];
     [startBtn setBackgroundColor:CFUIColorFromRGBAInHex(0x292F3D, 1)];
+    [startBtn addTarget:self action:@selector(startReadClick:) forControlEvents:UIControlEventTouchUpInside];
     [_infoActionView addSubview:startBtn];
     startBtn.layer.cornerRadius = 8;
     startBtn.clipsToBounds = YES;
@@ -172,8 +187,64 @@
         make.left.mas_equalTo(22);
         make.right.mas_equalTo(-22);
         make.height.mas_equalTo(44);
-        make.bottom.mas_equalTo(-20);
+        make.bottom.mas_equalTo(isIPhoneXSeries()? -30-12 : -30);
     }];
+}
+
+- (void)showChaptersView {
+    if (!_chaptersView) {
+        _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, SCREEN_HEIGHT -CGRectGetMaxY(self.headView.frame))];
+        BRSite *site = [_sitesArray firstObject];
+           if (site) {
+               [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
+                   
+                   self->_chaptersView.chapters = recodes;
+                   
+                   [self.view addSubview:self->_chaptersView];
+               } failureBlock:^(NSError * _Nonnull error) {
+                   
+               }];
+           }
+    }
+    kWeakSelf(self);
+    _chaptersView.didSelectChapter = ^(NSInteger index) {
+        kStrongSelf(self);
+        self->_chaptersView.hidden = YES;
+        [self gotoReadWitnIndex:index];
+    };
+    _chaptersView.bookName = self.bookInfo.bookName;
+   
+    self->_chaptersView.hidden = NO;
+}
+
+- (void)removeBookModel {
+    [[BRDataBaseManager sharedInstance] deleteBookInfoWithBookId:self.bookInfo.bookId];
+}
+
+- (void)addBookModel {
+    [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:self.bookInfo];
+    
+    /* 添加书本章节缓存*/
+//    if ([[BRDataBaseManager sharedInstance] sel:self.model.book_url].count == 0)
+//        [self.bookApi chapterListWithBook:self.model Success:nil Fail:nil];
+}
+
+- (void)changeSddShelfBtnStatus {
+    BRBookInfoModel* model = [[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:self.bookInfo.bookId];
+    if (model) {
+        _addShelfBtn.selected = YES;
+    } else {
+        _addShelfBtn.selected = NO;
+    }
+}
+
+- (void)gotoReadWitnIndex:(NSInteger )index {
+    BRBookReadViewModel* vm = [[BRBookReadViewModel alloc] initWithBookModel:self.bookInfo];
+    vm.sitesArray = _sitesArray;
+    vm.currentIndex = index;
+    BRBookReadViewController* vc = [[BRBookReadViewController alloc] init];
+    vc.viewModel = vm;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark- API
@@ -187,10 +258,38 @@
     } failureBlock:^(NSError * _Nonnull error) {
         
     }];
+    
+    [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
+           NSLog(@"小说源 ： %@", recodes);
+        self->_sitesArray = [recodes mutableCopy];
+       } failureBlock:^(NSError * _Nonnull error) {
+           
+    }];
+    
 }
 
 #pragma mark- sette
 
+
+#pragma mark- button methods
+
+- (void)clickChapterButton:(id)sender {
+    [self showChaptersView];
+}
+
+- (IBAction)startReadClick:(UIButton *)sender {
+    [self gotoReadWitnIndex:0];
+}
+
+- (void)clickAddShelfBtn:(UIButton *) sender {
+    BRBookInfoModel* model = [[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:self.bookInfo.bookId];
+    if (model) {
+        [self removeBookModel];
+    } else {
+        [self addBookModel];
+    }
+    [self changeSddShelfBtnStatus];
+}
 
 #pragma mark- super
 

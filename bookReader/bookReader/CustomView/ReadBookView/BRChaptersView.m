@@ -8,16 +8,22 @@
 
 #import "BRChaptersView.h"
 #import "CFCustomMacros.h"
+#import <Masonry.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import "BRChapter.h"
 
 @interface BRChaptersView ()<UITableViewDelegate, UITableViewDataSource>
 
+/// 背景
 @property (nonatomic,strong) UIView* muluView;
-@property (nonatomic,strong) UIImageView* imageV;
-@property (nonatomic,strong) UILabel* bookNameLabel;
-@property (nonatomic,strong) UITableView* tableView;
-@property (nonatomic,strong) UILabel* titleLabel;
-@property (nonatomic,strong) UIButton* button;
+/// 书名
+@property (nonatomic,strong) UILabel *bookNameLabel;
+/// 更新时间
+@property (nonatomic,strong) UILabel *updateTimeLabel;
+/// 目录列表
+@property (nonatomic,strong) UITableView *tableView;
+
+@property (nonatomic,strong) UIButton *button;
 /* 是否倒序*/
 @property (nonatomic,assign) BOOL isDescending;
 
@@ -29,8 +35,7 @@
 
 @implementation BRChaptersView
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch* touch = touches.anyObject;
     CGPoint point = [touch locationInView:self];
     CGRect setView = CGRectMake(SCREEN_WIDTH, 0,  SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -56,38 +61,35 @@
 
 - (void)initialSubViews
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.5);
     
-    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(-SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-    self.muluView.backgroundColor = [UIColor whiteColor];
+    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.muluView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    self.muluView.layer.cornerRadius = 12;
     [self addSubview:self.muluView];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(8, 100, SCREEN_WIDTH - 8, SCREEN_HEIGHT - 100) style:UITableViewStylePlain];
-    self.tableView.separatorColor = CFUIColorFromRGBAInHex(0xd3d3d3, 1);
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    [self.muluView addSubview:self.tableView];
-    
-    self.bookNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 20, SCREEN_WIDTH - 40, 20)];
-    self.bookNameLabel.font = [UIFont systemFontOfSize:17];
+    self.bookNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, SCREEN_WIDTH - 40, 20)];
+    self.bookNameLabel.font = [UIFont systemFontOfSize:16];
     self.bookNameLabel.text = self.bookName;
+    self.bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
     [self.muluView addSubview:self.bookNameLabel];
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, 80, 20)];
-    self.titleLabel.font = [UIFont systemFontOfSize:15];
-    self.titleLabel.text = @"目录";
-    [self.muluView addSubview:self.titleLabel];
+    self.updateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(self.bookNameLabel.frame)+2, SCREEN_WIDTH -40, 16)];
+    self.updateTimeLabel.font = [UIFont systemFontOfSize:12];
+    self.updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    [self.muluView addSubview:self.updateTimeLabel];
     
-    self.imageV = [[UIImageView alloc] init];
-    self.imageV.backgroundColor = CFUIColorFromRGBAInHex(0xd3d3d3, 1);
-    self.imageV.frame = CGRectMake(0, 85, SCREEN_WIDTH, 0.2);
-    [self.muluView addSubview:self.imageV];
     
     self.button = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 40, 60, 20, 20)];
     [self.button addTarget:self action:@selector(changeScending) forControlEvents:UIControlEventTouchUpInside];
     [self.button setImage:[UIImage imageNamed:@"mulu_descending"] forState:UIControlStateNormal];
 //    self.button.touchAreaInsets = UIEdgeInsetsMake(5, 5, 5, 10);
     [self.muluView addSubview:self.button];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.frame.size.width, self.frame.size.height - 64) style:UITableViewStylePlain];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.muluView addSubview:self.tableView];
 }
 
 - (void)setIsShowMulu:(BOOL)isShowMulu
@@ -95,19 +97,16 @@
     _isShowMulu = isShowMulu;
     if (isShowMulu){
         [self setNeedsLayout];
-//        self.frame.size.width = SCREEN_WIDTH;
         
         [self.tableView reloadData];
         [self scrollToCurrentIndex];
         
         [UIView animateWithDuration:0.2 animations:^{
             [self setNeedsLayout];
-            self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
-//            self.muluView.left = 0;
+            self.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.5);
         }];
     }else{
         [self setNeedsLayout];
-//        self.width = 0;
         [UIView animateWithDuration:0.2 animations:^{
             [self setNeedsLayout];
             self.backgroundColor = [UIColor clearColor];
@@ -142,7 +141,7 @@
     self.bookNameLabel.text = _bookName;
 }
 
-- (void)setChapters:(NSArray<NSString *> *)chapters
+- (void)setChapters:(NSArray<BRChapter *> *)chapters
 {
     _chapters = chapters;
     
@@ -198,7 +197,9 @@
     
     NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld.%@", row, self.dataArray[indexPath.row]];
+    
+    BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"%ld.%@", row, chapter.name];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     
     if (row - 1 == self.currentIndex){

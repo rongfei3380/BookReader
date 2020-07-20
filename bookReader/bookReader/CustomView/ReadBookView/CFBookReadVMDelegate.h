@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "BRBookInfoModel.h"
+#import "BRChapterDetail.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -46,7 +47,7 @@ typedef void (^HubFail)(NSString* text);
 - (NSString*)getBookName;
 
 /// 获取所有章节名称
-- (NSArray<NSString*>*)getAllChapters;
+- (NSArray<BRChapter*>*)getAllChapters;
 
 /// 获取当前章节的index
 - (NSInteger)getCurrentChapterIndex;

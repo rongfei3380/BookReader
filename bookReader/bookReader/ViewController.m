@@ -10,7 +10,7 @@
 #import "BRAPIClient.h"
 #import "BRBookInfoModel.h"
 #import "BRBookCategory.h"
-#import "BRChapter.h"
+#import "BRChapterDetail.h"
 #import "BRSite.h"
 
 @interface ViewController ()
@@ -75,7 +75,7 @@
 
     }];
 
-    [BRChapter getChapterContentWithBookId:@"21231" chapterId:130994 siteId:58 sucess:^(BRChapter * _Nonnull chapter) {
+    [BRChapterDetail getChapterContentWithBookId:@"21231" chapterId:130994 siteId:58 sucess:^(BRChapterDetail * _Nonnull chapter) {
         NSLog(@"章节 内容 ： %@", chapter);
     } failureBlock:^(NSError * _Nonnull error) {
         

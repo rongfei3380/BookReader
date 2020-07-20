@@ -19,7 +19,7 @@ typedef void (^select)(NSInteger index);
 
 @property (nonatomic,copy) NSString* bookName;
 
-@property (nonatomic,strong) NSArray<NSString*>* chapters;
+@property (nonatomic,strong) NSArray<BRChapter*>* chapters;
 @property (nonatomic,assign) BOOL isShowMulu;
 @property (nonatomic,assign) NSInteger currentIndex;
 

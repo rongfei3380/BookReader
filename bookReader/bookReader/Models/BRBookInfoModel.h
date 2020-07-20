@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "BRBaseModel.h"
+#import "BRSite.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,20 +22,24 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSString *cover;
 /*小说作者*/
 @property(nonatomic, strong) NSString *author;
-/*分类id*/
-@property(nonatomic, strong) NSNumber *categoryId;
-/*最后更新时间戳*/
-@property(nonatomic, strong) NSDate *lastupdate;
-/*小说简介*/
-@property(nonatomic, strong) NSString *intro;
 /*作者id*/
 @property(nonatomic, strong) NSNumber *authorId;
-/*作者其他小说*/
-@property(nonatomic, strong) NSArray *otherBooks;
+/*分类id*/
+@property(nonatomic, strong) NSNumber *categoryId;
 /*分类名称*/
 @property(nonatomic, strong) NSString *categoryName;
 /*简短描述*/
-@property(nonatomic, strong) NSString *caption;
+@property(nonatomic, strong) NSString *desc;
+/*小说简介*/
+@property(nonatomic, strong) NSString *intro;
+/*最后更新时间戳*/
+@property(nonatomic, strong) NSNumber *lastupdate;
+@property(nonatomic, strong) NSDate *lastupdateDate;
+/*作者其他小说*/
+@property(nonatomic, strong) NSArray *otherBooks;
+
+/// 书籍相关的源
+@property(nonatomic, strong) NSArray* sitesArray;
 
 /// 获取书籍详情
 /// @param bookid 小说id

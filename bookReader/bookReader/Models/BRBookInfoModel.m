@@ -9,6 +9,7 @@
 #import "BRBookInfoModel.h"
 #import "BRAPIClient.h"
 
+
 @implementation BRBookInfoModel
 
 + (NSDictionary *)modelCustomPropertyMapper {
@@ -23,12 +24,13 @@
              @"authorId":@"authorid",
              @"list":@"list",
              @"categoryName":@"category_name",
-             @"caption":@"caption"
+             @"desc":@"caption"
     };
 }
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRBookInfoModel *item = [[BRBookInfoModel alloc] initWithAttributes:dic];
+    item.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:item.lastupdate.integerValue];
     return item;
 }
 

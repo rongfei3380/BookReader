@@ -70,9 +70,9 @@
 #pragma mark- button methods
 
 - (void)clickBackButton:(id)sender {
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
+    if (![self.navigationController popViewControllerAnimated:YES]){
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark- setter

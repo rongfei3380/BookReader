@@ -74,10 +74,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 小说章节列表
 /// @param bookId 书籍id
 /// @param siteId 源id
-/// @param sortType  章节排序,asc:升序,desc:降序  1 升序 0 降序
+/// @param sortType  章节排序,asc:升序,   desc:降序  1 升序 0 降序
 /// @param successBlock 小说章节列表
 /// @param failureBlock  error
-- (void)getChaptersListWithBookId:(NSString *)bookId
+- (void)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(CFAPIClientSuccessBlock)successBlock
@@ -91,7 +91,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param siteId 源id
 /// @param successBlock  章节内容
 /// @param failureBlock error
-- (void)getChapterContentWithBookId:(NSString *)bookId
+- (void)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(CFAPIClientSuccessBlock)successBlock

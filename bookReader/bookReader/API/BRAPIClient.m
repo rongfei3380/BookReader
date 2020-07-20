@@ -60,7 +60,7 @@
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
        
 
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getlist" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getlist" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -119,7 +119,7 @@
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getcategory" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategory" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -184,7 +184,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=select" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=select" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -203,7 +203,7 @@
     }];
 }
 
-- (void)getChaptersListWithBookId:(NSString *)bookId
+- (void)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(CFAPIClientSuccessBlock)successBlock
@@ -223,7 +223,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -242,7 +242,7 @@
     }];
 }
 
-- (void)getChapterContentWithBookId:(NSString *)bookId
+- (void)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(CFAPIClientSuccessBlock)successBlock
@@ -256,7 +256,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -286,7 +286,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
-    [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=source" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=source" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
             if (successBlock) {
