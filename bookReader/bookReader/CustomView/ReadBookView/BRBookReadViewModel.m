@@ -76,14 +76,14 @@
     }
     
     /* 去数据库查找是否有本地缓存的章节信息*/
-//    NSArray* arr = [self.database selectChapterWithSourceUrl:self.model.book_url];
-    NSArray* arr = [NSArray array];
+    BRSite *site = self.sitesArray.firstObject;
+    NSArray* arr = [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:self.bookModel.bookId siteId:site.siteId];
     if (arr.count >= 1){
         
 //        /* 已有章节缓存,去查找阅读记录*/
-//        self.chaptersArray = [NSArray arrayWithArray:arr];
-//        [self initialRecord];
-//        [self loadChaptersWithRecord:NO];
+        self.chaptersArray = [NSArray arrayWithArray:arr];
+        [self initialRecord];
+        [self loadChaptersWithRecord:NO];
     }else{
         
         /* 没有章节缓存,去加载章节内容*/
@@ -121,20 +121,20 @@
 /// 查找阅读记录
 - (void)initialRecord {
     @try {
-//        BRBookInfoModel* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:_model.bookId];
+        BRBookRecord* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:_bookModel.bookId];
 //        /* 有阅读记录*/
-//        if (model){
-//            CFDebugLog(@"阅读记录:第:%ld章",model.chapter_index);
-//            if (model.chapter_index >= self.chaptersArray.count){
-//                [self loadChapterTextWith:self.chaptersArray.lastObject isNext:YES recordText:nil];
-//            }else{
-//                [self loadChapterTextWith:self.chaptersArray[model.chapter_index] isNext:YES recordText:model.record_text];
-//            }
-//        }else{
-//            CFDebugLog(@"没有找到阅读记录");
-//            /* 没有阅读记录*/
-        [self loadChapterTextWith:self.chaptersArray[self.currentIndex] isNext:YES recordText:nil];
-//        }
+        if (model){
+            CFDebugLog(@"阅读记录:第:%ld章",model.chapterIndex);
+            if (model.chapterIndex >= self.chaptersArray.count){
+                [self loadChapterTextWith:self.chaptersArray.lastObject isNext:YES recordText:nil];
+            }else{
+                [self loadChapterTextWith:self.chaptersArray[model.chapterIndex] isNext:YES recordText:model.recordText];
+            }
+        }else{
+            CFDebugLog(@"没有找到阅读记录");
+            /* 没有阅读记录*/
+            [self loadChapterTextWith:self.chaptersArray[self.currentIndex] isNext:YES recordText:nil];
+        }
     } @catch (NSException *exception) {
         CFDebugLog(@"查找书本阅读记录失败");
         if (self.loadFail){
@@ -147,7 +147,30 @@
  * 保存书本的阅读记录
  */
 - (void)saveBookRecordWithPageIndex:(NSInteger)pageIndex {
-    
+    kWeakSelf(self);
+    kDISPATCH_ON_GLOBAL_QUEUE_LOW(^(){
+        kStrongSelf(self);
+        @try {
+            NSInteger chapterIndex = self.currentIndex;
+            NSString* text = ((BRBookReadContenViewController*)self.vcArray[pageIndex]).text;
+            NSString* name = ((BRBookReadContenViewController*)self.vcArray[pageIndex]).chapterName;
+            NSString* record;
+            
+            if (text.length >= 20){
+                record = [text substringToIndex:20];
+            }else{
+                record = text;
+            }
+            
+            if (chapterIndex >= 0){
+                BRBookRecord *model = [[BRBookRecord alloc] initWithId:self->_bookModel.bookId index:chapterIndex record:record chapterName:name];
+                [[BRDataBaseManager sharedInstance] saveRecordWithChapterModel:model];
+            }
+            
+        } @catch (NSException *exception) {
+            CFDebugLog(@"书本阅读记录保存失败");
+        }
+    });
 }
 
 /// 获取章节内容成功之后,应该进行区分
@@ -221,7 +244,13 @@
     }
     
     if (chapters.count >= 1){
-//        [self.bookApi advanceLoadChapters:chapters];
+        for (BRChapterDetail *item in chapters) {
+            [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:item.chapterId.integerValue siteId:_bookModel.currentSite.siteId.integerValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
+                
+            } failureBlock:^(NSError * _Nonnull error) {
+                
+            }];
+        }
     }
 }
 

@@ -39,7 +39,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSArray *otherBooks;
 
 /// 书籍相关的源
-@property(nonatomic, strong) NSArray* sitesArray;
+@property(nonatomic, strong) NSArray<BRSite*>* sitesArray;
+
+/// 当前选择的源
+@property(nonatomic, strong) BRSite *currentSite;
+
 
 /// 获取书籍详情
 /// @param bookid 小说id

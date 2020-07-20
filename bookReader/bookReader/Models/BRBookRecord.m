@@ -9,7 +9,7 @@
 #import "BRBookRecord.h"
 
 @implementation BRBookRecord
-- (instancetype)initWithId:(NSString*)bookId
+- (instancetype)initWithId:(NSNumber*)bookId
                      index:(NSInteger)index
                     record:(NSString*)record
                chapterName:(NSString*)chapterName {

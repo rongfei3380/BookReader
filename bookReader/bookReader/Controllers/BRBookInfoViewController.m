@@ -262,8 +262,8 @@
     [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
            NSLog(@"小说源 ： %@", recodes);
         self->_sitesArray = [recodes mutableCopy];
+        self->_bookInfo.currentSite = [self->_sitesArray firstObject];
        } failureBlock:^(NSError * _Nonnull error) {
-           
     }];
     
 }

@@ -12,13 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BRBookRecord : BRBaseModel
 
-@property (nonatomic,copy) NSString* bookId;
+@property (nonatomic,copy) NSNumber* bookId;
 @property (nonatomic,assign) NSInteger chapterIndex;
 @property (nonatomic,copy) NSString* chapterName;
 @property (nonatomic,copy) NSString* recordText;
 @property (nonatomic,strong) NSDate* recordTime;
 
-- (instancetype)initWithId:(NSString*)bookId
+- (instancetype)initWithId:(NSNumber*)bookId
                      index:(NSInteger)index
                     record:(NSString*)record
                chapterName:(NSString*)chapterName;

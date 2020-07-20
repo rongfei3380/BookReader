@@ -38,6 +38,9 @@
 		C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A834924BDF9290078CB37 /* CFButtonUpDwon.m */; };
 		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
 		C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapterDetail.m */; };
+		C5601D0A24C62895007C7377 /* BRChapter+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D0924C62895007C7377 /* BRChapter+database.m */; };
+		C5601D1024C62DDF007C7377 /* BRBookRecord+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D0F24C62DDF007C7377 /* BRBookRecord+database.m */; };
+		C5601D1324C63ED0007C7377 /* BRChapterDetail+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D1224C63ED0007C7377 /* BRChapterDetail+database.m */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
 		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
@@ -146,6 +149,12 @@
 		C549888424A5A48700887AEE /* BRChapterDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapterDetail.h; sourceTree = "<group>"; };
 		C549888524A5A48700887AEE /* BRChapterDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRChapterDetail.m; sourceTree = "<group>"; };
 		C5601D0724C61710007C7377 /* CFReadViewMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFReadViewMacros.h; sourceTree = "<group>"; };
+		C5601D0824C62895007C7377 /* BRChapter+database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRChapter+database.h"; sourceTree = "<group>"; };
+		C5601D0924C62895007C7377 /* BRChapter+database.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BRChapter+database.m"; sourceTree = "<group>"; };
+		C5601D0E24C62DDF007C7377 /* BRBookRecord+database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRBookRecord+database.h"; sourceTree = "<group>"; };
+		C5601D0F24C62DDF007C7377 /* BRBookRecord+database.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BRBookRecord+database.m"; sourceTree = "<group>"; };
+		C5601D1124C63ED0007C7377 /* BRChapterDetail+database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRChapterDetail+database.h"; sourceTree = "<group>"; };
+		C5601D1224C63ED0007C7377 /* BRChapterDetail+database.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "BRChapterDetail+database.m"; sourceTree = "<group>"; };
 		C5714BD024A0681500DE0277 /* BRBookInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoModel.h; sourceTree = "<group>"; };
 		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
 		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
@@ -445,6 +454,12 @@
 			children = (
 				C59D064324C5747F00A8237F /* BRBookInfoModel+database.h */,
 				C59D064424C5747F00A8237F /* BRBookInfoModel+database.m */,
+				C5601D0824C62895007C7377 /* BRChapter+database.h */,
+				C5601D0924C62895007C7377 /* BRChapter+database.m */,
+				C5601D0E24C62DDF007C7377 /* BRBookRecord+database.h */,
+				C5601D0F24C62DDF007C7377 /* BRBookRecord+database.m */,
+				C5601D1124C63ED0007C7377 /* BRChapterDetail+database.h */,
+				C5601D1224C63ED0007C7377 /* BRChapterDetail+database.m */,
 			);
 			path = "Model+dadaBase";
 			sourceTree = "<group>";
@@ -704,12 +719,14 @@
 				C51A831A24B72A6D0078CB37 /* UIView+ZJFrame.m in Sources */,
 				C51A832224B72A6D0078CB37 /* ZJScrollPageView.m in Sources */,
 				C51A82ED24AA08250078CB37 /* BRDataBaseManager.m in Sources */,
+				C5601D0A24C62895007C7377 /* BRChapter+database.m in Sources */,
 				C59D064B24C58AF600A8237F /* NSString+size.m in Sources */,
 				C51A82F124B4367F0078CB37 /* BRBaseViewController.m in Sources */,
 				C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */,
 				C51A82E924A9F2590078CB37 /* BRSite.m in Sources */,
 				C51A82F924B623990078CB37 /* BRTableVIewViewController.m in Sources */,
 				C51A82FC24B623BE0078CB37 /* BRBaseCollectionViewController.m in Sources */,
+				C5601D1024C62DDF007C7377 /* BRBookRecord+database.m in Sources */,
 				C59D062424C2A5D500A8237F /* BRBookReadTextView.m in Sources */,
 				C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */,
 				C51A832024B72A6D0078CB37 /* ZJSegmentStyle.m in Sources */,
@@ -731,6 +748,7 @@
 				C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */,
 				C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */,
 				C51A830324B726330078CB37 /* BRCategoryBooksViewController.m in Sources */,
+				C5601D1324C63ED0007C7377 /* BRChapterDetail+database.m in Sources */,
 				C51A831F24B72A6D0078CB37 /* ZJCollectionView.m in Sources */,
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
 				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,

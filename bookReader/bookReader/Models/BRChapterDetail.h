@@ -30,11 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 上一章相关
 @property(nonatomic, strong) NSString *preChapterName;
-@property(nonatomic, strong) NSString *preChapterId;
+@property(nonatomic, strong) NSNumber *preChapterId;
 
 /// 下一章相关属性
 @property(nonatomic, strong) NSString *nextChapterName;
-@property(nonatomic, strong) NSString *nextChapterId;
+@property(nonatomic, strong) NSNumber *nextChapterId;
+
+@property(nonatomic, strong) NSData *time;
 
 /// 获取小说章节内容
 /// @param bookId 小说id

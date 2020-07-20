@@ -18,18 +18,24 @@
 /*-----------------------------------------  t_chapter_text  ----------------------------------------------------*/
 #define kBRDBCreateChapterTextTable @"CREATE TABLE IF NOT EXISTS t_chapter_text (\
 id INTEGER PRIMARY KEY AUTOINCREMENT,\
-chapter_id TEXT NOT NULL,\
 book_id TEXT NOT NULL,\
+chapter_id TEXT NOT NULL,\
+chapter_name TEXT NOT NULL,\
+site_id TEXT NOT NULL,\
+site_name TEXT,\
 chapter_text TEXT NOT NULL,\
+pre_chapter_id TEXT,\
+next_chapter_id TEXT,\
 time DATETIME NOT NULL)"
 
-#define kBRDBInsertChapterText(...) @"INSERT INTO t_chapter_text (chapter_id, chapter_text, time, book_id) VALUES (?, ?, ?, ?)",##__VA_ARGS__
+#define kBRDBInsertChapterText(book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time) @"INSERT OR REPLACE INTO t_chapter_text (book_id, chapter_id, chapter_name, site_id, site_name, chapter_text,pre_chapter_id, next_chapter_id, time)\
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time
 
 #define kBRDBSelectChapterTextWithId(chapterId) @"SELECT * FROM t_chapter_text WHERE chapter_id=? LIMIT 1",chapterId
 
 #define kBRDBDeleteChapterTextWithId(chapterId) @"DELETE FROM t_chapter_text WHERE id=?",chapterId
 
-#define kBRDBDeleteChapterTextWithBookId(bookId) @"DELETE FROM t_chapter_text WHERE book_id=?",book_id
+#define kBRDBDeleteChapterTextWithBookId(bookId) @"DELETE FROM t_chapter_text WHERE book_id=?",bookId
 
 #pragma mark- t_chapter_list
 
@@ -42,15 +48,15 @@ chapter_id TEXT NOT NULL UNIQUE,\
 chapter_name TEXT NOT NULL,\
 site_id TEXT NOT NULL,\
 site_name TEXT,\
-time DATETIME NOT NULL\
+time TEXT\
 )"
 
-#define kBRDBInsertChapter(book_id, chapter_id, chapter_name, site_id, site_name, site_url,pre_chapter_id, next_chapter_id, time) @"INSERT OR REPLACE INTO t_chapter (book_id, chapter_id, chapter_name, site_id, site_name, site_url, pre_chapter_id, next_chapter_id, time)\
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, site_url,pre_chapter_id, next_chapter_id, time
+#define kBRDBInsertChapter(book_id, chapter_id, chapter_name, site_id, site_name, time) @"INSERT OR REPLACE INTO t_chapter (book_id, chapter_id, chapter_name, site_id, site_name, time)\
+VALUES (?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, time
 
-#define kBRDBSelectChaptersWithSource_url(source_url) @"SELECT * FROM t_chapter WHERE source_url=?",source_url
+#define kBRDBSelectChaptersWithSiteIdAndBookId(site_id, book_id) @"SELECT * FROM t_chapter WHERE site_id=? AND book_id =?", site_id, book_id
 
-#define kBRDBDeleteChapterWithSource_url(source_url) @"DELETE FROM t_chapter WHERE source_url=?",source_url
+#define kBRDBDeleteChapterWithSiteIdAndBookId(site_id, book_id) @"DELETE FROM t_chapter WHERE site_id=? AND book_id =? ", source_url, book_id
 
 #define kBRDBSelectAllChapters @"SELECT * FROM t_chapter"
 

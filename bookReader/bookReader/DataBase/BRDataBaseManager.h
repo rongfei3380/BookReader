@@ -10,6 +10,7 @@
 #import "BRBookInfoModel.h"
 #import "BRChapterDetail.h"
 #import "BRChapter.h"
+#import "BRBookRecord.h"
 
 
 NS_ASSUME_NONNULL_BEGIN
@@ -60,14 +61,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// 查询固定源 下面的章节缓存
 /// @param bookId 书籍id
 /// @param siteId 源id
-- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId SiteId:(NSNumber *)siteId;
+- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId;
 
 
 #pragma mark- 章节内容
 
 /// 保存章节内容
 /// @param model 章节内容
-- (void)saveChapterContentWithModel:(BRChapterDetail *)model;
+- (BOOL)saveChapterContentWithModel:(BRChapterDetail *)model;
 
 /// 获取章节id
 /// @param chapterId 章节id
@@ -82,6 +83,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)deleteChapterContentWithBookId:(NSNumber *)bookId;
 
 #pragma mark- 阅读历史
+
+- (BOOL)saveRecordWithChapterModel:(BRBookRecord*)model;
+- (BRBookRecord*)selectBookRecordWithBookId:(NSString*)bookId;
+- (void)deleteBookRecordWithBookId:(NSString*)bookId;
+
 
 - (instancetype)init __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));
 + (instancetype)new __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));

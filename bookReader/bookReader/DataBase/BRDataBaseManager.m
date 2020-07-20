@@ -12,7 +12,9 @@
 #import <FMDB/FMDB.h>
 
 #import "BRBookInfoModel+database.h"
-
+#import "BRChapter+database.h"
+#import "BRBookRecord+database.h"
+#import "BRChapterDetail+database.h"
 
 @interface BRDataBaseManager()
 
@@ -142,37 +144,46 @@
 
 #pragma mark- 章节信息
 
-- (BOOL)saveChapterWithModel:(BRChapterDetail *)model{
-//    if (kNumberIsEmpty(model.bookId) || kStringIsEmpty(model.record_text)){
+- (BOOL)saveChapterWithModel:(BRChapter *)model{
+    if (kNumberIsEmpty(model.bookId) || kNumberIsEmpty(model.chapterId)){
+        CFDebugLog(@"章节信息保存错误:%@",model);
         return NO;
-//    }
+    }
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        BOOL insert = [db executeUpdate:kBRDBInsertChapter(model.bookId, model.chapterId, model.name, model.siteId, model.siteName, model.time)];
+        if (!insert) {
+            CFDebugLog(@"insert BRChapter name = %@ error:%@",model.name,[db lastErrorMessage]);
+        }
+    }];
+    
+    
+    return YES;
 }
 
 - (void)saveChaptersWithArray:(NSArray<BRChapterDetail*>*)modelsArray bookId:(NSNumber *)bookId{
     
-//    kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
-//        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-//            if ([db open]){
-//                
-//                [db beginTransaction];
-//                BOOL isRollBack = NO;
-//                @try {
-//                    for (BRChapterDetail* model in modelsArray) {
-//                        [db executeUpdate:kBRDBInsertChapter(bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.siteUrl, model.preChapterId, model.nextChapterId, [NSData data])];
-//                    }
-//                } @catch (NSException *exception) {
-//                    isRollBack = YES;
-//                    [db rollback];
-//                } @finally {
-//                    if (!isRollBack) {
-//                        [db commit];
-//                    }
-//                }
-//                
-//            }
-//            [db close];
-//        }];
-//    });
+    kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]){
+                
+                [db beginTransaction];
+                BOOL isRollBack = NO;
+                @try {
+                    for (BRChapter *model in modelsArray) {
+                        [db executeUpdate:kBRDBInsertChapter(bookId, model.chapterId, model.name, model.siteId, model.siteName, model.time)];
+                    }
+                } @catch (NSException *exception) {
+                    isRollBack = YES;
+                    [db rollback];
+                } @finally {
+                    if (!isRollBack) {
+                        [db commit];
+                    }
+                }
+            }
+            [db close];
+        }];
+    });
 }
 
 - (NSArray<BRChapterDetail*>*)selectChaptersWithBookId:(NSNumber *)bookId {
@@ -182,49 +193,131 @@
 /// 查询固定源 下面的章节缓存
 /// @param bookId 书籍id
 /// @param siteId 源id
-- (NSArray<BRChapterDetail*>*)selectChaptersWithBookId:(NSNumber *)bookId SiteId:(NSNumber *)siteId {
-    return [NSArray array];
+- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId {
+     FMResultSet* result = [self.database executeQuery:kBRDBSelectChaptersWithSiteIdAndBookId(siteId, bookId)];
+       
+       NSMutableArray* dataArr = [NSMutableArray array];
+       
+       while ([result next]) {
+           BRChapter *model = [[BRChapter alloc] initWithFMResult:result];
+           if (model){
+               [dataArr addObject:model];
+           }
+       }
+       [result close];
+       return dataArr;
 }
 
-//- (BOOL)updateBookSourceWithRelatedId:(NSString*)relatedId Name:(NSString*)name SourceUrl:(NSString*)sourceUrl {
-//
-//}
-//
-//
-//#pragma mark- 章节信息
-//- (BOOL)saveChapterWithModel:(BRChapter *)model{
-//
-//}
-//
-//- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray {
-//
-//}
-//
-//- (NSArray<BRChapter*>*)selectChaptersWithSiteId:(NSNumber *)siteId {
-//
-//}
-//
-//#pragma mark- 章节内容
-//- (void)saveChapterContentWithModel:(BRChapterContent *)model {
-//
-//}
-//
-//- (BRChapterContent *)selectChapterContentWithChapterId:(NSNumber *)chapterId {
-//
-//}
-//
-//- (BOOL)deleteChapterContentWithChapterId:(NSNumber *)chapterId {
-//
-//}
-//
-//- (BOOL)deleteChapterContentWithBookId:(NSNumber *)bookId {
-//
-//}
+#pragma mark- 章节内容
+
+- (BOOL)saveChapterContentWithModel:(BRChapterDetail *)model{
+    if (kNumberIsEmpty(model.bookId) || kNumberIsEmpty(model.chapterId)) {
+        return NO;
+    }
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            BOOL insert = [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
+            if(!insert){
+                CFDebugLog(@"insert BookChapterTextModel url = %@ error:%@",model.chapterName ,[db lastErrorMessage]);
+            }
+            [db close];
+        }
+    }];
+    
+    return YES;
+}
+
+
+- (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId {
+    FMResultSet* result = [self.database executeQuery:kBRDBSelectChapterTextWithId(chapterId)];
+    
+    if ([result next]){
+        BRChapterDetail* model = [[BRChapterDetail alloc] initWithFMResult:result];
+        [result close];
+        return model;
+    }
+    
+    return nil;
+
+}
+
+- (BOOL)deleteChapterContentWithChapterId:(NSNumber *)chapterId{
+    if (kNumberIsEmpty(chapterId))
+           return NO;
+       
+       [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]){
+               BOOL del = [db executeUpdate:kBRDBDeleteChapterTextWithId(chapterId)];
+               if (!del){
+                   CFDebugLog(@"delete chapter_text where chapterId = %@ error:%@",chapterId,[db lastErrorMessage]);
+               }
+           }
+           [db close];
+       }];
+       
+       return YES;
+}
+
+- (BOOL)deleteChapterContentWithBookId:(NSNumber *)bookId {
+    if (kNumberIsEmpty(bookId))
+        return NO;
+    
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]){
+            BOOL del = [db executeUpdate:kBRDBDeleteChapterTextWithBookId(bookId)];
+            if (!del){
+                CFDebugLog(@"delete chapter_text where book_id = %@ error:%@",bookId,[db lastErrorMessage]);
+            }
+        }
+        [db close];
+    }];
+    
+    return YES;
+}
 
 
 
 #pragma mark- 搜索历史
 
 #pragma mark- 阅读历史
+
+- (BOOL)saveRecordWithChapterModel:(BRBookRecord*)model {
+    if (kNumberIsEmpty(model.bookId) || kStringIsEmpty(model.recordText)){
+        return NO;
+    }
+    
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]){
+               BOOL insert = [db executeUpdate:kBRDBInsertRecord(model.bookId,@(model.chapterIndex),model.recordText,[NSDate date], model.chapterName)];
+               
+               insert = [db executeUpdate:kBRDBUpdateBookUserTime([NSDate date], model.bookId)];
+               
+               if(!insert){
+                   CFDebugLog(@"insert BookRecordModel book_id = %@ error:%@",model.bookId,[db lastErrorMessage]);
+               }
+           }
+           [db close];
+       }];
+    
+    return YES;
+}
+
+- (BRBookRecord*)selectBookRecordWithBookId:(NSString*)bookId {
+    FMResultSet* result = [self.database executeQuery:kBRDBSelectRecordWithBook_id(bookId)];
+    
+    if ([result next]){
+        BRBookRecord* model = [[BRBookRecord alloc] initWithFMResult:result];
+        [result close];
+        if (model){
+            return model;
+        }
+    }
+    return nil;
+
+}
+//
+//- (void)deleteBookRecordWithBookId:(NSString*)bookId {
+//
+//}
 
 @end

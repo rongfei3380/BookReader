@@ -16,8 +16,8 @@
     return @{@"chapterId":@"id",
              @"name":@"name",
              @"siteId":@"siteid",
-             @"siteName":@"id",
-             @"siteUrl":@"url"
+             @"siteName":@"sitename",
+             @"time":@"time"
     };
 }
 

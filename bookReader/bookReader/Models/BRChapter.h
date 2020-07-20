@@ -22,6 +22,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy) NSNumber *bookId;
 /// 源id
 @property(nonatomic,copy) NSNumber *siteId;
+/// 源 名称
+@property(nonatomic,copy) NSNumber *siteName;
+
+@property(nonatomic,copy) NSNumber *time;
 
 /// 小说章节列表
 /// @param bookId 书籍id

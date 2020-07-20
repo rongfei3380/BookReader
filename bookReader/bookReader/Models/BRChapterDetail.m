@@ -55,9 +55,20 @@
                              siteId:(NSInteger)siteId
                              sucess:(void(^)(BRChapterDetail *chapterDetail))successBlock
                        failureBlock:(BRObjectFailureBlock)failureBlock {
+    BRChapterDetail *dbDetai = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:[NSNumber numberWithInteger:chapterId]];
+    if (dbDetai) {
+        if (successBlock) {
+            successBlock(dbDetai);
+        }
+    }
+    
     [[BRAPIClient sharedInstance] getChapterContentWithBookId:bookId chapterId:chapterId siteId:siteId sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
-            successBlock([BRChapterDetail parseDictionaryIntoObject:dataBody]);
+            
+            BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
+            [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
+            
+            successBlock(chapterDetail);
         }
     } failureBlock:^(NSError * _Nonnull error) {
         if (failureBlock) {
