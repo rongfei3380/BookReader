@@ -50,6 +50,9 @@
 		C5601D2824C747C6007C7377 /* BRRecommendCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D2724C747C6007C7377 /* BRRecommendCollectionViewCell.m */; };
 		C5601D2B24C75951007C7377 /* BRCycleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D2A24C75951007C7377 /* BRCycleCollectionViewCell.m */; };
 		C5601D2E24C7DEFB007C7377 /* BRRankBookDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D2D24C7DEFB007C7377 /* BRRankBookDetailViewController.m */; };
+		C5601D3124C8179E007C7377 /* BRSearchBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3024C8179E007C7377 /* BRSearchBookViewController.m */; };
+		C5601D3424C82925007C7377 /* BRSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */; };
+		C5601D3724C82ED8007C7377 /* BRSearchBookResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
 		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
@@ -180,6 +183,12 @@
 		C5601D2A24C75951007C7377 /* BRCycleCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRCycleCollectionViewCell.m; sourceTree = "<group>"; };
 		C5601D2C24C7DEFB007C7377 /* BRRankBookDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRRankBookDetailViewController.h; sourceTree = "<group>"; };
 		C5601D2D24C7DEFB007C7377 /* BRRankBookDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRRankBookDetailViewController.m; sourceTree = "<group>"; };
+		C5601D2F24C8179E007C7377 /* BRSearchBookViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSearchBookViewController.h; sourceTree = "<group>"; };
+		C5601D3024C8179E007C7377 /* BRSearchBookViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSearchBookViewController.m; sourceTree = "<group>"; };
+		C5601D3224C82925007C7377 /* BRSearchCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSearchCollectionViewCell.h; sourceTree = "<group>"; };
+		C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSearchCollectionViewCell.m; sourceTree = "<group>"; };
+		C5601D3524C82ED8007C7377 /* BRSearchBookResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSearchBookResultViewController.h; sourceTree = "<group>"; };
+		C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSearchBookResultViewController.m; sourceTree = "<group>"; };
 		C5714BD024A0681500DE0277 /* BRBookInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoModel.h; sourceTree = "<group>"; };
 		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
 		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
@@ -378,6 +387,8 @@
 				C5601D2724C747C6007C7377 /* BRRecommendCollectionViewCell.m */,
 				C5601D2924C75951007C7377 /* BRCycleCollectionViewCell.h */,
 				C5601D2A24C75951007C7377 /* BRCycleCollectionViewCell.m */,
+				C5601D3224C82925007C7377 /* BRSearchCollectionViewCell.h */,
+				C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */,
 			);
 			path = UICollectionView;
 			sourceTree = "<group>";
@@ -442,6 +453,10 @@
 				C51A833324B78E040078CB37 /* BRBookInfoViewController.m */,
 				C5601D2C24C7DEFB007C7377 /* BRRankBookDetailViewController.h */,
 				C5601D2D24C7DEFB007C7377 /* BRRankBookDetailViewController.m */,
+				C5601D2F24C8179E007C7377 /* BRSearchBookViewController.h */,
+				C5601D3024C8179E007C7377 /* BRSearchBookViewController.m */,
+				C5601D3524C82ED8007C7377 /* BRSearchBookResultViewController.h */,
+				C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -788,6 +803,7 @@
 				C51A82F924B623990078CB37 /* BRTableVIewViewController.m in Sources */,
 				C51A82FC24B623BE0078CB37 /* BRBaseCollectionViewController.m in Sources */,
 				C5601D1024C62DDF007C7377 /* BRBookRecord+database.m in Sources */,
+				C5601D3724C82ED8007C7377 /* BRSearchBookResultViewController.m in Sources */,
 				C59D062424C2A5D500A8237F /* BRBookReadTextView.m in Sources */,
 				C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */,
 				C51A832024B72A6D0078CB37 /* ZJSegmentStyle.m in Sources */,
@@ -807,6 +823,7 @@
 				C59D064524C5747F00A8237F /* BRBookInfoModel+database.m in Sources */,
 				C51A833124B764270078CB37 /* BRMineViewController.m in Sources */,
 				C51A831C24B72A6D0078CB37 /* UIViewController+ZJScrollPageController.m in Sources */,
+				C5601D3424C82925007C7377 /* BRSearchCollectionViewCell.m in Sources */,
 				C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */,
 				C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */,
 				C51A830324B726330078CB37 /* BRCategoryBooksViewController.m in Sources */,
@@ -825,6 +842,7 @@
 				C51A831D24B72A6D0078CB37 /* OBTabControlScrollSegmentView.m in Sources */,
 				C51A832124B72A6D0078CB37 /* ZJScrollSegmentView.m in Sources */,
 				C5601D1924C6D553007C7377 /* BRBookShelfLongCollectionViewCell.m in Sources */,
+				C5601D3124C8179E007C7377 /* BRSearchBookViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

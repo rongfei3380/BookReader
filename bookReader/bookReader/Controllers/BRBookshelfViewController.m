@@ -10,6 +10,7 @@
 #import "BRBookShelfLongCollectionViewCell.h"
 #import "BRDataBaseManager.h"
 #import "BRBookReadViewController.h"
+#import "BRSearchBookViewController.h"
 
 
 @interface BRBookshelfViewController () {
@@ -36,17 +37,50 @@
 
 #pragma Life cycle
 
+- (void)loadView {
+    [super loadView];
+    self.collectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height);
+    [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
+    
+    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+    [self.view addSubview:moreBtn];
+    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+        make.top.mas_equalTo(kStatusBarHeight() +2);
+        make.right.mas_equalTo(-5);
+    }];
+    
+    
+    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+    [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:searchBtn];
+    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+        make.top.mas_equalTo(kStatusBarHeight() +2);
+        make.right.mas_equalTo(moreBtn.mas_left).offset(-5);
+    }];
+
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.collectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height);
-    [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initData];
 }
+
+#pragma mark- button Methods
+
+- (void)clickSearchBtn:(UIButton *)sender {
+    BRSearchBookViewController *vc = [[BRSearchBookViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 #pragma mark -UICollectionViewDelegate
 

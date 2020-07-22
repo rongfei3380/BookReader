@@ -301,6 +301,63 @@
 
 #pragma mark- 搜索历史
 
+- (BOOL)saveSearchHistoryWithName:(NSString*)name {
+    if (kStringIsEmpty(name))
+        return NO;
+    
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]){
+            BOOL insert = [db executeUpdate:kBRDBInsertSearchHistory(name, [NSDate date])];
+            if (!insert){
+                CFDebugLog(@"insert SearchHistory name = %@ error:%@",name,[db lastErrorMessage]);
+            }
+        }
+        [db close];
+    }];
+    
+    return YES;
+}
+
+- (NSArray<NSString*>*)selectSearchHistorys {
+    FMResultSet* result = [self.database executeQuery:kBRDBSelectSearchHistory];
+    
+    NSMutableArray* arr = [NSMutableArray array];
+    
+    while ([result next]) {
+        [arr addObject:[result stringForColumn:@"book_name"]];
+    }
+    
+    [result close];
+    return arr;
+}
+
+- (BOOL)deleteSearchWithName:(NSString*)name {
+    if (kStringIsEmpty(name))
+           return NO;
+       
+       [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]){
+               BOOL dele = [db executeUpdate:kBRDBDeleteSearchHistoryWithName(name)];
+               if (!dele){
+                   CFDebugLog(@"delete SearchHistory name = %@ error:%@",name,[db lastErrorMessage]);
+               }
+           }
+           [db close];
+       }];
+       
+       return YES;
+}
+
+- (void)deleteAllSearch {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]){
+            [db executeUpdate:kBRDBDeleteAllHistory];
+        }
+        [db close];
+    }];
+}
+
+
 #pragma mark- 阅读历史
 
 - (BOOL)saveRecordWithChapterModel:(BRBookRecord*)model {

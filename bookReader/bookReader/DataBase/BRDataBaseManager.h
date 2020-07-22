@@ -89,6 +89,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteBookRecordWithBookId:(NSString*)bookId;
 
 
+#pragma mark- 搜索历史
+- (BOOL)saveSearchHistoryWithName:(NSString*)name;
+- (NSArray<NSString*>*)selectSearchHistorys;
+- (BOOL)deleteSearchWithName:(NSString*)name;
+- (void)deleteAllSearch;
+
+
 - (instancetype)init __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));
 + (instancetype)new __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));
 

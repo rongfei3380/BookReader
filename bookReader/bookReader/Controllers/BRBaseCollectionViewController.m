@@ -46,8 +46,14 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
         //设置每个item的大小为100*100
         _layout.itemSize = CGSizeMake(SCREEN_WIDTH, 60);
     }
+    CGFloat offSetY = kStatusBarHeight();
+    if (self.enableModule & BaseViewEnableModuleHeadView) {
+        offSetY = CGRectGetMaxY(self.headView.frame);
+    }
     
-    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight(), SCREEN_WIDTH, self.view.frame.size.height -kStatusBarHeight()) collectionViewLayout:_layout];
+    
+    
+    _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, offSetY, SCREEN_WIDTH, self.view.frame.size.height -offSetY) collectionViewLayout:_layout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     

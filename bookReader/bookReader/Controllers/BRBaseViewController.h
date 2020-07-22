@@ -29,7 +29,6 @@ typedef enum _BaseViewEnableModule {
 
 
 #pragma mark- public
-
 - (void)goBookInfoViewWIthBook:(BRBookInfoModel *)book;
 
 
