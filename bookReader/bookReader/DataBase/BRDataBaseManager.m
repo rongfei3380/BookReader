@@ -127,7 +127,7 @@
 }
 
 - (void)deleteBookInfoWithBookId:(NSNumber *)bookId {
-    if (!bookId || !(bookId <= 0)) {
+    if (!bookId || (bookId.intValue <= 0)) {
         return;
     }
     
@@ -135,11 +135,33 @@
         if ([db open]) {
             BOOL delete = [db executeUpdate:kBRDBDeleteBookInfo(bookId)];
             if (!delete) {
-                CFDebugLog(@"delete BookInfoModel bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+                NSLog(@"delete BookInfoModel bookId = %@ error:%@",bookId, [db lastErrorMessage]);
             }
         }
         [db close];
     }];
+}
+
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index{
+    if (!bookId || !sites || sites.count == 0) {
+        return NO;
+    }
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            NSString *sitesString = [sites yy_modelToJSONString];
+            NSData *encodeData = [sitesString dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *base64String = [encodeData base64EncodedStringWithOptions:0];
+            
+            BOOL update = [db executeUpdate:kBRDBUpdateBookSource(base64String, index, bookId)];
+            if(!update) {
+                CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+            }
+        } else {
+            CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+        }
+        [db close];
+    }];
+    return YES;
 }
 
 #pragma mark- 章节信息

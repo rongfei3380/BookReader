@@ -23,6 +23,13 @@
         self.intro = [result stringForColumn:@"book_intro"];
         self.desc = [result stringForColumn:@"book_desc"];
         self.lastupdateDate = [result dateForColumn:@"lastupdate_time"];
+        
+        NSString *base64String = [result stringForColumn:@"sites_text"];
+        if (base64String) {
+            NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:base64String options:0];
+            NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+            self.sitesArray = [NSArray yy_modelArrayWithClass:[BRSite class] json:decodedString];
+        }
     }
     return self;
 }

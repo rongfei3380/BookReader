@@ -151,7 +151,7 @@
 
 - (id)init {
     if ([self superclass]) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleBackBtn ;
+        self.enableModule |= BaseViewEnableModuleHeadView | BaseViewEnableModuleBackBtn ;
     }
     return self;
 }

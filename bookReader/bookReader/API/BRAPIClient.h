@@ -107,6 +107,14 @@ NS_ASSUME_NONNULL_BEGIN
                        sucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
+
+/// 获取排行榜推荐和轮播
+/// @param successBlock  成功内容
+/// @param failureBlock 失败内容
+- (void)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
+               failureBlock:(CFAPIClientFailureBlock)failureBlock;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

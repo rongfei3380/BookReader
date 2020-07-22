@@ -74,6 +74,9 @@
     if (dbModel){
         self.bookModel = dbModel;
     }
+    if (!self.sitesArray) {
+        self.sitesArray = dbModel.sitesArray;
+    }
     
     /* 去数据库查找是否有本地缓存的章节信息*/
     BRSite *site = self.sitesArray.firstObject;

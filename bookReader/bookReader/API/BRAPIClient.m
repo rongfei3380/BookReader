@@ -305,4 +305,28 @@
     }];
 }
 
+- (void)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
+               failureBlock:(CFAPIClientFailureBlock)failureBlock {
+    
+        BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
+       
+       [manager POST:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getrecommend" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+           
+          [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+               if (successBlock) {
+                   successBlock(dataBody);
+               }
+           } failure:^(NSError * _Nonnull error) {
+               if (failureBlock){
+                   failureBlock(error);
+               }
+           }];
+       } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+           if (failureBlock){
+               failureBlock(error);
+           }
+           NSLog(@"error : %@", error);
+       }];
+}
+
 @end

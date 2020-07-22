@@ -25,4 +25,5 @@ target 'bookReader' do
   pod 'YYModel'
   pod 'MBProgressHUD'
   pod 'GVUserDefaults'
+  pod 'ZKCycleScrollView'
 end

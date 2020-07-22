@@ -39,10 +39,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 更新书本的源信息
-/// @param relatedId 书本id
-/// @param name 名称
-/// @param sourceUrl 源rl
-- (BOOL)updateBookSourceWithRelatedId:(NSString*)relatedId Name:(NSString*)name SourceUrl:(NSString*)sourceUrl;
+/// @param bookId 书本id
+/// @param sites 源 数组
+/// @param index 当前使用的源
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index;
 
 #pragma mark- 章节信息
 

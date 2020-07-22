@@ -81,6 +81,27 @@ NS_ASSUME_NONNULL_BEGIN
                     sucess:(BRObjectSuccessBlock)successBlock
               failureBlock:(BRObjectFailureBlock)failureBlock;
 
+
+/// 获取排行榜推荐和轮播
+/// @param successBlock  成功内容
+/// @param failureBlock 失败内容
++ (void)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
+               failureBlock:(BRObjectFailureBlock)failureBlock;
+
+
+/// 获取榜单列表
+/// @param type 榜单类型,默认为1:人气榜,2:热搜榜,3:完结榜,4:新书榜,5:好评榜
+/// @param page 页码,默认0
+/// @param size 每页数量,默认10
+/// @param successBlock 返回的数据
+/// @param failureBlock 返回的错误码
++ (void)getRankListWithType:(NSInteger)type
+                       page:(NSInteger)page
+                       size:(NSInteger)size
+                     success:(BRObjectSuccessBlock)successBlock
+                failureBlock:(BRObjectFailureBlock)failureBlock;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

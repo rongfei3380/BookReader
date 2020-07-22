@@ -7,6 +7,7 @@
 //
 
 #import "BRBaseViewController.h"
+#import "BRBookInfoViewController.h"
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -35,10 +36,10 @@
         [_backButton addTarget:self action:@selector(clickBackButton:) forControlEvents:UIControlEventTouchUpInside];
         [_headView addSubview:_backButton];
         [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.offset(5);
-            make.centerY.offset(0);
-            make.size.width.offset(40);
-            make.size.height.offset(40);
+            make.left.mas_offset(5);
+            make.centerY.mas_offset(0);
+            make.size.width.mas_offset(40);
+            make.size.height.mas_offset(40);
         }];
     }
     
@@ -46,11 +47,14 @@
         _titleLabel = [UILabel new];
         _titleLabel.font = [UIFont systemFontOfSize:17];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
+        _titleLabel.textColor = [UIColor blackColor];
+        _titleLabel.text = _headTitle;
         [_headView addSubview:_titleLabel];
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.offset(0);
-            make.width.offset(SCREEN_WIDTH -100);
-            make.height.offset(30);
+            make.centerY.mas_offset(0);
+            make.centerX.mas_offset(0);
+            make.width.mas_offset(SCREEN_WIDTH -100);
+            make.height.mas_offset(30);
         }];
     }
 }
@@ -70,10 +74,18 @@
 #pragma mark- button methods
 
 - (void)clickBackButton:(id)sender {
-    if (![self.navigationController popViewControllerAnimated:YES]){
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+ 
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma mark- public
+
+- (void)goBookInfoViewWIthBook:(BRBookInfoModel *)book {
+    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+    vc.bookInfo = book;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 #pragma mark- setter
 

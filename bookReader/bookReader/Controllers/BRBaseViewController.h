@@ -10,6 +10,7 @@
 #import "CFCustomMacros.h"
 #import "Masonry.h"
 #import "NSError+BRError.h"
+#import "BRBookInfoModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,12 @@ typedef enum _BaseViewEnableModule {
 @property(nonatomic, strong, readonly) UIView *headView;
 @property(nonatomic, assign) BaseViewEnableModule enableModule;
 @property(nonatomic, strong) NSString *headTitle;
+
+
+#pragma mark- public
+
+- (void)goBookInfoViewWIthBook:(BRBookInfoModel *)book;
+
 
 @end
 

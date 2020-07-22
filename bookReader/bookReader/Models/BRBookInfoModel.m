@@ -109,4 +109,39 @@
     }];
 }
 
+
++ (void)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
+               failureBlock:(BRObjectFailureBlock)failureBlock {
+    [[BRAPIClient sharedInstance] getRecommendSuccess:^(id  _Nonnull dataBody) {
+        NSDictionary *dict = (NSDictionary *)dataBody;
+        
+        NSArray *recommend = [BRBookInfoModel parseDictionaryIntoRecords:[dict objectForKey:@"recommend"]];
+        NSArray *rotation = [BRBookInfoModel parseDictionaryIntoRecords:[dict objectForKey:@"rotation"]];
+        successBlock(rotation, recommend);
+        
+    } failureBlock:^(NSError * _Nonnull error) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }];
+}
+
++ (void)getRankListWithType:(NSInteger)type
+                       page:(NSInteger)page
+                       size:(NSInteger)size
+                    success:(BRObjectSuccessBlock)successBlock
+               failureBlock:(BRObjectFailureBlock)failureBlock {
+    [[BRAPIClient sharedInstance] getRankListWithType:type page:page size:size success:^(id  _Nonnull dataBody) {
+        if (successBlock) {
+            successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
+        }
+    } failureBlock:^(NSError * _Nonnull error) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }];
+}
+
+
+
 @end

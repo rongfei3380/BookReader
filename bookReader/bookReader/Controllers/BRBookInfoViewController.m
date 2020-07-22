@@ -14,7 +14,7 @@
 #import "BRSite.h"
 #import "BRChaptersView.h"
 #import "BRDataBaseManager.h"
-
+#import <YYWebImage/YYWebImage.h>
 
 @interface BRBookInfoViewController () {
     UIImageView *_corverImg;
@@ -43,7 +43,6 @@
 - (void)createBookInfoViewIfNeed {
     if (!_corverImg) {
         _corverImg = [UIImageView new];
-        _corverImg.backgroundColor = [UIColor redColor];
         [self.view addSubview:_corverImg];
         [_corverImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(10);
@@ -51,6 +50,8 @@
             make.size.mas_equalTo(CGSizeMake(98, 131));
         }];
     }
+    
+    [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:nil];
     
     if (!_bookNameLabel) {
         _bookNameLabel = [UILabel new];
@@ -224,6 +225,12 @@
 - (void)addBookModel {
     [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:self.bookInfo];
     
+    // 如果有源 则更新源
+    if (_sitesArray.count) {
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:_sitesArray curSiteIndex:0];
+    }
+    
+    
     /* 添加书本章节缓存*/
 //    if ([[BRDataBaseManager sharedInstance] sel:self.model.book_url].count == 0)
 //        [self.bookApi chapterListWithBook:self.model Success:nil Fail:nil];
@@ -255,17 +262,25 @@
         kStrongSelf(self);
         self.bookInfo = bookInfo;
         [self createBookInfoViewIfNeed];
+        [self getSites];
     } failureBlock:^(NSError * _Nonnull error) {
         
     }];
-    
+}
+
+/// 获取书本的源
+- (void)getSites {
+    kWeakSelf(self);
     [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
-           NSLog(@"小说源 ： %@", recodes);
+        kStrongSelf(self);
         self->_sitesArray = [recodes mutableCopy];
+        self->_bookInfo.sitesArray = self->_sitesArray;
         self->_bookInfo.currentSite = [self->_sitesArray firstObject];
+        
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self->_sitesArray curSiteIndex:0];
+        
        } failureBlock:^(NSError * _Nonnull error) {
     }];
-    
 }
 
 #pragma mark- sette

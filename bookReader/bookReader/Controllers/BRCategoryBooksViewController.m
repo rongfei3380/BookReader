@@ -11,6 +11,7 @@
 #import "BRBookCategory.h"
 #import "BRBookInfoModel.h"
 #import "BRAPIClient.h"
+#import "BRBookListTableViewCell.h"
 
 @interface BRCategoryBooksViewController () {
     UIView *_categoryView;
@@ -149,19 +150,23 @@
 
 #pragma mark- UITableViewDataSource
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return kBookListTableViewCellHeight;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return _recordsArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *doveIdentifier = @"Identifier";
-      UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:doveIdentifier];
+      BRBookListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:doveIdentifier];
       if(cell == nil) {
-          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:doveIdentifier];
+          cell = [[BRBookListTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:doveIdentifier];
       }
     
-    BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = item.bookName;
+        BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
+        cell.bookInfo = item;
       return cell;
 }
 
