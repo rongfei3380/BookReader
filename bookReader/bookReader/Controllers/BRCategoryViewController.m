@@ -86,12 +86,13 @@
 #pragma mark- API
 
 - (void)initAllCatogery {
-    
+    kWeakSelf(self)
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
         self->_maleVC.categoryArray = maleCategoryes;
         self->_femaleVC.categoryArray = famaleCategory;
     } failureBlock:^(NSError * _Nonnull error) {
-        
+        kStrongSelf(self)
+        [self showErrorMessage:error];
     }];
 }
 

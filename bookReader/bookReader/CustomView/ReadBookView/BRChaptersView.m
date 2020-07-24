@@ -11,6 +11,7 @@
 #import <Masonry.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "BRChapter.h"
+#import "BRMessageHUD.h"
 
 @interface BRChaptersView ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -38,7 +39,7 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch* touch = touches.anyObject;
     CGPoint point = [touch locationInView:self];
-    CGRect setView = CGRectMake(SCREEN_WIDTH, 0,  SCREEN_WIDTH, SCREEN_HEIGHT);
+    CGRect setView = CGRectMake(0, 0,  SCREEN_WIDTH, self.frame.size.height*(1/4.f));
     
     if (CGRectContainsPoint(setView,point)){
         self.isShowMulu = NO;
@@ -59,41 +60,45 @@
 
 #pragma mark- private
 
-- (void)initialSubViews
-{
+- (void)initialSubViews {
     self.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.5);
     
-    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height*(1/4.f), self.frame.size.width, self.frame.size.height*(3/4.f))];
     self.muluView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     self.muluView.layer.cornerRadius = 12;
     [self addSubview:self.muluView];
     
-    self.bookNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, SCREEN_WIDTH - 40, 20)];
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 64)];
+    headView.backgroundColor = CFUIColorFromRGBAInHex(0xF9F9F9, 1);
+    headView.layer.cornerRadius = 12;
+    [self.muluView addSubview:headView];
+    
+    self.bookNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 12, self.frame.size.width - 40, 20)];
     self.bookNameLabel.font = [UIFont systemFontOfSize:16];
     self.bookNameLabel.text = self.bookName;
     self.bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
-    [self.muluView addSubview:self.bookNameLabel];
+    [headView addSubview:self.bookNameLabel];
     
-    self.updateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(self.bookNameLabel.frame)+2, SCREEN_WIDTH -40, 16)];
+    self.updateTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(self.bookNameLabel.frame)+2, self.frame.size.width -40, 16)];
     self.updateTimeLabel.font = [UIFont systemFontOfSize:12];
     self.updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
-    [self.muluView addSubview:self.updateTimeLabel];
+    [headView addSubview:self.updateTimeLabel];
     
     
-    self.button = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 40, 60, 20, 20)];
+    self.button = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 40, 17, 30, 30)];
     [self.button addTarget:self action:@selector(changeScending) forControlEvents:UIControlEventTouchUpInside];
     [self.button setImage:[UIImage imageNamed:@"mulu_descending"] forState:UIControlStateNormal];
 //    self.button.touchAreaInsets = UIEdgeInsetsMake(5, 5, 5, 10);
-    [self.muluView addSubview:self.button];
+    [headView addSubview:self.button];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.frame.size.width, self.frame.size.height - 64) style:UITableViewStylePlain];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.muluView.frame.size.width, self.muluView.frame.size.height - 64) style:UITableViewStylePlain];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (isIPhoneXSeries() ? 34:0), 0);
     [self.muluView addSubview:self.tableView];
 }
 
-- (void)setIsShowMulu:(BOOL)isShowMulu
-{
+- (void)setIsShowMulu:(BOOL)isShowMulu {
     _isShowMulu = isShowMulu;
     if (isShowMulu){
         [self setNeedsLayout];
@@ -109,14 +114,14 @@
         [self setNeedsLayout];
         [UIView animateWithDuration:0.2 animations:^{
             [self setNeedsLayout];
-            self.backgroundColor = [UIColor clearColor];
-//            self.muluView.left = -kMuluWidth;
         }];
+        if (self.didSelectHidden){
+            self.didSelectHidden();
+        }
     }
 }
 
-- (void)scrollToCurrentIndex
-{
+- (void)scrollToCurrentIndex {
     if (!_isDescending){
         if (_chapters.count<=self.currentIndex){
             return;
@@ -134,19 +139,17 @@
     }
 }
 
-- (void)setBookName:(NSString *)bookName
-{
+- (void)setBookName:(NSString *)bookName {
     _bookName = bookName;
     
     self.bookNameLabel.text = _bookName;
 }
 
-- (void)setChapters:(NSArray<BRChapter *> *)chapters
-{
+- (void)setChapters:(NSArray<BRChapter *> *)chapters {
     _chapters = chapters;
     
-    if (_chapters.count==0){
-//        [MBProgressHUD showError:@"暂无章节信息"];
+    if (_chapters.count == 0) {
+        [BRMessageHUD showErrorStatus:@"暂无章节信息" to:self];
         [_tableView reloadData];
         return;
     }
@@ -160,10 +163,9 @@
     [_tableView reloadData];
 }
 
-- (void)changeScending
-{
-    if (self.chapters.count==0){
-//        [MBProgressHUD showError:@"暂无章节信息"];
+- (void)changeScending {
+    if (self.chapters.count == 0) {
+        [BRMessageHUD showErrorStatus:@"暂无章节信息" to:self];
         return;
     }
     
@@ -183,8 +185,7 @@
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.dataArray.count;
 }
 
@@ -211,8 +212,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     if (self.didSelectChapter){
         self.didSelectChapter(row-1);

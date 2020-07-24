@@ -25,7 +25,8 @@
         [self->_recordsArray addObjectsFromArray:recodes];
         [self.tableView reloadData];
     } failureBlock:^(NSError * _Nonnull error) {
-        
+        kStrongSelf(self)
+        [self showErrorMessage:error];
     }];
 }
 

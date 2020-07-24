@@ -30,7 +30,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.enableModule |= BaseViewEnableModuleHeadView;
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle;
         
     }
     return self;

@@ -16,6 +16,7 @@
 @interface BRCategoryBooksViewController () {
     UIView *_categoryView;
     UIButton *_selectedButton;
+    BRBookCategory *_selectedCategory;
 }
 
 @end
@@ -65,11 +66,23 @@
 }
 
 - (void)getBooksWithCategory:(BRBookCategory *)category page:(NSInteger)page{
-    [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue page:0 size:20 sucess:^(NSArray * _Nonnull recodes) {
+    kWeakSelf(self)
+    [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
+        kStrongSelf(self)
         [self->_recordsArray addObjectsFromArray:recodes];
-         [self.tableView reloadData];
+        if(self->_recordsArray.count){
+            self.tableView.mj_footer.hidden = NO;
+        }
+        if (recodes.count <20 ) {
+            [self toggleLoadMore:NO];
+        } else {
+            [self toggleLoadMore:YES];
+        }
+        [self endGetData];
     } failureBlock:^(NSError * _Nonnull error) {
-
+        kStrongSelf(self)
+        [self showErrorMessage:error];
+        [self endGetData];
     }];
 }
 
@@ -83,9 +96,9 @@
     
     NSInteger selectedIndex = _selectedButton.tag -1000;
     if (selectedIndex > 0) {
-        BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex -1];
-        [_recordsArray removeAllObjects];
-        [self getBooksWithCategory:category page:0];
+        BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
+        _selectedCategory = category;
+        [self reloadGridViewDataSourceForHead];
         
     } else {
         
@@ -94,7 +107,15 @@
     
 }
 
-#pragma mark- super
+#pragma mark- View LifeCycle
+
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -110,11 +131,28 @@
 
 - (void)setCategoryArray:(NSArray *)categoryArray {
     _categoryArray = categoryArray;
-    
+    self.page = 0;
+    _selectedCategory = [_categoryArray firstObject];
     [self  createCategoryViewIfNeed];
-    [self getBooksWithCategory:[_categoryArray firstObject] page:0];
+    [self getBooksWithCategory:_selectedCategory page:self.page];
     [self.tableView reloadData];
 }
+
+#pragma mark- Public: subclass implement
+
+- (void)reloadGridViewDataSourceForHead {
+    [super reloadGridViewDataSourceForHead];
+    self.page = 0;
+    [_recordsArray removeAllObjects];
+    [self getBooksWithCategory:_selectedCategory page:self.page];
+}
+
+- (void)reloadGridViewDataSourceForFoot {
+    [super reloadGridViewDataSourceForFoot];
+    self.page++;
+    [self getBooksWithCategory:_selectedCategory page:self.page];
+}
+
 
 
 #pragma mark- ZJScrollPageViewChildVcDelegate

@@ -11,23 +11,28 @@
 #import "BRBookListTableViewCell.h"
 #import "BRBookInfoViewController.h"
 
-@interface BRRankBookDetailViewController ()
+@interface BRRankBookDetailViewController () {
+    NSInteger _page;
+}
 
 @end
 
 @implementation BRRankBookDetailViewController
 
 #pragma mark- private
-- (void)getRankBookWtihIndex:(NSInteger )index {
+- (void)getRankBookWtihIndex:(NSInteger )index page:(NSInteger )page {
     NSArray *typesArray = @[@1, @2, @5, @4, @3];
     NSInteger type = [[typesArray objectAtIndex:index] integerValue];
     kWeakSelf(self)
-    [BRBookInfoModel getRankListWithType:type page:0 size:20 success:^(NSArray * _Nonnull recodes) {
+    [BRBookInfoModel getRankListWithType:type page:_page size:20 success:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         [self->_recordsArray addObjectsFromArray:recodes];
-        [self.tableView reloadData];
+        [self toggleLoadMore:!(recodes.count<20)];
+        [self endGetData];
     } failureBlock:^(NSError * _Nonnull error) {
-        
+        kStrongSelf(self)
+        [self showErrorMessage:error];
+        [self endGetData];
     }];
 
 }
@@ -42,6 +47,9 @@
     self = [super init];
     if (self) {
         self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleBackBtn | BaseViewEnableModuleTitle;
+        
+        self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
+        
     }
     return self;
 }
@@ -49,7 +57,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self getRankBookWtihIndex:self.index];
+    [self getRankBookWtihIndex:self.index page:_page];
+}
+
+#pragma mark-: subclass implement
+- (void)reloadGridViewDataSourceForHead {
+    [super reloadGridViewDataSourceForHead];
+    _page = 0;
+    [_recordsArray removeAllObjects];
+    [self getRankBookWtihIndex:self.index page:_page];
+}
+
+- (void)reloadGridViewDataSourceForFoot {
+    [super reloadGridViewDataSourceForFoot];
+    _page++;
+    [self getRankBookWtihIndex:self.index page:_page];
 }
 
 

@@ -42,6 +42,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) float readBrightness;
 
 
+/// 是否为书架模式
+@property (nonatomic,assign) BOOL isShelfStyle;
+
 #pragma mark - 借助userDeaults缓存部分轻量信息
 /* 搜索热词*/
 @property (nonatomic,strong) NSArray* hotWordArr;

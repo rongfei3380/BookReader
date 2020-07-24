@@ -7,6 +7,7 @@
 //
 
 #import "BRBaseViewController.h"
+#import "MJRefresh.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,8 +23,22 @@ typedef enum _TableBaseEnableModule {
     NSMutableArray *_recordsArray;  // 数据源
 }
 
-@property (nonatomic, assign) TableBaseEnableModule enableTableBaseModules;
-@property (nonatomic, strong) UITableView *tableView;
+@property(nonatomic, assign) NSInteger page;
+@property(nonatomic, assign) TableBaseEnableModule enableTableBaseModules;
+@property(nonatomic, strong) UITableView *tableView;
+
+#pragma mark- Public
+- (void)endMJRefreshHeader;
+- (void)endMJRefreshFooter;
+- (void)toggleLoadMore:(BOOL)needLoadMore;
+- (void)endGetData;
+
+#pragma mark- Public: subclass implement
+
+- (void)reloadGridViewDataSourceForHead;
+
+- (void)reloadGridViewDataSourceForFoot;
+
 
 @end
 

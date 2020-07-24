@@ -26,4 +26,5 @@ target 'bookReader' do
   pod 'MBProgressHUD'
   pod 'GVUserDefaults'
   pod 'ZKCycleScrollView'
+  pod 'FTPopOverMenu'
 end

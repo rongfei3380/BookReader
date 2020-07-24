@@ -8,6 +8,7 @@
 
 #import "BRBaseViewController.h"
 #import "BRBookInfoViewController.h"
+#import <MBProgressHUD.h>
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -26,15 +27,20 @@
     self.view.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
     if (_enableModule & BaseViewEnableModuleHeadView) {
-        _headView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight(), SCREEN_WIDTH, 49)];
+        _headView = [[UIView alloc] init];
         [self.view addSubview:_headView];
+        [_headView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.mas_offset(0);
+            make.top.mas_offset(kStatusBarHeight());
+            make.height.mas_offset(44);
+        }];
     }
     
     if (_enableModule & BaseViewEnableModuleBackBtn) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backButton setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
         [_backButton addTarget:self action:@selector(clickBackButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_headView addSubview:_backButton];
+        [_headView insertSubview:_backButton atIndex:999];
         [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_offset(5);
             make.centerY.mas_offset(0);
@@ -84,6 +90,91 @@
     BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
     vc.bookInfo = book;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark- ProgressHUD
+
+- (NSString *)generateErrorMessage:(NSError *)error {
+    NSString *msg = error.localizedDescription;
+    return msg;
+}
+
+- (void)showSuccessMessage:(NSString *)message {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+     UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+     
+     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+     
+     hud.customView = imageView;
+     hud.mode = MBProgressHUDModeCustomView;
+     
+    hud.label.text = message;
+     
+     [hud hideAnimated:YES afterDelay:3];
+}
+
+
+- (void)showErrorMessage:(NSError *)error {
+    [self showErrorMessage:error withDelay:3];
+}
+
+- (void)showErrorStatus:(NSString *)errorStr {
+    NSError *error = [NSError errorWithDomain:@"com.chengfeir.bookread" code:0 userInfo:[NSDictionary dictionaryWithObject:errorStr forKey:@"NSLocalizedDescription"]];
+    [self showErrorMessage:error];
+}
+
+- (void)showErrorMessage:(NSError *)error withDelay:(NSTimeInterval)delay {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+       UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+       
+       UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+       
+       hud.customView = imageView;
+       hud.mode = MBProgressHUDModeCustomView;
+       
+       hud.label.text = [self generateErrorMessage:error];
+       
+       [hud hideAnimated:YES afterDelay:delay];
+}
+
+- (void)showProgressMessage:(NSString *)message {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+
+    // Set some text to show the initial status.
+    hud.label.text = message;
+    // Will look best, if we set a minimum size.
+    hud.minSize = CGSizeMake(150.f, 100.f);
+
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        // Do something useful in the background and update the HUD periodically.
+//        [self doSomeWorkWithMixedProgress:hud];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [hud hideAnimated:YES];
+        });
+    });
+}
+
+- (void)showProgressMessage:(NSString *)message closable:(BOOL)closable {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+    // Set some text to show the initial status.
+    hud.label.text = message;
+    // Will look best, if we set a minimum size.
+    hud.minSize = CGSizeMake(150.f, 100.f);
+
+    [self hideProgressMessage];
+}
+
+- (void)hideProgressMessage {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
+        UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+        hud.customView = imageView;
+        hud.mode = MBProgressHUDModeCustomView;
+        hud.label.text = NSLocalizedString(@"Completed", @"HUD completed title");
+        [hud hideAnimated:YES afterDelay:3.f];
+    });
 }
 
 

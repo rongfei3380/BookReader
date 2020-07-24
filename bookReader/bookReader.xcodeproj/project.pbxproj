@@ -53,6 +53,11 @@
 		C5601D3124C8179E007C7377 /* BRSearchBookViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3024C8179E007C7377 /* BRSearchBookViewController.m */; };
 		C5601D3424C82925007C7377 /* BRSearchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */; };
 		C5601D3724C82ED8007C7377 /* BRSearchBookResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */; };
+		C5601D3924C9A488007C7377 /* MBProgressHUD.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5601D3824C9A488007C7377 /* MBProgressHUD.xcassets */; };
+		C5601D6D24C9EDE6007C7377 /* BRMessageHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D6C24C9EDE6007C7377 /* BRMessageHUD.m */; };
+		C5601D7024CACA72007C7377 /* BRBooksManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D6F24CACA72007C7377 /* BRBooksManagerViewController.m */; };
+		C5601D7324CAD99A007C7377 /* BRBookShelfCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D7224CAD99A007C7377 /* BRBookShelfCollectionViewCell.m */; };
+		C5601D7624CAE67B007C7377 /* BRBookMangerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D7524CAE67B007C7377 /* BRBookMangerTableViewCell.m */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
 		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
@@ -189,6 +194,15 @@
 		C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSearchCollectionViewCell.m; sourceTree = "<group>"; };
 		C5601D3524C82ED8007C7377 /* BRSearchBookResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSearchBookResultViewController.h; sourceTree = "<group>"; };
 		C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSearchBookResultViewController.m; sourceTree = "<group>"; };
+		C5601D3824C9A488007C7377 /* MBProgressHUD.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = MBProgressHUD.xcassets; sourceTree = "<group>"; };
+		C5601D6B24C9EDE6007C7377 /* BRMessageHUD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRMessageHUD.h; sourceTree = "<group>"; };
+		C5601D6C24C9EDE6007C7377 /* BRMessageHUD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRMessageHUD.m; sourceTree = "<group>"; };
+		C5601D6E24CACA72007C7377 /* BRBooksManagerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBooksManagerViewController.h; sourceTree = "<group>"; };
+		C5601D6F24CACA72007C7377 /* BRBooksManagerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBooksManagerViewController.m; sourceTree = "<group>"; };
+		C5601D7124CAD99A007C7377 /* BRBookShelfCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookShelfCollectionViewCell.h; sourceTree = "<group>"; };
+		C5601D7224CAD99A007C7377 /* BRBookShelfCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookShelfCollectionViewCell.m; sourceTree = "<group>"; };
+		C5601D7424CAE67B007C7377 /* BRBookMangerTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookMangerTableViewCell.h; sourceTree = "<group>"; };
+		C5601D7524CAE67B007C7377 /* BRBookMangerTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookMangerTableViewCell.m; sourceTree = "<group>"; };
 		C5714BD024A0681500DE0277 /* BRBookInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoModel.h; sourceTree = "<group>"; };
 		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
 		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
@@ -226,7 +240,7 @@
 		C59D064A24C58AF600A8237F /* NSString+size.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+size.m"; sourceTree = "<group>"; };
 		C59D064C24C5C82600A8237F /* BRBookRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookRecord.h; sourceTree = "<group>"; };
 		C59D064D24C5C82600A8237F /* BRBookRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookRecord.m; sourceTree = "<group>"; };
-		C5F3C16024879CC700E4AF55 /* bookReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bookReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5F3C16024879CC700E4AF55 /* 古今.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "古今.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C5F3C16924879CC700E4AF55 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -379,6 +393,8 @@
 			children = (
 				C5601D1724C6D553007C7377 /* BRBookShelfLongCollectionViewCell.h */,
 				C5601D1824C6D553007C7377 /* BRBookShelfLongCollectionViewCell.m */,
+				C5601D7124CAD99A007C7377 /* BRBookShelfCollectionViewCell.h */,
+				C5601D7224CAD99A007C7377 /* BRBookShelfCollectionViewCell.m */,
 				C5601D2324C747A8007C7377 /* BRRecommendBigCollectionViewCell.h */,
 				C5601D2424C747A8007C7377 /* BRRecommendBigCollectionViewCell.m */,
 				C5601D1E24C73CEF007C7377 /* BRRecommendCollectionReusableView.h */,
@@ -398,6 +414,8 @@
 			children = (
 				C5601D1B24C705F3007C7377 /* BRBookListTableViewCell.h */,
 				C5601D1C24C705F3007C7377 /* BRBookListTableViewCell.m */,
+				C5601D7424CAE67B007C7377 /* BRBookMangerTableViewCell.h */,
+				C5601D7524CAE67B007C7377 /* BRBookMangerTableViewCell.m */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -410,6 +428,8 @@
 				C51A833724BDB1370078CB37 /* CFDataUtils.h */,
 				C51A833824BDB1370078CB37 /* CFDataUtils.m */,
 				C59D063C24C2F81800A8237F /* BRNotificationMacros.h */,
+				C5601D6B24C9EDE6007C7377 /* BRMessageHUD.h */,
+				C5601D6C24C9EDE6007C7377 /* BRMessageHUD.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -457,6 +477,8 @@
 				C5601D3024C8179E007C7377 /* BRSearchBookViewController.m */,
 				C5601D3524C82ED8007C7377 /* BRSearchBookResultViewController.h */,
 				C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */,
+				C5601D6E24CACA72007C7377 /* BRBooksManagerViewController.h */,
+				C5601D6F24CACA72007C7377 /* BRBooksManagerViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -537,6 +559,7 @@
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
+				C5601D3824C9A488007C7377 /* MBProgressHUD.xcassets */,
 				C5601D2124C7404B007C7377 /* RecommendView.xcassets */,
 				C5601D1424C6CF26007C7377 /* BookShelf.xcassets */,
 				C59D064024C43B3100A8237F /* ReadBookToolBar.xcassets */,
@@ -555,7 +578,7 @@
 		C5F3C16124879CC700E4AF55 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C5F3C16024879CC700E4AF55 /* bookReader.app */,
+				C5F3C16024879CC700E4AF55 /* 古今.app */,
 				C5F3C17B24879CCD00E4AF55 /* bookReaderTests.xctest */,
 				C5F3C18624879CCD00E4AF55 /* bookReaderUITests.xctest */,
 			);
@@ -623,7 +646,7 @@
 			);
 			name = bookReader;
 			productName = bookReader;
-			productReference = C5F3C16024879CC700E4AF55 /* bookReader.app */;
+			productReference = C5F3C16024879CC700E4AF55 /* 古今.app */;
 			productType = "com.apple.product-type.application";
 		};
 		C5F3C17A24879CCD00E4AF55 /* bookReaderTests */ = {
@@ -709,6 +732,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5601D3924C9A488007C7377 /* MBProgressHUD.xcassets in Resources */,
 				C5F3C17324879CCC00E4AF55 /* LaunchScreen.storyboard in Resources */,
 				C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */,
 				C51A834524BDDC600078CB37 /* Button.xcassets in Resources */,
@@ -788,6 +812,7 @@
 				C59D062A24C2DCB400A8237F /* BRBookSetingView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
 				C51A831E24B72A6D0078CB37 /* ZJContentView.m in Sources */,
+				C5601D7024CACA72007C7377 /* BRBooksManagerViewController.m in Sources */,
 				C59D063824C2F34900A8237F /* BRBookPageViewController.m in Sources */,
 				C51A832E24B763EB0078CB37 /* BRRankBooksViewController.m in Sources */,
 				C51A834024BDBA990078CB37 /* NSDate+Utilities.m in Sources */,
@@ -813,6 +838,7 @@
 				C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */,
 				C59D063F24C3E6E800A8237F /* BRChapter.m in Sources */,
 				C59D064E24C5C82600A8237F /* BRBookRecord.m in Sources */,
+				C5601D6D24C9EDE6007C7377 /* BRMessageHUD.m in Sources */,
 				C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */,
 				C59D063B24C2F48D00A8237F /* BRBookReadContenViewController.m in Sources */,
 				C5601D2024C73CEF007C7377 /* BRRecommendCollectionReusableView.m in Sources */,
@@ -831,11 +857,13 @@
 				C51A831F24B72A6D0078CB37 /* ZJCollectionView.m in Sources */,
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
 				C5601D2E24C7DEFB007C7377 /* BRRankBookDetailViewController.m in Sources */,
+				C5601D7624CAE67B007C7377 /* BRBookMangerTableViewCell.m in Sources */,
 				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,
 				C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */,
 				C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */,
 				C5601D2824C747C6007C7377 /* BRRecommendCollectionViewCell.m in Sources */,
 				C5601D2B24C75951007C7377 /* BRCycleCollectionViewCell.m in Sources */,
+				C5601D7324CAD99A007C7377 /* BRBookShelfCollectionViewCell.m in Sources */,
 				C59D062724C2A92800A8237F /* BRChaptersView.m in Sources */,
 				C59D064824C5863B00A8237F /* NSError+BRError.m in Sources */,
 				C59D062124C2120D00A8237F /* BRBookReadViewController.m in Sources */,
@@ -1012,8 +1040,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookReader;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PRODUCT_NAME = "古今";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1030,8 +1058,8 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookReader;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				PRODUCT_NAME = "古今";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

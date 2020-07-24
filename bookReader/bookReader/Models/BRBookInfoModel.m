@@ -20,17 +20,25 @@
              @"author":@"author",
              @"categoryId":@"categoryid",
              @"lastupdate":@"lastupdate",
-             @"intro":@"intro",
+             @"introintrointrointro":@"intro",
              @"authorId":@"authorid",
-             @"list":@"list",
+             @"otherBooks":@"list",
              @"categoryName":@"category_name",
              @"desc":@"caption"
+    };
+}
++ (nullable NSDictionary*)modelContainerPropertyGenericClass {
+    return @{
+        @"list" : [BRBookInfoModel class],
     };
 }
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRBookInfoModel *item = [[BRBookInfoModel alloc] initWithAttributes:dic];
     item.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:item.lastupdate.integerValue];
+    if ([dic objectForKey:@"list"]) {
+        item.otherBooks = [BRBookInfoModel parseDictionaryIntoRecords:[dic objectForKey:@"list"]];
+    }
     return item;
 }
 

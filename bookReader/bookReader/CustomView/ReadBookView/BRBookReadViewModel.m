@@ -107,14 +107,16 @@
     }
     
     BRSite *site = [_sitesArray firstObject];
-    
+    kWeakSelf(self)
     [BRChapter getChaptersListWithBookId:self.bookModel.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
+        kStrongSelf(self)
         self.chaptersArray = [recodes mutableCopy];
         /* 去查找阅读记录*/
         if (isRecord){
             [self initialRecord];
         }
     } failureBlock:^(NSError * _Nonnull error) {
+        kStrongSelf(self)
         if (self.loadFail){
             self.loadFail(error);
         }
@@ -273,7 +275,9 @@
            return;
        }
     BRSite *site = [self.sitesArray firstObject];
+    kWeakSelf(self)
     [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:model.chapterId.integerValue siteId:site.siteId.longValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
+        kStrongSelf(self)
         /* 改变记录值*/
         self.currentChapter = model;
         self.currentChapterDetail = chapterDetail;

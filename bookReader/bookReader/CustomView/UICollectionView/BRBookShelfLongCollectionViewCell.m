@@ -98,6 +98,7 @@
     [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_blank"]];
     _bookNameLabel.text = _bookInfo.bookName;
     
+    
     [self setNeedsDisplay];
 }
 

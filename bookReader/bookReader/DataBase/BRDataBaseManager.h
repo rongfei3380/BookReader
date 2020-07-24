@@ -37,6 +37,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param bookId 书本id
 - (void)deleteBookInfoWithBookId:(NSNumber *)bookId;
 
+/// 批量删除图书
+/// @param bookIds 图书id 数组
+- (void)deleteBookInfoWithBookIds:(NSArray<BRBookInfoModel*> *)bookIds;
+
 
 /// 更新书本的源信息
 /// @param bookId 书本id

@@ -79,7 +79,6 @@
         make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(2);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
         make.right.mas_equalTo(-40);
-        make.height.mas_equalTo(24);
     }];
     
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -100,7 +99,7 @@
     
     [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_blank"]];
     _bookNameLabel.text = _bookInfo.bookName;
-    _introLabel.text = _bookInfo.desc;
+    _introLabel.text = _bookInfo.intro;
     
     _categoryLabel.text = [NSString stringWithFormat:@"  %@  ", _bookInfo.categoryName];
     

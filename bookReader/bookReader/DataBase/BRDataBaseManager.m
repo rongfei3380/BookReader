@@ -142,6 +142,33 @@
     }];
 }
 
+ - (void)deleteBookInfoWithBookIds:(NSArray<BRBookInfoModel*> *)bookIds {
+    kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]){
+                
+                [db beginTransaction];
+                BOOL isRollBack = NO;
+                @try {
+                    for (BRChapter *model in bookIds) {
+                        NSNumber *bookId = model.bookId;
+                        [db executeUpdate:kBRDBDeleteBookInfo(bookId)];
+                    }
+                } @catch (NSException *exception) {
+                    isRollBack = YES;
+                    [db rollback];
+                } @finally {
+                    if (!isRollBack) {
+                        [db commit];
+                    }
+                }
+            }
+            [db close];
+        }];
+    });
+}
+
+
 - (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index{
     if (!bookId || !sites || sites.count == 0) {
         return NO;

@@ -98,7 +98,7 @@
         make.top.offset(5);
         make.height.mas_equalTo(40);
     }];
-    
+    _toolbarView.hidden = YES;
 }
 
 - (void)initialSubViews {
@@ -107,7 +107,7 @@
     [self addChildViewController:self.bookPageVC];
     [self.view addSubview:_bookPageVC.view];
     
-    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight() +100, SCREEN_WIDTH, SCREEN_HEIGHT -(kStatusBarHeight() +100))];
+    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
     self.chaptersView.chapters = self.viewModel.getAllChapters;
     self.chaptersView.bookName = self.viewModel.getBookName;
     kWeakSelf(self);
@@ -115,6 +115,10 @@
         kStrongSelf(self);
         self.chaptersView.hidden = YES;
         [self.viewModel loadChapterWithIndex:index];
+    };
+    self.chaptersView.didSelectHidden = ^{
+        kStrongSelf(self);
+        self.chaptersView.hidden = YES;
     };
     [self.view addSubview:self.chaptersView];
     self.chaptersView.hidden = YES;
@@ -159,7 +163,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
    [self initialToolBar];
    [self initialSubViews];
    [self initialSubViewConstraints];
@@ -182,15 +186,16 @@
     /* 章节数据开始加载时*/
     [self.viewModel startLoadData:^{
         kStrongSelf(self);
-//        [MBProgressHUD hideHUDForView:self.view];
-//        [MBProgressHUD showMessage:@"加载中" toView:self.view delay:0.15];
+        [self showProgressMessage:@"加载中"];
     }];
     
     /* 用于ViewModel反向通知VC显示提示框*/
     [self.viewModel showHubWithSuccess:^(NSString *text) {
-//        [MBProgressHUD showSuccess:text toView:self.view];
+        kStrongSelf(self)
+        [self showSuccessMessage:text];
     } Fail:^(NSString *text) {
-//        [MBProgressHUD showError:text toView:self.view];
+        kStrongSelf(self)
+        [self showErrorStatus:text];
     }];
     
     /* 通知VM,开始获取数据*/
@@ -208,7 +213,7 @@
 
 #pragma mark - func
 - (void)showWait {
-//    [MBProgressHUD showSuccess:@"暂未完成" toView:self.view];
+    [self showProgressMessage:@"暂未完成"];
 }
 
 - (void)showBackAlert {
@@ -260,26 +265,25 @@
 - (void)changeNaviBarHidenWithAnimated {
     if (_toolbarView.hidden) {
         _toolbarView.hidden = NO;
+        self.headView.hidden = NO;
     } else {
         _toolbarView.hidden = YES;
+        self.headView.hidden = YES;
     }
     self.settingView.hidden = YES;
 }
 
-- (void)hidenNaviBar
-{
+- (void)hidenNaviBar{
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.navigationController.toolbarHidden = YES;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
 /* 章节数据加载成功*/
-- (void)loadDataSuccess:(UIViewController*)currentVC
-{
-//    [MBProgressHUD hideHUDForView:self.view];
+- (void)loadDataSuccess:(UIViewController*)currentVC {
+    [self hideProgressMessage];
     
     NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
-    
     [_bookPageVC.view removeFromSuperview];
     _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
     
@@ -306,26 +310,24 @@
 
 /* 章节数据加载失败*/
 - (void)loadDataFail {
-//    [MBProgressHUD hideHUDForView:self.view];
-//    [MBProgressHUD showError:@"章节加载失败" toView:self.view];
+    [self hideProgressMessage];
+    [self showErrorStatus:@"章节加载失败"];
+    [_bookPageVC.view removeFromSuperview];
 }
 
 #pragma mark - UIPageViewControllerDataSource
-- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
     return [self.viewModel viewControllerBeforeViewController:viewController DoubleSided:isDouble];
 }
 
-- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
     return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
 }
 
 #pragma mark - lazyLoad
--(UIPageViewController *)bookPageVC
-{
+-(UIPageViewController *)bookPageVC {
     if (!_bookPageVC) {
         _bookPageVC = [[BRBookPageViewController  alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
         

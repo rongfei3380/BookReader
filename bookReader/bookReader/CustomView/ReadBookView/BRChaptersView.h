@@ -12,6 +12,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^select)(NSInteger index);
+typedef void (^selectHidden)(void);
+
 
 
 /// 目录界面
@@ -24,6 +26,7 @@ typedef void (^select)(NSInteger index);
 @property (nonatomic,assign) NSInteger currentIndex;
 
 @property (nonatomic,strong) select didSelectChapter;
+@property (nonatomic,strong) selectHidden didSelectHidden;
 
 
 @end

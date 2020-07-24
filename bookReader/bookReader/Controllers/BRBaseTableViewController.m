@@ -7,7 +7,6 @@
 //
 
 #import "BRBaseTableViewController.h"
-#import "MJRefresh.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 
 @interface BRBaseTableViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
@@ -37,14 +36,32 @@
     _tableView.emptyDataSetDelegate = self;
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (self.headView) {
+        if (self.enableModule & BaseViewEnableModuleHeadView) {
             make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
         } else {
             make.top.offset(0);
         }
-        
         make.left.right.bottom.offset(0);
     }];
+    
+    if (_enableTableBaseModules & TableBaseEnableModulePullRefresh) {
+        kWeakSelf(self)
+        self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+           //Call this Block When enter the refresh status automatically
+            kStrongSelf(self)
+            [self reloadGridViewDataSourceForHead];
+        }];
+    }
+    
+    if (_enableTableBaseModules & TableBaseEnableModuleLoadmore) {
+        kWeakSelf(self)
+        self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            kStrongSelf(self)
+            [self reloadGridViewDataSourceForFoot];
+        }];
+        // 没数据时影响美观先隐藏
+        self.tableView.mj_footer.hidden = YES;
+    }
     
 }
 
@@ -53,6 +70,52 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+}
+
+#pragma mark- Public : subclass implement
+
+- (void)reloadGridViewDataSourceForHead {
+    if (_tableView.mj_header.isRefreshing) {
+        return;
+    }
+}
+
+- (void)endMJRefreshHeader {
+    [_tableView.mj_header endRefreshing];
+}
+
+- (void)reloadGridViewDataSourceForFoot {
+    if (_tableView.mj_footer.isRefreshing) {
+        return;
+    }
+}
+
+- (void)endMJRefreshFooter {
+    [_tableView.mj_footer endRefreshing];
+}
+
+- (void)toggleLoadMore:(BOOL)needLoadMore {
+    // 使用 MJRefresh 结束 loadMore
+    if (needLoadMore == NO) {
+        _tableView.mj_footer.hidden = YES;
+        if (self.enableTableBaseModules & TableBaseEnableModuleLoadmore) {
+            [_tableView.mj_footer endRefreshingWithNoMoreData];
+        }
+    } else {
+        _tableView.mj_footer.hidden = NO;
+        [_tableView.mj_footer endRefreshing];
+    }
+    [_tableView.mj_header endRefreshing];
+}
+
+- (void)endGetData {
+    [self endMJRefreshHeader];
+    [self endMJRefreshFooter];
+    [self.tableView reloadData];
+}
 
 #pragma mark- UITableViewDelegate
 

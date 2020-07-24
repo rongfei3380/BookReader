@@ -68,6 +68,15 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
     
     [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier];
     [self.view addSubview:_collectionView];
+    [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (self.enableModule & BaseViewEnableModuleHeadView) {
+            make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+        } else {
+            make.top.mas_equalTo(kStatusBarHeight());
+        }
+        
+        make.left.right.bottom.mas_equalTo(0);
+    }];
 }
 
 

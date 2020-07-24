@@ -31,6 +31,18 @@ typedef enum _BaseViewEnableModule {
 #pragma mark- public
 - (void)goBookInfoViewWIthBook:(BRBookInfoModel *)book;
 
+#pragma mark- ProgressHUD
+
+- (void)showSuccessMessage:(NSString *)message;
+
+- (void)showErrorMessage:(NSError *)error;
+- (void)showErrorStatus:(NSString *)errorStr;
+- (void)showErrorMessage:(NSError *)error withDelay:(NSTimeInterval)delay;
+
+- (void)showProgressMessage:(NSString *)message;
+- (void)showProgressMessage:(NSString *)message closable:(BOOL)closable;
+- (void)hideProgressMessage;
+
 
 @end
 

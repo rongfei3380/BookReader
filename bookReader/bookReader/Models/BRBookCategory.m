@@ -49,10 +49,16 @@
                  failureBlock:(BRObjectFailureBlock)failureBlock {
     [[BRAPIClient sharedInstance] getBookCategorySucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
+            NSDictionary *dict = (NSDictionary *)dataBody;
             
+            BRBookCategory *male = [BRBookCategory parseDictionaryIntoObject:[[dict objectForKey:@"data"] objectForKey:@"nan"]];
+            BRBookCategory *famale = [BRBookCategory parseDictionaryIntoObject:[[dict objectForKey:@"data"] objectForKey:@"nv"]];
             
-            NSArray *maleArray = [BRBookCategory parseDictionaryIntoRecords:[dataBody objectForKey:@"nan"]];
-            NSArray *famaleArray = [BRBookCategory parseDictionaryIntoRecords:[dataBody objectForKey:@"nv"]];
+            NSMutableArray *maleArray = [[BRBookCategory parseDictionaryIntoRecords:[dataBody objectForKey:@"nan"]] mutableCopy];
+            [maleArray insertObject:male atIndex:0];
+            
+            NSMutableArray *famaleArray = [[BRBookCategory parseDictionaryIntoRecords:[dataBody objectForKey:@"nv"]] mutableCopy];
+            [famaleArray insertObject:famale atIndex:0];
             
             successBlock(maleArray, famaleArray);
         }

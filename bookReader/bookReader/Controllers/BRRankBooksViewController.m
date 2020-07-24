@@ -24,12 +24,14 @@
 @implementation BRRankBooksViewController
 
 - (void)getRecommend {
+    kWeakSelf(self)
     [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray) {
         self->_rotationArray = [rotationArray mutableCopy];
         self->_recommendArray = [recommendArray mutableCopy];
         [self.collectionView reloadData];
     } failureBlock:^(NSError * _Nonnull error) {
-        
+        kStrongSelf(self)
+        [self showErrorMessage:error];
     }];
 }
 

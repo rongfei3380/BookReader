@@ -15,8 +15,9 @@
 #import "BRChaptersView.h"
 #import "BRDataBaseManager.h"
 #import <YYWebImage/YYWebImage.h>
+#import "BRRecommendCollectionViewCell.h"
 
-@interface BRBookInfoViewController () {
+@interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>{
     UIImageView *_corverImg;
     UILabel *_bookNameLabel;
     UILabel *_authorLabel;
@@ -27,6 +28,8 @@
     
     UIView *_infoActionView;
     CFButtonUpDwon *_addShelfBtn;
+    UILabel *_descLlabel;
+    UICollectionView *_otherBooksCollectionView;
     
     BRChaptersView *_chaptersView;
 }
@@ -174,6 +177,74 @@
     [self createStartButton];
 }
 
+- (void)createInfoView {
+    UILabel *label = [[UILabel alloc] init];
+    label.text = @"书籍简介";
+    label.font = [UIFont boldSystemFontOfSize:17];
+    label.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    [_infoActionView addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.top.mas_equalTo(_addShelfBtn.mas_bottom).offset(35);
+        make.height.mas_equalTo(23);
+    }];
+    
+    _descLlabel = [[UILabel alloc] init];
+    _descLlabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    _descLlabel.font = [UIFont systemFontOfSize:14];
+    _descLlabel.numberOfLines = 3;
+    _descLlabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_infoActionView addSubview:_descLlabel];
+    _descLlabel.text = self.bookInfo.intro;
+    [_descLlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.top.mas_equalTo(label.mas_bottom).offset(8);
+    }];
+    
+    UIView *lineView = [UIView new];
+   lineView.backgroundColor = CFUIColorFromRGBAInHex(0xeeeeee, 1);
+   [_infoActionView addSubview:lineView];
+   [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+       make.left.right.mas_equalTo(0);
+       make.height.mas_equalTo(1);
+       make.top.mas_equalTo(_descLlabel.mas_bottom).offset(20);
+   }];
+    
+    UILabel *otherBooksLabel = [[UILabel alloc] init];
+    otherBooksLabel.text = @"作者也写过";
+    otherBooksLabel.font = [UIFont boldSystemFontOfSize:17];
+    otherBooksLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    [_infoActionView addSubview:otherBooksLabel];
+    [otherBooksLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(-20);
+        make.top.mas_equalTo(lineView.mas_bottom).offset(12);
+        make.height.mas_equalTo(23);
+    }];
+    
+    UICollectionViewFlowLayout *booksLayout = [[UICollectionViewFlowLayout alloc] init];
+    booksLayout.itemSize = CGSizeMake(84, 160);
+    booksLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    booksLayout.minimumLineSpacing = 10;
+    
+    _otherBooksCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:booksLayout];
+    _otherBooksCollectionView.delegate = self;
+    _otherBooksCollectionView.dataSource = self;
+    _otherBooksCollectionView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    [_infoActionView addSubview:_otherBooksCollectionView];
+    [_otherBooksCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(otherBooksLabel.mas_bottom).offset(12);
+        make.height.mas_equalTo(160);
+    }];
+    
+    [_otherBooksCollectionView registerClass:[BRRecommendCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendCollectionViewCell"];
+}
+
+
 - (void)createStartButton {
     UIButton *startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [startBtn setTitle:@"开始阅读" forState:UIControlStateNormal];
@@ -194,16 +265,18 @@
 
 - (void)showChaptersView {
     if (!_chaptersView) {
-        _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, SCREEN_HEIGHT -CGRectGetMaxY(self.headView.frame))];
+        _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, self.view.frame.size.height -CGRectGetMaxY(self.headView.frame))];
         BRSite *site = [_sitesArray firstObject];
            if (site) {
+               kWeakSelf(self)
                [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
                    
                    self->_chaptersView.chapters = recodes;
                    
                    [self.view addSubview:self->_chaptersView];
                } failureBlock:^(NSError * _Nonnull error) {
-                   
+                   kStrongSelf(self)
+                   [self showErrorMessage:error];
                }];
            }
     }
@@ -212,6 +285,10 @@
         kStrongSelf(self);
         self->_chaptersView.hidden = YES;
         [self gotoReadWitnIndex:index];
+    };
+    _chaptersView.didSelectHidden = ^{
+        kStrongSelf(self);
+        self->_chaptersView.hidden = YES;
     };
     _chaptersView.bookName = self.bookInfo.bookName;
    
@@ -264,7 +341,8 @@
         [self createBookInfoViewIfNeed];
         [self getSites];
     } failureBlock:^(NSError * _Nonnull error) {
-        
+        kStrongSelf(self)
+        [self showErrorMessage:error];
     }];
 }
 
@@ -280,11 +358,17 @@
         [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self->_sitesArray curSiteIndex:0];
         
        } failureBlock:^(NSError * _Nonnull error) {
+           kStrongSelf(self)
+           [self showErrorMessage:error];
     }];
 }
 
 #pragma mark- sette
-
+- (void)setBookInfo:(BRBookInfoModel *)bookInfo {
+    _bookInfo = bookInfo;
+    _descLlabel.text = _bookInfo.intro;
+    [_otherBooksCollectionView reloadData];
+}
 
 #pragma mark- button methods
 
@@ -333,6 +417,7 @@
     
     [self createBookInfoViewIfNeed];
     [self createActionButtons];
+    [self createInfoView];
 }
 
 - (void)viewDidLoad {
@@ -346,5 +431,35 @@
     [self getBookInfo];
 }
 
+#pragma mark- UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    BRBookInfoModel *item = [self.bookInfo.otherBooks objectAtIndex:indexPath.row];
+    
+    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+    vc.bookInfo = item;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+#pragma mark- UICollectionViewDataSource
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    BRRecommendCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendCollectionViewCell" forIndexPath:indexPath];
+    
+    BRBookInfoModel *item = [self.bookInfo.otherBooks objectAtIndex:indexPath.row];
+    
+    cell.bookInfo = item;
+    
+    return cell;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.bookInfo.otherBooks.count;
+}
 
 @end
