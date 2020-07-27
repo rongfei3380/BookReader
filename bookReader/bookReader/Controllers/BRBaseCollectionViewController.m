@@ -30,7 +30,8 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
     if (self) {
         // Custom initialization
         self.enableCollectionBaseModules = CollectionBaseEnableModuleNone;
-        
+        self.emptyImg = [UIImage imageNamed:@"img_blank"];
+        self.emptyString = @"没有书哦~~";
     }
     return self;
 }
@@ -61,6 +62,8 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
     _collectionView.userInteractionEnabled = YES;
     _collectionView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     _collectionView.alwaysBounceVertical = YES;
+    _collectionView.emptyDataSetSource = self;
+    _collectionView.emptyDataSetDelegate = self;
     /**
      注册 collectionView RegisterClass : Cell And SectionHeader
      */
@@ -131,17 +134,17 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
 
 #pragma mark - DZNEmptyDataSetSource Methods
 - (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
-    
+
     NSString *text = nil;
     UIFont *font = nil;
     UIColor *textColor = nil;
     
     NSMutableDictionary *attributes = [NSMutableDictionary new];
     
-//    text = [self fetchEmptyString];
-    font = [UIFont boldSystemFontOfSize:12];
-//    textColor = LX_UIColorFromRGBAInHex(0x999999, 1);
-    textColor = [UIColor redColor];
+    text = [self fetchEmptyString];
+    font = [UIFont systemFontOfSize:14];
+    textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    
     if (!text) {
         return nil;
     }
@@ -153,23 +156,23 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
 }
 
 - (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
-    return [UIImage imageNamed:@""];
+    return [self fetchEmptyImage];
 }
 
-
 // 空白页面 label 和 imageview  的 布局：
-//  label 页面居中
+//  label 页面居中Ø
 // imageview 底部距离 label上方 12
 
 //垂直偏移量
 - (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
-    return 0;
+    return - [self fetchEmptyImage].size.height * 0.5;
 }
 
 //图片与文字间间距
 - (CGFloat)spaceHeightForEmptyDataSet:(UIScrollView *)scrollView {
-    return 12;
+    return 13;
 }
+
 
 - (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
     return YES;

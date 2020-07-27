@@ -23,7 +23,6 @@
 @property(nonatomic, strong) BRChaptersView *chaptersView;
 @property(nonatomic, strong) BRBookSetingView *settingView;
 @property (nonatomic,strong) UIView* brightnessView;
-@property (nonatomic,assign) BOOL isFirstLoad;
 @property(nonatomic, strong) UIView *toolbarView;
 
 @end
@@ -169,6 +168,14 @@
    [self initialSubViewConstraints];
    [self initialData];
     self.isFirstLoad = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (!self.isFirstLoad){
+        self.settingView.hidden = YES;
+    }
+    [super viewDidAppear:animated];
 }
 
 - (void)initialData {

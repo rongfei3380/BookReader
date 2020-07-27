@@ -110,7 +110,7 @@
 
 - (void)setBookInfo:(BRBookInfoModel *)bookInfo {
     _bookInfo = bookInfo;
-    [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_blank"]];
+    [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
     _introLabel.text = _bookInfo.intro;
     _categoryLabel.text = _bookInfo.categoryName;

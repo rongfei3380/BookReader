@@ -24,10 +24,25 @@
 @implementation BRRankBooksViewController
 
 - (void)getRecommend {
+    if (!_rotationArray || _rotationArray.count == 0) {
+       self->_rotationArray =  [[self getCacheRecordsWithKey:@"rotationArray"] mutableCopy];
+        [self.collectionView reloadData];
+    }
+    
+    if (!_recommendArray || _recommendArray.count == 0) {
+        self->_recommendArray = [ [self getCacheRecordsWithKey:@"recommendArray"] mutableCopy];
+        [self.collectionView reloadData];
+    }
+    
+    
     kWeakSelf(self)
     [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray) {
         self->_rotationArray = [rotationArray mutableCopy];
         self->_recommendArray = [recommendArray mutableCopy];
+        
+        [self cacheRecords:rotationArray key:@"rotationArray"];
+        [self cacheRecords:recommendArray key:@"recommendArray"];
+        
         [self.collectionView reloadData];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
@@ -43,8 +58,15 @@
     [self.collectionView registerClass:[BRRecommendCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendCollectionReusableView"];
     [self.collectionView registerClass:[BRRecommendBigCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendBigCollectionViewCell"];
     [self.collectionView registerClass:[BRRecommendCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendCollectionViewCell"];
-    [self getRecommend];
 }
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.isFirstLoad) {
+         [self getRecommend];
+    }
+}
+
 
 #pragma mark- UICollectionViewDelegate
 

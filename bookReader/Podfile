@@ -27,4 +27,5 @@ target 'bookReader' do
   pod 'GVUserDefaults'
   pod 'ZKCycleScrollView'
   pod 'FTPopOverMenu'
+  pod 'UMCCommon'
 end

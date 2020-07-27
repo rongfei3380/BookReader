@@ -32,18 +32,6 @@
     if (!_categoryView) {
         _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 90 +row*60)];
         _categoryView.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF,1);
-        
-        UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        allBtn.frame = CGRectMake(5, 10, 30, 30);
-        allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-        [allBtn setTitle:@"全部" forState:UIControlStateNormal];
-        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
-        [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_categoryView addSubview:allBtn];
-        allBtn.tag = 999;
-        allBtn.selected = YES;
-        _selectedButton = allBtn;
     }
     
     CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -30) /7;
@@ -52,13 +40,17 @@
         BRBookCategory *item = [_categoryArray objectAtIndex:i];
         UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         itemBtn.tag = 1000 +i;
-        itemBtn.frame = CGRectMake(40 +i%7 *buttonWidth, 10 +i/7*30, buttonWidth -5, 30);
+        itemBtn.frame = CGRectMake(10 +i%7 *buttonWidth, 10 +i/7*30, buttonWidth -5, 30);
         itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
         [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
         [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
         [itemBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
         [_categoryView addSubview:itemBtn];
+        if (i == 0) {
+            itemBtn.selected = YES;
+            _selectedButton = itemBtn;
+        }
     }
     
     self.tableView.tableHeaderView = _categoryView;
@@ -66,9 +58,21 @@
 }
 
 - (void)getBooksWithCategory:(BRBookCategory *)category page:(NSInteger)page{
+    
+    if (page == 0 && _recordsArray.count == 0) {
+        [_recordsArray addObjectsFromArray:[self getCacheRecordsWithKey:category.categoryId.stringValue]];
+        [self.tableView reloadData];
+    }
+    
     kWeakSelf(self)
     [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
+        if (page == 0) {
+            [self->_recordsArray removeAllObjects];
+        }
+        
+        [self cacheRecords:recodes key:category.categoryId.stringValue];
+        
         [self->_recordsArray addObjectsFromArray:recodes];
         if(self->_recordsArray.count){
             self.tableView.mj_footer.hidden = NO;
@@ -95,16 +99,10 @@
     _selectedButton.selected = YES;
     
     NSInteger selectedIndex = _selectedButton.tag -1000;
-    if (selectedIndex > 0) {
-        BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
-        _selectedCategory = category;
-        [self reloadGridViewDataSourceForHead];
-        
-    } else {
-        
-    }
-    
-    
+   
+    BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
+    _selectedCategory = category;
+    [self reloadGridViewDataSourceForHead];
 }
 
 #pragma mark- View LifeCycle
@@ -134,8 +132,9 @@
     self.page = 0;
     _selectedCategory = [_categoryArray firstObject];
     [self  createCategoryViewIfNeed];
-    [self getBooksWithCategory:_selectedCategory page:self.page];
+    [_recordsArray removeAllObjects];
     [self.tableView reloadData];
+    [self getBooksWithCategory:_selectedCategory page:self.page];
 }
 
 #pragma mark- Public: subclass implement
@@ -143,7 +142,6 @@
 - (void)reloadGridViewDataSourceForHead {
     [super reloadGridViewDataSourceForHead];
     self.page = 0;
-    [_recordsArray removeAllObjects];
     [self getBooksWithCategory:_selectedCategory page:self.page];
 }
 

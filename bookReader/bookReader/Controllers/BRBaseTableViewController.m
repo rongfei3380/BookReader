@@ -34,6 +34,7 @@
     _tableView.dataSource = self;
     _tableView.emptyDataSetSource = self;
     _tableView.emptyDataSetDelegate = self;
+    _tableView.separatorColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (self.enableModule & BaseViewEnableModuleHeadView) {
@@ -141,5 +142,53 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
+
+#pragma mark - DZNEmptyDataSetSource Methods
+- (NSAttributedString *)titleForEmptyDataSet:(UIScrollView *)scrollView {
+
+    NSString *text = nil;
+    UIFont *font = nil;
+    UIColor *textColor = nil;
+    
+    NSMutableDictionary *attributes = [NSMutableDictionary new];
+    
+    text = [self fetchEmptyString];
+    font = [UIFont systemFontOfSize:14];
+    textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    
+    if (!text) {
+        return nil;
+    }
+    
+    if (font) [attributes setObject:font forKey:NSFontAttributeName];
+    if (textColor) [attributes setObject:textColor forKey:NSForegroundColorAttributeName];
+    
+    return [[NSAttributedString alloc] initWithString:text attributes:attributes];
+}
+
+- (UIImage *)imageForEmptyDataSet:(UIScrollView *)scrollView {
+    return [self fetchEmptyImage];
+}
+
+// 空白页面 label 和 imageview  的 布局：
+//  label 页面居中Ø
+// imageview 底部距离 label上方 12
+
+//垂直偏移量
+- (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
+    return - [self fetchEmptyImage].size.height * 0.5;
+}
+
+//图片与文字间间距
+- (CGFloat)spaceHeightForEmptyDataSet:(UIScrollView *)scrollView {
+    return 13;
+}
+
+
+- (BOOL)emptyDataSetShouldAllowScroll:(UIScrollView *)scrollView {
+    return YES;
+}
+
+
 
 @end

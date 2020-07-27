@@ -29,6 +29,7 @@
 #pragma mark-private
 
 - (void)initData {
+    self.emptyString = @"书架还是空的哦～";
    _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
     self.isShelf = BRUserDefault.isShelfStyle;
     [self.collectionView reloadData];
@@ -103,7 +104,7 @@
 }
 
 - (void)clickMoreBtn:(UIButton *)button {
-    NSArray *menuNameArray = @[@"书籍管理",@"书架模式"];
+    NSArray *menuNameArray = @[@"书籍管理", (BRUserDefault.isShelfStyle ? @"列表模式"  : @"书架模式")];
     NSArray *menuImageNameArray = @[@"ico_bookshelf_menu",@"icon_bookshelf_menu"];
 
     FTPopOverMenuConfiguration *config = [FTPopOverMenuConfiguration defaultConfiguration];

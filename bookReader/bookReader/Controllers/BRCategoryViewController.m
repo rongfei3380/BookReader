@@ -86,8 +86,17 @@
 #pragma mark- API
 
 - (void)initAllCatogery {
+    
+   _maleVC.categoryArray =  [self getCacheRecordsWithKey:@"maleCategoryes"];
+   _femaleVC.categoryArray =  [self getCacheRecordsWithKey:@"famaleCategory"];
+    
     kWeakSelf(self)
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
+        kStrongSelf(self)
+                    
+        [self cacheRecords:maleCategoryes key:@"maleCategoryes"];
+        [self cacheRecords:famaleCategory key:@"famaleCategory"];
+        
         self->_maleVC.categoryArray = maleCategoryes;
         self->_femaleVC.categoryArray = famaleCategory;
     } failureBlock:^(NSError * _Nonnull error) {
@@ -119,9 +128,17 @@
     // Do any additional setup after loading the view.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (self.isFirstLoad) {
+        [self initAllCatogery];
+    }
+}
+
+
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    [self initAllCatogery];
+    
 }
 
 - (BOOL)shouldAutomaticallyForwardAppearanceMethods {

@@ -20,12 +20,22 @@
 @implementation BRRankBookDetailViewController
 
 #pragma mark- private
+
 - (void)getRankBookWtihIndex:(NSInteger )index page:(NSInteger )page {
     NSArray *typesArray = @[@1, @2, @5, @4, @3];
     NSInteger type = [[typesArray objectAtIndex:index] integerValue];
+    
+    if (self.isFirstLoad && page == 0) {
+       NSArray *cache = [self getCacheRecordsWithKey:[NSString stringWithFormat:@"%ld", type]];
+        [self->_recordsArray addObjectsFromArray:cache];
+        [self endGetData];
+
+    }
+    
     kWeakSelf(self)
     [BRBookInfoModel getRankListWithType:type page:_page size:20 success:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
+        [self cacheRecords:recodes key:[NSString stringWithFormat:@"%ld", type]];
         [self->_recordsArray addObjectsFromArray:recodes];
         [self toggleLoadMore:!(recodes.count<20)];
         [self endGetData];

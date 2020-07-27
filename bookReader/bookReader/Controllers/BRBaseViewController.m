@@ -9,6 +9,8 @@
 #import "BRBaseViewController.h"
 #import "BRBookInfoViewController.h"
 #import <MBProgressHUD.h>
+#import <YYWebImage.h>
+
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -20,6 +22,14 @@
 @end
 
 @implementation BRBaseViewController
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.isFirstLoad = YES;
+    }
+    return self;
+}
 
 
 - (void)loadView {
@@ -77,6 +87,11 @@
     [super viewWillAppear:animated];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.isFirstLoad = NO;
+}
+
 #pragma mark- button methods
 
 - (void)clickBackButton:(id)sender {
@@ -91,6 +106,64 @@
     vc.bookInfo = book;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (UIImage *)fetchEmptyImage {
+    return self.emptyImg;
+}
+
+- (NSString *)fetchEmptyString {
+    return self.emptyString;
+}
+
+#pragma mark- Cache
+
+///  缓存数据
+/// @param records 需要缓存的数据
+- (void)cacheRecords:(NSArray *)records key:(NSString *)key {
+    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) firstObject];
+    
+    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:@"RecordsCache"]];
+
+    NSString *cacheKey = nil;
+   if (key) {
+       cacheKey =[NSString stringWithFormat:@"%@_%@", NSStringFromClass([self class]), key];
+   } else {
+       cacheKey = NSStringFromClass([self class]);
+   }
+   
+   [recordsCache removeObjectForKey:cacheKey withBlock:^(NSString * _Nonnull key) {
+       
+   }];
+    
+
+    [recordsCache setObject:records forKey:cacheKey withBlock:^{
+            
+    }];
+
+    
+
+}
+
+/// 获取缓存的数据
+- (NSArray *)getCacheRecordsWithKey:(NSString *)key {
+    
+    
+    NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) firstObject];
+    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:@"RecordsCache"]];
+
+    
+    NSString *cacheKey = nil;
+    if (key) {
+        cacheKey =[NSString stringWithFormat:@"%@_%@", NSStringFromClass([self class]), key];
+    } else {
+        cacheKey = NSStringFromClass([self class]);
+    }
+    
+    NSArray *array =  [recordsCache objectForKey:cacheKey];
+    return array;
+
+}
+
 
 #pragma mark- ProgressHUD
 
