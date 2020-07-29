@@ -87,6 +87,9 @@
 
 - (void)initAllCatogery {
     
+    NSArray *male  =  [[self getCacheRecordsWithKey:@"male"] mutableCopy];
+    NSArray *female  =  [[self getCacheRecordsWithKey:@"famale"] mutableCopy];
+    
    _maleVC.categoryArray =  [self getCacheRecordsWithKey:@"maleCategoryes"];
    _femaleVC.categoryArray =  [self getCacheRecordsWithKey:@"famaleCategory"];
     
@@ -94,8 +97,8 @@
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
         kStrongSelf(self)
                     
-        [self cacheRecords:maleCategoryes key:@"maleCategoryes"];
-        [self cacheRecords:famaleCategory key:@"famaleCategory"];
+        [self cacheRecords:maleCategoryes key:@"male"];
+        [self cacheRecords:famaleCategory key:@"famale"];
         
         self->_maleVC.categoryArray = maleCategoryes;
         self->_femaleVC.categoryArray = famaleCategory;

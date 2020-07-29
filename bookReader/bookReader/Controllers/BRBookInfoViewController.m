@@ -16,9 +16,18 @@
 #import "BRDataBaseManager.h"
 #import <YYWebImage/YYWebImage.h>
 #import "BRRecommendCollectionViewCell.h"
+#import "UIView+Corner.h"
+#import "UIImage+ImageEffects.h"
 
 @interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>{
+    
+    UIScrollView *_contentScrollView;
+    UIView *_verticalContainerView;
+    
+    UIButton *startBtn;
+    
     UIImageView *_corverImg;
+    UIImageView *_bgImg;
     UILabel *_bookNameLabel;
     UILabel *_authorLabel;
     UILabel *_categoryLabel;
@@ -43,26 +52,40 @@
 
 #pragma mark-private
 
+- (UIImage *)creatImageEffects:(UIImage *)sourceImg {
+    UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
+    UIImage *image = [sourceImg applyBlurWithRadius:6 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    return image;
+}
+
+
 - (void)createBookInfoViewIfNeed {
     if (!_corverImg) {
         _corverImg = [UIImageView new];
-        [self.view addSubview:_corverImg];
+        _corverImg.clipsToBounds = YES;
+        _corverImg.contentMode = UIViewContentModeScaleAspectFill;
+        [_verticalContainerView addSubview:_corverImg];
         [_corverImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(10);
-            make.top.equalTo(self.headView.mas_bottom).offset(20);
+            make.top.mas_equalTo(20);
             make.size.mas_equalTo(CGSizeMake(98, 131));
         }];
     }
     
-    [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:nil];
+    [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
+    kWeakSelf(self)
+    [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"] options:kNilOptions completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
+        kStrongSelf(self)
+        self->_bgImg.image = [self creatImageEffects:image];
+    }];
     
     if (!_bookNameLabel) {
         _bookNameLabel = [UILabel new];
-        _bookNameLabel.font = [UIFont systemFontOfSize:17];
+        _bookNameLabel.font = [UIFont boldSystemFontOfSize:17];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-        [self.view addSubview:_bookNameLabel];
+        [_verticalContainerView addSubview:_bookNameLabel];
         [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_corverImg.mas_right).offset(5);
+            make.left.equalTo(_corverImg.mas_right).offset(10);
             make.top.equalTo(_corverImg.mas_top).offset(5);
             make.height.offset(25);
             make.right.offset(20);
@@ -72,11 +95,11 @@
     if (!_authorLabel) {
         _authorLabel = [UILabel new];
         _authorLabel.font = [UIFont systemFontOfSize:13];
-        _authorLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-        [self.view addSubview:_authorLabel];
+        _authorLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        [_contentScrollView addSubview:_authorLabel];
         [_authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.top.equalTo(_bookNameLabel.mas_bottom).offset(2);
+            make.top.equalTo(_bookNameLabel.mas_bottom).offset(4);
             make.height.offset(16);
             make.right.offset(20);
         }];
@@ -85,11 +108,11 @@
     if (!_categoryLabel) {
         _categoryLabel = [UILabel new];
         _categoryLabel.font = [UIFont systemFontOfSize:13];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-        [self.view addSubview:_categoryLabel];
+        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        [_verticalContainerView addSubview:_categoryLabel];
         [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.top.equalTo(_authorLabel.mas_bottom).offset(2);
+            make.top.equalTo(_authorLabel.mas_bottom).offset(4);
             make.height.offset(16);
             make.right.offset(20);
         }];
@@ -98,8 +121,8 @@
     if (!_updateTimeLabel) {
         _updateTimeLabel = [UILabel new];
         _updateTimeLabel.font = [UIFont systemFontOfSize:13];
-        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-        [self.view addSubview:_updateTimeLabel];
+        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        [_verticalContainerView addSubview:_updateTimeLabel];
         [_updateTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
             make.bottom.equalTo(_corverImg.mas_bottom).offset(2);
@@ -112,7 +135,7 @@
         _scoreLabel = [UILabel new];
         _scoreLabel.textColor = CFUIColorFromRGBAInHex(0xF8554F, 1);
         _scoreLabel.font = [UIFont systemFontOfSize:16];
-        [self.view addSubview:_scoreLabel];
+        [_verticalContainerView addSubview:_scoreLabel];
     }
     
     _bookNameLabel.text = self.bookInfo.bookName;
@@ -173,11 +196,10 @@
         make.height.mas_equalTo(1);
         make.top.mas_equalTo(81);
     }];
-    
-    [self createStartButton];
 }
 
 - (void)createInfoView {
+    
     UILabel *label = [[UILabel alloc] init];
     label.text = @"书籍简介";
     label.font = [UIFont boldSystemFontOfSize:17];
@@ -193,10 +215,10 @@
     _descLlabel = [[UILabel alloc] init];
     _descLlabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
     _descLlabel.font = [UIFont systemFontOfSize:14];
-    _descLlabel.numberOfLines = 3;
+    _descLlabel.numberOfLines = 0;
     _descLlabel.lineBreakMode = NSLineBreakByWordWrapping;
     [_infoActionView addSubview:_descLlabel];
-    _descLlabel.text = self.bookInfo.intro;
+    [self showIntroAttributedString];
     [_descLlabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
@@ -233,26 +255,39 @@
     _otherBooksCollectionView.delegate = self;
     _otherBooksCollectionView.dataSource = self;
     _otherBooksCollectionView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    [_otherBooksCollectionView registerClass:[BRRecommendCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendCollectionViewCell"];
     [_infoActionView addSubview:_otherBooksCollectionView];
     [_otherBooksCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(otherBooksLabel.mas_bottom).offset(12);
         make.height.mas_equalTo(160);
+        make.bottom.mas_equalTo(_infoActionView.mas_bottom).offset(0);
     }];
     
-    [_otherBooksCollectionView registerClass:[BRRecommendCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendCollectionViewCell"];
+    [_infoActionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(_verticalContainerView.mas_bottom).offset(0);
+    }];
+
+    [_contentScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+
+        make.bottom.mas_equalTo(_verticalContainerView.mas_bottom).offset(0);
+
+    }];
+    
+    // 这里设置圆角才有效果
+    [_infoActionView round:12 RectCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)];
 }
 
 
 - (void)createStartButton {
-    UIButton *startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [startBtn setTitle:@"开始阅读" forState:UIControlStateNormal];
     startBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [startBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFFFFF, 1) forState:UIControlStateNormal];
     [startBtn setBackgroundColor:CFUIColorFromRGBAInHex(0x292F3D, 1)];
     [startBtn addTarget:self action:@selector(startReadClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_infoActionView addSubview:startBtn];
+    [self.view addSubview:startBtn];
     startBtn.layer.cornerRadius = 8;
     startBtn.clipsToBounds = YES;
     [startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -331,6 +366,17 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+-(void)showIntroAttributedString {
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:(5 - (_descLlabel.font.lineHeight - _descLlabel.font.pointSize))];//调整行间距
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+    _descLlabel.attributedText = attributedString;
+}
+
+
 #pragma mark- API
 
 - (void)getBookInfo {
@@ -366,7 +412,7 @@
 #pragma mark- sette
 - (void)setBookInfo:(BRBookInfoModel *)bookInfo {
     _bookInfo = bookInfo;
-    _descLlabel.text = _bookInfo.intro;
+    [self showIntroAttributedString];
     [_otherBooksCollectionView reloadData];
 }
 
@@ -402,22 +448,58 @@
 
 - (void)loadView {
     [super loadView];
-    self.view.backgroundColor = [UIColor grayColor];
+    self.view.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    
+    [self createStartButton];
+    
+    _bgImg = [[UIImageView alloc] init];
+    _bgImg.backgroundColor = [UIColor grayColor];
+    [self.view insertSubview:_bgImg belowSubview:self.headView];
+    [_bgImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(SCREEN_HEIGHT/2.f);
+    }];
+    
+    
+    
+    _contentScrollView = [[UIScrollView alloc] init];
+    _contentScrollView.clipsToBounds = NO;
+    [self.view insertSubview:_contentScrollView belowSubview:self.headView];
+    [_contentScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.bottom.mas_equalTo(startBtn.mas_top).offset(0);
+//        make.bottom.mas_equalTo(0);
+    }];
+    
+    // 设置scrollView的子视图，即过渡视图contentSize，并设置其约束
+    _verticalContainerView = [[UIView alloc] init];
+    _verticalContainerView.backgroundColor = [UIColor clearColor];
+    [_contentScrollView addSubview:_verticalContainerView];
+    [_verticalContainerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.and.right.equalTo(_contentScrollView).with.insets(UIEdgeInsetsZero);
+        make.width.equalTo(_contentScrollView);
+    }];
+
+    
     
     _infoActionView = [[UIView alloc] init];
     _infoActionView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-//    _infoActionView.layer.backgroundColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0].CGColor;
-    _infoActionView.layer.cornerRadius = 12;
-    [self.view addSubview:_infoActionView];
+    [_verticalContainerView addSubview:_infoActionView];
     [_infoActionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.headView.mas_bottom).offset(180);
+        make.top.mas_equalTo(180);
         make.width.offset(SCREEN_WIDTH);
-        make.bottom.offset(0);
     }];
+
+
+    
+    
     
     [self createBookInfoViewIfNeed];
     [self createActionButtons];
     [self createInfoView];
+    
 }
 
 - (void)viewDidLoad {

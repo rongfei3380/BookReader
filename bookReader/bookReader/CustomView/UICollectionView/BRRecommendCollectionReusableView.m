@@ -27,6 +27,7 @@
     if (self) {
         
         cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, 20, SCREEN_WIDTH-20*2, (114/335.f)*(SCREEN_WIDTH -20*2))];
+        cycleScrollView.backgroundColor = [UIColor clearColor];
         cycleScrollView.delegate = self;
         cycleScrollView.dataSource = self;
         [cycleScrollView registerCellClass:[BRCycleCollectionViewCell class] forCellWithReuseIdentifier:@"BRCycleCollectionViewCell"];
@@ -78,8 +79,8 @@
 }
 
 - (void)clickActionButton:(UIButton *)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(recommendCollectionReusableViewActionButtonsClick:)]) {
-        [self.delegate recommendCollectionReusableViewActionButtonsClick:sender.tag -1000];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(recommendCollectionReusableViewActionButtonsClick:title:)]) {
+        [self.delegate recommendCollectionReusableViewActionButtonsClick:sender.tag -1000 title:sender.titleLabel.text];
     }
 }
 

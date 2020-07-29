@@ -11,7 +11,7 @@
 
 @protocol BRRecommendCollectionReusableViewDelegate <NSObject>
 
-- (void)recommendCollectionReusableViewActionButtonsClick:(NSInteger )index;
+- (void)recommendCollectionReusableViewActionButtonsClick:(NSInteger )index title:(NSString *)title;
 
 - (void)cycleScrollViewDidSelectItemAtIndex:(NSInteger )index;
 

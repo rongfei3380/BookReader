@@ -129,12 +129,14 @@
 
 - (void)setCategoryArray:(NSArray *)categoryArray {
     _categoryArray = categoryArray;
-    self.page = 0;
-    _selectedCategory = [_categoryArray firstObject];
-    [self  createCategoryViewIfNeed];
-    [_recordsArray removeAllObjects];
-    [self.tableView reloadData];
-    [self getBooksWithCategory:_selectedCategory page:self.page];
+    if (_categoryArray.count > 0) {
+        self.page = 0;
+        _selectedCategory = [_categoryArray firstObject];
+        [self  createCategoryViewIfNeed];
+        [_recordsArray removeAllObjects];
+        [self.tableView reloadData];
+        [self getBooksWithCategory:_selectedCategory page:self.page];
+    }
 }
 
 #pragma mark- Public: subclass implement

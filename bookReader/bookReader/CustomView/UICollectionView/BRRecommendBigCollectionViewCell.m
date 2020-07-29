@@ -39,6 +39,8 @@
         [self addSubview:_titleLabel];
         
         _coverImgView = [[YYAnimatedImageView alloc] init];
+        _coverImgView.clipsToBounds = YES;
+        _coverImgView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_coverImgView];
         
         _bookNameLabel = [[UILabel alloc] init];
@@ -112,7 +114,16 @@
     _bookInfo = bookInfo;
     [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
-    _introLabel.text = _bookInfo.intro;
+    
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))];//调整行间距
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+    _introLabel.attributedText = attributedString;
+    
     _categoryLabel.text = _bookInfo.categoryName;
     
     [self setNeedsDisplay];

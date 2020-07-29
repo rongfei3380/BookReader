@@ -158,6 +158,9 @@
     } else {
         cacheKey = NSStringFromClass([self class]);
     }
+    [recordsCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nullable object) {
+        
+    }];
     
     NSArray *array =  [recordsCache objectForKey:cacheKey];
     return array;

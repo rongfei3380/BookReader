@@ -10,6 +10,7 @@
 #import "BRDataBaseManager.h"
 #import "BRSearchCollectionViewCell.h"
 #import "BRSearchBookResultViewController.h"
+#import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 
 @interface BRSearchBookViewController ()<UITextFieldDelegate> {
     UIView *_searchBackView; // 搜索框背景
@@ -87,12 +88,17 @@
     [self initSearchTextView];
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView"];
     [self.collectionView registerClass:[BRSearchCollectionViewCell class] forCellWithReuseIdentifier:@"BRSearchCollectionViewCell"];
+    
+    self.collectionView.emptyDataSetSource = nil;
+    self.collectionView.emptyDataSetDelegate = nil;
+
 }
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

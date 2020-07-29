@@ -38,8 +38,8 @@
         _introLabel = [[UILabel alloc] init];
         _introLabel.font = [UIFont systemFontOfSize:12];
         _introLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-        _introLabel.numberOfLines = 3;
-        _introLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _introLabel.numberOfLines = 2;
+        _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self addSubview:_introLabel];
         
         _categoryLabel = [[UILabel alloc] init];
@@ -99,8 +99,16 @@
     
     [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
-    _introLabel.text = _bookInfo.intro;
     
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))];//调整行间距
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+    _introLabel.attributedText = attributedString;
+
     _categoryLabel.text = [NSString stringWithFormat:@"  %@  ", _bookInfo.categoryName];
     
     [self setNeedsDisplay];

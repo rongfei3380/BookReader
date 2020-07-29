@@ -141,10 +141,10 @@
 
 #pragma mark- BRRecommendCollectionReusableViewDelegate
 
-- (void)recommendCollectionReusableViewActionButtonsClick:(NSInteger )index {
+- (void)recommendCollectionReusableViewActionButtonsClick:(NSInteger )index title:(NSString *)title{
     BRRankBookDetailViewController *vc = [[BRRankBookDetailViewController alloc] init];
     vc.index = index;
-    vc.headTitle = @"排行榜";
+    vc.headTitle = title;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
