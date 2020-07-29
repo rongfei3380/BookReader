@@ -460,8 +460,6 @@
         make.height.mas_equalTo(SCREEN_HEIGHT/2.f);
     }];
     
-    
-    
     _contentScrollView = [[UIScrollView alloc] init];
     _contentScrollView.clipsToBounds = NO;
     [self.view insertSubview:_contentScrollView belowSubview:self.headView];

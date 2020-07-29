@@ -104,7 +104,7 @@ record_text TEXT NOT NULL,\
 record_time DATETIME NOT NULL\
 )"
 
-#define kBRDBInsertRecord(book_id, chapter_index, record_text, record_time, chapter_name) @"INSERT OR REPLACE INTO t_record (book_id, record_text, chapter_index, record_time, chapter_name) VALUES (?, ?, ?, ?, ?)",book_id, record_text, chapter_index, record_time, chapter_name
+#define kBRDBInsertRecord(book_id, chapter_index, record_text, record_time, chapter_name) @"INSERT OR REPLACE INTO t_record (book_id, record_text, chapter_index, record_time, chapter_name) VALUES (?, ?, ?, ?, ?)",book_id, chapter_index, record_text, record_time, chapter_name
 
 #define kBRDBSelectRecordWithBook_id(book_id) @"SELECT * FROM t_record WHERE book_id=? order by id LIMIT 1",book_id
 

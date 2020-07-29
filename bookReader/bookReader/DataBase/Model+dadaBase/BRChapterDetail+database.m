@@ -17,8 +17,8 @@
         self.chapterId = [NSNumber numberWithInteger:[result stringForColumn:@"chapter_id"].integerValue];
         self.chapterName = [result stringForColumn:@"chapter_name"];
         self.siteId = [NSNumber numberWithInteger:[result stringForColumn:@"site_id"].integerValue];
-        self.siteName = [result stringForColumn:@"chapter_index"];
-        self.content = [result stringForColumn:@"content"];
+        self.siteName = [result stringForColumn:@"site_name"];
+        self.content = [result stringForColumn:@"chapter_text"];
        
         self.preChapterId = [NSNumber numberWithInteger:[result stringForColumn:@"pre_chapter_id"].integerValue];
         self.nextChapterId = [NSNumber numberWithInteger:[result stringForColumn:@"next_chapter_id"].integerValue];
