@@ -10,7 +10,8 @@
 #import "BRBookInfoViewController.h"
 #import <MBProgressHUD.h>
 #import <YYWebImage.h>
-
+#import <Lottie/Lottie.h>
+#import "BRSearchBookViewController.h"
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -18,6 +19,7 @@
 
 @property(nonatomic, strong, readwrite) UIView *headView;
 @property(nonatomic, strong) UILabel *titleLabel;
+@property(nonatomic, strong) UIView *bookLoadingView;
 
 @end
 
@@ -73,6 +75,18 @@
             make.height.mas_offset(30);
         }];
     }
+    
+    if (_enableModule & BaseViewEnableModuleSearch) {
+        UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+        [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [_headView addSubview:searchBtn];
+        [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(40, 40));
+            make.centerY.mas_offset(0);
+            make.right.mas_equalTo(self.headView).offset(-5);
+        }];
+    }
 }
 
 - (void)viewDidLoad {
@@ -97,6 +111,11 @@
 - (void)clickBackButton:(id)sender {
  
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)clickSearchBtn:(UIButton *)sender {
+    BRSearchBookViewController *vc = [[BRSearchBookViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark- public
@@ -175,6 +194,51 @@
     return msg;
 }
 
+- (void)showBookLoading {
+    
+    LOTAnimationView *loadingAnimationView = [LOTAnimationView animationNamed:@"bookLoading.json" inBundle:[NSBundle mainBundle]];
+    loadingAnimationView.frame = CGRectMake(20, 20, 25, 25);
+    loadingAnimationView.loopAnimation = YES;
+    
+    
+    _bookLoadingView = [[UIView alloc] init];
+    _bookLoadingView.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.8);
+    _bookLoadingView.clipsToBounds = YES;
+    _bookLoadingView.layer.cornerRadius = 5.f;
+    [_bookLoadingView addSubview:loadingAnimationView];
+    [loadingAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.centerY.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(30, 30));
+    }];
+    
+    [loadingAnimationView play];
+    [self.view addSubview:_bookLoadingView];
+    
+    [_bookLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.height.mas_equalTo(60);
+    }];
+    
+    UILabel *contenLabel = [[UILabel alloc] init];
+    contenLabel.text = @"正在读取内容...";
+    contenLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    contenLabel.font = [UIFont systemFontOfSize:20];
+    [_bookLoadingView addSubview:contenLabel];
+    [contenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(loadingAnimationView.mas_right).offset(10);
+        make.right.mas_equalTo(-20);
+        make.centerY.mas_equalTo(0);
+    }];
+}
+
+- (void)hideBookLoading {
+    if (_bookLoadingView && _bookLoadingView.superview) {
+        [_bookLoadingView removeFromSuperview];
+        _bookLoadingView = nil;
+    }
+}
+
 - (void)showSuccessMessage:(NSString *)message {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
      UIImage *image = [[UIImage imageNamed:@"success"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -214,7 +278,7 @@
 }
 
 - (void)showProgressMessage:(NSString *)message {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
     // Set some text to show the initial status.
     hud.label.text = message;
@@ -225,7 +289,7 @@
         // Do something useful in the background and update the HUD periodically.
 //        [self doSomeWorkWithMixedProgress:hud];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [hud hideAnimated:YES];
+//            [hud hideAnimated:YES];
         });
     });
 }
@@ -243,13 +307,15 @@
 
 - (void)hideProgressMessage {
     dispatch_async(dispatch_get_main_queue(), ^{
-        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.navigationController.view];
-        UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-        hud.customView = imageView;
-        hud.mode = MBProgressHUDModeCustomView;
-        hud.label.text = NSLocalizedString(@"Completed", @"HUD completed title");
-        [hud hideAnimated:YES afterDelay:3.f];
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+//        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
+//        UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+//        hud.customView = imageView;
+//        hud.mode = MBProgressHUDModeCustomView;
+//        hud.label.text = NSLocalizedString(@"Completed", @"HUD completed title");
+//        [hud hideAnimated:YES afterDelay:3.f];
     });
 }
 

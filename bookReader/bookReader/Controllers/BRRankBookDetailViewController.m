@@ -88,6 +88,7 @@
 #pragma mark- UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
     vc.bookInfo = item;

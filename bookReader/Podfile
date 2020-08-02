@@ -28,4 +28,6 @@ target 'bookReader' do
   pod 'ZKCycleScrollView'
   pod 'FTPopOverMenu'
   pod 'UMCCommon'
+  pod 'lottie-ios', '~> 2.5.3'
+  
 end

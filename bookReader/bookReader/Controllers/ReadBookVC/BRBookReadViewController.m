@@ -138,7 +138,7 @@
     [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(0);
         make.bottom.mas_equalTo(self.toolbarView.mas_top).offset(0);
-        make.height.mas_equalTo(300);
+        make.height.mas_equalTo(330);
     }];
     self.settingView.hidden = YES;
     
@@ -193,15 +193,18 @@
     /* 章节数据开始加载时*/
     [self.viewModel startLoadData:^{
         kStrongSelf(self);
-        [self showProgressMessage:@"加载中"];
+//        [self showProgressMessage:@"加载中"];
+        [self showBookLoading];
     }];
     
     /* 用于ViewModel反向通知VC显示提示框*/
     [self.viewModel showHubWithSuccess:^(NSString *text) {
         kStrongSelf(self)
+        [self hideBookLoading];
         [self showSuccessMessage:text];
     } Fail:^(NSString *text) {
         kStrongSelf(self)
+        [self hideBookLoading];
         [self showErrorStatus:text];
     }];
     
@@ -288,7 +291,7 @@
 
 /* 章节数据加载成功*/
 - (void)loadDataSuccess:(UIViewController*)currentVC {
-    [self hideProgressMessage];
+    [self hideBookLoading];
     
     NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
     [_bookPageVC.view removeFromSuperview];
@@ -317,7 +320,7 @@
 
 /* 章节数据加载失败*/
 - (void)loadDataFail {
-    [self hideProgressMessage];
+    [self hideBookLoading];
     [self showErrorStatus:@"章节加载失败"];
     [_bookPageVC.view removeFromSuperview];
 }

@@ -33,7 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) enum UIPageViewControllerNavigationOrientation PageNaviOrientation;
 /* 阅读界面背景颜色*/
 @property (nonatomic,strong) UIColor* readBackColor;
-@property (nonatomic,strong) NSData* readBackColorData;
+//@property (nonatomic,strong) NSData* readBackColorData;
+@property (nonatomic,assign) NSInteger readBackColorIndex;  // 背景纹理的位置
 /* 阅读界面章节等附属信息颜色*/
 @property (nonatomic,strong) UIColor* readInfoColor;
 /* 是否是夜间模式*/

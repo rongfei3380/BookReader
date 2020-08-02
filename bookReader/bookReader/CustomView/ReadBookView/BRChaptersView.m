@@ -213,6 +213,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     if (self.didSelectChapter){
         self.didSelectChapter(row-1);

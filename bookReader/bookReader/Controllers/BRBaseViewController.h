@@ -19,6 +19,7 @@ typedef enum _BaseViewEnableModule {
     BaseViewEnableModuleHeadView = 1 << 0,     // 导航栏
     BaseViewEnableModuleBackBtn = 1 << 1,     // 返回键
     BaseViewEnableModuleTitle = 1 << 2,     // title
+    BaseViewEnableModuleSearch = 1 << 3,     // 搜索
 } BaseViewEnableModule;
 
 @interface BRBaseViewController : UIViewController<UINavigationControllerDelegate, UIGestureRecognizerDelegate>
@@ -46,6 +47,9 @@ typedef enum _BaseViewEnableModule {
 #pragma mark- ProgressHUD
 
 - (void)showSuccessMessage:(NSString *)message;
+
+- (void)showBookLoading;
+- (void)hideBookLoading;
 
 - (void)showErrorMessage:(NSError *)error;
 - (void)showErrorStatus:(NSString *)errorStr;

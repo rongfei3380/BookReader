@@ -51,6 +51,18 @@
 }
 
 
+
+#pragma mark- view lifeCycle
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
+        
+        self.headTitle = @"排行";
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -113,7 +125,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
-        return CGSizeMake(SCREEN_WIDTH -20*2, 160);
+        return CGSizeMake(SCREEN_WIDTH -20*2, kBRRecommendBigCollectionViewCellHeight);
     } else  {
         return CGSizeMake(96, 160);
     }
@@ -130,7 +142,8 @@
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
+    CGFloat space = (SCREEN_WIDTH -20*2 -96*3) /2.f ;
+    return space;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {

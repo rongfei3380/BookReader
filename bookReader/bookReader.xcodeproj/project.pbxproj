@@ -39,6 +39,11 @@
 		C51B3D2E24D209770012D6CD /* UIView+Corner.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D2D24D209770012D6CD /* UIView+Corner.m */; };
 		C51B3D3124D20F260012D6CD /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D2F24D20F260012D6CD /* UIImage+ImageEffects.m */; };
 		C51B3D3324D214D90012D6CD /* BookReader.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51B3D3224D214D90012D6CD /* BookReader.xcassets */; };
+		C51B3D3624D2C4390012D6CD /* BRSitesSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D3524D2C4390012D6CD /* BRSitesSelectViewController.m */; };
+		C51B3D3924D2D48E0012D6CD /* BRSiteTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D3824D2D48E0012D6CD /* BRSiteTableViewCell.m */; };
+		C51B3D3C24D5921B0012D6CD /* bookLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = C51B3D3B24D5921B0012D6CD /* bookLoading.json */; };
+		C51B3D3E24D724BC0012D6CD /* Mine.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51B3D3D24D724BC0012D6CD /* Mine.xcassets */; };
+		C51B3D4124D72F740012D6CD /* BRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */; };
 		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
 		C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapterDetail.m */; };
 		C5601D0A24C62895007C7377 /* BRChapter+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D0924C62895007C7377 /* BRChapter+database.m */; };
@@ -172,6 +177,14 @@
 		C51B3D2F24D20F260012D6CD /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		C51B3D3024D20F260012D6CD /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		C51B3D3224D214D90012D6CD /* BookReader.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BookReader.xcassets; sourceTree = "<group>"; };
+		C51B3D3424D2C4390012D6CD /* BRSitesSelectViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSitesSelectViewController.h; sourceTree = "<group>"; };
+		C51B3D3524D2C4390012D6CD /* BRSitesSelectViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSitesSelectViewController.m; sourceTree = "<group>"; };
+		C51B3D3724D2D48E0012D6CD /* BRSiteTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSiteTableViewCell.h; sourceTree = "<group>"; };
+		C51B3D3824D2D48E0012D6CD /* BRSiteTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSiteTableViewCell.m; sourceTree = "<group>"; };
+		C51B3D3B24D5921B0012D6CD /* bookLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bookLoading.json; sourceTree = "<group>"; };
+		C51B3D3D24D724BC0012D6CD /* Mine.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mine.xcassets; sourceTree = "<group>"; };
+		C51B3D3F24D72F740012D6CD /* BRSettingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSettingTableViewCell.h; sourceTree = "<group>"; };
+		C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSettingTableViewCell.m; sourceTree = "<group>"; };
 		C549888124A33A0B00887AEE /* BRBookCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookCategory.h; sourceTree = "<group>"; };
 		C549888224A33A0B00887AEE /* BRBookCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookCategory.m; sourceTree = "<group>"; };
 		C549888424A5A48700887AEE /* BRChapterDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapterDetail.h; sourceTree = "<group>"; };
@@ -380,6 +393,7 @@
 		C51A834724BDF8F50078CB37 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				C51B3D3A24D591E60012D6CD /* Animation */,
 				C5601D1A24C705C7007C7377 /* TableViewCell */,
 				C5601D1624C6D2E1007C7377 /* UICollectionView */,
 				C51A834E24BEA9320078CB37 /* ReadBookView */,
@@ -404,6 +418,14 @@
 				C5601D0724C61710007C7377 /* CFReadViewMacros.h */,
 			);
 			path = ReadBookView;
+			sourceTree = "<group>";
+		};
+		C51B3D3A24D591E60012D6CD /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				C51B3D3B24D5921B0012D6CD /* bookLoading.json */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 		C5601D1624C6D2E1007C7377 /* UICollectionView */ = {
@@ -434,6 +456,10 @@
 				C5601D1C24C705F3007C7377 /* BRBookListTableViewCell.m */,
 				C5601D7424CAE67B007C7377 /* BRBookMangerTableViewCell.h */,
 				C5601D7524CAE67B007C7377 /* BRBookMangerTableViewCell.m */,
+				C51B3D3724D2D48E0012D6CD /* BRSiteTableViewCell.h */,
+				C51B3D3824D2D48E0012D6CD /* BRSiteTableViewCell.m */,
+				C51B3D3F24D72F740012D6CD /* BRSettingTableViewCell.h */,
+				C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */,
 			);
 			path = TableViewCell;
 			sourceTree = "<group>";
@@ -514,6 +540,8 @@
 				C5601D3624C82ED8007C7377 /* BRSearchBookResultViewController.m */,
 				C5601D6E24CACA72007C7377 /* BRBooksManagerViewController.h */,
 				C5601D6F24CACA72007C7377 /* BRBooksManagerViewController.m */,
+				C51B3D3424D2C4390012D6CD /* BRSitesSelectViewController.h */,
+				C51B3D3524D2C4390012D6CD /* BRSitesSelectViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -594,6 +622,7 @@
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
+				C51B3D3D24D724BC0012D6CD /* Mine.xcassets */,
 				C51B3D3224D214D90012D6CD /* BookReader.xcassets */,
 				C5601D7724CDD52B007C7377 /* Images.xcassets */,
 				C5601D3824C9A488007C7377 /* MBProgressHUD.xcassets */,
@@ -774,9 +803,11 @@
 				C5601D7824CDD52B007C7377 /* Images.xcassets in Resources */,
 				C5F3C17324879CCC00E4AF55 /* LaunchScreen.storyboard in Resources */,
 				C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */,
+				C51B3D3C24D5921B0012D6CD /* bookLoading.json in Resources */,
 				C51B3D3324D214D90012D6CD /* BookReader.xcassets in Resources */,
 				C51A834524BDDC600078CB37 /* Button.xcassets in Resources */,
 				C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */,
+				C51B3D3E24D724BC0012D6CD /* Mine.xcassets in Resources */,
 				C59D064124C43B3100A8237F /* ReadBookToolBar.xcassets in Resources */,
 				C5601D1524C6CF26007C7377 /* BookShelf.xcassets in Resources */,
 				C5601D8224CE09B6007C7377 /* launcher_img_logo@3x.png in Resources */,
@@ -873,6 +904,7 @@
 				C5601D3724C82ED8007C7377 /* BRSearchBookResultViewController.m in Sources */,
 				C59D062424C2A5D500A8237F /* BRBookReadTextView.m in Sources */,
 				C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */,
+				C51B3D4124D72F740012D6CD /* BRSettingTableViewCell.m in Sources */,
 				C51A832024B72A6D0078CB37 /* ZJSegmentStyle.m in Sources */,
 				C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */,
 				C51B3D3124D20F260012D6CD /* UIImage+ImageEffects.m in Sources */,
@@ -882,6 +914,7 @@
 				C59D063F24C3E6E800A8237F /* BRChapter.m in Sources */,
 				C59D064E24C5C82600A8237F /* BRBookRecord.m in Sources */,
 				C5601D6D24C9EDE6007C7377 /* BRMessageHUD.m in Sources */,
+				C51B3D3624D2C4390012D6CD /* BRSitesSelectViewController.m in Sources */,
 				C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */,
 				C59D063B24C2F48D00A8237F /* BRBookReadContenViewController.m in Sources */,
 				C5601D2024C73CEF007C7377 /* BRRecommendCollectionReusableView.m in Sources */,
@@ -900,6 +933,7 @@
 				C5601D1324C63ED0007C7377 /* BRChapterDetail+database.m in Sources */,
 				C51A831F24B72A6D0078CB37 /* ZJCollectionView.m in Sources */,
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
+				C51B3D3924D2D48E0012D6CD /* BRSiteTableViewCell.m in Sources */,
 				C5601D2E24C7DEFB007C7377 /* BRRankBookDetailViewController.m in Sources */,
 				C5601D7624CAE67B007C7377 /* BRBookMangerTableViewCell.m in Sources */,
 				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,

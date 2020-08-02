@@ -9,6 +9,7 @@
 #import "BRAPIClient.h"
 #import "BRHTTPSessionManager.h"
 #import "CFBaseResponseErrorParser.h"
+#import "CFCustomMacros.h"
 
 @implementation BRAPIClient
 
@@ -21,6 +22,113 @@
 //    }
 //    return self;
 //}
+
+/**
+ 负责发送API请求
+ */
+- (void)sendRequest:(CFHTTPRequestMethod)method
+               path:(NSString *)path
+         parameters:(NSDictionary *)parameters
+            success:(void(^)(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject))successBlock
+            failure:(CFAPIClientFailureBlock)failureBlock {
+    
+    
+    
+    void (^requestSuccessBlock)(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject);
+    
+    requestSuccessBlock = ^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSError *error = nil;
+        [CFBaseResponseErrorParser parseResponseDataForError:&error withData:responseObject];
+        if (error) {
+            CFDebugLog(@"path!!! = %@", path);
+            CFDebugLog(@"error JSON!!! = %@", responseObject);
+            
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        } else if (successBlock) {
+            NSDictionary *dataDic = (NSDictionary *)responseObject;
+            //TODO. 特殊处理
+            
+            CFDebugLog(@"path!!! = %@", path);
+            CFDebugLog(@"retVal!!! = %@", responseObject);
+            
+//            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+//            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+//            DDLogDebug(@"retVal Str !!! = %@", jsonStr);
+            
+            
+            successBlock(task, responseObject);
+        }
+    };
+    
+    void (^requestFailureBlock)(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error);
+    requestFailureBlock = ^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error){
+        CFDebugLog(@"error PATH!!! = %@", path);
+        CFDebugLog(@"error!!! = %@", error.description);
+
+    };
+
+    BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
+    switch (method) {
+        case CFHTTPRequestMethodGET: {
+            
+            [manager GET:path parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                if (requestSuccessBlock) {
+                    requestSuccessBlock(task, responseObject);
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                if (requestFailureBlock) {
+                    requestFailureBlock(task, error);
+                }
+            }];
+        }
+            break;
+        case CFHTTPRequestMethodPOST: {
+            [manager POST:path parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                if (requestSuccessBlock) {
+                    requestSuccessBlock(task, responseObject);
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                if (requestFailureBlock) {
+                    requestFailureBlock(task, error);
+                }
+            }];
+        }
+            break;
+        case CFHTTPRequestMethodPUT: {
+            [manager PUT:path parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                requestSuccessBlock(task, responseObject);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                if (requestFailureBlock) {
+                    requestFailureBlock(task, error);
+                }
+            }];
+        }
+            break;
+        case CFHTTPRequestMethodDELETE: {
+            [manager DELETE:path parameters:parameters success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+/**
+ 附加基本的请求参数，每个请求都会带  根据实际业务需求处理
+ */
+- (void)appendRequestParameters:(NSMutableDictionary *)parameters {
+    
+}
 
 - (void)responseObject:(id  _Nullable)responseObject
                success:(CFAPIClientSuccessBlock)successBlock
@@ -222,6 +330,12 @@
         [paramDic setObject:@"desc" forKey:@"sort"];
     }
     
+    
+    [self sendRequest:CFHTTPRequestMethodGET path:@"" parameters:paramDic success:^(id  _Nonnull dataBody) {
+        
+    } failure:^(NSError * _Nonnull error) {
+        
+    }];
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     

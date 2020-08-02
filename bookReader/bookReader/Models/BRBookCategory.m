@@ -52,6 +52,9 @@
             NSDictionary *dict = (NSDictionary *)dataBody;
             
             BRBookCategory *male = [BRBookCategory parseDictionaryIntoObject:[[dict objectForKey:@"data"] objectForKey:@"nan"]];
+            
+            male.categoryName = @"全部";
+            
             BRBookCategory *famale = [BRBookCategory parseDictionaryIntoObject:[[dict objectForKey:@"data"] objectForKey:@"nv"]];
             
             NSMutableArray *maleArray = [[BRBookCategory parseDictionaryIntoRecords:[dataBody objectForKey:@"nan"]] mutableCopy];

@@ -93,14 +93,13 @@
         make.top.mas_equalTo(_coverImgView.mas_top).offset(0);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
         make.right.mas_equalTo(-40);
-        make.height.mas_equalTo(24);
+        make.height.mas_equalTo(20);
     }];
     
     [_introLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(2);
+        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(8);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
-        make.right.mas_equalTo(-40);
-        make.height.mas_equalTo(24);
+        make.right.mas_equalTo(0);
     }];
     
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -115,13 +114,16 @@
     [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
     
-    
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))];//调整行间距
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
-    
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+    NSMutableAttributedString *attributedString = nil;
+    if (_bookInfo.intro) {
+        attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))];//调整行间距
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+
+    }
     _introLabel.attributedText = attributedString;
     
     _categoryLabel.text = _bookInfo.categoryName;

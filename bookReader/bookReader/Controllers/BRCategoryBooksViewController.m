@@ -30,32 +30,61 @@
     NSInteger row = _categoryArray.count/7 +_categoryArray.count%7>0 ? 1:0;
     
     if (!_categoryView) {
-        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 90 +row*60)];
+        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*60)];
         _categoryView.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF,1);
     }
     
     CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -30) /7;
     
-    for (int i = 0; i<_categoryArray.count; i++) {
-        BRBookCategory *item = [_categoryArray objectAtIndex:i];
+    BRBookCategory *item = [_categoryArray objectAtIndex:0];
+    UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    allBtn.tag = 1000;
+    allBtn.frame = CGRectMake(10 , 10, buttonWidth -5, 30);
+    allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [allBtn setTitle:item.categoryName forState:UIControlStateNormal];
+    [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+    [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_categoryView addSubview:allBtn];
+    allBtn.selected = YES;
+    _selectedButton = allBtn;
+
+    
+    
+    for (int i = 0; i<_categoryArray.count -1; i++) {
+        BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
         UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        itemBtn.tag = 1000 +i;
-        itemBtn.frame = CGRectMake(10 +i%7 *buttonWidth, 10 +i/7*30, buttonWidth -5, 30);
+        itemBtn.tag = 1000 +i+1;
+        itemBtn.frame = CGRectMake(10 +buttonWidth +i%6 *buttonWidth, 10 +i/6*30, buttonWidth -5, 30);
         itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
         [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
         [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
         [itemBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
         [_categoryView addSubview:itemBtn];
-        if (i == 0) {
-            itemBtn.selected = YES;
-            _selectedButton = itemBtn;
-        }
     }
     
     self.tableView.tableHeaderView = _categoryView;
     [self.tableView reloadData];
 }
+
+- (void)getCategoryes {
+    kWeakSelf(self)
+    [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
+        kStrongSelf(self)
+        NSMutableArray *array = [maleCategoryes mutableCopy];
+        if (famaleCategory.count > 0) {
+            [array addObject:famaleCategory.firstObject];
+        }
+        
+        self.categoryArray = [array copy];
+        
+        
+    } failureBlock:^(NSError * _Nonnull error) {
+        
+    }];
+}
+
 
 - (void)getBooksWithCategory:(BRBookCategory *)category page:(NSInteger)page{
     
@@ -110,7 +139,10 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
         self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
+        
+        self.headTitle = @"分类";
     }
     return self;
 }
@@ -122,7 +154,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self createCategoryViewIfNeed];
+    if (!_categoryArray || _categoryArray.count == 0) {
+        [self  getCategoryes];
+    } else {
+        [self createCategoryViewIfNeed];
+    }
+    
+    
 }
 
 #pragma mark-  setter
@@ -180,6 +218,7 @@
 #pragma mark- UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
     vc.bookInfo = item;

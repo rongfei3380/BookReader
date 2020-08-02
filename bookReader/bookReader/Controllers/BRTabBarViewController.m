@@ -11,6 +11,7 @@
 #import "BRBookshelfViewController.h"
 #import "BRRankBooksViewController.h"
 #import "BRMineViewController.h"
+#import "BRCategoryBooksViewController.h"
 
 @interface BRTabBarViewController ()
 
@@ -40,7 +41,7 @@
 {
     [self addChildViewControllerWithClassname:@"BRBookshelfViewController" imagename:@"tab_bookshelf" title:@"书架"];
     [self addChildViewControllerWithClassname:@"BRRankBooksViewController" imagename:@"tab_ranking" title:@"排行"];
-    [self addChildViewControllerWithClassname:@"BRCategoryViewController" imagename:@"tab_classification" title:@"分类"];
+    [self addChildViewControllerWithClassname:@"BRCategoryBooksViewController" imagename:@"tab_classification" title:@"分类"];
     [self addChildViewControllerWithClassname:@"BRMineViewController" imagename:@"tab_profile" title:@"我的"];
 }
  

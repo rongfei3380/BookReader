@@ -56,6 +56,9 @@
     [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
     [self.collectionView registerClass:[BRBookShelfCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfCollectionViewCell"];
     
+    self.collectionView.clipsToBounds = NO;
+    self.collectionView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);
+    
     UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
     [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];

@@ -18,6 +18,8 @@
 #import "BRRecommendCollectionViewCell.h"
 #import "UIView+Corner.h"
 #import "UIImage+ImageEffects.h"
+#import "BRSitesSelectViewController.h"
+
 
 @interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>{
     
@@ -298,6 +300,18 @@
     }];
 }
 
+- (void)createChangeSiteButton {
+    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [changeBtn setImage:[UIImage imageNamed:@"nav_yuan"] forState:UIControlStateNormal];
+    [changeBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.headView addSubview:changeBtn];
+    [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-5);
+        make.centerY.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+    }];
+}
+
 - (void)showChaptersView {
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, self.view.frame.size.height -CGRectGetMaxY(self.headView.frame))];
@@ -367,12 +381,16 @@
 }
 
 -(void)showIntroAttributedString {
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    [paragraphStyle setLineSpacing:(5 - (_descLlabel.font.lineHeight - _descLlabel.font.pointSize))];//调整行间距
-    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+    NSMutableAttributedString *attributedString = nil;
+    if (_bookInfo.intro) {
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        [paragraphStyle setLineSpacing:(5 - (_descLlabel.font.lineHeight - _descLlabel.font.pointSize))];//调整行间距
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
+    }
     
-    [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
     _descLlabel.attributedText = attributedString;
 }
 
@@ -385,7 +403,6 @@
         kStrongSelf(self);
         self.bookInfo = bookInfo;
         [self createBookInfoViewIfNeed];
-        [self getSites];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
         [self showErrorMessage:error];
@@ -423,6 +440,9 @@
 }
 
 - (IBAction)startReadClick:(UIButton *)sender {
+    if (_sitesArray.count == 0) {
+        return;
+    }
     [self gotoReadWitnIndex:0];
 }
 
@@ -434,6 +454,13 @@
         [self addBookModel];
     }
     [self changeSddShelfBtnStatus];
+}
+
+- (void)clickChangeBtn:(id)sender{
+    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
+    vc.bookId = self.bookInfo.bookId;
+    vc.sitesArray = _sitesArray;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark- super
@@ -450,6 +477,7 @@
     [super loadView];
     self.view.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     
+    [self createChangeSiteButton];
     [self createStartButton];
     
     _bgImg = [[UIImageView alloc] init];
@@ -508,7 +536,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getBookInfo];
+    if(self.isFirstLoad) {
+        [self getBookInfo];
+        [self getSites];
+    }
+    
+    
 }
 
 #pragma mark- UICollectionViewDelegate
