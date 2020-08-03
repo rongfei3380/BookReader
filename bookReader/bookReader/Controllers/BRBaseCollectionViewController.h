@@ -20,6 +20,7 @@ typedef NS_OPTIONS(NSInteger, CollectionBaseEnableModule){
 
 extern NSString* const kCollectionViewCellIdentifier;
 extern NSString* const kCollectionReuseViewIdentifier;
+extern NSString* const kCollectionReuseViewFooterIdentifier;
 
 @interface BRBaseCollectionViewController : BRBaseViewController<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 

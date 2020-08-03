@@ -15,6 +15,7 @@
 @interface  BRBookShelfCollectionViewCell () {
     UIImageView *_coverImageView;
     UILabel *_bookNameLabel;
+    UILabel *_readStatusLabel;
 }
 
 @end
@@ -25,12 +26,19 @@
     self = [super initWithFrame:frame];
     if (self) {
         _coverImageView = [[YYAnimatedImageView alloc] init];
+        _coverImageView.clipsToBounds = YES;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont systemFontOfSize:15];
+        _bookNameLabel.font = [UIFont systemFontOfSize:13];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         [self addSubview:_bookNameLabel];
+        
+        _readStatusLabel = [[UILabel alloc] init];
+        _readStatusLabel.font = [UIFont systemFontOfSize:11];
+        _readStatusLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        [self addSubview:_readStatusLabel];
         
     }
     return self;
@@ -40,16 +48,20 @@
     [super layoutSubviews];
 
     [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(0);
+        make.top.mas_equalTo(25);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-32);
+        make.size.mas_equalTo(CGSizeMake(90, 120));
     }];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(0);
+        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(4);
         make.left.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        
+    }];
+    [_readStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(1);
+        make.left.right.mas_equalTo(0);
     }];
 }
 
@@ -57,7 +69,7 @@
     _bookInfo = bookInfo;
     [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
-    
+    _readStatusLabel.text = _bookInfo.chapterIndexStatus;
     [self setNeedsDisplay];
 }
 

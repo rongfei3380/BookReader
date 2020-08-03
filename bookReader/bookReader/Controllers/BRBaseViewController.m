@@ -20,6 +20,7 @@
 @property(nonatomic, strong, readwrite) UIView *headView;
 @property(nonatomic, strong) UILabel *titleLabel;
 @property(nonatomic, strong) UIView *bookLoadingView;
+@property(nonatomic, strong) LOTAnimationView *loadingAnimationView;
 
 @end
 
@@ -195,24 +196,25 @@
 }
 
 - (void)showBookLoading {
+    [self hideBookLoading];
     
-    LOTAnimationView *loadingAnimationView = [LOTAnimationView animationNamed:@"bookLoading.json" inBundle:[NSBundle mainBundle]];
-    loadingAnimationView.frame = CGRectMake(20, 20, 25, 25);
-    loadingAnimationView.loopAnimation = YES;
+    _loadingAnimationView = [LOTAnimationView animationNamed:@"bookLoading.json" inBundle:[NSBundle mainBundle]];
+    _loadingAnimationView.frame = CGRectMake(20, 20, 25, 25);
+    _loadingAnimationView.loopAnimation = YES;
     
     
     _bookLoadingView = [[UIView alloc] init];
     _bookLoadingView.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.8);
     _bookLoadingView.clipsToBounds = YES;
     _bookLoadingView.layer.cornerRadius = 5.f;
-    [_bookLoadingView addSubview:loadingAnimationView];
-    [loadingAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_bookLoadingView addSubview:_loadingAnimationView];
+    [_loadingAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.centerY.mas_equalTo(0);
         make.size.mas_equalTo(CGSizeMake(30, 30));
     }];
     
-    [loadingAnimationView play];
+    [_loadingAnimationView play];
     [self.view addSubview:_bookLoadingView];
     
     [_bookLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -226,7 +228,7 @@
     contenLabel.font = [UIFont systemFontOfSize:20];
     [_bookLoadingView addSubview:contenLabel];
     [contenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(loadingAnimationView.mas_right).offset(10);
+        make.left.mas_equalTo(_loadingAnimationView.mas_right).offset(10);
         make.right.mas_equalTo(-20);
         make.centerY.mas_equalTo(0);
     }];
@@ -234,6 +236,11 @@
 
 - (void)hideBookLoading {
     if (_bookLoadingView && _bookLoadingView.superview) {
+        
+        [_loadingAnimationView stop];
+        [_loadingAnimationView removeFromSuperview];
+        _loadingAnimationView = nil;
+        
         [_bookLoadingView removeFromSuperview];
         _bookLoadingView = nil;
     }

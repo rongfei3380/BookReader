@@ -29,7 +29,8 @@
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont systemFontOfSize:15];
+        _bookNameLabel.numberOfLines = 2;
+        _bookNameLabel.font = [UIFont systemFontOfSize:14];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         [self addSubview:_bookNameLabel];
         
@@ -48,9 +49,9 @@
     }];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(0);
+        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(6);
         make.left.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
     }];
 }
 

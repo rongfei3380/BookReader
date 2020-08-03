@@ -223,6 +223,34 @@
       }];
 }
 
+- (void)getBookInfosShelfWithBookids:(NSString *)ids
+                              sucess:(CFAPIClientSuccessBlock)successBlock
+                        failureBlock:(CFAPIClientFailureBlock)failureBlock{
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+            
+    [paramDic setObject:ids forKey:@"id"];
+    
+    BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
+
+     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+         [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+             if (successBlock) {
+                 NSDictionary *dict = (NSDictionary *)dataBody;
+                 successBlock(dict);
+             }
+         } failure:^(NSError * _Nonnull error) {
+             if (failureBlock){
+                 failureBlock(error);
+             }
+         }];
+     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        if (failureBlock){
+            failureBlock(error);
+        }
+        NSLog(@"error : %@", error);
+     }];
+}
+
 - (void)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     

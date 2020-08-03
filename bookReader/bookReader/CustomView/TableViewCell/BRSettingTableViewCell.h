@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kBRSettingTableViewCellHeight 60;
+#define kBRSettingTableViewCellHeight 55;
 
 NS_ASSUME_NONNULL_BEGIN
 

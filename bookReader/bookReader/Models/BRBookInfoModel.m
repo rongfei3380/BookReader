@@ -24,7 +24,10 @@
              @"authorId":@"authorid",
              @"otherBooks":@"list",
              @"categoryName":@"category_name",
-             @"desc":@"caption"
+             @"desc":@"caption",
+             @"isOver":@"isover",
+             @"lastChapterId":@"lastChapterId",
+             @"lastChapterName":@"lastchaptername"
     };
 }
 + (nullable NSDictionary*)modelContainerPropertyGenericClass {
@@ -150,6 +153,19 @@
     }];
 }
 
-
++ (void)getBookInfosShelfWithBookids:(NSString *)ids
+                              sucess:(BRObjectSuccessBlock)successBlock
+                        failureBlock:(BRObjectFailureBlock)failureBlock {
+    
+    [[BRAPIClient sharedInstance] getBookInfosShelfWithBookids:ids sucess:^(id  _Nonnull dataBody) {
+        if (successBlock) {
+            successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
+        }
+    } failureBlock:^(NSError * _Nonnull error) {
+        if (failureBlock) {
+            failureBlock(error);
+        }
+    }];
+}
 
 @end

@@ -113,6 +113,9 @@
 #pragma mark -- ZKCycleScrollView Delegate
 - (void)cycleScrollView:(ZKCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     // TODO:
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cycleScrollViewDidSelectItemAtIndex:)]) {
+        [self.delegate cycleScrollViewDidSelectItemAtIndex:index];
+    }
 }
 
 @end

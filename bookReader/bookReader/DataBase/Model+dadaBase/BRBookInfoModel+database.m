@@ -30,6 +30,8 @@
             NSString *decodedString = [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
             self.sitesArray = [NSArray yy_modelArrayWithClass:[BRSite class] json:decodedString];
         }
+        
+        self.siteIndex = [NSNumber numberWithInt:[result intForColumn:@"site_index"]];
     }
     return self;
 }

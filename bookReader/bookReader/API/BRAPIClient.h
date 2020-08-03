@@ -36,6 +36,15 @@ NS_ASSUME_NONNULL_BEGIN
                  failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
 
+/// 获取书架的 书籍相关内容
+/// @param ids  书籍id 逗号隔开
+/// @param successBlock 返回书架 书籍的信息
+/// @param failureBlock  失败信息
+- (void)getBookInfosShelfWithBookids:(NSString *)ids
+                              sucess:(CFAPIClientSuccessBlock)successBlock
+                        failureBlock:(CFAPIClientFailureBlock)failureBlock;
+
+
 /// 获取书籍分类
 /// @param successBlock
 /// @param failureBlock

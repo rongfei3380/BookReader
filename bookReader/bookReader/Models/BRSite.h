@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSString *siteName;
 /// 小说最后一章的名称
 @property(nonatomic, strong) NSString *lastChapterName;
+/// 是否被选中
+@property(nonatomic, strong) NSNumber *isSelected;
 
 
 #pragma mark API

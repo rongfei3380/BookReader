@@ -79,7 +79,7 @@
     }
     
     /* 去数据库查找是否有本地缓存的章节信息*/
-    BRSite *site = self.sitesArray.firstObject;
+    BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
     NSArray* arr = [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:self.bookModel.bookId siteId:site.siteId];
     if (arr.count >= 1){
         
@@ -250,7 +250,7 @@
     
     if (chapters.count >= 1){
         for (BRChapterDetail *item in chapters) {
-            [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:item.chapterId.integerValue siteId:_bookModel.currentSite.siteId.integerValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
+            [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:item.chapterId.integerValue siteId:[_bookModel.sitesArray objectAtIndex:_bookModel.siteIndex.longValue] sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
                 
             } failureBlock:^(NSError * _Nonnull error) {
                 
@@ -274,7 +274,7 @@
            }
            return;
        }
-    BRSite *site = [self.sitesArray firstObject];
+    BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
     kWeakSelf(self)
     [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:model.chapterId.integerValue siteId:site.siteId.longValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
         kStrongSelf(self)

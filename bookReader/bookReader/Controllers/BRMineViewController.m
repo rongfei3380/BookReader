@@ -37,6 +37,7 @@
     [avaterImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_offset(22);
         make.centerY.mas_offset(kStatusBarHeight()/2.f);
+        make.size.mas_equalTo(CGSizeMake(70, 70));
     }];
     
     UILabel *label = [[UILabel alloc] init];
@@ -51,11 +52,6 @@
         make.right.mas_offset(-22);
         make.height.mas_offset(20);
     }];
-
-//    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"书友328498745453"attributes: @{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC" size: 16],NSForegroundColorAttributeName: [UIColor colorWithRed:41/255.0 green:47/255.0 blue:61/255.0 alpha:1.0]}];
-
-//    label.attributedText = string;
-    label.alpha = 1.0;
     
     self.tableView.tableHeaderView = tableHeadView;
     self.tableView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);

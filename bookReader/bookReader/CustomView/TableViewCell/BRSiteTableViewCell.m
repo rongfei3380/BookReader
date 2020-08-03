@@ -92,12 +92,12 @@
     _siteNameLabel.text = _site.siteName;
     _lastChapterNameLabel.text = _site.lastChapterName;
     
-//    if (_bookInfo.isSelected.boolValue) {
+    if (_site.isSelected.boolValue) {
            _selectedImg.image = [UIImage imageNamed:@"icon_radio_selected"];
-//    } else {
-//           _selectedImg.image = [UIImage imageNamed:@"icon_radio_normal"];
-//    }
-//    
+    } else {
+           _selectedImg.image = [UIImage imageNamed:@"icon_radio_normal"];
+    }
+    
     [self setNeedsDisplay];
 }
 

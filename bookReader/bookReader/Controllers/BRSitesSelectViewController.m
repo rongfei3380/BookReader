@@ -11,9 +11,23 @@
 
 @interface BRSitesSelectViewController ()
 
+@property(nonatomic, strong) BRSite *selectedSite;
+
 @end
 
 @implementation BRSitesSelectViewController
+
+#pragma mark- private
+
+- (void)getSelectedSiteDate {
+    BRSite *site = [_sitesArray objectAtIndex:self.selectedSiteIndex];
+    site.isSelected  = [NSNumber numberWithBool:YES];
+    
+    _selectedSite = site;
+}
+
+
+#pragma mark- lifeCycle
 
 - (id)init {
     self = [super init];
@@ -27,7 +41,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.headTitle = @"选择来源";
-    // Do any additional setup after loading the view.
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self getSelectedSiteDate];
 }
 
 #pragma mark- Public: subclass implement
@@ -37,6 +56,7 @@
     [BRSite getSiteListWithBookId:self.bookId sucess:^(NSArray * _Nonnull recodes) {
         kWeakSelf(self)
         self->_sitesArray = [recodes mutableCopy];
+        [self getSelectedSiteDate];
         [self endMJRefreshHeader];
     } failureBlock:^(NSError * _Nonnull error) {
         
@@ -49,6 +69,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
+    _selectedSite.isSelected = [NSNumber numberWithBool:NO];
+    
+    BRSite *site = [_sitesArray objectAtIndex:indexPath.row];
+    site.isSelected = [NSNumber numberWithBool:YES];
+    _selectedSite = site;
+    
+    [self.tableView reloadData];
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(sitesSelectViewController:)]) {
+        [self.delegate sitesSelectViewController:indexPath.row];
+    }
 }
 
 #pragma mark- UITableViewDataSource

@@ -24,15 +24,15 @@
 @implementation BRRankBooksViewController
 
 - (void)getRecommend {
-    if (!_rotationArray || _rotationArray.count == 0) {
-       self->_rotationArray =  [[self getCacheRecordsWithKey:@"rotationArray"] mutableCopy];
-        [self.collectionView reloadData];
-    }
-    
-    if (!_recommendArray || _recommendArray.count == 0) {
-        self->_recommendArray = [ [self getCacheRecordsWithKey:@"recommendArray"] mutableCopy];
-        [self.collectionView reloadData];
-    }
+//    if (!_rotationArray || _rotationArray.count == 0) {
+//       self->_rotationArray =  [[self getCacheRecordsWithKey:@"rotationArray"] mutableCopy];
+//        [self.collectionView reloadData];
+//    }
+//    
+//    if (!_recommendArray || _recommendArray.count == 0) {
+//        self->_recommendArray = [ [self getCacheRecordsWithKey:@"recommendArray"] mutableCopy];
+//        [self.collectionView reloadData];
+//    }
     
     
     kWeakSelf(self)

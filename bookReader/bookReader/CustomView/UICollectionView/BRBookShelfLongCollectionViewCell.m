@@ -10,6 +10,7 @@
 #import <YYWebImage/YYWebImage.h>
 #import <Masonry/Masonry.h>
 #import "CFCustomMacros.h"
+#import "CFDataUtils.h"
 
 @interface BRBookShelfLongCollectionViewCell () {
     UIImageView *_coverImageView;
@@ -27,6 +28,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _coverImageView = [[YYAnimatedImageView alloc] init];
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _coverImageView.clipsToBounds = YES;
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];
@@ -88,7 +91,7 @@
         make.left.mas_equalTo(self.mas_centerX).offset(5);
         make.height.mas_equalTo(20);
         make.bottom.mas_equalTo(_coverImageView.mas_bottom).offset(0);
-        make.right.mas_equalTo(-5);
+        make.right.mas_equalTo(-20);
     }];
     
 }
@@ -97,8 +100,9 @@
     _bookInfo = bookInfo;
     [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
-    
-    
+    _chapterNameLabel.text = _bookInfo.lastChapterName;
+    _readStatusLabel.text = _bookInfo.chapterIndexStatus;
+    _updataTimeLabel.text = [NSString stringWithFormat:@"最后更新:%@", [CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate]];
     [self setNeedsDisplay];
 }
 

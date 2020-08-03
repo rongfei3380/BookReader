@@ -9,6 +9,12 @@
 #import "BRBaseTableViewController.h"
 #import "BRSite.h"
 
+@protocol BRSitesSelectViewControllerDelegate <NSObject>
+
+- (void)sitesSelectViewController:(NSInteger )index;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// 选择源
@@ -16,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, strong) NSNumber *bookId;
 @property(nonatomic, strong) NSArray<BRSite *>* sitesArray;
+@property(nonatomic, assign) NSInteger selectedSiteIndex;
+@property(nonatomic, weak) id<BRSitesSelectViewControllerDelegate>delegate;
 
 @end
 

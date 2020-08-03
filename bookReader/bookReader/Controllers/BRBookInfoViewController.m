@@ -21,7 +21,7 @@
 #import "BRSitesSelectViewController.h"
 
 
-@interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource>{
+@interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource, BRSitesSelectViewControllerDelegate>{
     
     UIScrollView *_contentScrollView;
     UIView *_verticalContainerView;
@@ -47,6 +47,7 @@
 
 /// 小说源
 @property(nonatomic, strong)NSArray *sitesArray;
+@property(nonatomic, assign) NSInteger selectedSiteIndex;
 
 @end
 
@@ -398,10 +399,15 @@
 #pragma mark- API
 
 - (void)getBookInfo {
+    
+    self.selectedSiteIndex = 0;
+    BRBookInfoModel *dataBaseBook = [[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:self.bookInfo.bookId];
+    
     kWeakSelf(self);
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
         kStrongSelf(self);
         self.bookInfo = bookInfo;
+        self.bookInfo.siteIndex = dataBaseBook.siteIndex;
         [self createBookInfoViewIfNeed];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
@@ -416,9 +422,9 @@
         kStrongSelf(self);
         self->_sitesArray = [recodes mutableCopy];
         self->_bookInfo.sitesArray = self->_sitesArray;
-        self->_bookInfo.currentSite = [self->_sitesArray firstObject];
+
         
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self->_sitesArray curSiteIndex:0];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self->_sitesArray curSiteIndex:_bookInfo.siteIndex.intValue];
         
        } failureBlock:^(NSError * _Nonnull error) {
            kStrongSelf(self)
@@ -460,6 +466,8 @@
     BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
     vc.bookId = self.bookInfo.bookId;
     vc.sitesArray = _sitesArray;
+    vc.selectedSiteIndex = self.bookInfo.siteIndex.integerValue;
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -574,5 +582,10 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.bookInfo.otherBooks.count;
 }
+
+- (void)sitesSelectViewController:(NSInteger)index {
+    self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];
+}
+
 
 @end

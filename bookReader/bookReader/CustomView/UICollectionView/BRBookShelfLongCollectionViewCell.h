@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BRBookInfoModel.h"
 
-#define kBookShelfLongCollectionViewCellHeight 86
+#define kBookShelfLongCollectionViewCellHeight 80+20
 
 NS_ASSUME_NONNULL_BEGIN
 

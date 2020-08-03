@@ -15,9 +15,11 @@
 #import "FTPopOverMenu.h"
 #import "BRBooksManagerViewController.h"
 #import "GVUserDefaults+BRUserDefaults.h"
+#import "BRDataBaseManager.h"
 
 @interface BRBookshelfViewController () {
     NSArray *_recordsArray;
+    NSMutableDictionary *_apiBooksDict;
 }
 
 @property(nonatomic, assign) BOOL isShelf; // 是否为书架模式
@@ -31,8 +33,11 @@
 - (void)initData {
     self.emptyString = @"书架还是空的哦～";
    _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
+    _apiBooksDict = [[NSMutableDictionary alloc] init];
     self.isShelf = BRUserDefault.isShelfStyle;
     [self.collectionView reloadData];
+    
+    [self getBookInfoOnShelf];
 }
 
 - (void)gotoReadWithBook:(BRBookInfoModel *)book {
@@ -46,6 +51,51 @@
     BRBooksManagerViewController *vc = [[BRBooksManagerViewController alloc] init];
     vc.headTitle = @"书籍管理";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)updateBooksInfo {
+    for (BRBookInfoModel *book in _recordsArray) {
+        BRBookInfoModel *apiBook = [_apiBooksDict objectForKey:book.bookId];
+        
+        book.lastChapterName = apiBook.lastChapterName;
+        book.lastChapterId = apiBook.lastChapterId;
+        
+        BRBookRecord* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:book.bookId.stringValue];
+            /* 有阅读记录*/
+           if (model){
+               book.chapterIndexStatus = [NSString stringWithFormat:@"已读%ld章", model.chapterIndex+1];
+           }else{
+               book.chapterIndexStatus = @"未读";
+           }
+                       
+    }
+    
+    
+    
+    [self.collectionView reloadData];
+}
+
+- (void)getBookInfoOnShelf{
+    
+    NSMutableArray *idsArray = [NSMutableArray array];
+    if (_recordsArray.count) {
+        for (BRBookInfoModel *item in _recordsArray) {
+            [idsArray addObject:item.bookId.stringValue];
+        }
+        
+        NSString *ids =  [idsArray componentsJoinedByString:@","];
+        kWeakSelf(self)
+        [BRBookInfoModel getBookInfosShelfWithBookids:ids sucess:^(NSArray * _Nonnull recodes) {
+            kStrongSelf(self)
+            [self->_apiBooksDict removeAllObjects];
+            for (BRBookInfoModel *book in recodes) {
+                [self->_apiBooksDict setObject:book forKey:book.bookId];
+            }
+            [self updateBooksInfo];
+        } failureBlock:^(NSError * _Nonnull error) {
+            
+        }];
+    }
 }
 
 #pragma Life cycle
@@ -174,16 +224,35 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     
-    UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
 
-    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
-    [view addSubview:bgImgView];
-    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.mas_offset(0);
-        make.top.bottom.mas_offset(0);
-    }];
-    
-    return view;
+        UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
+        [view addSubview:bgImgView];
+        [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.mas_offset(0);
+            make.top.bottom.mas_offset(0);
+        }];
+        
+        return view;
+    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
+        
+        UILabel *countLabel = [[UILabel alloc] init];
+        countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        countLabel.font = [UIFont systemFontOfSize:12];
+        countLabel.textAlignment = NSTextAlignmentCenter;
+        [view addSubview:countLabel];
+        [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.mas_offset(0);
+            make.height.mas_offset(15);
+            make.left.right.mas_offset(0);
+        }];
+        countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
+        
+        return view;
+    }
+    return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -191,10 +260,14 @@
     return CGSizeMake(SCREEN_WIDTH, SCREEN_WIDTH*(152/375.f));
 }
 
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    return CGSizeMake(SCREEN_WIDTH, 60);
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize size = CGSizeZero;
     if (self.isShelf) {
-        size = CGSizeMake(90, 120+60);
+        size = CGSizeMake(90, 120+50);
     } else {
         size = CGSizeMake(SCREEN_WIDTH, kBookShelfLongCollectionViewCellHeight);
     }
@@ -208,5 +281,9 @@
         return UIEdgeInsetsMake(0, 0, 0, 0);
     }
 }
+
+//- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+//    return 15;
+//}
 
 @end

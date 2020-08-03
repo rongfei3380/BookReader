@@ -13,6 +13,7 @@
 
 NSString * const kCollectionViewCellIdentifier = @"collectionViewCellIdentifier";
 NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
+NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindSectionFooter";
 
 
 @interface BRBaseCollectionViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>{
@@ -70,6 +71,10 @@ NSString * const kCollectionReuseViewIdentifier = @"collectionViewResuseView";
     [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kCollectionViewCellIdentifier];
     
     [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier];
+    
+    
+    [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier];
+    
     [self.view addSubview:_collectionView];
     [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (self.enableModule & BaseViewEnableModuleHeadView) {

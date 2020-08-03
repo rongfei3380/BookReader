@@ -41,11 +41,21 @@ NS_ASSUME_NONNULL_BEGIN
 /// 书籍相关的源
 @property(nonatomic, strong) NSArray<BRSite*>* sitesArray;
 
-/// 当前选择的源
-@property(nonatomic, strong) BRSite *currentSite;
+/// 当前选择的源index
+@property(nonatomic, strong) NSNumber *siteIndex;
 
 /// 是否选中用于书籍管理
 @property(nonatomic, strong) NSNumber *isSelected;
+
+/// 书籍是否连载完成
+@property(nonatomic, strong) NSNumber *isOver;
+/// 连载章节 最新的id
+@property(nonatomic, strong) NSNumber *lastChapterId;
+/// 最新的连载章节
+@property(nonatomic, strong) NSString *lastChapterName;
+/// 阅读状态
+@property(nonatomic, strong) NSString *chapterIndexStatus;
+
 
 
 /// 获取书籍详情
@@ -103,6 +113,15 @@ NS_ASSUME_NONNULL_BEGIN
                        size:(NSInteger)size
                      success:(BRObjectSuccessBlock)successBlock
                 failureBlock:(BRObjectFailureBlock)failureBlock;
+
+
+/// 获取书架的 书籍相关内容
+/// @param ids  书籍id 逗号隔开
+/// @param successBlock 返回书架 书籍的信息
+/// @param failureBlock  失败信息
++ (void)getBookInfosShelfWithBookids:(NSString *)ids
+                              sucess:(BRObjectSuccessBlock)successBlock
+                        failureBlock:(BRObjectFailureBlock)failureBlock;
 
 
 @end
