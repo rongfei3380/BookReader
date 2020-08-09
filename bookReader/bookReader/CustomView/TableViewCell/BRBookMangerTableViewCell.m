@@ -10,13 +10,15 @@
 #import <YYWebImage/YYWebImage.h>
 #import <Masonry/Masonry.h>
 #import "CFCustomMacros.h"
+#import "CFDataUtils.h"
 
 @interface BRBookMangerTableViewCell () {
     
     UIImageView *_coverImgView;
     UILabel *_bookNameLabel;
     
-    UILabel *_categoryLabel;
+    UILabel *_chapterNameLabel;
+    UILabel *_readStatusLabel;
     
     UIImageView *_selectedImg;
 }
@@ -37,13 +39,15 @@
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         [self addSubview:_bookNameLabel];
         
-        _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.layer.borderWidth = 0.5;
-        _categoryLabel.layer.cornerRadius = 1.f;
-        _categoryLabel.font = [UIFont systemFontOfSize:9];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-        _categoryLabel.layer.borderColor = CFUIColorFromRGBAInHex(0xDDDDDD, 1).CGColor;
-        [self addSubview:_categoryLabel];
+        _chapterNameLabel = [[UILabel alloc] init];
+        _chapterNameLabel.font = [UIFont systemFontOfSize:12];
+        _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        [self addSubview:_chapterNameLabel];
+        
+        _readStatusLabel = [[UILabel alloc] init];
+        _readStatusLabel.font = [UIFont systemFontOfSize:12];
+        _readStatusLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        [self addSubview:_readStatusLabel];
         
         _selectedImg = [UIImageView new];
         [self addSubview:_selectedImg];
@@ -73,10 +77,19 @@
         make.right.mas_equalTo(-40);
         make.height.mas_equalTo(24);
     }];
-    [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
-        make.height.mas_equalTo(15);
+    
+    [_chapterNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_coverImgView.mas_right).offset(15);
+        make.height.mas_equalTo(20);
+        make.right.mas_equalTo(-60);
+        make.centerY.mas_equalTo(_coverImgView.mas_centerY).offset(0);
+    }];
+    
+    [_readStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_coverImgView.mas_right).offset(15);
+        make.height.mas_equalTo(20);
         make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
+        make.right.mas_equalTo(self.mas_centerX).offset(-5);
     }];
 
     [_selectedImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -98,7 +111,8 @@
     [_coverImgView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
     
-    _categoryLabel.text = [NSString stringWithFormat:@"  %@  ", _bookInfo.categoryName];
+    _chapterNameLabel.text = _bookInfo.lastChapterName;
+    _readStatusLabel.text = _bookInfo.chapterIndexStatus;
     
     if (_bookInfo.isSelected.boolValue) {
         _selectedImg.image = [UIImage imageNamed:@"icon_radio_selected"];

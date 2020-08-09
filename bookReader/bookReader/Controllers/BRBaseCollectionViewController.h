@@ -33,7 +33,17 @@ extern NSString* const kCollectionReuseViewFooterIdentifier;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
 
-#pragma mark - public
+#pragma mark- Public
+- (void)endMJRefreshHeader;
+- (void)endMJRefreshFooter;
+- (void)toggleLoadMore:(BOOL)needLoadMore;
+- (void)endGetData;
+
+#pragma mark- Public: subclass implement
+
+- (void)reloadGridViewDataSourceForHead;
+
+- (void)reloadGridViewDataSourceForFoot;
 
 
 @end

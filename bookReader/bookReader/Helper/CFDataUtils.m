@@ -30,7 +30,12 @@
             return @"刚刚";
         }
     } else {
-        fmt.dateFormat = @"MM-dd";
+        if (createdDate.isThisYear) {
+            fmt.dateFormat = @"MM-dd HH:mm";
+        } else {
+            fmt.dateFormat = @"yyyy-MM-dd HH:mm";
+        }
+        
         return [fmt stringFromDate:createdDate];
     }
 }

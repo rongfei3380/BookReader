@@ -85,6 +85,28 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
         
         make.left.right.bottom.mas_equalTo(0);
     }];
+    
+    if (_enableCollectionBaseModules & CollectionBaseEnableModulePullRefresh) {
+        kWeakSelf(self)
+        self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+           //Call this Block When enter the refresh status automatically
+            kStrongSelf(self)
+            [self reloadGridViewDataSourceForHead];
+        }];
+    }
+    
+    if (_enableCollectionBaseModules & CollectionBaseEnableModuleLoadmore) {
+        kWeakSelf(self)
+        self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            kStrongSelf(self)
+            [self reloadGridViewDataSourceForFoot];
+        }];
+        // 没数据时影响美观先隐藏
+        self.collectionView.mj_footer.hidden = YES;
+    }
+
+    
+    
 }
 
 
@@ -102,6 +124,49 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark- Public : subclass implement
+
+- (void)reloadGridViewDataSourceForHead {
+    if (_collectionView.mj_header.isRefreshing) {
+        return;
+    }
+}
+
+- (void)endMJRefreshHeader {
+    [_collectionView.mj_header endRefreshing];
+}
+
+- (void)reloadGridViewDataSourceForFoot {
+    if (_collectionView.mj_footer.isRefreshing) {
+        return;
+    }
+}
+
+- (void)endMJRefreshFooter {
+    [_collectionView.mj_footer endRefreshing];
+}
+
+- (void)toggleLoadMore:(BOOL)needLoadMore {
+    // 使用 MJRefresh 结束 loadMore
+    if (needLoadMore == NO) {
+        _collectionView.mj_footer.hidden = YES;
+        if (self.enableCollectionBaseModules & CollectionBaseEnableModuleLoadmore) {
+            [_collectionView.mj_footer endRefreshingWithNoMoreData];
+        }
+    } else {
+        _collectionView.mj_footer.hidden = NO;
+        [_collectionView.mj_footer endRefreshing];
+    }
+    [_collectionView.mj_header endRefreshing];
+}
+
+- (void)endGetData {
+    [self endMJRefreshHeader];
+    [self endMJRefreshFooter];
+    [self.collectionView reloadData];
+}
+
 #pragma mark -UICollectionViewDelegate
 
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {

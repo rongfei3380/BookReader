@@ -55,11 +55,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 获取分类下的书籍列表
 /// @param categoryId 分类id
+/// @param isOver 小说状态,0=连载,1=完结
 /// @param page 页码,默认为0
 /// @param size 每页显示数量,默认为10
 /// @param successBlock
 /// @param failureBlock 
 - (void)getBookListWithCategory:(NSInteger)categoryId
+                         isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
                          sucess:(CFAPIClientSuccessBlock)successBlock

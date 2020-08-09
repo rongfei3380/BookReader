@@ -13,6 +13,7 @@
 
 @interface BRBooksManagerViewController () {
     NSMutableArray *_selectedBooks;
+    NSMutableDictionary *_apiBooksDict;
 }
 
 @end
@@ -24,7 +25,9 @@
 - (void)initBooksData {
     _recordsArray = [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
     _selectedBooks = [NSMutableArray array];
+    _apiBooksDict = [NSMutableDictionary dictionary];
     [self.tableView reloadData];
+    [self getBookInfoOnShelf];
 }
 
 
@@ -88,8 +91,49 @@
             kStrongSelf(self)
             [self.tableView reloadData];
         });
+    }
+}
 
+- (void)updateBooksInfo {
+    for (BRBookInfoModel *book in _recordsArray) {
+        BRBookInfoModel *apiBook = [_apiBooksDict objectForKey:book.bookId];
         
+        book.lastChapterName = apiBook.lastChapterName;
+        book.lastChapterId = apiBook.lastChapterId;
+        
+        BRBookRecord* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:book.bookId.stringValue];
+            /* 有阅读记录*/
+           if (model){
+               book.chapterIndexStatus = [NSString stringWithFormat:@"已读%ld章", model.chapterIndex+1];
+           }else{
+               book.chapterIndexStatus = @"未读";
+           }
+                       
+    }
+    [self.tableView reloadData];
+}
+
+- (void)getBookInfoOnShelf{
+    
+    NSMutableArray *idsArray = [NSMutableArray array];
+    if (_recordsArray.count) {
+        for (BRBookInfoModel *item in _recordsArray) {
+            [idsArray addObject:item.bookId.stringValue];
+        }
+        
+        NSString *ids =  [idsArray componentsJoinedByString:@","];
+        kWeakSelf(self)
+        [BRBookInfoModel getBookInfosShelfWithBookids:ids sucess:^(NSArray * _Nonnull recodes) {
+            kStrongSelf(self)
+            [self->_apiBooksDict removeAllObjects];
+            for (BRBookInfoModel *book in recodes) {
+                [self->_apiBooksDict setObject:book forKey:book.bookId];
+            }
+            [self updateBooksInfo];
+            [self endGetData];
+        } failureBlock:^(NSError * _Nonnull error) {
+            
+        }];
     }
 }
 
@@ -113,7 +157,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self initBooksData];
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (!_recordsArray || _recordsArray.count == 0 ) {
+        [self initBooksData];
+    }
 }
 
 

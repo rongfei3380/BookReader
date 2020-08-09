@@ -119,7 +119,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH -20*2, 200);
+    return CGSizeMake(SCREEN_WIDTH -20*2, kRecommendCollectionReusableViewHeight);
 }
 
 
@@ -162,7 +162,7 @@
 }
 
 - (void)cycleScrollViewDidSelectItemAtIndex:(NSInteger )index {
-    BRBookInfoModel *model = [_recommendArray objectAtIndex:index];
+    BRBookInfoModel *model = [_rotationArray objectAtIndex:index];
     [self goBookInfoViewWIthBook:model];
 }
 

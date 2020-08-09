@@ -17,9 +17,9 @@
 + (NSArray*)pagingWith:(NSString*)text Size:(CGSize)size {
     if (kDictIsEmpty(BRUserDefault.userReadAttConfig)){
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-        paragraphStyle.lineSpacing = 8.0f;
+        paragraphStyle.lineSpacing = [UIFont systemFontOfSize:18].pointSize*0.75 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize);
         NSDictionary* dic = @{
-                              NSFontAttributeName: [UIFont systemFontOfSize:15],
+                              NSFontAttributeName: [UIFont systemFontOfSize:18],
                               NSForegroundColorAttributeName: CFUIColorFromRGBAInHex(0x311b0e, 1),
                               NSKernAttributeName: @(0),
                               NSParagraphStyleAttributeName: paragraphStyle,

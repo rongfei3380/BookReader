@@ -131,12 +131,14 @@
 }
 
 - (void)responseObject:(id  _Nullable)responseObject
+       sessionDataTask:(NSURLSessionDataTask * _Nonnull)task
                success:(CFAPIClientSuccessBlock)successBlock
                failure:(CFAPIClientFailureBlock)failureBlock {
     NSError *error = nil;
     [CFBaseResponseErrorParser parseResponseDataForError:&error withData:responseObject];
     if (error) {
-        NSLog(@"error JSON!!! = %@", responseObject);
+        CFDebugLog(@"path!!! = %@", task.originalRequest.URL);
+        CFDebugLog(@"error JSON!!! = %@", responseObject);
 
         if (failureBlock) {
             failureBlock(error);
@@ -147,7 +149,9 @@
         
         NSData *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
         NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(@"retVal Str !!! = %@", jsonStr);
+        
+        CFDebugLog(@"path!!! = %@", task.originalRequest.URL);
+        CFDebugLog(@"retVal Str !!! = %@", jsonStr);
         successBlock(dict);
     }
 }
@@ -169,7 +173,7 @@
        
 
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getlist" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -205,7 +209,7 @@
          
 
       [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-          [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+          [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
               if (successBlock) {
                   NSDictionary *dict = (NSDictionary *)dataBody;
                   successBlock(dict);
@@ -233,7 +237,7 @@
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
 
      [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-         [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+         [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
              if (successBlock) {
                  NSDictionary *dict = (NSDictionary *)dataBody;
                  successBlock(dict);
@@ -256,7 +260,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategory" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -274,16 +278,23 @@
 }
 
 - (void)getBookListWithCategory:(NSInteger)categoryId
+                         isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
                          sucess:(CFAPIClientSuccessBlock)successBlock
                    failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
-       
+    if (isOver == 0) {
+        [paramDic setObject:[NSNumber numberWithInt:isOver] forKey:@"is_over"];
+    } else if (isOver == 1)  {
+        [paramDic setObject:[NSNumber numberWithInt:isOver] forKey:@"is_over"];
+    }
+    
     [paramDic setObject:[NSNumber numberWithInteger:categoryId] forKey:@"id"];
     [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
     [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
+    
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
@@ -291,7 +302,7 @@
         
         NSLog(@"url: %@", task.currentRequest.URL);
         
-       [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -324,7 +335,7 @@
     
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=select" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-       [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -369,7 +380,7 @@
     
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-       [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -402,7 +413,7 @@
     
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-       [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -432,7 +443,7 @@
     
     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=source" parameters:paramDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-       [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
             }
@@ -456,7 +467,7 @@
        
        [manager GET:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getrecommend" parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
            
-          [self responseObject:responseObject success:^(id  _Nonnull dataBody) {
+          [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                if (successBlock) {
                    successBlock(dataBody);
                }

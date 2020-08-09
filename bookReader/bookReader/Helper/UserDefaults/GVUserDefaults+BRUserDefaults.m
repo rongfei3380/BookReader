@@ -11,18 +11,6 @@
 
 @implementation GVUserDefaults (BRUserDefaults)
 
-@dynamic PageNaviDirection;
-@dynamic PageTransitionStyle;
-@dynamic PageNaviOrientation;
-@dynamic userReadAttConfigData;
-@dynamic isNightStyle;
-@dynamic adLoadChapters;
-@dynamic readInfoColor;
-@dynamic readBrightness;
-//@dynamic readBackColorData;
-@dynamic hotWordArr;
-
-
 - (NSDictionary *)userReadAttConfig{
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.userReadAttConfigData];
 }

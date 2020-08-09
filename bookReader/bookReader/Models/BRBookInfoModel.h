@@ -77,6 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param successBlock
 /// @param failureBlock
 + (void)getBookListWithCategory:(NSInteger)categoryId
+                         isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
                          sucess:(BRObjectSuccessBlock)successBlock

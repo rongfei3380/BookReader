@@ -33,6 +33,7 @@
     UILabel *_bookNameLabel;
     UILabel *_authorLabel;
     UILabel *_categoryLabel;
+    UILabel *_statusLabel;
     UILabel *_updateTimeLabel;
     
     UILabel *_scoreLabel;
@@ -85,7 +86,7 @@
     if (!_bookNameLabel) {
         _bookNameLabel = [UILabel new];
         _bookNameLabel.font = [UIFont boldSystemFontOfSize:17];
-        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         [_verticalContainerView addSubview:_bookNameLabel];
         [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_corverImg.mas_right).offset(10);
@@ -97,8 +98,8 @@
     
     if (!_authorLabel) {
         _authorLabel = [UILabel new];
-        _authorLabel.font = [UIFont systemFontOfSize:13];
-        _authorLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        _authorLabel.font = [UIFont systemFontOfSize:12];
+        _authorLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
         [_contentScrollView addSubview:_authorLabel];
         [_authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
@@ -111,7 +112,7 @@
     if (!_categoryLabel) {
         _categoryLabel = [UILabel new];
         _categoryLabel.font = [UIFont systemFontOfSize:13];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
         [_verticalContainerView addSubview:_categoryLabel];
         [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
@@ -121,14 +122,27 @@
         }];
     }
     
+    if (!_statusLabel) {
+        _statusLabel = [UILabel new];
+        _statusLabel.font = [UIFont systemFontOfSize:13];
+        _statusLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
+        [_verticalContainerView addSubview:_statusLabel];
+        [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_bookNameLabel.mas_left).offset(0);
+            make.top.equalTo(_categoryLabel.mas_bottom).offset(4);
+            make.height.offset(16);
+            make.right.offset(20);
+        }];
+    }
+    
     if (!_updateTimeLabel) {
         _updateTimeLabel = [UILabel new];
         _updateTimeLabel.font = [UIFont systemFontOfSize:13];
-        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 0.6);
+        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 0.6);
         [_verticalContainerView addSubview:_updateTimeLabel];
         [_updateTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.bottom.equalTo(_corverImg.mas_bottom).offset(2);
+            make.bottom.equalTo(_corverImg.mas_bottom).offset(-2);
             make.height.offset(16);
             make.right.offset(20);
         }];
@@ -142,8 +156,10 @@
     }
     
     _bookNameLabel.text = self.bookInfo.bookName;
-    _categoryLabel.text = self.bookInfo.categoryName;
-    _authorLabel.text = self.bookInfo.author;
+    _categoryLabel.text = [NSString stringWithFormat:@"类型：%@",self.bookInfo.categoryName];
+    _authorLabel.text = [NSString stringWithFormat:@"作者：%@",self.bookInfo.author];
+    _statusLabel.text = [NSString stringWithFormat:@"状态：%@", self.bookInfo.isOver.boolValue ? @"完结":@"连载"];
+    
     _updateTimeLabel.text = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
 }
 
@@ -378,13 +394,14 @@
     vm.currentIndex = index;
     BRBookReadViewController* vc = [[BRBookReadViewController alloc] init];
     vc.viewModel = vm;
+    vc.index = index;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)showIntroAttributedString {
     NSMutableAttributedString *attributedString = nil;
     if (_bookInfo.intro) {
-        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
+        attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:(5 - (_descLlabel.font.lineHeight - _descLlabel.font.pointSize))];//调整行间距
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;

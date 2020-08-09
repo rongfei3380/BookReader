@@ -12,6 +12,15 @@
 #import "GVUserDefaults+BRUserDefaults.h"
 
 
+#define KReadFontCustom 18
+
+
+
+#define kLineSpacingCompact ([UIFont systemFontOfSize:18].pointSize*0.45 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kLineSpacingCustom ([UIFont systemFontOfSize:18].pointSize*0.75 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kLineSpacingLoose ([UIFont systemFontOfSize:18].pointSize*1.05 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+
+
 @interface BRBookSetingView ()
 
 /* 字号*/
@@ -79,8 +88,13 @@
     [_fontSubBtn addTarget:self action:@selector(fontSizeDownClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_fontSubBtn];
     
-    _fontSizeLabel = [self titleLabelWithTitle:@"14"];
+    _fontSizeLabel = [self titleLabelWithTitle:@"18"];
     [self addSubview:_fontSizeLabel];
+    
+    NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
+    UIFont* font = [dic objectForKey:NSFontAttributeName];
+    float size = font.pointSize;
+    _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
     
     _fontAddBtn = [self btnWithTitle:@"A+"];
     [_fontAddBtn addTarget:self action:@selector(fontSizeUpClick) forControlEvents:UIControlEventTouchUpInside];
@@ -126,9 +140,9 @@
     [self addSubview:_lightTitleLabel];
     
     _lightSlider = [[UISlider alloc] init];
-    _lightSlider.minimumValue = 0;
-    _lightSlider.maximumValue = 0.7;
-    _lightSlider.value = BRUserDefault.readBrightness;
+    _lightSlider.minimumValue = 0.3;
+    _lightSlider.maximumValue = 1;
+    _lightSlider.value = 1 -BRUserDefault.readBrightness;
     _lightSlider.minimumValueImage = [UIImage imageNamed:@"setting_sun_l"];
     _lightSlider.maximumValueImage = [UIImage imageNamed:@"setting_sun_s"];
     _lightSlider.minimumTrackTintColor = CFUIColorFromRGBAInHex(0x44b750, 1);
@@ -390,12 +404,12 @@
     self.spaceBtn2.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
     self.spaceBtn3.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
     
-    if (paragraphStyle.lineSpacing == 15.0f){
+    if (paragraphStyle.lineSpacing == kLineSpacingLoose){
         self.spaceBtn3.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
-    }else if (paragraphStyle.lineSpacing==8.0f){
-        self.spaceBtn2.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
-    }else{
+    }else if (paragraphStyle.lineSpacing == kLineSpacingCompact){
         self.spaceBtn1.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+    }else {
+        self.spaceBtn2.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
     }
 }
 
@@ -440,10 +454,10 @@
     _backBtn8.layer.borderWidth = 0.5;
     
 
-    UIColor *color5 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli1_def"]];
-    UIColor *color6 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli2_def"]];
-    UIColor *color7 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli3_def"]];
-    UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli4_def"]];
+    UIColor *color5 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_one"]];
+    UIColor *color6 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_two"]];
+    UIColor *color7 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_three"]];
+    UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_four"]];
     
     
     if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xf5f5f2, 1).CGColor)){
@@ -462,23 +476,23 @@
         _backBtn4.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn4.layer.borderWidth = 2.0;
     }else if (CGColorEqualToColor(backColor.CGColor, color5.CGColor)){
-        _backBtn5.layer.borderColor = color5.CGColor;
+        _backBtn5.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn5.layer.borderWidth = 2.0;
     }else if (CGColorEqualToColor(backColor.CGColor, color6.CGColor)){
-        _backBtn6.layer.borderColor = color6.CGColor;
+        _backBtn6.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn6.layer.borderWidth = 2.0;
     }else if (CGColorEqualToColor(backColor.CGColor, color7.CGColor)){
-        _backBtn7.layer.borderColor = color7.CGColor;
+        _backBtn7.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn7.layer.borderWidth = 2.0;
     }else if (CGColorEqualToColor(backColor.CGColor, color8.CGColor)){
-        _backBtn8.layer.borderColor = color8.CGColor;
+        _backBtn8.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn8.layer.borderWidth = 2.0;
     }
 }
 
 #pragma mark - target
 - (void)sliderValueChange {
-    BRUserDefault.readBrightness = self.lightSlider.value;
+    BRUserDefault.readBrightness = 1 -self.lightSlider.value;
     if (self.sliderValueBlock){
         self.sliderValueBlock();
     }
@@ -532,12 +546,12 @@
     NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
     
-    if (btn==self.spaceBtn1){
-        paragraphStyle.lineSpacing = 1.0f;
-    }else if (btn==self.spaceBtn2){
-        paragraphStyle.lineSpacing = 8.0f;
-    }else if (btn==self.spaceBtn3){
-        paragraphStyle.lineSpacing = 15.0f;
+    if (btn == self.spaceBtn1){
+        paragraphStyle.lineSpacing = kLineSpacingCompact;
+    }else if (btn == self.spaceBtn2){
+        paragraphStyle.lineSpacing = kLineSpacingCustom;
+    }else if (btn == self.spaceBtn3){
+        paragraphStyle.lineSpacing = kLineSpacingLoose;
     }
     [dic setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     BRUserDefault.userReadAttConfig = dic;
@@ -557,6 +571,7 @@
         UIFont* nweFont = [UIFont systemFontOfSize:size-1];
         [dic setValue:nweFont forKey:NSFontAttributeName];
         BRUserDefault.userReadAttConfig = dic;
+        _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
     }
     if (self.block){
         self.block();
@@ -571,6 +586,7 @@
         UIFont* nweFont = [UIFont systemFontOfSize:size+1];
         [dic setValue:nweFont forKey:NSFontAttributeName];
         BRUserDefault.userReadAttConfig = dic;
+        _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
     }
     if (self.block){
         self.block();

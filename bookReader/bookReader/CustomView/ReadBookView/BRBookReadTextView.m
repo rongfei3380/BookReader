@@ -17,8 +17,6 @@
     self = [super init];
     if (self){
         self.text = text;
-        self.backgroundColor = [UIColor redColor];
-
 //        self.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     }
     return self;
@@ -43,6 +41,8 @@
     NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
     if (BRUserDefault.isNightStyle){
         [dic setObject:CFUIColorFromRGBAInHex(0x576071, 1) forKey:NSForegroundColorAttributeName];
+    } else {
+        [dic setObject:CFUIColorFromRGBAInHex(0x292F3D, 1) forKey:NSForegroundColorAttributeName];
     }
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:self.text?:@"" attributes:dic];

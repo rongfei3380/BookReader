@@ -35,7 +35,7 @@
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         _titleLabel.font = [UIFont systemFontOfSize:16];
-        _titleLabel.text = @"主编推荐";
+        _titleLabel.text = @"热门推荐";
         [self addSubview:_titleLabel];
         
         _coverImgView = [[YYAnimatedImageView alloc] init];
@@ -54,7 +54,7 @@
         [self addSubview:_chapterNameLabel];
         
         _introLabel = [[UILabel alloc] init];
-       _introLabel.font = [UIFont systemFontOfSize:12];
+       _introLabel.font = [UIFont systemFontOfSize:14];
        _introLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
        _introLabel.numberOfLines = 3;
        _introLabel.lineBreakMode = NSLineBreakByWordWrapping;
@@ -62,11 +62,8 @@
 
         
         _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.layer.borderWidth = 0.5;
-        _categoryLabel.layer.cornerRadius = 1.f;
-        _categoryLabel.font = [UIFont systemFontOfSize:9];
+        _categoryLabel.font = [UIFont systemFontOfSize:10];
         _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-        _categoryLabel.layer.borderColor = CFUIColorFromRGBAInHex(0xDDDDDD, 1).CGColor;
         [self addSubview:_categoryLabel];
         
         
@@ -105,7 +102,7 @@
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
         make.height.mas_equalTo(15);
-        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
+        make.top.mas_equalTo(_introLabel.mas_bottom).offset(10);
     }];
 }
 
@@ -118,7 +115,7 @@
     if (_bookInfo.intro) {
         attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))];//调整行间距
+        [paragraphStyle setLineSpacing:(5 - (_introLabel.font.lineHeight - _introLabel.font.pointSize))*2];//调整行间距
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         
         [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
@@ -126,7 +123,22 @@
     }
     _introLabel.attributedText = attributedString;
     
-    _categoryLabel.text = _bookInfo.categoryName;
+    NSMutableArray *categoryInfos = [NSMutableArray array];
+    if (_bookInfo.author) {
+        [categoryInfos addObject:_bookInfo.author];
+    }
+    if (_bookInfo.categoryName) {
+        [categoryInfos addObject:_bookInfo.categoryName];
+    }
+    if (_bookInfo.isOver.boolValue) {
+        [categoryInfos addObject:@"完结"];
+    } else {
+        [categoryInfos addObject:@"连载"];
+    }
+    
+    NSString *show = [categoryInfos componentsJoinedByString:@"·"];
+    
+    _categoryLabel.text = show;
     
     [self setNeedsDisplay];
 }

@@ -15,8 +15,11 @@
 
 @interface BRCategoryBooksViewController () {
     UIView *_categoryView;
-    UIButton *_selectedButton;
+    UIButton *_selectedCategoryButton;
+    UIButton *_selectedOverButton;
     BRBookCategory *_selectedCategory;
+    
+    NSInteger _bookStatus; // 书记连载状况
 }
 
 @end
@@ -28,43 +31,90 @@
 - (void)createCategoryViewIfNeed {
     
     NSInteger row = _categoryArray.count/7 +_categoryArray.count%7>0 ? 1:0;
-    
-    if (!_categoryView) {
-        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*60)];
-        _categoryView.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF,1);
-    }
-    
     CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -30) /7;
     
-    BRBookCategory *item = [_categoryArray objectAtIndex:0];
-    UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    allBtn.tag = 1000;
-    allBtn.frame = CGRectMake(10 , 10, buttonWidth -5, 30);
-    allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [allBtn setTitle:item.categoryName forState:UIControlStateNormal];
-    [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-    [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
-    [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_categoryView addSubview:allBtn];
-    allBtn.selected = YES;
-    _selectedButton = allBtn;
+    if (!_categoryView) {
+        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*60 +40)];
+        _categoryView.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF,1);
+        
+      
+       
+        // 分类筛选
+       BRBookCategory *item = [_categoryArray objectAtIndex:0];
+       UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+       allBtn.tag = 1000;
+       allBtn.frame = CGRectMake(10 , 10, buttonWidth -5, 30);
+       allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+       [allBtn setTitle:item.categoryName forState:UIControlStateNormal];
+       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+       [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
+       [_categoryView addSubview:allBtn];
+       allBtn.selected = YES;
+       _selectedCategoryButton = allBtn;
 
-    
-    
-    for (int i = 0; i<_categoryArray.count -1; i++) {
-        BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
-        UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        itemBtn.tag = 1000 +i+1;
-        itemBtn.frame = CGRectMake(10 +buttonWidth +i%6 *buttonWidth, 10 +i/6*30, buttonWidth -5, 30);
-        itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-        [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
-        [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-        [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
-        [itemBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_categoryView addSubview:itemBtn];
+       for (int i = 0; i<_categoryArray.count -1; i++) {
+           BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
+           UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+           itemBtn.tag = 1000 +i+1;
+           itemBtn.frame = CGRectMake(10 +buttonWidth +i%6 *buttonWidth, 10 +i/6*30, buttonWidth -5, 30);
+           itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+           [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
+           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+           [itemBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
+           [_categoryView addSubview:itemBtn];
+       }
+        
+        
+        // 完结 连载
+        UIButton *allOverBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        allOverBtn.frame = CGRectMake(10 , 20 +row*60, buttonWidth -5, 30);
+        allOverBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [allOverBtn setTitle:@"全部" forState:UIControlStateNormal];
+        [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+        [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [allOverBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
+        allOverBtn.tag = 1999;
+        [_categoryView addSubview:allOverBtn];
+        allOverBtn.selected = YES;
+        _selectedOverButton = allOverBtn;
+        
+        UIButton *serializeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        serializeBtn.frame = CGRectMake(10 +1*buttonWidth , 20 +row*60, buttonWidth -5, 30);
+        serializeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [serializeBtn setTitle:@"连载" forState:UIControlStateNormal];
+        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [serializeBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
+        serializeBtn.tag = 2000;
+        [_categoryView addSubview:serializeBtn];
+        
+        UIButton *overBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        overBtn.frame = CGRectMake(10 +2*buttonWidth , 20 +row*60, buttonWidth -5, 30);
+        overBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [overBtn setTitle:@"完结" forState:UIControlStateNormal];
+        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [overBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
+        overBtn.tag = 2001;
+        [_categoryView addSubview:overBtn];
+        
+        
+        
+        
+        self.tableView.tableHeaderView = _categoryView;
+    } else {
+        for (int i = 0; i<_categoryArray.count -1; i++) {
+            BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
+            
+            UIButton *itemBtn = (UIButton *)[_categoryView viewWithTag:1000 +i+1];
+            [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
+        }
     }
     
-    self.tableView.tableHeaderView = _categoryView;
+   
+   
     [self.tableView reloadData];
 }
 
@@ -94,7 +144,7 @@
     }
     
     kWeakSelf(self)
-    [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
+    [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue isOver:_bookStatus page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         if (page == 0) {
             [self->_recordsArray removeAllObjects];
@@ -123,14 +173,23 @@
 #pragma mark- button methods
 
 - (void)clickCategoryButton:(UIButton *)sender {
-    _selectedButton.selected = NO;
-    _selectedButton = sender;
-    _selectedButton.selected = YES;
+    _selectedCategoryButton.selected = NO;
+    _selectedCategoryButton = sender;
+    _selectedCategoryButton.selected = YES;
     
-    NSInteger selectedIndex = _selectedButton.tag -1000;
+    NSInteger selectedIndex = _selectedCategoryButton.tag -1000;
    
     BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
     _selectedCategory = category;
+    [self reloadGridViewDataSourceForHead];
+}
+
+- (void)clickStatusButton:(UIButton *)sender {
+    _selectedOverButton.selected = NO;
+    _selectedOverButton = sender;
+    _selectedOverButton.selected = YES;
+    
+    _bookStatus = sender.tag -2000;
     [self reloadGridViewDataSourceForHead];
 }
 
@@ -142,6 +201,7 @@
         self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
         self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
         
+        _bookStatus = -1;
         self.headTitle = @"分类";
     }
     return self;

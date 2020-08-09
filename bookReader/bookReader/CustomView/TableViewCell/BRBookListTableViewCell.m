@@ -43,11 +43,8 @@
         [self addSubview:_introLabel];
         
         _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.layer.borderWidth = 0.5;
-        _categoryLabel.layer.cornerRadius = 1.f;
-        _categoryLabel.font = [UIFont systemFontOfSize:9];
+        _categoryLabel.font = [UIFont systemFontOfSize:10];
         _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-        _categoryLabel.layer.borderColor = CFUIColorFromRGBAInHex(0xDDDDDD, 1).CGColor;
         [self addSubview:_categoryLabel];
     }
 
@@ -109,7 +106,23 @@
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
     _introLabel.attributedText = attributedString;
 
-    _categoryLabel.text = [NSString stringWithFormat:@"  %@  ", _bookInfo.categoryName];
+    
+    NSMutableArray *categoryInfos = [NSMutableArray array];
+    if (_bookInfo.author) {
+        [categoryInfos addObject:_bookInfo.author];
+    }
+    if (_bookInfo.categoryName) {
+        [categoryInfos addObject:_bookInfo.categoryName];
+    }
+    if (_bookInfo.isOver.boolValue) {
+        [categoryInfos addObject:@"完结"];
+    } else {
+        [categoryInfos addObject:@"连载"];
+    }
+    
+    NSString *show = [categoryInfos componentsJoinedByString:@"·"];
+    
+    _categoryLabel.text = show;
     
     [self setNeedsDisplay];
     

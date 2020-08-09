@@ -30,7 +30,7 @@
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRChapterDetail *item = [[BRChapterDetail alloc] initWithAttributes:dic];
-    
+    item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/><br/>" withString:@"<br/>"];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     
     return item;

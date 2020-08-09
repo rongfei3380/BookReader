@@ -30,6 +30,8 @@
         cycleScrollView.backgroundColor = [UIColor clearColor];
         cycleScrollView.delegate = self;
         cycleScrollView.dataSource = self;
+        cycleScrollView.clipsToBounds = YES;
+        cycleScrollView.layer.cornerRadius = 8.f;
         [cycleScrollView registerCellClass:[BRCycleCollectionViewCell class] forCellWithReuseIdentifier:@"BRCycleCollectionViewCell"];
         [self addSubview:cycleScrollView];
         
@@ -55,7 +57,17 @@
         [self addSubview:newBtn];
         [self addSubview:endBtn];
         
-        _masonryBtnsArray = @[popularBtn, hotBtn, highBtn, newBtn, endBtn];        
+        _masonryBtnsArray = @[popularBtn, hotBtn, highBtn, newBtn, endBtn];
+        
+        UIView *bottomView = [[UIView alloc] init];
+        bottomView.backgroundColor = CFUIColorFromRGBAInHex(0xF5F5F5, 1);
+        [self addSubview:bottomView];
+        [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.right.mas_equalTo(0);
+            make.height.mas_equalTo(8);
+            make.bottom.mas_equalTo(0);
+        }];
+        
     }
     return self;
 }
@@ -65,7 +77,7 @@
     [_masonryBtnsArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:20 tailSpacing:20];
        // 设置array的垂直方向的约束
     [_masonryBtnsArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-5);
+        make.bottom.mas_equalTo(-25);
         make.height.mas_equalTo(55);
     }];
     

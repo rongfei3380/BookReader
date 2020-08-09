@@ -20,6 +20,8 @@
 @interface BRBookshelfViewController () {
     NSArray *_recordsArray;
     NSMutableDictionary *_apiBooksDict;
+    
+    UILabel *_countLabel;
 }
 
 @property(nonatomic, assign) BOOL isShelf; // 是否为书架模式
@@ -68,10 +70,7 @@
                book.chapterIndexStatus = @"未读";
            }
                        
-    }
-    
-    
-    
+    }    
     [self.collectionView reloadData];
 }
 
@@ -92,6 +91,7 @@
                 [self->_apiBooksDict setObject:book forKey:book.bookId];
             }
             [self updateBooksInfo];
+            [self endGetData];
         } failureBlock:^(NSError * _Nonnull error) {
             
         }];
@@ -99,6 +99,15 @@
 }
 
 #pragma Life cycle
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.enableCollectionBaseModules = CollectionBaseEnableModulePullRefresh;
+    }
+    
+    return self;
+}
 
 - (void)loadView {
     [super loadView];
@@ -148,6 +157,13 @@
     BRUserDefault.isShelfStyle = _isShelf;
     [self.collectionView reloadData];
 }
+
+
+
+- (void)reloadGridViewDataSourceForHead {
+    [self getBookInfoOnShelf];
+}
+
 
 #pragma mark- button Methods
 
@@ -237,18 +253,20 @@
         return view;
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
         UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
+        if (!_countLabel) {
+            _countLabel = [[UILabel alloc] init];
+            _countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+            _countLabel.font = [UIFont systemFontOfSize:12];
+            _countLabel.textAlignment = NSTextAlignmentCenter;
+            [view addSubview:_countLabel];
+            [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.mas_offset(0);
+                make.height.mas_offset(15);
+                make.left.right.mas_offset(0);
+            }];
+        }
         
-        UILabel *countLabel = [[UILabel alloc] init];
-        countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-        countLabel.font = [UIFont systemFontOfSize:12];
-        countLabel.textAlignment = NSTextAlignmentCenter;
-        [view addSubview:countLabel];
-        [countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.mas_offset(0);
-            make.height.mas_offset(15);
-            make.left.right.mas_offset(0);
-        }];
-        countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
+        _countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
         
         return view;
     }
@@ -261,7 +279,12 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH, 60);
+    if (_recordsArray.count) {
+        return CGSizeMake(SCREEN_WIDTH, 60);
+    } else {
+        return CGSizeMake(SCREEN_WIDTH,0);
+    }
+    
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {

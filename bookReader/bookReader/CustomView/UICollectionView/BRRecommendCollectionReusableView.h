@@ -17,6 +17,7 @@
 
 @end
 
+#define kRecommendCollectionReusableViewHeight 228
 
 
 NS_ASSUME_NONNULL_BEGIN

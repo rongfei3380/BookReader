@@ -20,7 +20,7 @@
              @"author":@"author",
              @"categoryId":@"categoryid",
              @"lastupdate":@"lastupdate",
-             @"introintrointrointro":@"intro",
+             @"intro":@"intro",
              @"authorId":@"authorid",
              @"otherBooks":@"list",
              @"categoryName":@"category_name",
@@ -88,11 +88,12 @@
 
 
 + (void)getBookListWithCategory:(NSInteger)categoryId
+                         isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
                          sucess:(BRObjectSuccessBlock)successBlock
                    failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getBookListWithCategory:categoryId page:page size:size sucess:^(id  _Nonnull dataBody) {
+    [[BRAPIClient sharedInstance] getBookListWithCategory:categoryId isOver:isOver page:page size:size sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
         }
