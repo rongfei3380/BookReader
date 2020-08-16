@@ -23,6 +23,8 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _iconImg = [[UIImageView alloc] init];
 //        _iconImg.contentMode = UIViewContentModeScaleAspectFit;
         [self addSubview:_iconImg];

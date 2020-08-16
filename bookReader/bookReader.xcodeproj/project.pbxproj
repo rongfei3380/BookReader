@@ -71,6 +71,7 @@
 		C5601D8224CE09B6007C7377 /* launcher_img_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5601D8024CE09B6007C7377 /* launcher_img_logo@3x.png */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
+		C57EB09424E93CD700AAA2BA /* BRBookListCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */; };
 		C5834BED2488B06E00AFA146 /* BRAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEC2488B06E00AFA146 /* BRAPIClient.m */; };
 		C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C5834BEF2488F84600AFA146 /* BRHTTPSessionManager.m */; };
 		C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D061C24C2083E00A8237F /* BRBookReadViewModel.m */; };
@@ -234,6 +235,8 @@
 		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
 		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
 		C5714BD424A0A21000DE0277 /* BRBaseModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBaseModel.m; sourceTree = "<group>"; };
+		C57EB09224E93CD600AAA2BA /* BRBookListCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookListCollectionViewCell.h; sourceTree = "<group>"; };
+		C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookListCollectionViewCell.m; sourceTree = "<group>"; };
 		C5834BEB2488B06E00AFA146 /* BRAPIClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAPIClient.h; sourceTree = "<group>"; };
 		C5834BEC2488B06E00AFA146 /* BRAPIClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAPIClient.m; sourceTree = "<group>"; };
 		C5834BEE2488F84600AFA146 /* BRHTTPSessionManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRHTTPSessionManager.h; sourceTree = "<group>"; };
@@ -445,6 +448,8 @@
 				C5601D2A24C75951007C7377 /* BRCycleCollectionViewCell.m */,
 				C5601D3224C82925007C7377 /* BRSearchCollectionViewCell.h */,
 				C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */,
+				C57EB09224E93CD600AAA2BA /* BRBookListCollectionViewCell.h */,
+				C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */,
 			);
 			path = UICollectionView;
 			sourceTree = "<group>";
@@ -935,6 +940,7 @@
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
 				C51B3D3924D2D48E0012D6CD /* BRSiteTableViewCell.m in Sources */,
 				C5601D2E24C7DEFB007C7377 /* BRRankBookDetailViewController.m in Sources */,
+				C57EB09424E93CD700AAA2BA /* BRBookListCollectionViewCell.m in Sources */,
 				C5601D7624CAE67B007C7377 /* BRBookMangerTableViewCell.m in Sources */,
 				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,
 				C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */,
@@ -1111,7 +1117,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1010;
+				CURRENT_PROJECT_VERSION = 1020;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1131,7 +1137,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1010;
+				CURRENT_PROJECT_VERSION = 1020;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

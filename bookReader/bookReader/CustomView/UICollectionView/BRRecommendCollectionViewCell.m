@@ -25,6 +25,9 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _coverImageView = [[YYAnimatedImageView alloc] init];
         [self addSubview:_coverImageView];
         

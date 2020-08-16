@@ -62,8 +62,7 @@
 @implementation BRBookSetingView
 
 #pragma mark- super
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     
 }
 
@@ -91,10 +90,7 @@
     _fontSizeLabel = [self titleLabelWithTitle:@"18"];
     [self addSubview:_fontSizeLabel];
     
-    NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
-    UIFont* font = [dic objectForKey:NSFontAttributeName];
-    float size = font.pointSize;
-    _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
+    [self reloadFontLable];
     
     _fontAddBtn = [self btnWithTitle:@"A+"];
     [_fontAddBtn addTarget:self action:@selector(fontSizeUpClick) forControlEvents:UIControlEventTouchUpInside];
@@ -153,7 +149,7 @@
     _backTitleLabel = [self titleLabelWithTitle:@"背景"];
     [self addSubview:_backTitleLabel];
     
-    _backBtn1 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xf5f5f2, 1)];
+    _backBtn1 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xf7f7f7, 1)];
     [_backBtn1 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_backBtn1];
     
@@ -460,7 +456,7 @@
     UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_four"]];
     
     
-    if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xf5f5f2, 1).CGColor)){
+    if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xf7f7f7, 1).CGColor)){
         _backBtn1.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
         _backBtn1.layer.borderWidth = 2.0;
         
@@ -490,6 +486,16 @@
     }
 }
 
+- (void)reloadFontLable {
+    NSMutableDictionary* dic = [NSMutableDictionary dictionaryWithDictionary:BRUserDefault.userReadAttConfig];
+    UIFont* font = [dic objectForKey:NSFontAttributeName];
+    float size = font.pointSize;
+    if (size == 0) {
+        size = 18;
+    }
+    _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
+}
+
 #pragma mark - target
 - (void)sliderValueChange {
     BRUserDefault.readBrightness = 1 -self.lightSlider.value;
@@ -500,7 +506,7 @@
 
 - (void)colorBtnClick:(UIButton*)btn {
     if (btn == self.backBtn1) {
-        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xf5f5f2, 1);
+        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xf7f7f7, 1);
     } else if (btn == self.backBtn2) {
         BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xa39e8b, 1);
     } else if (btn == self.backBtn3) {
@@ -571,7 +577,7 @@
         UIFont* nweFont = [UIFont systemFontOfSize:size-1];
         [dic setValue:nweFont forKey:NSFontAttributeName];
         BRUserDefault.userReadAttConfig = dic;
-        _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
+        [self reloadFontLable];
     }
     if (self.block){
         self.block();
@@ -586,7 +592,7 @@
         UIFont* nweFont = [UIFont systemFontOfSize:size+1];
         [dic setValue:nweFont forKey:NSFontAttributeName];
         BRUserDefault.userReadAttConfig = dic;
-        _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
+        [self reloadFontLable];
     }
     if (self.block){
         self.block();

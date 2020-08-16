@@ -30,6 +30,9 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _coverImgView = [[UIImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
         [self addSubview:_coverImgView];

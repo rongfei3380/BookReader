@@ -36,6 +36,10 @@
     [BRBookInfoModel getRankListWithType:type page:_page size:20 success:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         [self cacheRecords:recodes key:[NSString stringWithFormat:@"%ld", type]];
+        if(self->_page == 0) {
+            [self->_recordsArray removeAllObjects];
+        }
+        
         [self->_recordsArray addObjectsFromArray:recodes];
         [self toggleLoadMore:!(recodes.count<20)];
         [self endGetData];

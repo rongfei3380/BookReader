@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 源id
 @property(nonatomic,copy) NSNumber *siteId;
 /// 源 名称
-@property(nonatomic,copy) NSNumber *siteName;
+@property(nonatomic,copy) NSString *siteName;
 
 @property(nonatomic,copy) NSNumber *time;
 

@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// 阅读界面中的一页
-@interface BRBookReadContenViewController : BRBaseViewController
+@interface BRBookReadContenViewController : BRBaseViewController<UIGestureRecognizerDelegate>
 
 /* 该"页"需要显示的文本内容*/
 @property (nonatomic,copy) NSString* text;

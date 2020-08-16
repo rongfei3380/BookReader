@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BRChapter.h"
-
+#import "BRBookInfoModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^select)(NSInteger index);
@@ -20,7 +20,7 @@ typedef void (^selectHidden)(void);
 @interface BRChaptersView : UIView
 
 @property (nonatomic,copy) NSString* bookName;
-
+@property (nonatomic, strong) BRBookInfoModel *bookInfo;
 @property (nonatomic,strong) NSArray<BRChapter*>* chapters;
 @property (nonatomic,assign) BOOL isShowMulu;
 @property (nonatomic,assign) NSInteger currentIndex;

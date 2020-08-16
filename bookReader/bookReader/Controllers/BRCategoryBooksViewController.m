@@ -19,7 +19,7 @@
     UIButton *_selectedOverButton;
     BRBookCategory *_selectedCategory;
     
-    NSInteger _bookStatus; // 书记连载状况
+    int _bookStatus; // 书记连载状况
 }
 
 @end
@@ -119,6 +119,9 @@
 }
 
 - (void)getCategoryes {
+    
+    self.categoryArray = [self getCacheRecordsWithKey:@"BRBookCategory"];
+    
     kWeakSelf(self)
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
         kStrongSelf(self)
@@ -126,6 +129,7 @@
         if (famaleCategory.count > 0) {
             [array addObject:famaleCategory.firstObject];
         }
+        [self cacheRecords:array key:@"BRBookCategory"];
         
         self.categoryArray = [array copy];
         
@@ -139,6 +143,7 @@
 - (void)getBooksWithCategory:(BRBookCategory *)category page:(NSInteger)page{
     
     if (page == 0 && _recordsArray.count == 0) {
+        [_recordsArray removeAllObjects];
         [_recordsArray addObjectsFromArray:[self getCacheRecordsWithKey:category.categoryId.stringValue]];
         [self.tableView reloadData];
     }
@@ -214,13 +219,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!_categoryArray || _categoryArray.count == 0) {
-        [self  getCategoryes];
-    } else {
-        [self createCategoryViewIfNeed];
+    if (self.isFirstLoad) {
+        if (!_categoryArray || _categoryArray.count == 0) {
+            [self  getCategoryes];
+        } else {
+            [self createCategoryViewIfNeed];
+        }
     }
-    
-    
 }
 
 #pragma mark-  setter

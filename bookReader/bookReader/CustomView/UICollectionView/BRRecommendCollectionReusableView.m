@@ -26,6 +26,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, 20, SCREEN_WIDTH-20*2, (114/335.f)*(SCREEN_WIDTH -20*2))];
         cycleScrollView.backgroundColor = [UIColor clearColor];
         cycleScrollView.delegate = self;

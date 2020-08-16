@@ -25,9 +25,13 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _coverImageView = [[YYAnimatedImageView alloc] init];
         _coverImageView.clipsToBounds = YES;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _coverImageView.layer.cornerRadius = 3.f;
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];
@@ -51,7 +55,7 @@
         make.top.mas_equalTo(25);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.size.mas_equalTo(CGSizeMake(90, 120));
+        make.bottom.mas_equalTo(-25);
     }];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -60,7 +64,7 @@
         
     }];
     [_readStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(1);
+        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(3);
         make.left.right.mas_equalTo(0);
     }];
 }

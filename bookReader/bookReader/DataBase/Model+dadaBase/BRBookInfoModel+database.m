@@ -22,7 +22,10 @@
         self.categoryId = [NSNumber numberWithInt:[result intForColumn:@"category_id"]];
         self.intro = [result stringForColumn:@"book_intro"];
         self.desc = [result stringForColumn:@"book_desc"];
-        self.lastupdateDate = [result dateForColumn:@"lastupdate_time"];
+        self.lastupdate = [NSNumber numberWithInt:[result intForColumn:@"lastupdate_time"]];
+        
+        
+        self.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:self.lastupdate.integerValue];
         
         NSString *base64String = [result stringForColumn:@"sites_text"];
         if (base64String) {
@@ -32,6 +35,21 @@
         }
         
         self.siteIndex = [NSNumber numberWithInt:[result intForColumn:@"site_index"]];
+        
+        if([[result.resultDictionary allKeys] containsObject:@"lastchapter_name"]){
+            self.lastChapterName = [result stringForColumn:@"lastchapter_name"];
+        }
+        
+        if([[result.resultDictionary allKeys] containsObject:@"chapter_index"]){
+            if (![result columnIsNull:@"chapter_index"]){
+                NSInteger chapterIndex = [result intForColumn:@"chapter_index"];
+                self.chapterIndexStatus = [NSString stringWithFormat:@"已读%ld章", chapterIndex+1];
+            } else {
+                self.chapterIndexStatus = @"未读";
+            }
+        }
+       
+        
     }
     return self;
 }

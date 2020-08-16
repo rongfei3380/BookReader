@@ -193,7 +193,6 @@
     /* 章节数据开始加载时*/
     [self.viewModel startLoadData:^{
         kStrongSelf(self);
-//        [self showProgressMessage:@"加载中"];
         [self showBookLoading];
     }];
     
@@ -283,6 +282,14 @@
     self.settingView.hidden = YES;
 }
 
+- (void)hidenView {
+    if (!_toolbarView.hidden) {
+        _toolbarView.hidden = YES;
+        self.headView.hidden = YES;
+        self.settingView.hidden = YES;
+    }
+}
+
 - (void)hidenNaviBar{
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.navigationController.toolbarHidden = YES;
@@ -328,11 +335,13 @@
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    [self hidenView];
     return [self.viewModel viewControllerBeforeViewController:viewController DoubleSided:isDouble];
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    [self hidenView];
     return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
 }
 

@@ -72,7 +72,8 @@ author TEXT NOT NULL,\
 author_id INTEGER NOT NULL,\
 category_id INTEGER NOT NULL,\
 category_name TEXT NOT NULL,\
-lastupdate_time TEXT NOT NULL,\
+lastupdate_time TEXT,\
+lastchapter_name TEXT,\
 book_intro TEXT,\
 book_desc TEXT,\
 sites_text TEXT,\
@@ -80,9 +81,11 @@ site_index INTEGER,\
 user_select_time DATETIME NOT NULL\
 )"
 
-#define kBRDBInsertBookInfo(book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, user_select_time) @"INSERT OR REPLACE INTO t_book_info (book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc,user_select_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, user_select_time
+#define kBRDBInsertBookInfo(book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time,sites_text, site_index) @"INSERT OR REPLACE INTO t_book_info (book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time, sites_text, site_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time, sites_text,site_index
 
-#define kBRDBSelectBookInfo @"SELECT * FROM t_book_info order by user_select_time desc"
+//#define kBRDBSelectBookInfo @"SELECT * FROM t_book_info LEFT JOIN t_record on t_book_info.book_id=t_record.book_id order by user_select_time desc"
+
+#define kBRDBSelectBookInfo @"SELECT t_book_info.book_name,t_book_info.book_id, t_book_info.book_cover, t_book_info.author, t_book_info.author_id,t_book_info.category_id,t_book_info.category_name,t_book_info.lastupdate_time,t_book_info.lastchapter_name,t_book_info.book_intro,t_book_info.book_desc,t_book_info.sites_text,t_book_info.site_index, t_record.chapter_index,t_record.chapter_name FROM t_book_info LEFT join t_record on t_book_info.book_id=t_record.book_id order by user_select_time desc"
 
 #define kBRDBSelectBookInfoWithBookId(book_id) @"SELECT * FROM t_book_info WHERE book_id=?",book_id
 
@@ -97,14 +100,14 @@ user_select_time DATETIME NOT NULL\
 /*-----------------------------------------  t_record  ----------------------------------------------------*/
 #define kBRDBCreateRecordTable @"CREATE TABLE IF NOT EXISTS t_record(\
 id INTEGER PRIMARY KEY AUTOINCREMENT,\
-book_id TEXT NOT NULL UNIQUE,\
+book_id INTEGER NOT NULL UNIQUE,\
 chapter_index INTEGER,\
 chapter_name TEXT,\
 record_text TEXT NOT NULL,\
 record_time DATETIME NOT NULL\
 )"
 
-#define kBRDBInsertRecord(book_id, chapter_index, record_text, record_time, chapter_name) @"INSERT OR REPLACE INTO t_record (book_id, record_text, chapter_index, record_time, chapter_name) VALUES (?, ?, ?, ?, ?)",book_id, chapter_index, record_text, record_time, chapter_name
+#define kBRDBInsertRecord(book_id, chapter_index, record_text, record_time, chapter_name) @"INSERT OR REPLACE INTO t_record (book_id, chapter_index, record_text, record_time, chapter_name) VALUES (?, ?, ?, ?, ?)",book_id, chapter_index, record_text, record_time, chapter_name
 
 #define kBRDBSelectRecordWithBook_id(book_id) @"SELECT * FROM t_record WHERE book_id=? order by id LIMIT 1",book_id
 

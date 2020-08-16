@@ -26,6 +26,7 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         _coverImgView = [[UIImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
         [self addSubview:_coverImgView];
@@ -36,14 +37,14 @@
         [self addSubview:_bookNameLabel];
         
         _introLabel = [[UILabel alloc] init];
-        _introLabel.font = [UIFont systemFontOfSize:12];
+        _introLabel.font = [UIFont systemFontOfSize:13];
         _introLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
         _introLabel.numberOfLines = 2;
         _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self addSubview:_introLabel];
         
         _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.font = [UIFont systemFontOfSize:10];
+        _categoryLabel.font = [UIFont systemFontOfSize:11];
         _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
         [self addSubview:_categoryLabel];
     }

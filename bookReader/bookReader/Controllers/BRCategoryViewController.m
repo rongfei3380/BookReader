@@ -86,12 +86,9 @@
 #pragma mark- API
 
 - (void)initAllCatogery {
-    
-    NSArray *male  =  [[self getCacheRecordsWithKey:@"male"] mutableCopy];
-    NSArray *female  =  [[self getCacheRecordsWithKey:@"famale"] mutableCopy];
-    
-   _maleVC.categoryArray =  [self getCacheRecordsWithKey:@"maleCategoryes"];
-   _femaleVC.categoryArray =  [self getCacheRecordsWithKey:@"famaleCategory"];
+
+   _maleVC.categoryArray =  [self getCacheRecordsWithKey:@"male"];
+   _femaleVC.categoryArray =  [self getCacheRecordsWithKey:@"famale"];
     
     kWeakSelf(self)
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {

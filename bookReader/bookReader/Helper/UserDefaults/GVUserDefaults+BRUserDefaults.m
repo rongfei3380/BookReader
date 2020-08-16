@@ -19,16 +19,26 @@
     self.userReadAttConfigData = [NSKeyedArchiver archivedDataWithRootObject:userReadAttConfig];
 }
 
+- (UIImage *)imageResize :(UIImage*)img andResizeTo:(CGSize)newSize {
+    CGFloat scale = [[UIScreen mainScreen]scale];
+    //UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, scale);
+    [img drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 - (UIColor *)readBackColor{
-    UIColor *color1 = CFUIColorFromRGBAInHex(0xf5f5f2, 1);
+    UIColor *color1 = CFUIColorFromRGBAInHex(0xf7f7f7, 1);
     UIColor *color2 = CFUIColorFromRGBAInHex(0xa39e8b, 1);
     UIColor *color3 = CFUIColorFromRGBAInHex(0xfbe1e1, 1);
     UIColor *color4 = CFUIColorFromRGBAInHex(0xd5e7c8, 1);
 
-    UIColor *color5 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_one"]];
-    UIColor *color6 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_two"]];
-    UIColor *color7 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_three"]];
-    UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_four"]];
+    UIColor *color5 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_one"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
+    UIColor *color6 = [UIColor colorWithPatternImage: [self imageResize:[UIImage imageNamed:@"reading_bg_two"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
+    UIColor *color7 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_three"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
+    UIColor *color8 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_four"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
     
     NSArray *colorArray = @[color1, color2, color3, color4, color5, color6, color7, color8];
     
@@ -37,7 +47,7 @@
 }
 
 - (void)setReadBackColor:(UIColor *)readBackColor{
-    UIColor *color1 = CFUIColorFromRGBAInHex(0xf5f5f2, 1);
+    UIColor *color1 = CFUIColorFromRGBAInHex(0xf7f7f7, 1);
     UIColor *color2 = CFUIColorFromRGBAInHex(0xa39e8b, 1);
     UIColor *color3 = CFUIColorFromRGBAInHex(0xfbe1e1, 1);
     UIColor *color4 = CFUIColorFromRGBAInHex(0xd5e7c8, 1);
@@ -48,7 +58,7 @@
     UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli4_def"]];
    
     NSInteger index = 0;
-    if (CGColorEqualToColor(readBackColor.CGColor, CFUIColorFromRGBAInHex(0xf5f5f2, 1).CGColor)){
+    if (CGColorEqualToColor(readBackColor.CGColor, CFUIColorFromRGBAInHex(0xf7f7f7, 1).CGColor)){
         index = 0;
         
     } else if (CGColorEqualToColor(readBackColor.CGColor, CFUIColorFromRGBAInHex(0xa39e8b, 1).CGColor)){

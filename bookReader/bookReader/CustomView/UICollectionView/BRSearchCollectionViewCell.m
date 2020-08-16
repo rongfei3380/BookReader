@@ -21,6 +21,9 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         UIImageView *icon = [[UIImageView alloc] init];
         icon.image = [UIImage imageNamed:@"icon_search_recommend"];
         [self addSubview:icon];

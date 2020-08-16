@@ -61,16 +61,12 @@
         
         book.lastChapterName = apiBook.lastChapterName;
         book.lastChapterId = apiBook.lastChapterId;
+        book.lastupdate = apiBook.lastupdate;
+        book.lastupdateDate = apiBook.lastupdateDate;
         
-        BRBookRecord* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:book.bookId.stringValue];
-            /* 有阅读记录*/
-           if (model){
-               book.chapterIndexStatus = [NSString stringWithFormat:@"已读%ld章", model.chapterIndex+1];
-           }else{
-               book.chapterIndexStatus = @"未读";
-           }
-                       
-    }    
+        [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:book];
+
+    }
     [self.collectionView reloadData];
 }
 
@@ -251,25 +247,26 @@
         }];
         
         return view;
-    } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
-        if (!_countLabel) {
-            _countLabel = [[UILabel alloc] init];
-            _countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-            _countLabel.font = [UIFont systemFontOfSize:12];
-            _countLabel.textAlignment = NSTextAlignmentCenter;
-            [view addSubview:_countLabel];
-            [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.mas_offset(0);
-                make.height.mas_offset(15);
-                make.left.right.mas_offset(0);
-            }];
-        }
-        
-        _countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
-        
-        return view;
     }
+//    else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+//        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
+//        if (!_countLabel) {
+//            _countLabel = [[UILabel alloc] init];
+//            _countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+//            _countLabel.font = [UIFont systemFontOfSize:12];
+//            _countLabel.textAlignment = NSTextAlignmentCenter;
+//            [view addSubview:_countLabel];
+//            [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//                make.centerY.mas_offset(0);
+//                make.height.mas_offset(15);
+//                make.left.right.mas_offset(0);
+//            }];
+//        }
+//
+//        _countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
+//
+//        return view;
+//    }
     return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
 }
 
@@ -278,19 +275,21 @@
     return CGSizeMake(SCREEN_WIDTH, SCREEN_WIDTH*(152/375.f));
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
-    if (_recordsArray.count) {
-        return CGSizeMake(SCREEN_WIDTH, 60);
-    } else {
-        return CGSizeMake(SCREEN_WIDTH,0);
-    }
-    
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+//    if (_recordsArray.count) {
+//        return CGSizeMake(SCREEN_WIDTH, 60);
+//    } else {
+//        return CGSizeMake(SCREEN_WIDTH,0);
+//    }
+//
+//}
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     CGSize size = CGSizeZero;
     if (self.isShelf) {
-        size = CGSizeMake(90, 120+50);
+        CGFloat itemWidth = (SCREEN_WIDTH -34*2 -20*2)/3.f;
+        CGFloat itemHeight = itemWidth*(120/90.f);
+        size = CGSizeMake(itemWidth, itemHeight+50);
     } else {
         size = CGSizeMake(SCREEN_WIDTH, kBookShelfLongCollectionViewCellHeight);
     }

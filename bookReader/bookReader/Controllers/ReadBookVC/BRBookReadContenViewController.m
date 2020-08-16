@@ -27,7 +27,7 @@
 @implementation BRBookReadContenViewController
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    if (BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStyleScroll) {
+    if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStyleScroll) {
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotifyReadContentTouchEnd object:nil];
     }
 }

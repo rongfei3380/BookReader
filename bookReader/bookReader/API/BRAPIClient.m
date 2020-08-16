@@ -370,11 +370,11 @@
     }
     
     
-    [self sendRequest:CFHTTPRequestMethodGET path:@"" parameters:paramDic success:^(id  _Nonnull dataBody) {
-        
-    } failure:^(NSError * _Nonnull error) {
-        
-    }];
+//    [self sendRequest:CFHTTPRequestMethodGET path:@"" parameters:paramDic success:^(id  _Nonnull dataBody) {
+//        
+//    } failure:^(NSError * _Nonnull error) {
+//        
+//    }];
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];
     
@@ -393,7 +393,7 @@
         if (failureBlock){
             failureBlock(error);
         }
-        NSLog(@"error : %@", error);
+        CFDebugLog(@"error : %@", error);
     }];
 }
 

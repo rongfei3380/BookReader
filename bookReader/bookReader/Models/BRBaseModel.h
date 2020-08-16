@@ -16,7 +16,7 @@ typedef void (^BRObjectSuccessBlock) (NSArray *recodes);
 typedef void (^BRObjectFailureBlock) (NSError *error);
 
 
-@interface BRBaseModel : NSObject
+@interface BRBaseModel : NSObject<NSCoding>
 
 /**
  数据解析

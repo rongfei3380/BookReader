@@ -332,19 +332,23 @@
 - (void)showChaptersView {
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, self.view.frame.size.height -CGRectGetMaxY(self.headView.frame))];
-        BRSite *site = [_sitesArray firstObject];
-           if (site) {
-               kWeakSelf(self)
-               [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
-                   
-                   self->_chaptersView.chapters = recodes;
-                   
-                   [self.view addSubview:self->_chaptersView];
-               } failureBlock:^(NSError * _Nonnull error) {
-                   kStrongSelf(self)
-                   [self showErrorMessage:error];
-               }];
-           }
+        
+        BRSite *site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+       if (site) {
+           kWeakSelf(self)
+           [self showProgressMessage:@"正在获取章节信息..."];
+           [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
+               kStrongSelf(self)
+               [self hideProgressMessage];
+               self->_chaptersView.chapters = recodes;
+               self->_chaptersView.bookInfo = self.bookInfo;
+               [self.view addSubview:self->_chaptersView];
+           } failureBlock:^(NSError * _Nonnull error) {
+               kStrongSelf(self)
+               [self hideProgressMessage];
+               [self showErrorMessage:error];
+           }];
+       }
     }
     kWeakSelf(self);
     _chaptersView.didSelectChapter = ^(NSInteger index) {
@@ -366,17 +370,19 @@
 }
 
 - (void)addBookModel {
+    
     [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:self.bookInfo];
-    
-    // 如果有源 则更新源
-    if (_sitesArray.count) {
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:_sitesArray curSiteIndex:0];
-    }
-    
+    [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self.bookInfo.sitesArray curSiteIndex:self.bookInfo.siteIndex.integerValue];
     
     /* 添加书本章节缓存*/
-//    if ([[BRDataBaseManager sharedInstance] sel:self.model.book_url].count == 0)
-//        [self.bookApi chapterListWithBook:self.model Success:nil Fail:nil];
+    BRSite *site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+    if (site) {
+        [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
+              
+        } failureBlock:^(NSError * _Nonnull error) {
+             
+        }];
+    }
 }
 
 - (void)changeSddShelfBtnStatus {
@@ -415,39 +421,50 @@
 
 #pragma mark- API
 
-- (void)getBookInfo {
+- (void)getBookInfoAndSites {
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_enter(group);
     
-    self.selectedSiteIndex = 0;
+     self.selectedSiteIndex = 0;
     BRBookInfoModel *dataBaseBook = [[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:self.bookInfo.bookId];
-    
-    kWeakSelf(self);
+       
+   kWeakSelf(self);
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
         kStrongSelf(self);
+        dispatch_group_leave(group);
+
         self.bookInfo = bookInfo;
         self.bookInfo.siteIndex = dataBaseBook.siteIndex;
+        
         [self createBookInfoViewIfNeed];
+        
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
         [self showErrorMessage:error];
     }];
-}
-
-/// 获取书本的源
-- (void)getSites {
-    kWeakSelf(self);
+    
+    dispatch_group_enter(group);
+    
     [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self);
+        dispatch_group_leave(group);
+        
         self->_sitesArray = [recodes mutableCopy];
-        self->_bookInfo.sitesArray = self->_sitesArray;
-
         
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self->_sitesArray curSiteIndex:_bookInfo.siteIndex.intValue];
         
-       } failureBlock:^(NSError * _Nonnull error) {
+    } failureBlock:^(NSError * _Nonnull error) {
            kStrongSelf(self)
            [self showErrorMessage:error];
     }];
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^(){
+        kStrongSelf(self)
+        self->_bookInfo.sitesArray = self->_sitesArray;
+    });
+
+
 }
+
 
 #pragma mark- sette
 - (void)setBookInfo:(BRBookInfoModel *)bookInfo {
@@ -543,9 +560,6 @@
         make.width.offset(SCREEN_WIDTH);
     }];
 
-
-    
-    
     
     [self createBookInfoViewIfNeed];
     [self createActionButtons];
@@ -562,11 +576,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if(self.isFirstLoad) {
-        [self getBookInfo];
-        [self getSites];
+        [self getBookInfoAndSites];
     }
-    
-    
 }
 
 #pragma mark- UICollectionViewDelegate

@@ -12,6 +12,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "BRChapter.h"
 #import "BRMessageHUD.h"
+#import "CFDataUtils.h"
 
 @interface BRChaptersView ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -134,7 +135,8 @@
             return;
         }
         
-        NSIndexPath* index = [NSIndexPath indexPathForRow:self.dataArray.count - self.currentIndex - 1 inSection:0];
+//        NSIndexPath* index = [NSIndexPath indexPathForRow:self.dataArray.count - self.currentIndex - 1 inSection:0];
+        NSIndexPath* index = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
@@ -143,6 +145,11 @@
     _bookName = bookName;
     
     self.bookNameLabel.text = _bookName;
+}
+
+- (void)setBookInfo:(BRBookInfoModel *)bookInfo {
+    _bookInfo = bookInfo;
+    self.updateTimeLabel.text = [NSString stringWithFormat:@"更新于 %@", [CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate]];
 }
 
 - (void)setChapters:(NSArray<BRChapter *> *)chapters {
@@ -189,8 +196,7 @@
     return self.dataArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell"];
     if (!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"titleCell"];
@@ -200,7 +206,7 @@
     
     
     BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld.%@", row, chapter.name];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@", chapter.name];
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     
     if (row - 1 == self.currentIndex){
@@ -212,7 +218,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     if (self.didSelectChapter){

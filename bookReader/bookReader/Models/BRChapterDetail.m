@@ -60,21 +60,21 @@
         if (successBlock) {
             successBlock(dbDetai);
         }
+    } else {
+        [[BRAPIClient sharedInstance] getChapterContentWithBookId:bookId chapterId:chapterId siteId:siteId sucess:^(id  _Nonnull dataBody) {
+            if (successBlock) {
+                
+                BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
+                [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
+                
+                successBlock(chapterDetail);
+            }
+        } failureBlock:^(NSError * _Nonnull error) {
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        }];
     }
-    
-    [[BRAPIClient sharedInstance] getChapterContentWithBookId:bookId chapterId:chapterId siteId:siteId sucess:^(id  _Nonnull dataBody) {
-        if (successBlock) {
-            
-            BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
-            [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
-            
-            successBlock(chapterDetail);
-        }
-    } failureBlock:^(NSError * _Nonnull error) {
-        if (failureBlock) {
-            failureBlock(error);
-        }
-    }];
 }
 
 @end

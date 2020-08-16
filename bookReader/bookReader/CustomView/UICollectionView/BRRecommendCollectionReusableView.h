@@ -17,7 +17,7 @@
 
 @end
 
-#define kRecommendCollectionReusableViewHeight 228
+#define kRecommendCollectionReusableViewHeight (114/335.f)*(SCREEN_WIDTH -20*2)+ (20 +55 +25+20)
 
 
 NS_ASSUME_NONNULL_BEGIN

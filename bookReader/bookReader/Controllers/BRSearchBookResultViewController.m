@@ -24,6 +24,11 @@
         kStrongSelf(self)
         [self->_recordsArray addObjectsFromArray:recodes];
         [self.tableView reloadData];
+        
+        if (recodes.count == 0 ) {
+            [self showErrorStatus:@"未搜索到该书籍"];
+        }
+        
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
         [self showErrorMessage:error];

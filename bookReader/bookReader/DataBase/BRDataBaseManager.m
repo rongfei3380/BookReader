@@ -88,12 +88,18 @@
 #pragma mark- book info 书本内容
 
 - (BOOL)saveBookInfoWithModel:(BRBookInfoModel *)model {
-    if (!model) {
+    if (!model || model.bookId.integerValue <= 0) {
         return NO;
     }
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
         if ([db open]) {
-            BOOL insert = [db executeUpdate:kBRDBInsertBookInfo(model.bookName, model.bookId, model.cover, model.author, model.authorId, model.categoryId, model.categoryName, model.lastupdate, model.intro, model.desc, [NSDate date])];
+            NSArray *sites = model.sitesArray;
+            NSString *sitesString = [sites yy_modelToJSONString];
+            NSData *encodeData = [sitesString dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *base64String = [encodeData base64EncodedStringWithOptions:0];
+            
+            
+            BOOL insert = [db executeUpdate:kBRDBInsertBookInfo(model.bookName, model.bookId, model.cover, model.author, model.authorId, model.categoryId, model.categoryName, model.lastupdate, model.intro, model.desc, model.lastChapterName, [NSDate date], base64String, model.siteIndex)];
             if (!insert) {
                 CFDebugLog(@"insert bookInfoModel book_name = %@, error:%@", model.bookName, [db lastErrorMessage]);
             }

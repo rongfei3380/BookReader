@@ -19,7 +19,7 @@
              @"cover":@"cover",
              @"author":@"author",
              @"categoryId":@"categoryid",
-             @"lastupdate":@"lastupdate",
+             @"lastupdate":@[@"lastupdate",@"lastupdate_time"],
              @"intro":@"intro",
              @"authorId":@"authorid",
              @"otherBooks":@"list",
@@ -27,7 +27,8 @@
              @"desc":@"caption",
              @"isOver":@"isover",
              @"lastChapterId":@"lastChapterId",
-             @"lastChapterName":@"lastchaptername"
+             @"lastChapterName":@"lastchaptername",
+             @"lastupdateDate":@"lastupdate"
     };
 }
 + (nullable NSDictionary*)modelContainerPropertyGenericClass {

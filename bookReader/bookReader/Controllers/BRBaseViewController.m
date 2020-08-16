@@ -142,8 +142,9 @@
 - (void)cacheRecords:(NSArray *)records key:(NSString *)key {
     NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) firstObject];
     
-    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:@"RecordsCache"]];
-
+    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:NSStringFromClass([self class])] inlineThreshold:0];
+   
+    
     NSString *cacheKey = nil;
    if (key) {
        cacheKey =[NSString stringWithFormat:@"%@_%@", NSStringFromClass([self class]), key];
@@ -151,25 +152,25 @@
        cacheKey = NSStringFromClass([self class]);
    }
    
-   [recordsCache removeObjectForKey:cacheKey withBlock:^(NSString * _Nonnull key) {
-       
-   }];
-    
-
-    [recordsCache setObject:records forKey:cacheKey withBlock:^{
-            
-    }];
-
-    
-
+//   [recordsCache removeObjectForKey:cacheKey withBlock:^(NSString * _Nonnull key) {
+//
+//   }];
+    [recordsCache setObject:records forKey:cacheKey];
 }
 
 /// 获取缓存的数据
 - (NSArray *)getCacheRecordsWithKey:(NSString *)key {
-    
-    
+        
     NSString *basePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) firstObject];
-    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:@"RecordsCache"]];
+        
+    YYDiskCache *recordsCache = [[YYDiskCache alloc] initWithPath:[basePath stringByAppendingPathComponent:NSStringFromClass([self class])] inlineThreshold:0];
+    
+//    recordsCache.customArchiveBlock   = ^(id object) {
+//        return object;
+//    };
+//    recordsCache.customUnarchiveBlock = ^(NSData *object) {
+//        return object;
+//    };
 
     
     NSString *cacheKey = nil;
@@ -178,11 +179,14 @@
     } else {
         cacheKey = NSStringFromClass([self class]);
     }
-    [recordsCache objectForKey:cacheKey withBlock:^(NSString * _Nonnull key, id<NSCoding>  _Nullable object) {
-        
-    }];
     
-    NSArray *array =  [recordsCache objectForKey:cacheKey];
+    
+    id object = (id)[recordsCache objectForKey:cacheKey];
+    
+    NSMutableArray *array = [NSMutableArray array];
+    if (object) {
+        [array addObjectsFromArray:object];
+    }
     return array;
 
 }
@@ -271,34 +275,52 @@
 }
 
 - (void)showErrorMessage:(NSError *)error withDelay:(NSTimeInterval)delay {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-       UIImage *image = [[UIImage imageNamed:@"error"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-       
-       UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-       
-       hud.customView = imageView;
-       hud.mode = MBProgressHUDModeCustomView;
-       
-       hud.label.text = [self generateErrorMessage:error];
-       
-       [hud hideAnimated:YES afterDelay:delay];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.bezelView.color = CFUIColorFromRGBAInHex(0x000000, 1);
+    hud.mode = MBProgressHUDModeCustomView;
+    hud.bezelView.blurEffectStyle = UIBlurEffectStyleDark;
+    hud.label.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    hud.label.text = [self generateErrorMessage:error];
+    [hud hideAnimated:YES afterDelay:delay];
 }
 
 - (void)showProgressMessage:(NSString *)message {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-    // Set some text to show the initial status.
-    hud.label.text = message;
-    // Will look best, if we set a minimum size.
-    hud.minSize = CGSizeMake(150.f, 100.f);
-
-    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
-        // Do something useful in the background and update the HUD periodically.
-//        [self doSomeWorkWithMixedProgress:hud];
-        dispatch_async(dispatch_get_main_queue(), ^{
-//            [hud hideAnimated:YES];
-        });
-    });
+    [self hideBookLoading];
+    
+    _loadingAnimationView = [LOTAnimationView animationNamed:@"bookLoading.json" inBundle:[NSBundle mainBundle]];
+    _loadingAnimationView.frame = CGRectMake(20, 20, 25, 25);
+    _loadingAnimationView.loopAnimation = YES;
+    
+    
+    _bookLoadingView = [[UIView alloc] init];
+    _bookLoadingView.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.8);
+    _bookLoadingView.clipsToBounds = YES;
+    _bookLoadingView.layer.cornerRadius = 5.f;
+    [_bookLoadingView addSubview:_loadingAnimationView];
+    [_loadingAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.centerY.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(30, 30));
+    }];
+    
+    [_loadingAnimationView play];
+    [self.view addSubview:_bookLoadingView];
+    
+    [_bookLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.mas_equalTo(0);
+        make.height.mas_equalTo(60);
+    }];
+    
+    UILabel *contenLabel = [[UILabel alloc] init];
+    contenLabel.text = message;
+    contenLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    contenLabel.font = [UIFont systemFontOfSize:20];
+    [_bookLoadingView addSubview:contenLabel];
+    [contenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_loadingAnimationView.mas_right).offset(10);
+        make.right.mas_equalTo(-20);
+        make.centerY.mas_equalTo(0);
+    }];
 }
 
 - (void)showProgressMessage:(NSString *)message closable:(BOOL)closable {
@@ -313,17 +335,15 @@
 }
 
 - (void)hideProgressMessage {
-    dispatch_async(dispatch_get_main_queue(), ^{
-//        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
-//        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.view];
-//        UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//        UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-//        hud.customView = imageView;
-//        hud.mode = MBProgressHUDModeCustomView;
-//        hud.label.text = NSLocalizedString(@"Completed", @"HUD completed title");
-//        [hud hideAnimated:YES afterDelay:3.f];
-    });
+    if (_bookLoadingView && _bookLoadingView.superview) {
+           
+           [_loadingAnimationView stop];
+           [_loadingAnimationView removeFromSuperview];
+           _loadingAnimationView = nil;
+           
+           [_bookLoadingView removeFromSuperview];
+           _bookLoadingView = nil;
+       }
 }
 
 

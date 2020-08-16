@@ -9,29 +9,73 @@
 #import "BRSearchBookViewController.h"
 #import "BRDataBaseManager.h"
 #import "BRSearchCollectionViewCell.h"
+#import "BRBookListCollectionViewCell.h"
 #import "BRSearchBookResultViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "BRBookInfoViewController.h"
 
 @interface BRSearchBookViewController ()<UITextFieldDelegate> {
     UIView *_searchBackView; // 搜索框背景
     UITextField *_searchTextField; // 搜索输入框
     NSArray *_searchArray;
+    NSInteger _page;
+    BOOL _isSearchResult;
+    NSMutableArray *_searchResultArray;
+    NSString *_keyWords;
 }
 
 @end
 
 @implementation BRSearchBookViewController
 
+#pragma mark- Private
+
 - (void)initDate {
     _searchArray = [[[BRDataBaseManager sharedInstance] selectSearchHistorys] mutableCopy];
 }
 
+
+- (void)searchBookWithName:(NSString *)keyWord page:(NSInteger )page {
+    kWeakSelf(self)
+    [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
+        kStrongSelf(self)
+        self->_isSearchResult = YES;
+        [self hideProgressMessage];
+        [self->_searchResultArray addObjectsFromArray:recodes];
+        [self.collectionView reloadData];
+        
+        [self endGetData];
+        if (recodes.count == 0 ) {
+            [self showErrorStatus:@"未搜索到该书籍"];
+        }
+        
+    } failureBlock:^(NSError * _Nonnull error) {
+        kStrongSelf(self)
+        [self endGetData];
+        [self hideProgressMessage];
+        [self showErrorMessage:error];
+    }];
+}
+
+#pragma mark- Public: subclass implement
+
+- (void)reloadGridViewDataSourceForHead {
+    _page = 0;
+    [self searchBookWithName:_keyWords page:_page];
+}
+
+- (void)reloadGridViewDataSourceForFoot {
+    _page++;
+    [self searchBookWithName:_keyWords page:_page];
+}
 
 #pragma mark- init methods
 
 - (id)init {
     if (self = [super init]) {
         self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle;
+        self.enableCollectionBaseModules = CollectionBaseEnableModuleLoadmore | CollectionBaseEnableModulePullRefresh;
+        _searchResultArray = [NSMutableArray array];
         
     }
     return self;
@@ -89,6 +133,8 @@
     [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView"];
     [self.collectionView registerClass:[BRSearchCollectionViewCell class] forCellWithReuseIdentifier:@"BRSearchCollectionViewCell"];
     
+    [self.collectionView registerClass:[BRBookListCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookListCollectionViewCell"];
+    
     self.collectionView.emptyDataSetSource = nil;
     self.collectionView.emptyDataSetDelegate = nil;
 
@@ -124,18 +170,44 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (!kStringIsEmpty(textField.text)){
         [[BRDataBaseManager sharedInstance] saveSearchHistoryWithName:textField.text];
-        [self pushToBookListVCWithKeyWord:textField.text];
+//        [self pushToBookListVCWithKeyWord:textField.text];
+        [_searchTextField resignFirstResponder];
+        
+        [self showProgressMessage:@"正在搜索~~"];
+        _page = 0;
+        _keyWords = textField.text;
+        [self searchBookWithName:textField.text page:0];
+        
         return YES;
     }
     
     return NO;
 }
 
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+    _isSearchResult = NO;
+    _keyWords = nil;
+    [_searchResultArray removeAllObjects];
+    [self.collectionView reloadData];
+    return YES;
+}
+
 #pragma mark- UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *word = [_searchArray objectAtIndex:indexPath.row];
-    [self pushToBookListVCWithKeyWord:word];
+    if (indexPath.section == 0) {
+        NSString *word = [_searchArray objectAtIndex:indexPath.row];
+        [self showProgressMessage:@"正在搜索~~"];
+        _page = 0;
+        _searchTextField.text = word;
+        [self searchBookWithName:word page:0];
+    } else if (indexPath.section == 1) {
+        BRBookInfoModel *book = [_searchResultArray objectAtIndex:indexPath.row];
+        BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+        vc.bookInfo = book;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
 }
 
 
@@ -162,37 +234,93 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
 
-    NSString *word = [_searchArray objectAtIndex:indexPath.row];
-
-
-    BRSearchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRSearchCollectionViewCell" forIndexPath:indexPath];
-    cell.searchString = word;
+    if (indexPath.section == 0) {
+        NSString *word = [_searchArray objectAtIndex:indexPath.row];
+        BRSearchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRSearchCollectionViewCell" forIndexPath:indexPath];
+        cell.searchString = word;
+        return cell;
+    } else if (indexPath.section == 1) {
+        BRBookListCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRBookListCollectionViewCell" forIndexPath:indexPath];
+        BRBookInfoModel *book = [_searchResultArray objectAtIndex:indexPath.row];
+        
+        cell.bookInfo = book;
+        
+        return cell;
+    }
     
-    return cell;
+        
+    return [collectionView dequeueReusableCellWithReuseIdentifier:@"ReuseIdentifier" forIndexPath:indexPath];
 
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH, 40);
+    CGSize size = CGSizeZero;
+    if (section == 0) {
+        if (_isSearchResult) {
+            size = CGSizeMake(0, 0);
+        } else  {
+            size = CGSizeMake(SCREEN_WIDTH, 40);
+        }
+    } else if (section == 1) {
+        size = CGSizeMake(0, 0);
+    }
+    return size;
 }
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return CGSizeMake((SCREEN_WIDTH -20*2 -20)/2.f, 25);
+    CGSize size = CGSizeZero;
+    if (indexPath.section == 0) {
+        size = CGSizeMake((SCREEN_WIDTH -20*2 -20)/2.f, 25);
+    } else if (indexPath.section == 1) {
+        size = CGSizeMake(SCREEN_WIDTH, kBookListCollectionViewCellHeight);
+    }
+    
+    return size;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _searchArray.count;
+    NSInteger number = 0;
+    if (section == 0) {
+        if (_isSearchResult) {
+            number = 0;
+        } else {
+            number = _searchArray.count;
+        }
+        
+    } else {
+        number = _searchResultArray.count;
+    }
+    return number;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 2;
 }
 
 #pragma mark- UICollectionViewDelegateFlowLayout
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 24;
+    CGFloat height = 0;
+    if (section == 0) {
+        if (_isSearchResult) {
+            height = 0;
+        } else {
+            height = 24;
+        }
+    }
+    return height;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    return 5;
+    CGFloat space = 0;
+    if (section == 0) {
+        space = 5;
+    } else {
+        space = 0;
+    }
+    
+    return space;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {

@@ -27,9 +27,13 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _coverImageView = [[YYAnimatedImageView alloc] init];
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
         _coverImageView.clipsToBounds = YES;
+        _coverImageView.layer.cornerRadius = 3.f;
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];

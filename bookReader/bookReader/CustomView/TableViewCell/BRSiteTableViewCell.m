@@ -24,6 +24,9 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _siteNameLabel = [[UILabel alloc] init];
         _siteNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         _siteNameLabel.font = [UIFont systemFontOfSize:15];

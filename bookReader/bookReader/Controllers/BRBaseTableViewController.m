@@ -20,6 +20,8 @@
 - (id)init {
     if (self = [super init]) {
         _recordsArray = [NSMutableArray array];
+        self.emptyImg = [UIImage imageNamed:@"img_blank"];
+        self.emptyString = @"没有书哦~~";
     }
     return self;
 }
@@ -32,6 +34,7 @@
     _tableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _tableView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     _tableView.emptyDataSetSource = self;
     _tableView.emptyDataSetDelegate = self;
     _tableView.separatorColor = [UIColor clearColor];

@@ -22,6 +22,9 @@
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.clipsToBounds = YES;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
