@@ -64,7 +64,7 @@
 - (void)initialSubViews {
     self.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.5);
     
-    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height*(1/4.f), self.frame.size.width, self.frame.size.height*(3/4.f))];
+    self.muluView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight()+44, self.frame.size.width, self.frame.size.height-(kStatusBarHeight()+44))];
     self.muluView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     self.muluView.layer.cornerRadius = 12;
     [self addSubview:self.muluView];
@@ -94,6 +94,7 @@
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.muluView.frame.size.width, self.muluView.frame.size.height - 64) style:UITableViewStylePlain];
     self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, (isIPhoneXSeries() ? 34:0), 0);
     [self.muluView addSubview:self.tableView];
@@ -196,24 +197,23 @@
     return self.dataArray.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 40;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell"];
     if (!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"titleCell"];
     }
     
-    NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
+//    NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     
     
     BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@", chapter.name];
-    cell.textLabel.font = [UIFont systemFontOfSize:12];
-    
-    if (row - 1 == self.currentIndex){
-        cell.textLabel.textColor = [UIColor redColor];
-    }else{
-        cell.textLabel.textColor = [UIColor blackColor];
-    }
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
     
     return cell;
 }

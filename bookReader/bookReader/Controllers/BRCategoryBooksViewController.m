@@ -31,7 +31,9 @@
 - (void)createCategoryViewIfNeed {
     
     NSInteger row = _categoryArray.count/7 +_categoryArray.count%7>0 ? 1:0;
-    CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -30) /7;
+    NSInteger numOfRow = 4;
+    CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -60) /numOfRow;
+    
     
     if (!_categoryView) {
         _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*60 +40)];
@@ -43,7 +45,7 @@
        BRBookCategory *item = [_categoryArray objectAtIndex:0];
        UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
        allBtn.tag = 1000;
-       allBtn.frame = CGRectMake(10 , 10, buttonWidth -5, 30);
+       allBtn.frame = CGRectMake(10 , 10, 40, 30);
        allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
        [allBtn setTitle:item.categoryName forState:UIControlStateNormal];
        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
@@ -57,7 +59,7 @@
            BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
            UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
            itemBtn.tag = 1000 +i+1;
-           itemBtn.frame = CGRectMake(10 +buttonWidth +i%6 *buttonWidth, 10 +i/6*30, buttonWidth -5, 30);
+           itemBtn.frame = CGRectMake(10 +40+5 +i%numOfRow *buttonWidth, 10 +i/numOfRow*30, buttonWidth -5, 30);
            itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
            [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
            [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
@@ -69,7 +71,7 @@
         
         // 完结 连载
         UIButton *allOverBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        allOverBtn.frame = CGRectMake(10 , 20 +row*60, buttonWidth -5, 30);
+        allOverBtn.frame = CGRectMake(10 , 20 +row*60, 40, 30);
         allOverBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [allOverBtn setTitle:@"全部" forState:UIControlStateNormal];
         [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
@@ -81,7 +83,7 @@
         _selectedOverButton = allOverBtn;
         
         UIButton *serializeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        serializeBtn.frame = CGRectMake(10 +1*buttonWidth , 20 +row*60, buttonWidth -5, 30);
+        serializeBtn.frame = CGRectMake(10 +1*45 , 20 +row*60, 40, 30);
         serializeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [serializeBtn setTitle:@"连载" forState:UIControlStateNormal];
         [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
@@ -91,7 +93,7 @@
         [_categoryView addSubview:serializeBtn];
         
         UIButton *overBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        overBtn.frame = CGRectMake(10 +2*buttonWidth , 20 +row*60, buttonWidth -5, 30);
+        overBtn.frame = CGRectMake(10 +2*45 , 20 +row*60, 40, 30);
         overBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [overBtn setTitle:@"完结" forState:UIControlStateNormal];
         [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];

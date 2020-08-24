@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "BRTabBarViewController.h"
 #import <UMCommon/UMConfigure.h>
+#import <Bugly/Bugly.h>
+
 
 @interface AppDelegate ()
 
@@ -20,7 +22,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [UMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
+    [UMConfigure setLogEnabled:YES];
 
+
+    [Bugly startWithAppId:@"61d703cac5"];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];

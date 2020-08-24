@@ -9,6 +9,7 @@
 #import "BRChapterDetail.h"
 #import "BRAPIClient.h"
 #import "BRDataBaseManager.h"
+#import "DBGHTMLEntityDecoder.h"
 
 @implementation BRChapterDetail
 
@@ -32,7 +33,10 @@
     BRChapterDetail *item = [[BRChapterDetail alloc] initWithAttributes:dic];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/><br/>" withString:@"<br/>"];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    
+    if (item.content) {
+        DBGHTMLEntityDecoder *decoder = [[DBGHTMLEntityDecoder alloc] init];
+        item.content = [decoder decodeString:item.content];
+    }
     return item;
 }
 

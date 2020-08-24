@@ -176,6 +176,7 @@
         [self showProgressMessage:@"正在搜索~~"];
         _page = 0;
         _keyWords = textField.text;
+        [_searchResultArray removeAllObjects];
         [self searchBookWithName:textField.text page:0];
         
         return YES;

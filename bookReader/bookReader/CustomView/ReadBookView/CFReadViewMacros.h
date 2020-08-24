@@ -16,11 +16,11 @@
 
 // 2. 阅读区域
 #define kReadContentOffSetX 15
-#define kReadContentOffSetY 12
+#define kReadContentOffSetY 18
 
 // 3. 状态区
 #define kReadStatusOffSetX 15
-//#define kReadStatusHeight  (isIPhoneXSeries() ? (25+34) : 25)
-#define kReadStatusHeight 34
+#define kReadStatusHeight  (isIPhoneXSeries() ? (25+69) : 69)
+//#define kReadStatusHeight 94
 
 #endif /* CFReadViewMacros_h */

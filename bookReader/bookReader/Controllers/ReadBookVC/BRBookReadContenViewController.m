@@ -87,10 +87,10 @@
     _indexLabel.textAlignment = NSTextAlignmentRight;
     [self.view addSubview:_indexLabel];
     
-    _timeLabel = [[UILabel alloc] init];
-    _timeLabel.font = [UIFont systemFontOfSize:12];
-    _timeLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
-    [self.view addSubview:_timeLabel];
+//    _timeLabel = [[UILabel alloc] init];
+//    _timeLabel.font = [UIFont systemFontOfSize:12];
+//    _timeLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
+//    [self.view addSubview:_timeLabel];
     
     [self initialData];
 }
@@ -109,11 +109,11 @@
         make.width.mas_equalTo(150);
     }];
     
-    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-8);
-        make.left.mas_equalTo(15);
-        make.right.equalTo(self->_indexLabel.mas_left).offset(-8);
-    }];
+//    [_timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.mas_equalTo(-8);
+//        make.left.mas_equalTo(15);
+//        make.right.equalTo(self->_indexLabel.mas_left).offset(-8);
+//    }];
     
     CGFloat offSetBottom = kReadStatusHeight*(-1);
     [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {

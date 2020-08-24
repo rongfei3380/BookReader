@@ -29,5 +29,6 @@ target 'bookReader' do
   pod 'FTPopOverMenu'
   pod 'UMCCommon'
   pod 'lottie-ios', '~> 2.5.3'
-  
+  pod 'Bugly'
+  pod "DBGHTMLEntities"
 end

@@ -134,7 +134,7 @@
         self.brightnessView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:BRUserDefault.readBrightness];
     };
     
-    [self.view addSubview:self.settingView];
+    [self.view insertSubview:self.settingView aboveSubview:self.headView];
     [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.mas_equalTo(0);
         make.bottom.mas_equalTo(self.toolbarView.mas_top).offset(0);
@@ -168,11 +168,13 @@
    [self initialSubViewConstraints];
    [self initialData];
     self.isFirstLoad = YES;
+    self.headView.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     
     if (!self.isFirstLoad){
+        [self hidenView];
         self.settingView.hidden = YES;
     }
     [super viewDidAppear:animated];
@@ -257,8 +259,7 @@
     self.settingView.hidden = !self.settingView.hidden;
 }
 
-- (void)changeNightStyle
-{
+- (void)changeNightStyle {
     BOOL isNight = BRUserDefault.isNightStyle;
     
 //    if (isNight){

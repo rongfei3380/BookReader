@@ -19,7 +19,7 @@
 #import "UIView+Corner.h"
 #import "UIImage+ImageEffects.h"
 #import "BRSitesSelectViewController.h"
-
+#import "DBGHTMLEntityDecoder.h"
 
 @interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource, BRSitesSelectViewControllerDelegate>{
     
@@ -159,8 +159,9 @@
     _categoryLabel.text = [NSString stringWithFormat:@"类型：%@",self.bookInfo.categoryName];
     _authorLabel.text = [NSString stringWithFormat:@"作者：%@",self.bookInfo.author];
     _statusLabel.text = [NSString stringWithFormat:@"状态：%@", self.bookInfo.isOver.boolValue ? @"完结":@"连载"];
-    
-    _updateTimeLabel.text = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
+    NSString *lastChapter = self.bookInfo.lastChapterName;
+    NSString *updateTime = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
+    _updateTimeLabel.text = [NSString stringWithFormat:@"%@.%@", lastChapter, updateTime];
 }
 
 - (void)createActionButtons {
@@ -331,7 +332,7 @@
 
 - (void)showChaptersView {
     if (!_chaptersView) {
-        _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.headView.frame), SCREEN_WIDTH, self.view.frame.size.height -CGRectGetMaxY(self.headView.frame))];
+        _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
         
         BRSite *site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
        if (site) {

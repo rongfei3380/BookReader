@@ -29,6 +29,7 @@
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         _coverImgView = [[UIImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
+        _coverImgView.layer.cornerRadius = 3.f;
         [self addSubview:_coverImgView];
         
         _bookNameLabel = [[UILabel alloc] init];
@@ -61,7 +62,7 @@
     [super layoutSubviews];
 
     [_coverImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(65, 86));
+        make.size.mas_equalTo(CGSizeMake(76, 100));
         make.left.mas_equalTo(18);
         make.centerY.mas_equalTo(0);
     }];
@@ -82,7 +83,8 @@
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
         make.height.mas_equalTo(15);
-        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
+        make.top.mas_equalTo(_introLabel.mas_bottom).offset(11);
+//        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
     }];
 }
 

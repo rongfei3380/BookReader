@@ -8,7 +8,7 @@
 
 #import "BRBookInfoModel.h"
 #import "BRAPIClient.h"
-
+#import "DBGHTMLEntityDecoder.h"
 
 @implementation BRBookInfoModel
 
@@ -40,6 +40,12 @@
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRBookInfoModel *item = [[BRBookInfoModel alloc] initWithAttributes:dic];
     item.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:item.lastupdate.integerValue];
+    
+    if (item.intro) {
+        DBGHTMLEntityDecoder *decoder = [[DBGHTMLEntityDecoder alloc] init];
+        item.intro = [decoder decodeString:item.intro];
+        item.intro = [item.intro stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
     if ([dic objectForKey:@"list"]) {
         item.otherBooks = [BRBookInfoModel parseDictionaryIntoRecords:[dic objectForKey:@"list"]];
     }
@@ -49,19 +55,7 @@
 
 + (NSArray *)parseDictionaryIntoRecords:(id)dataBody {
     NSMutableArray *ret = [NSMutableArray array];
-    if ([dataBody isKindOfClass:[NSDictionary class]]) {
-        NSDictionary *dataDic = (NSDictionary *)dataBody;
-        
-        // 如果有多个用户的话
-        if ([[dataDic allKeys] containsObject:@"expressions"]) {
-            NSArray *usersDicArray = (NSArray *)[dataDic objectForKey:@"expressions"];
-            for (NSDictionary *dic in usersDicArray) {
-                [ret addObject:[BRBookInfoModel parseDictionaryIntoObject:dic]];
-            }
-        } else {
-            [ret addObject:[BRBookInfoModel parseDictionaryIntoObject:dataDic]];
-        }
-    } else if ([dataBody isKindOfClass:[NSArray class]]) {
+    if ([dataBody isKindOfClass:[NSArray class]]) {
         for (NSDictionary *dic in dataBody) {
             [ret addObject:[BRBookInfoModel parseDictionaryIntoObject:dic]];
         }
