@@ -31,8 +31,12 @@
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRChapterDetail *item = [[BRChapterDetail alloc] initWithAttributes:dic];
+    item.content = [item.content stringByReplacingOccurrencesOfString:@"　　<br/><br/>" withString:@""];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/><br/>" withString:@"<br/>"];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+//    item.content = [item.content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+//    item.content = [item.content stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    
     if (item.content) {
         DBGHTMLEntityDecoder *decoder = [[DBGHTMLEntityDecoder alloc] init];
         item.content = [decoder decodeString:item.content];

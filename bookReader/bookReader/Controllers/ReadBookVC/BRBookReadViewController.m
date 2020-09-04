@@ -15,8 +15,10 @@
 #import "GVUserDefaults+BRUserDefaults.h"
 #import <Masonry.h>
 #import "BRNotificationMacros.h"
+#import "BRSitesSelectViewController.h"
+#import "BRDataBaseManager.h"
 
-@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource>
+@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate>
 
 @property(nonatomic, strong) BRBookPageViewController *bookPageVC;
 @property(nonatomic, strong) CFButtonUpDwon *nightButton;
@@ -150,6 +152,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNaviBarHidenWithAnimated) name:kNotifyReadContentTouchEnd object:nil];
 }
 
+- (void)createChangeSiteButton {
+    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [changeBtn setImage:[UIImage imageNamed:@"nav_yuan"] forState:UIControlStateNormal];
+    [changeBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.headView addSubview:changeBtn];
+    [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-5);
+        make.centerY.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+    }];
+}
+
+- (void)clickChangeBtn:(id)sender{
+    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
+    vc.bookId = self.viewModel.BRBookInfoModel.bookId;
+    vc.sitesArray = self.viewModel.BRBookInfoModel.sitesArray;
+    vc.selectedSiteIndex = self.viewModel.BRBookInfoModel.siteIndex.integerValue;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark- Life Cycle
 
 - (id)init {
@@ -167,6 +190,7 @@
    [self initialSubViews];
    [self initialSubViewConstraints];
    [self initialData];
+    [self createChangeSiteButton];
     self.isFirstLoad = YES;
     self.headView.hidden = YES;
 }
@@ -374,5 +398,12 @@
 //{
 //    return self.navigationController.navigationBarHidden;
 //}
+#pragma mark-BRSitesSelectViewControllerDelegate
+
+- (void)sitesSelectViewController:(NSInteger)index {
+    self.viewModel.BRBookInfoModel.siteIndex = [NSNumber numberWithInteger:index];
+    [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:self.viewModel.BRBookInfoModel.sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.intValue];
+    [self.viewModel reloadContentViews];
+}
 
 @end

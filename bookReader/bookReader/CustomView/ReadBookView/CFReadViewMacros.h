@@ -20,7 +20,7 @@
 
 // 3. 状态区
 #define kReadStatusOffSetX 15
-#define kReadStatusHeight  (isIPhoneXSeries() ? (25+69) : 69)
+#define kReadStatusHeight  (isIPhoneXSeries() ? (25+30) : 30)
 //#define kReadStatusHeight 94
 
 #endif /* CFReadViewMacros_h */

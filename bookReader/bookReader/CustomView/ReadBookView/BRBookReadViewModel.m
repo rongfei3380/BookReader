@@ -63,6 +63,20 @@
 
 #pragma mark- data
 
+- (void)getSitesWithBook:(BRBookInfoModel *)model {
+    kWeakSelf(self)
+    [BRSite getSiteListWithBookId:model.bookId sucess:^(NSArray * _Nonnull recodes) {
+        kStrongSelf(self)
+        self.sitesArray = [recodes mutableCopy];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:model.bookId sites:self.sitesArray curSiteIndex:0];
+        [self initiaData];
+    } failureBlock:^(NSError * _Nonnull error) {
+        if (self.loadFail){
+            self.loadFail(error);
+        }
+    }];
+}
+
 /**
 * 初始化时应该完成的事情有:
 * 查询数据库中是否有当前书缓存的章节信息,没有则去查询,有则先使用缓存,并后台更新缓存
@@ -78,21 +92,25 @@
         self.sitesArray = dbModel.sitesArray;
     }
     
-    /* 去数据库查找是否有本地缓存的章节信息*/
-    BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
-    NSArray* arr = [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:self.bookModel.bookId siteId:site.siteId];
-    if (arr.count >= 1){
-        
-//        /* 已有章节缓存,去查找阅读记录*/
-        self.chaptersArray = [NSArray arrayWithArray:arr];
-        [self initialRecord];
-        [self loadChaptersWithRecord:YES];
-    }else{
-        
-        /* 没有章节缓存,去加载章节内容*/
-        [self loadChaptersWithRecord:NO];
+    if (!self.sitesArray) {
+        [self getSitesWithBook:dbModel];
+    } else {
+     /* 去数据库查找是否有本地缓存的章节信息*/
+        BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
+        NSArray* arr = [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:self.bookModel.bookId siteId:site.siteId];
+        if (arr.count >= 1){
+            
+    //        /* 已有章节缓存,去查找阅读记录*/
+            self.chaptersArray = [NSArray arrayWithArray:arr];
+            [self initialRecord];
+            [self loadChaptersWithRecord:YES];
+        }else{
+            
+            /* 没有章节缓存,去加载章节内容*/
+            [self loadChaptersWithRecord:NO];
+        }
     }
-    
+
 }
 
 

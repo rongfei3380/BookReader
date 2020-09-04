@@ -63,6 +63,9 @@
     return [NSArray arrayWithArray:ret];
 }
 
+#pragma mark- setter
+
+
 #pragma mark- API
 
 + (void)getbookinfoWithBookId:(NSInteger)bookid

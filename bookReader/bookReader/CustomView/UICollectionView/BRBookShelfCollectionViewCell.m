@@ -55,7 +55,7 @@
         make.top.mas_equalTo(25);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-25);
+        make.bottom.mas_equalTo(-40);
     }];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {

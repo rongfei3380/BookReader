@@ -33,7 +33,7 @@
 #pragma mark-private
 
 - (void)initData {
-    self.emptyString = @"书架还是空的哦～";
+    self.emptyString = @"空空如也\n快去书城添加书吧";
    _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
     _apiBooksDict = [[NSMutableDictionary alloc] init];
     self.isShelf = BRUserDefault.isShelfStyle;
@@ -89,7 +89,8 @@
             [self updateBooksInfo];
             [self endGetData];
         } failureBlock:^(NSError * _Nonnull error) {
-            
+            kStrongSelf(self)
+             [self endGetData];
         }];
     }
 }
@@ -100,6 +101,8 @@
     self = [super init];
     if (self) {
         self.enableCollectionBaseModules = CollectionBaseEnableModulePullRefresh;
+        self.emptyImg = [UIImage imageNamed:@"img_blank"];
+        [[BRDataBaseManager sharedInstance] addDefaultBooks];
     }
     
     return self;
@@ -157,6 +160,10 @@
 
 
 - (void)reloadGridViewDataSourceForHead {
+    if (_recordsArray.count == 0) {
+        [self endGetData];
+        return;
+    }
     [self getBookInfoOnShelf];
 }
 
@@ -272,7 +279,7 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH, SCREEN_WIDTH*(152/375.f));
+    return CGSizeMake(SCREEN_WIDTH, SCREEN_WIDTH*(210.f/375.f));
 }
 
 //- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
@@ -289,7 +296,7 @@
     if (self.isShelf) {
         CGFloat itemWidth = (SCREEN_WIDTH -34*2 -20*2)/3.f;
         CGFloat itemHeight = itemWidth*(120/90.f);
-        size = CGSizeMake(itemWidth, itemHeight+50);
+        size = CGSizeMake(itemWidth, itemHeight+25.f+40);
     } else {
         size = CGSizeMake(SCREEN_WIDTH, kBookShelfLongCollectionViewCellHeight);
     }

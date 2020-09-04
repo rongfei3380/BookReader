@@ -8,10 +8,17 @@
 
 #import "BRMineViewController.h"
 #import "BRSettingTableViewCell.h"
+#import <YWFeedbackFMWK/YWFeedbackKit.h>
+#import <YWFeedbackFMWK/YWFeedbackViewController.h>
+
+static NSString * const kAppKey = @"31185069";
+static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
 
 @interface BRMineViewController () {
     NSArray *_section0Array;
     NSArray *_section1Array;
+    
+    YWFeedbackKit *_feedbackKitt;
 }
 
 @end
@@ -21,7 +28,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        
+         _feedbackKitt = [[YWFeedbackKit alloc] initWithAppKey:kAppKey appSecret:kAppSecret];
     }
     return self;
 }
@@ -57,6 +64,44 @@
     self.tableView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);
 }
 
+- (void)openFeedbackViewController {
+    //  初始化方式,或者参考下方的`- (YWFeedbackKit *)feedbackKit`方法。
+    //  self.feedbackKit = [[YWFeedbackKit alloc] initWithAppKey:kAppKey];
+    
+    /** 设置App自定义扩展反馈数据 */
+    _feedbackKitt.extInfo = @{@"loginTime":[[NSDate date] description],
+                                 @"visitPath":@"登陆->关于->反馈",
+                                 @"userid":@"yourid",
+                                 @"应用自定义扩展信息":@"开发者可以根据需要设置不同的自定义信息，方便在反馈系统中查看"};
+    
+    __weak typeof(self) weakSelf = self;
+    [_feedbackKitt makeFeedbackViewControllerWithCompletionBlock:^(YWFeedbackViewController *viewController, NSError *error) {
+        if (viewController != nil) {
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+            [weakSelf presentViewController:nav animated:YES completion:nil];
+            
+            [viewController setCloseBlock:^(UIViewController *aParentController){
+                [aParentController dismissViewControllerAnimated:YES completion:nil];
+            }];
+        } else {
+            /** 使用自定义的方式抛出error时，此部分可以注释掉 */
+            NSString *title = [error.userInfo objectForKey:@"msg"]?:@"接口调用失败，请保持网络通畅！";
+            [self showErrorStatus:title];
+//            [[TWMessageBarManager sharedInstance] showMessageWithTitle:title
+//                                                           description:nil
+//                                                                  type:TWMessageBarMessageTypeError];
+        }
+    }];
+    
+//    /** 使用自定义的方式抛出error */
+//    [_feedbackKitt setYWFeedbackViewControllerErrorBlock:^(YWFeedbackViewController *viewController, NSError *error) {
+//        NSString *title = [error.userInfo objectForKey:@"msg"]?:@"接口调用失败，请保持网络通畅！";
+////        [[TWMessageBarManager sharedInstance] showMessageWithTitle:title
+////                                                       description:[NSString stringWithFormat:@"%ld", error.code]
+////                                                              type:TWMessageBarMessageTypeError];
+//    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -79,6 +124,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
+        NSDictionary *dict = nil;
+       if (indexPath.section == 0) {
+           dict = [_section0Array objectAtIndex:indexPath.row];
+       } else if ( indexPath.section == 1) {
+           dict = [_section1Array objectAtIndex:indexPath.row];
+       }
+       
+      
+       NSString *title = [dict objectForKey:@"title"];
+    if ([title isEqualToString:@"意见反馈"]) {
+        [self openFeedbackViewController];
+    }
     
 }
 

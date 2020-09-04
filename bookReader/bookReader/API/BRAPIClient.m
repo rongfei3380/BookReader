@@ -290,8 +290,9 @@
     } else if (isOver == 1)  {
         [paramDic setObject:[NSNumber numberWithInt:isOver] forKey:@"is_over"];
     }
-    
-    [paramDic setObject:[NSNumber numberWithInteger:categoryId] forKey:@"id"];
+    if(categoryId > 0) {
+        [paramDic setObject:[NSNumber numberWithInteger:categoryId] forKey:@"id"];
+    }
     [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
     [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
     
@@ -371,9 +372,9 @@
     
     
 //    [self sendRequest:CFHTTPRequestMethodGET path:@"" parameters:paramDic success:^(id  _Nonnull dataBody) {
-//        
+//
 //    } failure:^(NSError * _Nonnull error) {
-//        
+//
 //    }];
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager manager];

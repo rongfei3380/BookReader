@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedInstance;
 
 #pragma mark- 书本相关
-
+- (void)addDefaultBooks;
 /// 保存书本内容
 /// @param book 书本对象
 - (BOOL)saveBookInfoWithModel:(BRBookInfoModel *)model;
@@ -85,6 +85,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// 删除书本的所有章节内容
 /// @param bookId 书本id
 - (BOOL)deleteChapterContentWithBookId:(NSNumber *)bookId;
+
+/// 删除 相关书籍 的所有章节内容
+/// @param bookIds  书本id 数组
+- (void)deleteChapterContentWithBookIds:(NSArray<BRBookInfoModel*> *)bookIds;
 
 #pragma mark- 阅读历史
 

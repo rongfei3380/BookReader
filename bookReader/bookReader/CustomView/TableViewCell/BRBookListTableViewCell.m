@@ -83,8 +83,8 @@
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
         make.height.mas_equalTo(15);
-        make.top.mas_equalTo(_introLabel.mas_bottom).offset(11);
-//        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
+//        make.top.mas_equalTo(_introLabel.mas_bottom).offset(11);
+        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(-2);
     }];
 }
 

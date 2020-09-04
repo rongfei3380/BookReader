@@ -30,7 +30,7 @@
 
 - (void)createCategoryViewIfNeed {
     
-    NSInteger row = _categoryArray.count/7 +_categoryArray.count%7>0 ? 1:0;
+    NSInteger row = _categoryArray.count/4 +_categoryArray.count%4>0 ? 1:0;
     NSInteger numOfRow = 4;
     CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -60) /numOfRow;
     
@@ -42,12 +42,11 @@
       
        
         // 分类筛选
-       BRBookCategory *item = [_categoryArray objectAtIndex:0];
        UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-       allBtn.tag = 1000;
+       allBtn.tag = 999;
        allBtn.frame = CGRectMake(10 , 10, 40, 30);
        allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-       [allBtn setTitle:item.categoryName forState:UIControlStateNormal];
+       [allBtn setTitle:@"全部" forState:UIControlStateNormal];
        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
        [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -55,10 +54,10 @@
        allBtn.selected = YES;
        _selectedCategoryButton = allBtn;
 
-       for (int i = 0; i<_categoryArray.count -1; i++) {
-           BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
+       for (int i = 0; i<_categoryArray.count; i++) {
+           BRBookCategory *item = [_categoryArray objectAtIndex:i];
            UIButton *itemBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-           itemBtn.tag = 1000 +i+1;
+           itemBtn.tag = 1000 +i;
            itemBtn.frame = CGRectMake(10 +40+5 +i%numOfRow *buttonWidth, 10 +i/numOfRow*30, buttonWidth -5, 30);
            itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
            [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
@@ -107,10 +106,10 @@
         
         self.tableView.tableHeaderView = _categoryView;
     } else {
-        for (int i = 0; i<_categoryArray.count -1; i++) {
-            BRBookCategory *item = [_categoryArray objectAtIndex:i+1];
+        for (int i = 0; i<_categoryArray.count; i++) {
+            BRBookCategory *item = [_categoryArray objectAtIndex:i];
             
-            UIButton *itemBtn = (UIButton *)[_categoryView viewWithTag:1000 +i+1];
+            UIButton *itemBtn = (UIButton *)[_categoryView viewWithTag:1000 +i];
             [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
         }
     }
@@ -185,9 +184,13 @@
     _selectedCategoryButton.selected = YES;
     
     NSInteger selectedIndex = _selectedCategoryButton.tag -1000;
-   
-    BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
-    _selectedCategory = category;
+    if (selectedIndex >= 0) {
+        BRBookCategory *category = [_categoryArray objectAtIndex:selectedIndex];
+        _selectedCategory = category;
+    } else {
+        _selectedCategory = nil;
+    }
+    
     [self reloadGridViewDataSourceForHead];
 }
 
@@ -236,7 +239,6 @@
     _categoryArray = categoryArray;
     if (_categoryArray.count > 0) {
         self.page = 0;
-        _selectedCategory = [_categoryArray firstObject];
         [self  createCategoryViewIfNeed];
         [_recordsArray removeAllObjects];
         [self.tableView reloadData];

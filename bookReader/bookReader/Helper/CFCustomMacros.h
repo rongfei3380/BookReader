@@ -122,4 +122,15 @@ block();\
 dispatch_async(dispatch_get_main_queue(), block);\
 }
 
+// 阅读相关
+#define KReadFontCustom 18
+
+#define kLineSpacingCompact ([UIFont systemFontOfSize:18].pointSize*0.75 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kLineSpacingCustom ([UIFont systemFontOfSize:18].pointSize*1.05 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kLineSpacingLoose ([UIFont systemFontOfSize:18].pointSize*1.25 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+
+#define kParagraphSpacingCompact ([UIFont systemFontOfSize:18].pointSize*0.1 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kParagraphSpacingCustom ([UIFont systemFontOfSize:18].pointSize*0.4 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+#define kParagraphSpacingLoose ([UIFont systemFontOfSize:18].pointSize*0.9 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
+
 #endif /* CFCustomMacros_h */

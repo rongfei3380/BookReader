@@ -81,6 +81,8 @@
 - (void)deleteBooks {
     if (_selectedBooks.count) {
         [[BRDataBaseManager sharedInstance] deleteBookInfoWithBookIds:_selectedBooks];
+        [[BRDataBaseManager sharedInstance] deleteChapterContentWithBookIds:_selectedBooks];
+        
         
        kWeakSelf(self)
         dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));

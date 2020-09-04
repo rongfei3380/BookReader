@@ -44,6 +44,8 @@
 		C51B3D3C24D5921B0012D6CD /* bookLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = C51B3D3B24D5921B0012D6CD /* bookLoading.json */; };
 		C51B3D3E24D724BC0012D6CD /* Mine.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51B3D3D24D724BC0012D6CD /* Mine.xcassets */; };
 		C51B3D4124D72F740012D6CD /* BRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */; };
+		C543F8392500FACD00AD1630 /* CFStrokeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C543F8382500FACD00AD1630 /* CFStrokeLabel.m */; };
+		C543F83B2501589500AD1630 /* AliyunEmasServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */; };
 		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
 		C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapterDetail.m */; };
 		C5601D0A24C62895007C7377 /* BRChapter+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D0924C62895007C7377 /* BRChapter+database.m */; };
@@ -186,6 +188,9 @@
 		C51B3D3D24D724BC0012D6CD /* Mine.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mine.xcassets; sourceTree = "<group>"; };
 		C51B3D3F24D72F740012D6CD /* BRSettingTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSettingTableViewCell.h; sourceTree = "<group>"; };
 		C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSettingTableViewCell.m; sourceTree = "<group>"; };
+		C543F8372500FACD00AD1630 /* CFStrokeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFStrokeLabel.h; sourceTree = "<group>"; };
+		C543F8382500FACD00AD1630 /* CFStrokeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFStrokeLabel.m; sourceTree = "<group>"; };
+		C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AliyunEmasServices-Info.plist"; sourceTree = "<group>"; };
 		C549888124A33A0B00887AEE /* BRBookCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookCategory.h; sourceTree = "<group>"; };
 		C549888224A33A0B00887AEE /* BRBookCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookCategory.m; sourceTree = "<group>"; };
 		C549888424A5A48700887AEE /* BRChapterDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapterDetail.h; sourceTree = "<group>"; };
@@ -389,6 +394,8 @@
 				C59D064A24C58AF600A8237F /* NSString+size.m */,
 				C51B3D2C24D209770012D6CD /* UIView+Corner.h */,
 				C51B3D2D24D209770012D6CD /* UIView+Corner.m */,
+				C543F8372500FACD00AD1630 /* CFStrokeLabel.h */,
+				C543F8382500FACD00AD1630 /* CFStrokeLabel.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -627,6 +634,7 @@
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
+				C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */,
 				C51B3D3D24D724BC0012D6CD /* Mine.xcassets */,
 				C51B3D3224D214D90012D6CD /* BookReader.xcassets */,
 				C5601D7724CDD52B007C7377 /* Images.xcassets */,
@@ -711,6 +719,7 @@
 				C5F3C15D24879CC700E4AF55 /* Frameworks */,
 				C5F3C15E24879CC700E4AF55 /* Resources */,
 				BB33D0EA556A6F8FFB82469E /* [CP] Embed Pods Frameworks */,
+				5E7B3BB3E409FBB9C1C7D91B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -816,6 +825,7 @@
 				C59D064124C43B3100A8237F /* ReadBookToolBar.xcassets in Resources */,
 				C5601D1524C6CF26007C7377 /* BookShelf.xcassets in Resources */,
 				C5601D8224CE09B6007C7377 /* launcher_img_logo@3x.png in Resources */,
+				C543F83B2501589500AD1630 /* AliyunEmasServices-Info.plist in Resources */,
 				C51A82F624B5D2F00078CB37 /* Tabbar.xcassets in Resources */,
 				C5601D2224C7404B007C7377 /* RecommendView.xcassets in Resources */,
 				C5601D8124CE09B6007C7377 /* launcher_img_logo@2x.png in Resources */,
@@ -859,6 +869,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E7B3BB3E409FBB9C1C7D91B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bookReader/Pods-bookReader-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BB33D0EA556A6F8FFB82469E /* [CP] Embed Pods Frameworks */ = {
@@ -946,6 +973,7 @@
 				C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */,
 				C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */,
 				C5601D2824C747C6007C7377 /* BRRecommendCollectionViewCell.m in Sources */,
+				C543F8392500FACD00AD1630 /* CFStrokeLabel.m in Sources */,
 				C5601D2B24C75951007C7377 /* BRCycleCollectionViewCell.m in Sources */,
 				C5601D7324CAD99A007C7377 /* BRBookShelfCollectionViewCell.m in Sources */,
 				C59D062724C2A92800A8237F /* BRChaptersView.m in Sources */,
@@ -1117,7 +1145,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1030;
+				CURRENT_PROJECT_VERSION = 1051;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1127,6 +1155,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "古今";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -1137,7 +1166,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1030;
+				CURRENT_PROJECT_VERSION = 1051;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1147,6 +1176,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "古今";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

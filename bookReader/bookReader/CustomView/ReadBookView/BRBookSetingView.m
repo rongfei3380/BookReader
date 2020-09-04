@@ -12,13 +12,7 @@
 #import "GVUserDefaults+BRUserDefaults.h"
 
 
-#define KReadFontCustom 18
 
-
-
-#define kLineSpacingCompact ([UIFont systemFontOfSize:18].pointSize*0.45 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
-#define kLineSpacingCustom ([UIFont systemFontOfSize:18].pointSize*0.75 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
-#define kLineSpacingLoose ([UIFont systemFontOfSize:18].pointSize*1.05 -([UIFont systemFontOfSize:18].lineHeight -[UIFont systemFontOfSize:18].pointSize))
 
 
 @interface BRBookSetingView ()
@@ -554,10 +548,13 @@
     
     if (btn == self.spaceBtn1){
         paragraphStyle.lineSpacing = kLineSpacingCompact;
+        paragraphStyle.paragraphSpacing = kParagraphSpacingCompact;
     }else if (btn == self.spaceBtn2){
         paragraphStyle.lineSpacing = kLineSpacingCustom;
+        paragraphStyle.paragraphSpacing = kParagraphSpacingCustom;
     }else if (btn == self.spaceBtn3){
         paragraphStyle.lineSpacing = kLineSpacingLoose;
+        paragraphStyle.paragraphSpacing = kParagraphSpacingLoose;
     }
     [dic setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     BRUserDefault.userReadAttConfig = dic;

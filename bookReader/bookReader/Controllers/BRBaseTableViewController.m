@@ -20,8 +20,8 @@
 - (id)init {
     if (self = [super init]) {
         _recordsArray = [NSMutableArray array];
-        self.emptyImg = [UIImage imageNamed:@"img_blank"];
-        self.emptyString = @"没有书哦~~";
+//        self.emptyImg = [UIImage imageNamed:@"img_blank"];
+//        self.emptyString = @"没有书哦~~";
     }
     return self;
 }

@@ -12,11 +12,14 @@
 #import <Bugly/Bugly.h>
 
 
-@interface AppDelegate ()
+@interface AppDelegate () {
+    
+}
 
 @end
 
 @implementation AppDelegate
+
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -26,6 +29,7 @@
 
 
     [Bugly startWithAppId:@"61d703cac5"];
+
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];

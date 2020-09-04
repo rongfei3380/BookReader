@@ -54,7 +54,7 @@
 - (void)reloadGridViewDataSourceForHead {
     kWeakSelf(self)
     [BRSite getSiteListWithBookId:self.bookId sucess:^(NSArray * _Nonnull recodes) {
-        kWeakSelf(self)
+        kStrongSelf(self)
         self->_sitesArray = [recodes mutableCopy];
         [self getSelectedSiteDate];
         [self endMJRefreshHeader];
@@ -80,6 +80,7 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(sitesSelectViewController:)]) {
         [self.delegate sitesSelectViewController:indexPath.row];
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark- UITableViewDataSource

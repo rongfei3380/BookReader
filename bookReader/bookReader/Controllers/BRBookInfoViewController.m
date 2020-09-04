@@ -20,6 +20,7 @@
 #import "UIImage+ImageEffects.h"
 #import "BRSitesSelectViewController.h"
 #import "DBGHTMLEntityDecoder.h"
+#import "CFStrokeLabel.h"
 
 @interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource, BRSitesSelectViewControllerDelegate>{
     
@@ -34,7 +35,7 @@
     UILabel *_authorLabel;
     UILabel *_categoryLabel;
     UILabel *_statusLabel;
-    UILabel *_updateTimeLabel;
+    CFStrokeLabel *_updateTimeLabel;
     
     UILabel *_scoreLabel;
     
@@ -136,15 +137,18 @@
     }
     
     if (!_updateTimeLabel) {
-        _updateTimeLabel = [UILabel new];
+        _updateTimeLabel = [CFStrokeLabel new];
         _updateTimeLabel.font = [UIFont systemFontOfSize:13];
+        _updateTimeLabel.numberOfLines = 2;
+//        _updateTimeLabel.shadowColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+//        _updateTimeLabel.layer.shadowOffset = CGSizeMake(0, 1);
         _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 0.6);
         [_verticalContainerView addSubview:_updateTimeLabel];
         [_updateTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.bottom.equalTo(_corverImg.mas_bottom).offset(-2);
-            make.height.offset(16);
-            make.right.offset(20);
+            make.bottom.equalTo(_corverImg.mas_bottom).offset(0);
+            make.height.offset(32);
+            make.right.offset(-20);
         }];
     }
     
@@ -161,7 +165,7 @@
     _statusLabel.text = [NSString stringWithFormat:@"状态：%@", self.bookInfo.isOver.boolValue ? @"完结":@"连载"];
     NSString *lastChapter = self.bookInfo.lastChapterName;
     NSString *updateTime = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
-    _updateTimeLabel.text = [NSString stringWithFormat:@"%@.%@", lastChapter, updateTime];
+    _updateTimeLabel.text = [NSString stringWithFormat:@"%@\n%@", updateTime, lastChapter];
 }
 
 - (void)createActionButtons {
@@ -318,19 +322,20 @@
     }];
 }
 
-- (void)createChangeSiteButton {
-    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [changeBtn setImage:[UIImage imageNamed:@"nav_yuan"] forState:UIControlStateNormal];
-    [changeBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.headView addSubview:changeBtn];
-    [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-5);
-        make.centerY.mas_equalTo(0);
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-    }];
-}
+//- (void)createChangeSiteButton {
+//    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [changeBtn setImage:[UIImage imageNamed:@"nav_yuan"] forState:UIControlStateNormal];
+//    [changeBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.headView addSubview:changeBtn];
+//    [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(-5);
+//        make.centerY.mas_equalTo(0);
+//        make.size.mas_equalTo(CGSizeMake(40, 40));
+//    }];
+//}
 
 - (void)showChaptersView {
+    [self hideProgressMessage];
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
         
@@ -497,14 +502,14 @@
     [self changeSddShelfBtnStatus];
 }
 
-- (void)clickChangeBtn:(id)sender{
-    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
-    vc.bookId = self.bookInfo.bookId;
-    vc.sitesArray = _sitesArray;
-    vc.selectedSiteIndex = self.bookInfo.siteIndex.integerValue;
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
-}
+//- (void)clickChangeBtn:(id)sender{
+//    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
+//    vc.bookId = self.bookInfo.bookId;
+//    vc.sitesArray = _sitesArray;
+//    vc.selectedSiteIndex = self.bookInfo.siteIndex.integerValue;
+//    vc.delegate = self;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
 
 #pragma mark- super
 
@@ -520,7 +525,7 @@
     [super loadView];
     self.view.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
     
-    [self createChangeSiteButton];
+//    [self createChangeSiteButton];
     [self createStartButton];
     
     _bgImg = [[UIImageView alloc] init];
@@ -562,7 +567,7 @@
     }];
 
     
-    [self createBookInfoViewIfNeed];
+//    [self createBookInfoViewIfNeed];
     [self createActionButtons];
     [self createInfoView];
     
@@ -612,9 +617,9 @@
     return self.bookInfo.otherBooks.count;
 }
 
-- (void)sitesSelectViewController:(NSInteger)index {
-    self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];
-}
+//- (void)sitesSelectViewController:(NSInteger)index {
+//    self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];
+//}
 
 
 @end

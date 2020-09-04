@@ -31,8 +31,8 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
     if (self) {
         // Custom initialization
         self.enableCollectionBaseModules = CollectionBaseEnableModuleNone;
-        self.emptyImg = [UIImage imageNamed:@"img_blank"];
-        self.emptyString = @"没有书哦~~";
+//        self.emptyImg = [UIImage imageNamed:@"img_blank"];
+//        self.emptyString = @"没有书哦~~";
     }
     return self;
 }
@@ -235,12 +235,12 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
 
 //垂直偏移量
 - (CGFloat)verticalOffsetForEmptyDataSet:(UIScrollView *)scrollView {
-    return - [self fetchEmptyImage].size.height * 0.5;
+    return [self fetchEmptyImage].size.height * 0.2;
 }
 
 //图片与文字间间距
 - (CGFloat)spaceHeightForEmptyDataSet:(UIScrollView *)scrollView {
-    return 13;
+    return 0;
 }
 
 

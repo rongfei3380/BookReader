@@ -20,6 +20,7 @@
 
 @property(nonatomic, strong) FMDatabaseQueue *databaseQueue;
 @property(nonatomic, strong) FMDatabase *database;
+@property(nonatomic, assign) BOOL needInsertBooks;
 
 @end
 
@@ -54,6 +55,11 @@
                 CFDebugLog(@"creat ChapterList Table error:%@",[self.database lastErrorMessage]);
             }
             // 创建小说内容表
+            
+            if (![self.database tableExists:@"t_book_info"]) {
+                self.needInsertBooks = YES;
+            }
+            
             creat = [self.database executeUpdate:kBRDBCreateBookInfoTabel];
             if (!creat) {
                 CFDebugLog(@"creat BookInfoTabel Table error:%@",[self.database lastErrorMessage]);
@@ -83,6 +89,56 @@
 /// 用于增加 列  版本变化数据库的处理
 - (void)addTableColumn{
     
+}
+
+- (void)addDefaultBooks {
+    if (self.needInsertBooks) {
+        NSDictionary *book1 = @{@"id": @"27478",
+            @"name": @"道君",
+            @"cover":@"https://dss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/boxapp_novel/wh%3D267%2C357/sign=5ce401fa9522720e7b9beaf84dfc2675/5bafa40f4bfbfbedfe7792e775f0f736afc31f7f.jpg",
+            @"author": @"跃千愁",
+            @"categoryid": @"3",
+            @"lastupdate": @"1599107872",
+            @"intro": @"一个地球神级盗墓宗师，闯入修真界的故事……桃花源里，有歌声。山外青山，白骨山。五花马，千金裘，倚天剑，应我多情，啾啾鬼鸣，美人薄嗔。天地无垠，谁家旗鼓，碧落黄泉，万古高楼。为义气争雄！为乱世争霸！你好，仙侠！作者自定义标签:争霸流",
+            @"authorid": @"1221",
+            @"lastchaptername": @"新书《前任无双》正式发布",
+            @"isover": @"0",
+            @"category_name": @"仙侠武侠"};
+        NSDictionary *book2 = @{@"id": @"31",
+            @"name": @"剑来",
+            @"cover": @"http://www.oneoff.net/public/cover/f2/81/74/f281740604166d7a2ca1c7f0d87a3a1a.jpg",
+            @"author": @"烽火戏诸侯",
+            @"categoryid": @"1",
+            @"lastupdate": @"1599044353",
+            @"intro": @"大千世界，无奇不有。我陈平安，唯有一剑，可搬山，倒海，降妖，镇魔，敕神，摘星，断江，摧城，开天！",
+            @"authorid": @"31",
+            @"lastchaptername": @"第七百九十六章 不浩然",
+            @"isover": @"0",
+            @"category_name": @"玄幻奇幻"};
+        NSDictionary *book3 = @{@"id": @"6865",
+            @"name": @"全职高手",
+            @"cover": @"https://dss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/boxapp_novel/wh%3D267%2C357/sign=9789368ca81ea8d38a777c06a13d1c7d/faf2b2119313b07e6ef3d13f02d7912397dd8cbf.jpg",
+            @"author": @"蝴蝶蓝",
+            @"categoryid": @"8",
+            @"lastupdate": @"1598965401",
+            @"intro": @"网游荣耀中被誉为教科书级别的顶尖高手，因为种种原因遭到俱乐部的驱逐，离开职业圈的他寄身于一家网吧成了一个小小的网管，但是，拥有十年游戏经验的他，在荣耀新开的第十区重新投入了游戏，带着对往昔的回忆，和一把未完成的自制武器，开始了重返巅峰之路。===================================",
+            @"authorid": @"5672",
+            @"lastchaptername": @"最后一次上传，完本感言。",
+            @"isover": @"1",
+            @"category_name": @"网游竞技"};
+        
+        BRBookInfoModel *bookModel1 = [BRBookInfoModel parseDictionaryIntoObject:book1];
+        if (![[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:bookModel1.bookId]) {
+            [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:bookModel1];
+        }
+        
+        
+        BRBookInfoModel *bookModel2 = [BRBookInfoModel parseDictionaryIntoObject:book2];
+        [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:bookModel2];
+        
+        BRBookInfoModel *bookModel3 = [BRBookInfoModel parseDictionaryIntoObject:book3];
+        [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:bookModel3];
+    }
 }
 
 #pragma mark- book info 书本内容
@@ -185,7 +241,7 @@
             NSData *encodeData = [sitesString dataUsingEncoding:NSUTF8StringEncoding];
             NSString *base64String = [encodeData base64EncodedStringWithOptions:0];
             
-            BOOL update = [db executeUpdate:kBRDBUpdateBookSource(base64String, index, bookId)];
+            BOOL update = [db executeUpdate:kBRDBUpdateBookSource(base64String, [NSNumber numberWithInteger:index], bookId)];
             if(!update) {
                 CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
             }
@@ -330,6 +386,31 @@
     return YES;
 }
 
+- (void)deleteChapterContentWithBookIds:(NSArray<BRBookInfoModel*> *)bookIds {
+    kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]){
+                
+                [db beginTransaction];
+                BOOL isRollBack = NO;
+                @try {
+                    for (BRChapter *model in bookIds) {
+                        NSNumber *bookId = model.bookId;
+                        [db executeUpdate:kBRDBDeleteChapterTextWithBookId(bookId)];
+                    }
+                } @catch (NSException *exception) {
+                    isRollBack = YES;
+                    [db rollback];
+                } @finally {
+                    if (!isRollBack) {
+                        [db commit];
+                    }
+                }
+            }
+            [db close];
+        }];
+    });
+}
 
 
 #pragma mark- 搜索历史
