@@ -21,6 +21,8 @@
 #import "BRSitesSelectViewController.h"
 #import "DBGHTMLEntityDecoder.h"
 #import "CFStrokeLabel.h"
+#import "CFButtonLeftRight.h"
+#import "CFShadowCornerImageView.h"
 
 @interface BRBookInfoViewController () <UICollectionViewDelegate, UICollectionViewDataSource, BRSitesSelectViewControllerDelegate>{
     
@@ -29,19 +31,23 @@
     
     UIButton *startBtn;
     
-    UIImageView *_corverImg;
+    CFShadowCornerImageView *_corverImg;
     UIImageView *_bgImg;
     UILabel *_bookNameLabel;
     UILabel *_authorLabel;
     UILabel *_categoryLabel;
     UILabel *_statusLabel;
-    CFStrokeLabel *_updateTimeLabel;
+    UILabel *_updateTimeLabel;
     
     UILabel *_scoreLabel;
     
     UIView *_infoActionView;
     CFButtonUpDwon *_addShelfBtn;
-    UILabel *_descLlabel;
+    UILabel *label;
+    UILabel *_descLabel;
+    CFButtonLeftRight *_detailBtn;
+    UIView *_desclineView;
+    UILabel *otherBooksLabel;
     UICollectionView *_otherBooksCollectionView;
     
     BRChaptersView *_chaptersView;
@@ -66,45 +72,49 @@
 
 - (void)createBookInfoViewIfNeed {
     if (!_corverImg) {
-        _corverImg = [UIImageView new];
-        _corverImg.clipsToBounds = YES;
+        _corverImg = [CFShadowCornerImageView new];
         _corverImg.contentMode = UIViewContentModeScaleAspectFill;
         [_verticalContainerView addSubview:_corverImg];
         [_corverImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.offset(10);
             make.top.mas_equalTo(20);
-            make.size.mas_equalTo(CGSizeMake(98, 131));
+            make.size.mas_equalTo(CGSizeMake(96, 130));
         }];
+        [_corverImg setImageCornerRadius:4];
+        [_corverImg setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
+        
+        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
+        [_corverImg addSubview:leftShadowImg];
+        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.bottom.mas_equalTo(0);
+            make.width.mas_equalTo(13);
+        }];
+        
     }
     
     [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
-    kWeakSelf(self)
-    [_corverImg yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"] options:kNilOptions completion:^(UIImage * _Nullable image, NSURL * _Nonnull url, YYWebImageFromType from, YYWebImageStage stage, NSError * _Nullable error) {
-        kStrongSelf(self)
-        self->_bgImg.image = [self creatImageEffects:image];
-    }];
     
     if (!_bookNameLabel) {
         _bookNameLabel = [UILabel new];
-        _bookNameLabel.font = [UIFont boldSystemFontOfSize:17];
-        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:17];
+        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 1);
         [_verticalContainerView addSubview:_bookNameLabel];
         [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_corverImg.mas_right).offset(10);
-            make.top.equalTo(_corverImg.mas_top).offset(5);
+            make.left.equalTo(_corverImg.mas_right).offset(17.5);
+            make.centerY.equalTo(_corverImg.mas_top).offset(8);
             make.height.offset(25);
-            make.right.offset(20);
+            make.right.offset(-20);
         }];
     }
     
     if (!_authorLabel) {
         _authorLabel = [UILabel new];
-        _authorLabel.font = [UIFont systemFontOfSize:12];
-        _authorLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
+        _authorLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _authorLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 0.6);
         [_contentScrollView addSubview:_authorLabel];
         [_authorLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.top.equalTo(_bookNameLabel.mas_bottom).offset(4);
+            make.centerY.equalTo(_bookNameLabel.mas_centerY).offset(24);
             make.height.offset(16);
             make.right.offset(20);
         }];
@@ -112,12 +122,12 @@
     
     if (!_categoryLabel) {
         _categoryLabel = [UILabel new];
-        _categoryLabel.font = [UIFont systemFontOfSize:13];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
+        _categoryLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 0.6);
         [_verticalContainerView addSubview:_categoryLabel];
         [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.top.equalTo(_authorLabel.mas_bottom).offset(4);
+            make.centerY.equalTo(_authorLabel.mas_centerY).offset(24);
             make.height.offset(16);
             make.right.offset(20);
         }];
@@ -125,29 +135,27 @@
     
     if (!_statusLabel) {
         _statusLabel = [UILabel new];
-        _statusLabel.font = [UIFont systemFontOfSize:13];
-        _statusLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 0.6);
+        _statusLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _statusLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 0.6);
         [_verticalContainerView addSubview:_statusLabel];
         [_statusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.top.equalTo(_categoryLabel.mas_bottom).offset(4);
+            make.centerY.equalTo(_categoryLabel.mas_centerY).offset(24);
             make.height.offset(16);
             make.right.offset(20);
         }];
     }
     
     if (!_updateTimeLabel) {
-        _updateTimeLabel = [CFStrokeLabel new];
-        _updateTimeLabel.font = [UIFont systemFontOfSize:13];
-        _updateTimeLabel.numberOfLines = 2;
-//        _updateTimeLabel.shadowColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-//        _updateTimeLabel.layer.shadowOffset = CGSizeMake(0, 1);
-        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 0.6);
+        _updateTimeLabel = [UILabel new];
+        _updateTimeLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _updateTimeLabel.numberOfLines = 0;
+        _updateTimeLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 0.6);
         [_verticalContainerView addSubview:_updateTimeLabel];
         [_updateTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(_bookNameLabel.mas_left).offset(0);
-            make.bottom.equalTo(_corverImg.mas_bottom).offset(0);
-            make.height.offset(32);
+            make.bottom.equalTo(_corverImg.mas_bottom).offset(4);
+//            make.height.offset(32);
             make.right.offset(-20);
         }];
     }
@@ -163,9 +171,22 @@
     _categoryLabel.text = [NSString stringWithFormat:@"类型：%@",self.bookInfo.categoryName];
     _authorLabel.text = [NSString stringWithFormat:@"作者：%@",self.bookInfo.author];
     _statusLabel.text = [NSString stringWithFormat:@"状态：%@", self.bookInfo.isOver.boolValue ? @"完结":@"连载"];
+    
     NSString *lastChapter = self.bookInfo.lastChapterName;
     NSString *updateTime = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
-    _updateTimeLabel.text = [NSString stringWithFormat:@"%@\n%@", updateTime, lastChapter];
+    if (self.bookInfo.lastupdateDate) {
+        NSString *showStr = [NSString stringWithFormat:@"%@\n%@", updateTime, lastChapter];
+        
+        NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:showStr];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        
+        [paragraphStyle setLineSpacing:(6 - (_updateTimeLabel.font.lineHeight - _updateTimeLabel.font.pointSize))];//调整行间距
+        paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
+        [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [showStr length])];
+        
+        _updateTimeLabel.attributedText =  attributedString;
+    }
+    
 }
 
 - (void)createActionButtons {
@@ -224,10 +245,10 @@
 
 - (void)createInfoView {
     
-    UILabel *label = [[UILabel alloc] init];
+    label = [[UILabel alloc] init];
     label.text = @"书籍简介";
-    label.font = [UIFont boldSystemFontOfSize:17];
-    label.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    label.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:17];
+    label.textColor = CFUIColorFromRGBAInHex(0x2A303E, 1);
     [_infoActionView addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
@@ -236,37 +257,55 @@
         make.height.mas_equalTo(23);
     }];
     
-    _descLlabel = [[UILabel alloc] init];
-    _descLlabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
-    _descLlabel.font = [UIFont systemFontOfSize:14];
-    _descLlabel.numberOfLines = 0;
-    _descLlabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_infoActionView addSubview:_descLlabel];
+    _descLabel = [[UILabel alloc] init];
+    _descLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    _descLabel.font = [UIFont systemFontOfSize:14];
+    _descLabel.numberOfLines = 4;
+    _descLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [_infoActionView addSubview:_descLabel];
     [self showIntroAttributedString];
-    [_descLlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_descLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
-        make.top.mas_equalTo(label.mas_bottom).offset(8);
+        make.top.mas_equalTo(label.mas_bottom).offset(20);
     }];
     
-    UIView *lineView = [UIView new];
-   lineView.backgroundColor = CFUIColorFromRGBAInHex(0xeeeeee, 1);
-   [_infoActionView addSubview:lineView];
-   [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+    _detailBtn = [CFButtonLeftRight buttonWithType:UIButtonTypeCustom];
+    [_detailBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
+    _detailBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_detailBtn setTitle:@"全部 " forState:UIControlStateNormal];
+    [_detailBtn setImage:[UIImage imageNamed:@"btn_detail_down"] forState:UIControlStateNormal];
+    [_detailBtn setTitle:@"收起 " forState:UIControlStateSelected];
+    [_detailBtn setImage:[UIImage imageNamed:@"btn_detail_up"] forState:UIControlStateSelected];
+    [_detailBtn addTarget:self action:@selector(clickDetailBtn:) forControlEvents:UIControlEventTouchUpInside];
+    _detailBtn.titleLabel.textAlignment = NSTextAlignmentLeft;
+    _detailBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [_infoActionView addSubview:_detailBtn];
+    [_detailBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_descLabel.mas_left).offset(0);
+        make.top.mas_equalTo(_descLabel.mas_bottom).offset(12.5);
+        make.size.mas_equalTo(CGSizeMake(50, 15));
+    }];
+    
+    
+    _desclineView = [UIView new];
+    _desclineView.backgroundColor = CFUIColorFromRGBAInHex(0xeeeeee, 1);
+    [_infoActionView addSubview:_desclineView];
+    [_desclineView mas_makeConstraints:^(MASConstraintMaker *make) {
        make.left.right.mas_equalTo(0);
        make.height.mas_equalTo(1);
-       make.top.mas_equalTo(_descLlabel.mas_bottom).offset(20);
-   }];
+       make.top.mas_equalTo(_detailBtn.mas_bottom).offset(20);
+    }];
     
-    UILabel *otherBooksLabel = [[UILabel alloc] init];
+    otherBooksLabel = [[UILabel alloc] init];
     otherBooksLabel.text = @"作者也写过";
-    otherBooksLabel.font = [UIFont boldSystemFontOfSize:17];
-    otherBooksLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    otherBooksLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:17];
+    otherBooksLabel.textColor = CFUIColorFromRGBAInHex(0x2A303E, 1);
     [_infoActionView addSubview:otherBooksLabel];
     [otherBooksLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
-        make.top.mas_equalTo(lineView.mas_bottom).offset(12);
+        make.top.mas_equalTo(_desclineView.mas_bottom).offset(20);
         make.height.mas_equalTo(23);
     }];
     
@@ -284,19 +323,19 @@
     [_otherBooksCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(otherBooksLabel.mas_bottom).offset(12);
+        make.top.mas_equalTo(otherBooksLabel.mas_bottom).offset(24);
         make.height.mas_equalTo(160);
         make.bottom.mas_equalTo(_infoActionView.mas_bottom).offset(0);
     }];
+    
+    [_infoActionView setNeedsDisplay];
     
     [_infoActionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(_verticalContainerView.mas_bottom).offset(0);
     }];
 
     [_contentScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-
         make.bottom.mas_equalTo(_verticalContainerView.mas_bottom).offset(0);
-
     }];
     
     // 这里设置圆角才有效果
@@ -339,7 +378,10 @@
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
         
-        BRSite *site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+        BRSite *site = [self getTheLastSite];
+        NSInteger siteIndex = [_sitesArray indexOfObject:site];
+        self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
+
        if (site) {
            kWeakSelf(self)
            [self showProgressMessage:@"正在获取章节信息..."];
@@ -381,7 +423,10 @@
     [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self.bookInfo.sitesArray curSiteIndex:self.bookInfo.siteIndex.integerValue];
     
     /* 添加书本章节缓存*/
-    BRSite *site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+    BRSite *site = [self getTheLastSite];
+    NSInteger siteIndex = [_sitesArray indexOfObject:site];
+    self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
+    
     if (site) {
         [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
               
@@ -415,13 +460,25 @@
     if (_bookInfo.intro) {
         attributedString = [[NSMutableAttributedString alloc] initWithString:_bookInfo.intro];
         NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-        [paragraphStyle setLineSpacing:(5 - (_descLlabel.font.lineHeight - _descLlabel.font.pointSize))];//调整行间距
+        [paragraphStyle setLineSpacing:(5 - (_descLabel.font.lineHeight - _descLabel.font.pointSize))];//调整行间距
         paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
         
         [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
     }
     
-    _descLlabel.attributedText = attributedString;
+    _descLabel.attributedText = attributedString;
+}
+
+- (BRSite *)getTheLastSite {
+    BRSite *lastSite = [_sitesArray firstObject];
+    for (BRSite *site in _sitesArray) {
+        if (lastSite.oid.intValue > site.oid.intValue) {
+            
+        } else {
+            lastSite = site;
+        }
+    }
+    return lastSite;
 }
 
 
@@ -443,6 +500,7 @@
         self.bookInfo.siteIndex = dataBaseBook.siteIndex;
         
         [self createBookInfoViewIfNeed];
+        [[BRDataBaseManager sharedInstance] saveHistoryBookInfoWithModel:self.bookInfo];
         
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
@@ -488,6 +546,8 @@
 - (IBAction)startReadClick:(UIButton *)sender {
     if (_sitesArray.count == 0) {
         return;
+    } else {
+        [self getTheLastSite];
     }
     [self gotoReadWitnIndex:0];
 }
@@ -500,6 +560,17 @@
         [self addBookModel];
     }
     [self changeSddShelfBtnStatus];
+}
+
+- (void)clickDetailBtn:(UIButton *)button {
+    _detailBtn.selected = !button.selected;
+    if (_detailBtn.selected) {
+        _descLabel.numberOfLines = 0;
+    } else {
+        _descLabel.numberOfLines = 4;
+    }
+    // 这里重新设置圆角 才会改变尺寸
+    [_infoActionView round:12 RectCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)];
 }
 
 //- (void)clickChangeBtn:(id)sender{
@@ -529,12 +600,23 @@
     [self createStartButton];
     
     _bgImg = [[UIImageView alloc] init];
-    _bgImg.backgroundColor = [UIColor grayColor];
+//    _bgImg.backgroundColor = [UIColor grayColor];
     [self.view insertSubview:_bgImg belowSubview:self.headView];
     [_bgImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.mas_equalTo(0);
         make.height.mas_equalTo(SCREEN_HEIGHT/2.f);
     }];
+
+
+    CAGradientLayer *gl = [CAGradientLayer layer];
+    gl.frame = CGRectMake(0,0,SCREEN_WIDTH,SCREEN_HEIGHT/2.f);
+    gl.startPoint = CGPointMake(0, 0);
+    gl.endPoint = CGPointMake(1, 1);
+    gl.colors = @[(__bridge id)CFUIColorFromRGBAInHex(0xD0DFEF, 1).CGColor,(__bridge id)CFUIColorFromRGBAInHex(0xF1F8FF, 1).CGColor];
+    gl.locations = @[@(0.0),@(1.0f)];
+
+    [_bgImg.layer addSublayer:gl];
+
     
     _contentScrollView = [[UIScrollView alloc] init];
     _contentScrollView.clipsToBounds = NO;
@@ -563,11 +645,12 @@
     [_verticalContainerView addSubview:_infoActionView];
     [_infoActionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(180);
-        make.width.offset(SCREEN_WIDTH);
+        make.left.bottom.and.right.equalTo(_verticalContainerView).with.insets(UIEdgeInsetsZero);
+        make.left.right.mas_equalTo(0);
     }];
 
     
-//    [self createBookInfoViewIfNeed];
+    [self createBookInfoViewIfNeed];
     [self createActionButtons];
     [self createInfoView];
     
@@ -616,6 +699,13 @@
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.bookInfo.otherBooks.count;
 }
+
+#pragma mark - UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(96, 130+32);
+}
+
+
 
 //- (void)sitesSelectViewController:(NSInteger)index {
 //    self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];

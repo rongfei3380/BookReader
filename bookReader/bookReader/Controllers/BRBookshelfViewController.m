@@ -61,6 +61,13 @@
         
         book.lastChapterName = apiBook.lastChapterName;
         book.lastChapterId = apiBook.lastChapterId;
+        
+        if(book.lastupdate.integerValue < apiBook.lastupdate.integerValue) {
+            book.updateFlag = [NSNumber numberWithBool:YES];
+        } else {
+            book.updateFlag = [NSNumber numberWithBool:NO];
+        }
+        
         book.lastupdate = apiBook.lastupdate;
         book.lastupdateDate = apiBook.lastupdateDate;
         

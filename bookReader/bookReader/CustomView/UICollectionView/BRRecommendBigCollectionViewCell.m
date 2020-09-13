@@ -10,12 +10,13 @@
 #import "CFCustomMacros.h"
 #import <YYWebImage.h>
 #import <Masonry.h>
+#import "CFShadowCornerImageView.h"
 
 @interface BRRecommendBigCollectionViewCell (){
     
     UILabel *_titleLabel;
     
-    UIImageView *_coverImgView;
+    CFShadowCornerImageView *_coverImgView;
     UILabel *_bookNameLabel;
     UILabel *_chapterNameLabel;
     
@@ -40,10 +41,19 @@
         _titleLabel.text = @"热门推荐";
         [self addSubview:_titleLabel];
         
-        _coverImgView = [[YYAnimatedImageView alloc] init];
+        _coverImgView = [[CFShadowCornerImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
         _coverImgView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_coverImgView];
+        
+        
+        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
+        [_coverImgView addSubview:leftShadowImg];
+        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.bottom.mas_equalTo(0);
+            make.width.mas_equalTo(13);
+        }];
+    
         
         _bookNameLabel = [[UILabel alloc] init];
         _bookNameLabel.font = [UIFont systemFontOfSize:15];
@@ -87,6 +97,9 @@
         make.top.mas_equalTo(_titleLabel.mas_bottom).offset(15);
         make.left.mas_equalTo(0);
     }];
+    
+    [_coverImgView setImageCornerRadius:4];
+    [_coverImgView setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
     
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_coverImgView.mas_top).offset(0);

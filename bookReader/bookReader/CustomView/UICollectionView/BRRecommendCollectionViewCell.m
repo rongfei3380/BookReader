@@ -10,9 +10,10 @@
 #import "CFCustomMacros.h"
 #import <YYWebImage.h>
 #import <Masonry.h>
+#import "CFShadowCornerImageView.h"
 
 @interface BRRecommendCollectionViewCell (){
-    UIImageView *_coverImageView;
+    CFShadowCornerImageView *_coverImageView;
     UILabel *_bookNameLabel;
 }
 
@@ -28,7 +29,15 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
-        _coverImageView = [[YYAnimatedImageView alloc] init];
+        _coverImageView = [[CFShadowCornerImageView alloc] init];
+        
+        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
+        [_coverImageView addSubview:leftShadowImg];
+        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.top.bottom.mas_equalTo(0);
+            make.width.mas_equalTo(13);
+        }];
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_coverImageView];
         
         _bookNameLabel = [[UILabel alloc] init];
@@ -50,6 +59,10 @@
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(-32);
     }];
+    
+    
+    [_coverImageView setImageCornerRadius:4];
+    [_coverImageView setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_coverImageView.mas_bottom).offset(6);

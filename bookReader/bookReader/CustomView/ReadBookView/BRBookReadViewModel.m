@@ -68,7 +68,13 @@
     [BRSite getSiteListWithBookId:model.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         self.sitesArray = [recodes mutableCopy];
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:model.bookId sites:self.sitesArray curSiteIndex:0];
+        
+        BRSite *site = [self getTheLastSite];
+        NSInteger siteIndex = [self->_sitesArray indexOfObject:site];
+        model.siteIndex = [NSNumber numberWithInteger:siteIndex];
+        
+        
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:model.bookId sites:self.sitesArray curSiteIndex:siteIndex];
         [self initiaData];
     } failureBlock:^(NSError * _Nonnull error) {
         if (self.loadFail){
@@ -126,7 +132,12 @@
         if (self.startLoadBlock){
             self.startLoadBlock();
         }
-        BRSite *site = [_sitesArray objectAtIndex:_bookModel.siteIndex.integerValue];
+
+        
+        BRSite *site = [self getTheLastSite];
+        NSInteger siteIndex = [_sitesArray indexOfObject:site];
+        self.bookModel.siteIndex = [NSNumber numberWithInteger:siteIndex];
+        
         kWeakSelf(self)
         [BRChapter getChaptersListWithBookId:self.bookModel.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
@@ -366,6 +377,18 @@
             self.hubFail(@"已经是最后一章了");
         }
     }
+}
+
+- (BRSite *)getTheLastSite {
+    BRSite *lastSite = [_sitesArray firstObject];
+    for (BRSite *site in _sitesArray) {
+        if (lastSite.oid.intValue > site.oid.intValue) {
+            
+        } else {
+            lastSite = site;
+        }
+    }
+    return lastSite;
 }
 
 #pragma mark - BookReadVMDelegate

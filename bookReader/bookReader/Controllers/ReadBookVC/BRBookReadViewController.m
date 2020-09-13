@@ -401,9 +401,12 @@
 #pragma mark-BRSitesSelectViewControllerDelegate
 
 - (void)sitesSelectViewController:(NSInteger)index {
-    self.viewModel.BRBookInfoModel.siteIndex = [NSNumber numberWithInteger:index];
-    [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:self.viewModel.BRBookInfoModel.sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.intValue];
-    [self.viewModel reloadContentViews];
+    if(self.viewModel.BRBookInfoModel.siteIndex.intValue != index) {
+        self.viewModel.BRBookInfoModel.siteIndex = [NSNumber numberWithInteger:index];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:self.viewModel.BRBookInfoModel.sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.intValue];
+        
+        [self.viewModel startInit];
+    }
 }
 
 @end

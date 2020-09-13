@@ -46,6 +46,8 @@
 		C51B3D4124D72F740012D6CD /* BRSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C51B3D4024D72F740012D6CD /* BRSettingTableViewCell.m */; };
 		C543F8392500FACD00AD1630 /* CFStrokeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C543F8382500FACD00AD1630 /* CFStrokeLabel.m */; };
 		C543F83B2501589500AD1630 /* AliyunEmasServices-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */; };
+		C543F83E25087F1C00AD1630 /* BRHistoryBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C543F83D25087F1C00AD1630 /* BRHistoryBooksViewController.m */; };
+		C543F84125093E7000AD1630 /* CFButtonLeftRight.m in Sources */ = {isa = PBXBuildFile; fileRef = C543F84025093E7000AD1630 /* CFButtonLeftRight.m */; };
 		C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888224A33A0B00887AEE /* BRBookCategory.m */; };
 		C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = C549888524A5A48700887AEE /* BRChapterDetail.m */; };
 		C5601D0A24C62895007C7377 /* BRChapter+database.m in Sources */ = {isa = PBXBuildFile; fileRef = C5601D0924C62895007C7377 /* BRChapter+database.m */; };
@@ -71,6 +73,7 @@
 		C5601D7824CDD52B007C7377 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5601D7724CDD52B007C7377 /* Images.xcassets */; };
 		C5601D8124CE09B6007C7377 /* launcher_img_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5601D7F24CE09B6007C7377 /* launcher_img_logo@2x.png */; };
 		C5601D8224CE09B6007C7377 /* launcher_img_logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C5601D8024CE09B6007C7377 /* launcher_img_logo@3x.png */; };
+		C56AF610250B72A4006F0618 /* BRAboutSoftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56AF60F250B72A4006F0618 /* BRAboutSoftViewController.m */; };
 		C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD124A0681500DE0277 /* BRBookInfoModel.m */; };
 		C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C5714BD424A0A21000DE0277 /* BRBaseModel.m */; };
 		C57EB09424E93CD700AAA2BA /* BRBookListCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */; };
@@ -90,6 +93,15 @@
 		C59D064824C5863B00A8237F /* NSError+BRError.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064724C5863B00A8237F /* NSError+BRError.m */; };
 		C59D064B24C58AF600A8237F /* NSString+size.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064A24C58AF600A8237F /* NSString+size.m */; };
 		C59D064E24C5C82600A8237F /* BRBookRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064D24C5C82600A8237F /* BRBookRecord.m */; };
+		C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */; };
+		C5A9FB46250AB0B90054259A /* bookInfoLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A9FB45250AB0B90054259A /* bookInfoLoading.json */; };
+		C5BA671E250C900500AA1932 /* BRWebviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA671D250C900500AA1932 /* BRWebviewViewController.m */; };
+		C5BA6723250CBEAE00AA1932 /* yinsizhengce.html in Resources */ = {isa = PBXBuildFile; fileRef = C5BA6722250CBEAE00AA1932 /* yinsizhengce.html */; };
+		C5BA6725250CC3F900AA1932 /* yonghuxieyi.html in Resources */ = {isa = PBXBuildFile; fileRef = C5BA6724250CC3F900AA1932 /* yonghuxieyi.html */; };
+		C5BA6729250CC76C00AA1932 /* mianzeshengming.html in Resources */ = {isa = PBXBuildFile; fileRef = C5BA6728250CC76C00AA1932 /* mianzeshengming.html */; };
+		C5BA672C250E2CA400AA1932 /* BRAgreementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA672B250E2CA400AA1932 /* BRAgreementView.m */; };
+		C5BA672E250E569500AA1932 /* tanchuangtishi.html in Resources */ = {isa = PBXBuildFile; fileRef = C5BA672D250E569500AA1932 /* tanchuangtishi.html */; };
+		C5BA6731250E7F7200AA1932 /* CFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA6730250E7F7200AA1932 /* CFUtils.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
 		C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F3C16F24879CCC00E4AF55 /* Assets.xcassets */; };
@@ -191,6 +203,10 @@
 		C543F8372500FACD00AD1630 /* CFStrokeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFStrokeLabel.h; sourceTree = "<group>"; };
 		C543F8382500FACD00AD1630 /* CFStrokeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFStrokeLabel.m; sourceTree = "<group>"; };
 		C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AliyunEmasServices-Info.plist"; sourceTree = "<group>"; };
+		C543F83C25087F1C00AD1630 /* BRHistoryBooksViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRHistoryBooksViewController.h; sourceTree = "<group>"; };
+		C543F83D25087F1C00AD1630 /* BRHistoryBooksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRHistoryBooksViewController.m; sourceTree = "<group>"; };
+		C543F83F25093E7000AD1630 /* CFButtonLeftRight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CFButtonLeftRight.h; path = bookReader/Category/CFButtonLeftRight.h; sourceTree = SOURCE_ROOT; };
+		C543F84025093E7000AD1630 /* CFButtonLeftRight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CFButtonLeftRight.m; path = bookReader/Category/CFButtonLeftRight.m; sourceTree = SOURCE_ROOT; };
 		C549888124A33A0B00887AEE /* BRBookCategory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookCategory.h; sourceTree = "<group>"; };
 		C549888224A33A0B00887AEE /* BRBookCategory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookCategory.m; sourceTree = "<group>"; };
 		C549888424A5A48700887AEE /* BRChapterDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChapterDetail.h; sourceTree = "<group>"; };
@@ -236,6 +252,8 @@
 		C5601D7724CDD52B007C7377 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C5601D7F24CE09B6007C7377 /* launcher_img_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launcher_img_logo@2x.png"; sourceTree = "<group>"; };
 		C5601D8024CE09B6007C7377 /* launcher_img_logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launcher_img_logo@3x.png"; sourceTree = "<group>"; };
+		C56AF60E250B72A4006F0618 /* BRAboutSoftViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAboutSoftViewController.h; sourceTree = "<group>"; };
+		C56AF60F250B72A4006F0618 /* BRAboutSoftViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAboutSoftViewController.m; sourceTree = "<group>"; };
 		C5714BD024A0681500DE0277 /* BRBookInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoModel.h; sourceTree = "<group>"; };
 		C5714BD124A0681500DE0277 /* BRBookInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoModel.m; sourceTree = "<group>"; };
 		C5714BD324A0A21000DE0277 /* BRBaseModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBaseModel.h; sourceTree = "<group>"; };
@@ -275,6 +293,19 @@
 		C59D064A24C58AF600A8237F /* NSString+size.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+size.m"; sourceTree = "<group>"; };
 		C59D064C24C5C82600A8237F /* BRBookRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookRecord.h; sourceTree = "<group>"; };
 		C59D064D24C5C82600A8237F /* BRBookRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookRecord.m; sourceTree = "<group>"; };
+		C5A9FB42250AA2D10054259A /* CFShadowCornerImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFShadowCornerImageView.h; sourceTree = "<group>"; };
+		C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFShadowCornerImageView.m; sourceTree = "<group>"; };
+		C5A9FB45250AB0B90054259A /* bookInfoLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bookInfoLoading.json; sourceTree = "<group>"; };
+		C5BA671C250C900500AA1932 /* BRWebviewViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRWebviewViewController.h; sourceTree = "<group>"; };
+		C5BA671D250C900500AA1932 /* BRWebviewViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRWebviewViewController.m; sourceTree = "<group>"; };
+		C5BA6722250CBEAE00AA1932 /* yinsizhengce.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = yinsizhengce.html; sourceTree = "<group>"; };
+		C5BA6724250CC3F900AA1932 /* yonghuxieyi.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = yonghuxieyi.html; sourceTree = "<group>"; };
+		C5BA6728250CC76C00AA1932 /* mianzeshengming.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = mianzeshengming.html; sourceTree = "<group>"; };
+		C5BA672A250E2CA400AA1932 /* BRAgreementView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAgreementView.h; sourceTree = "<group>"; };
+		C5BA672B250E2CA400AA1932 /* BRAgreementView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRAgreementView.m; sourceTree = "<group>"; };
+		C5BA672D250E569500AA1932 /* tanchuangtishi.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = tanchuangtishi.html; sourceTree = "<group>"; };
+		C5BA672F250E7F7200AA1932 /* CFUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFUtils.h; sourceTree = "<group>"; };
+		C5BA6730250E7F7200AA1932 /* CFUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFUtils.m; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* 古今.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "古今.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -407,8 +438,14 @@
 				C5601D1A24C705C7007C7377 /* TableViewCell */,
 				C5601D1624C6D2E1007C7377 /* UICollectionView */,
 				C51A834E24BEA9320078CB37 /* ReadBookView */,
+				C543F83F25093E7000AD1630 /* CFButtonLeftRight.h */,
+				C543F84025093E7000AD1630 /* CFButtonLeftRight.m */,
 				C51A834824BDF9290078CB37 /* CFButtonUpDwon.h */,
 				C51A834924BDF9290078CB37 /* CFButtonUpDwon.m */,
+				C5A9FB42250AA2D10054259A /* CFShadowCornerImageView.h */,
+				C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */,
+				C5BA672A250E2CA400AA1932 /* BRAgreementView.h */,
+				C5BA672B250E2CA400AA1932 /* BRAgreementView.m */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -433,6 +470,7 @@
 		C51B3D3A24D591E60012D6CD /* Animation */ = {
 			isa = PBXGroup;
 			children = (
+				C5A9FB45250AB0B90054259A /* bookInfoLoading.json */,
 				C51B3D3B24D5921B0012D6CD /* bookLoading.json */,
 			);
 			path = Animation;
@@ -479,6 +517,7 @@
 		C5601D7924CE0911007C7377 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C5BA671F250CA4E400AA1932 /* HTML */,
 				C5601D7A24CE0920007C7377 /* Images */,
 			);
 			path = Resources;
@@ -503,6 +542,8 @@
 				C59D063C24C2F81800A8237F /* BRNotificationMacros.h */,
 				C5601D6B24C9EDE6007C7377 /* BRMessageHUD.h */,
 				C5601D6C24C9EDE6007C7377 /* BRMessageHUD.m */,
+				C5BA672F250E7F7200AA1932 /* CFUtils.h */,
+				C5BA6730250E7F7200AA1932 /* CFUtils.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -554,6 +595,12 @@
 				C5601D6F24CACA72007C7377 /* BRBooksManagerViewController.m */,
 				C51B3D3424D2C4390012D6CD /* BRSitesSelectViewController.h */,
 				C51B3D3524D2C4390012D6CD /* BRSitesSelectViewController.m */,
+				C543F83C25087F1C00AD1630 /* BRHistoryBooksViewController.h */,
+				C543F83D25087F1C00AD1630 /* BRHistoryBooksViewController.m */,
+				C56AF60E250B72A4006F0618 /* BRAboutSoftViewController.h */,
+				C56AF60F250B72A4006F0618 /* BRAboutSoftViewController.m */,
+				C5BA671C250C900500AA1932 /* BRWebviewViewController.h */,
+				C5BA671D250C900500AA1932 /* BRWebviewViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -629,6 +676,17 @@
 				C5601D1224C63ED0007C7377 /* BRChapterDetail+database.m */,
 			);
 			path = "Model+dadaBase";
+			sourceTree = "<group>";
+		};
+		C5BA671F250CA4E400AA1932 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				C5BA672D250E569500AA1932 /* tanchuangtishi.html */,
+				C5BA6728250CC76C00AA1932 /* mianzeshengming.html */,
+				C5BA6722250CBEAE00AA1932 /* yinsizhengce.html */,
+				C5BA6724250CC3F900AA1932 /* yonghuxieyi.html */,
+			);
+			path = HTML;
 			sourceTree = "<group>";
 		};
 		C5F3C15724879CC700E4AF55 = {
@@ -813,10 +871,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5BA6725250CC3F900AA1932 /* yonghuxieyi.html in Resources */,
+				C5A9FB46250AB0B90054259A /* bookInfoLoading.json in Resources */,
 				C5601D3924C9A488007C7377 /* MBProgressHUD.xcassets in Resources */,
 				C5601D7824CDD52B007C7377 /* Images.xcassets in Resources */,
 				C5F3C17324879CCC00E4AF55 /* LaunchScreen.storyboard in Resources */,
+				C5BA6723250CBEAE00AA1932 /* yinsizhengce.html in Resources */,
 				C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */,
+				C5BA672E250E569500AA1932 /* tanchuangtishi.html in Resources */,
 				C51B3D3C24D5921B0012D6CD /* bookLoading.json in Resources */,
 				C51B3D3324D214D90012D6CD /* BookReader.xcassets in Resources */,
 				C51A834524BDDC600078CB37 /* Button.xcassets in Resources */,
@@ -829,6 +891,7 @@
 				C51A82F624B5D2F00078CB37 /* Tabbar.xcassets in Resources */,
 				C5601D2224C7404B007C7377 /* RecommendView.xcassets in Resources */,
 				C5601D8124CE09B6007C7377 /* launcher_img_logo@2x.png in Resources */,
+				C5BA6729250CC76C00AA1932 /* mianzeshengming.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,6 +978,9 @@
 				C5601D2524C747A8007C7377 /* BRRecommendBigCollectionViewCell.m in Sources */,
 				C5714BD524A0A21000DE0277 /* BRBaseModel.m in Sources */,
 				C59D062A24C2DCB400A8237F /* BRBookSetingView.m in Sources */,
+				C543F84125093E7000AD1630 /* CFButtonLeftRight.m in Sources */,
+				C5BA671E250C900500AA1932 /* BRWebviewViewController.m in Sources */,
+				C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
 				C51A831E24B72A6D0078CB37 /* ZJContentView.m in Sources */,
 				C5601D7024CACA72007C7377 /* BRBooksManagerViewController.m in Sources */,
@@ -939,12 +1005,15 @@
 				C51B3D4124D72F740012D6CD /* BRSettingTableViewCell.m in Sources */,
 				C51A832024B72A6D0078CB37 /* ZJSegmentStyle.m in Sources */,
 				C5834BF02488F84600AFA146 /* BRHTTPSessionManager.m in Sources */,
+				C56AF610250B72A4006F0618 /* BRAboutSoftViewController.m in Sources */,
 				C51B3D3124D20F260012D6CD /* UIImage+ImageEffects.m in Sources */,
+				C543F83E25087F1C00AD1630 /* BRHistoryBooksViewController.m in Sources */,
 				C51A832B24B762A70078CB37 /* BRBookshelfViewController.m in Sources */,
 				C51A831B24B72A6D0078CB37 /* ZJTitleView.m in Sources */,
 				C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */,
 				C59D063F24C3E6E800A8237F /* BRChapter.m in Sources */,
 				C59D064E24C5C82600A8237F /* BRBookRecord.m in Sources */,
+				C5BA6731250E7F7200AA1932 /* CFUtils.m in Sources */,
 				C5601D6D24C9EDE6007C7377 /* BRMessageHUD.m in Sources */,
 				C51B3D3624D2C4390012D6CD /* BRSitesSelectViewController.m in Sources */,
 				C51A834A24BDF9290078CB37 /* CFButtonUpDwon.m in Sources */,
@@ -962,6 +1031,7 @@
 				C51B3D2E24D209770012D6CD /* UIView+Corner.m in Sources */,
 				C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */,
 				C51A830324B726330078CB37 /* BRCategoryBooksViewController.m in Sources */,
+				C5BA672C250E2CA400AA1932 /* BRAgreementView.m in Sources */,
 				C5601D1324C63ED0007C7377 /* BRChapterDetail+database.m in Sources */,
 				C51A831F24B72A6D0078CB37 /* ZJCollectionView.m in Sources */,
 				C51A832524B72D310078CB37 /* BRCategoryViewController.m in Sources */,
@@ -1145,7 +1215,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1051;
+				CURRENT_PROJECT_VERSION = 1061;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1166,7 +1236,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1051;
+				CURRENT_PROJECT_VERSION = 1061;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;

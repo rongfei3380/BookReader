@@ -194,7 +194,7 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH, 60);
+    return CGSizeMake(SCREEN_WIDTH, 0);
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {

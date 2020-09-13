@@ -16,6 +16,7 @@
     UIImageView *_coverImageView;
     UILabel *_bookNameLabel;
     UILabel *_readStatusLabel;
+    UIView *_updateFlagView;
 }
 
 @end
@@ -43,6 +44,28 @@
         _readStatusLabel.font = [UIFont systemFontOfSize:11];
         _readStatusLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
         [self addSubview:_readStatusLabel];
+        
+        _updateFlagView = [[UIView alloc] init];
+        _updateFlagView.layer.backgroundColor = CFUIColorFromRGBAInHex(0xFFA400, 1).CGColor;
+        _updateFlagView.layer.cornerRadius = 2;
+        [_coverImageView addSubview:_updateFlagView];
+        [_updateFlagView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(30, 14));
+            make.right.mas_equalTo(-4);
+            make.top.mas_equalTo(4);
+        }];
+
+        UILabel *label = [[UILabel alloc] init];
+        label.font = [UIFont systemFontOfSize:9];
+        label.text = @"更新";
+        label.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        [_updateFlagView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(20, 10));
+            make.center.mas_equalTo(0);
+        }];
+        
+        _updateFlagView.hidden = YES;
         
     }
     return self;
@@ -74,6 +97,12 @@
     [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
     _bookNameLabel.text = _bookInfo.bookName;
     _readStatusLabel.text = _bookInfo.chapterIndexStatus;
+    
+    if (_bookInfo.updateFlag.boolValue) {
+        _updateFlagView.hidden = NO;
+    } else {
+        _updateFlagView.hidden = YES;
+    }
     [self setNeedsDisplay];
 }
 

@@ -10,6 +10,9 @@
 #import "BRSettingTableViewCell.h"
 #import <YWFeedbackFMWK/YWFeedbackKit.h>
 #import <YWFeedbackFMWK/YWFeedbackViewController.h>
+#import "BRHistoryBooksViewController.h"
+#import "BRAboutSoftViewController.h"
+#import "BRWebviewViewController.h"
 
 static NSString * const kAppKey = @"31185069";
 static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
@@ -115,6 +118,7 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
         @{@"icon":@"profile_list_helping", @"title":@"意见反馈"},
         @{@"icon":@"profile_list_praise", @"title":@"给我好评"},
         @{@"icon":@"profile_list_aboult", @"title":@"关于软件"},
+        @{@"icon":@"profile_list_shen", @"title":@"免责声明"},
         @{@"icon":@"profile_list_set", @"title":@"设置"}
     ];
     // Do any additional setup after loading the view.
@@ -136,6 +140,17 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
        NSString *title = [dict objectForKey:@"title"];
     if ([title isEqualToString:@"意见反馈"]) {
         [self openFeedbackViewController];
+    } else if ([title isEqualToString:@"浏览历史"]) {
+        BRHistoryBooksViewController *vc = [[BRHistoryBooksViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([title isEqualToString:@"关于软件"]) {
+        BRAboutSoftViewController *vc = [[BRAboutSoftViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([title isEqualToString:@"免责声明"]){
+        BRWebviewViewController *webVC = [[BRWebviewViewController alloc] init];
+        webVC.loadHtmlName = @"mianzeshengming";
+        webVC.headTitle = @"免责声明";
+        [self.navigationController pushViewController:webVC animated:YES];
     }
     
 }

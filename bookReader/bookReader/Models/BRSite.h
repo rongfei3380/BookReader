@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSString *lastChapterName;
 /// 是否被选中
 @property(nonatomic, strong) NSNumber *isSelected;
+///  源标记 越大越新
+@property(nonatomic, strong) NSNumber *oid;
 
 
 #pragma mark API

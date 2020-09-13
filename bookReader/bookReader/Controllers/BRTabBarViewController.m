@@ -12,8 +12,11 @@
 #import "BRRankBooksViewController.h"
 #import "BRMineViewController.h"
 #import "BRCategoryBooksViewController.h"
+#import "BRAgreementView.h"
+#import "GVUserDefaults+BRUserDefaults.h"
+#import "BRWebviewViewController.h"
 
-@interface BRTabBarViewController ()
+@interface BRTabBarViewController ()<BRAgreementViewDelegate>
 
 @end
 
@@ -30,6 +33,13 @@
     [self addSubViewController];
     
     self.navigationController.delegate = self;
+    
+    
+    if (!BRUserDefault.isAgreemented) {
+        BRAgreementView *view = [[BRAgreementView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        view.delegate = self;
+        [self.view addSubview:view];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -67,6 +77,36 @@
 //    BOOL isShowHomePage = [viewController isKindOfClass:[self class]];
 
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+
+#pragma mark- BRAgreementViewDelegate
+- (void)agreementViewDelegateAgreementViewDissmiss:(UIView *)view {
+    if (view.superview) {
+        BRUserDefault.isAgreemented = YES;
+        [view removeFromSuperview];
+    }
+}
+
+- (void)agreementViewDelegateClickLink:(NSURL *)url {
+    NSString *scheme = url.scheme;
+    NSString *host = url.host;
+    NSString *path = url.path;
+        
+    if ([host isEqualToString:@"webView"]) {
+        if ([path isEqualToString:@"/yonghuxieyi"]) {
+            BRWebviewViewController *webVC = [[BRWebviewViewController alloc] init];
+            webVC.loadHtmlName = @"yonghuxieyi";
+            webVC.headTitle = @"用户协议";
+            [self.navigationController pushViewController:webVC animated:YES];
+        } else if ([path isEqualToString:@"/yinsizhengce"]) {
+            BRWebviewViewController *webVC = [[BRWebviewViewController alloc] init];
+            webVC.loadHtmlName = @"yinsizhengce";
+            webVC.headTitle = @"隐私政策";
+            [self.navigationController pushViewController:webVC animated:YES];
+        }
+    }
+
 }
 
 

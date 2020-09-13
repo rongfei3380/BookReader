@@ -17,7 +17,8 @@
     return @{@"siteId":@"siteid",
              @"bookId":@"novelid",
              @"siteName":@"sitename",
-             @"lastChapterName":@"name"
+             @"lastChapterName":@"name",
+             @"oid":@"oid"
     };
 }
 

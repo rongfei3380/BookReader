@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 查询书籍相关的章节缓存
 /// @param bookId 书籍id
-- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId;
+//- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId;
 
 /// 查询固定源 下面的章节缓存
 /// @param bookId 书籍id
@@ -107,6 +107,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));
 + (instancetype)new __attribute__((unavailable("请使用sharedDatabase,以保证该类为单例")));
 
+#pragma mark- 浏览历史
+
+/// 存储 浏览历史的书籍
+/// @param model  书籍
+- (BOOL)saveHistoryBookInfoWithModel:(BRBookInfoModel *)model;
+
+/// 获取 全部浏览的书籍
+- (NSArray<BRBookInfoModel*>*)selectHistoryBookInfos;
+
+/// 清空浏览历史
+- (void)deleteHistoryBooksInfo;
 
 @end
 

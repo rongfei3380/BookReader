@@ -135,5 +135,30 @@ time DATETIME NOT NULL\
 /*-----------------------------------------  record_book  ----------------------------------------------------*/
 #define kBRDBSelectBookInfosAndRecord @"SELECT * FROM t_book_info B LEFT OUTER JOIN t_record R ON related_id = R.book_id order by user_select_time desc"
 
+#pragma mark-- history_book
+/*-----------------------------------------  t_historyBook_info  ----------------------------------------------------*/
+#define kBRDBCreateHistoryBookInfoTabel @"CREATE TABLE IF NOT EXISTS t_historyBook_info(\
+id INTEGER PRIMARY KEY AUTOINCREMENT,\
+book_name TEXT NOT NULL,\
+book_id INTEGER NOT NULL UNIQUE,\
+book_cover TEXT,\
+author TEXT NOT NULL,\
+author_id INTEGER NOT NULL,\
+category_id INTEGER NOT NULL,\
+category_name TEXT NOT NULL,\
+lastupdate_time TEXT,\
+lastchapter_name TEXT,\
+book_intro TEXT,\
+book_desc TEXT,\
+sites_text TEXT,\
+site_index INTEGER,\
+user_select_time DATETIME NOT NULL\
+)"
+
+#define kBRDBInsertHistoryBookInfo(book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time,sites_text, site_index) @"INSERT OR REPLACE INTO t_historyBook_info (book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time, sites_text, site_index) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",book_name, book_id, book_cover, author, author_id, category_id, category_name, lastupdate_time ,book_intro , book_desc, lastchapter_name, user_select_time, sites_text,site_index
+
+#define kBRDBSelectHistoryBookInfo @"SELECT t_historyBook_info.book_name,t_historyBook_info.book_id, t_historyBook_info.book_cover, t_historyBook_info.author, t_historyBook_info.author_id,t_historyBook_info.category_id,t_historyBook_info.category_name,t_historyBook_info.lastupdate_time,t_historyBook_info.lastchapter_name,t_historyBook_info.book_intro,t_historyBook_info.book_desc,t_historyBook_info.sites_text,t_historyBook_info.site_index, t_record.chapter_index,t_record.chapter_name FROM t_historyBook_info LEFT join t_record on t_historyBook_info.book_id=t_record.book_id order by user_select_time desc"
+
+#define kBRDBDeleteHistoryBooksInfo @"DELETE FROM t_historyBook_info WHERE book_id IS NOT NULL"
 
 #endif /* BRDatabaseMacros_h */

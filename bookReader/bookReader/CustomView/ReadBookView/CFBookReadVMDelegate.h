@@ -23,7 +23,7 @@ typedef void (^HubFail)(NSString* text);
 @protocol CFBookReadVMDelegate <NSObject>
 
 
-/// 开始初始化
+/// 开始初始化 
 - (void)startInit;
 
 /// 获取前一个页面

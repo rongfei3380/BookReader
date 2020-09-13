@@ -65,7 +65,7 @@
                 CFDebugLog(@"creat BookInfoTabel Table error:%@",[self.database lastErrorMessage]);
             }
 //            创建搜索历史表
-            creat = [self.database executeUpdate:kBRDBCreateSearchHistoryTabel];
+            creat = [self.database executeUpdate:kBRDBCreateHistoryBookInfoTabel];
             if (!creat) {
                 CFDebugLog(@"creat SearchHistoryTabel Table error:%@",[self.database lastErrorMessage]);
             }
@@ -73,6 +73,11 @@
             creat = [self.database executeUpdate:kBRDBCreateRecordTable];
             if (!creat) {
                 CFDebugLog(@"creat RecordTable Table error:%@",[self.database lastErrorMessage]);
+            }
+            
+            creat = [self.database executeUpdate:kBRDBCreateHistoryBookInfoTabel];
+            if (!creat) {
+                CFDebugLog(@"creat HistoryBookInfo Table error:%@",[self.database lastErrorMessage]);
             }
             
             [self addTableColumn];
@@ -508,9 +513,57 @@
     return nil;
 
 }
-//
-//- (void)deleteBookRecordWithBookId:(NSString*)bookId {
-//
-//}
+
+#pragma mark- 浏览历史
+
+/// 存储 浏览历史的书籍
+/// @param model  书籍
+- (BOOL)saveHistoryBookInfoWithModel:(BRBookInfoModel *)model {
+    if (!model || model.bookId.integerValue <= 0) {
+           return NO;
+       }
+       [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]) {
+               NSArray *sites = model.sitesArray;
+               NSString *sitesString = [sites yy_modelToJSONString];
+               NSData *encodeData = [sitesString dataUsingEncoding:NSUTF8StringEncoding];
+               NSString *base64String = [encodeData base64EncodedStringWithOptions:0];
+               
+               
+               BOOL insert = [db executeUpdate:kBRDBInsertHistoryBookInfo(model.bookName, model.bookId, model.cover, model.author, model.authorId, model.categoryId, model.categoryName, model.lastupdate, model.intro, model.desc, model.lastChapterName, [NSDate date], base64String, model.siteIndex)];
+               if (!insert) {
+                   CFDebugLog(@"insert bookInfoModel book_name = %@, error:%@", model.bookName, [db lastErrorMessage]);
+               }
+           }
+       }];
+       return YES;
+}
+
+/// 获取 全部浏览的书籍
+- (NSArray<BRBookInfoModel*>*)selectHistoryBookInfos {
+    FMResultSet *result = [self.database executeQuery:kBRDBSelectHistoryBookInfo];
+    NSMutableArray *array = [NSMutableArray array];
+    while ([result next]) {
+        BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
+        if (model) {
+            [array addObject:model];
+        }
+    }
+    [result close];
+    return array;
+}
+
+/// 清空浏览历史
+- (void)deleteHistoryBooksInfo {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            BOOL delete = [db executeUpdate:kBRDBDeleteHistoryBooksInfo];
+            if (!delete) {
+                   NSLog(@"delete History BookInfoModel  error:%@", [db lastErrorMessage]);
+            }
+        }
+        [db close];
+    }];
+}
 
 @end

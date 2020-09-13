@@ -18,6 +18,8 @@
     UILabel *_chapterNameLabel;
     UILabel *_readStatusLabel;
     UILabel *_updataTimeLabel;
+    
+    UIView *_updateFlagView;
 }
 
 @end
@@ -40,6 +42,28 @@
         _bookNameLabel.font = [UIFont systemFontOfSize:15];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
         [self addSubview:_bookNameLabel];
+        
+        _updateFlagView = [[UIView alloc] init];
+        _updateFlagView.layer.backgroundColor = CFUIColorFromRGBAInHex(0xFFA400, 1).CGColor;
+        _updateFlagView.layer.cornerRadius = 2;
+        [self addSubview:_updateFlagView];
+        [_updateFlagView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(30, 14));
+            make.right.mas_equalTo(-20);
+            make.centerY.mas_equalTo(_bookNameLabel.mas_centerY).offset(0);
+        }];
+
+        UILabel *label = [[UILabel alloc] init];
+        label.font = [UIFont systemFontOfSize:9];
+        label.text = @"更新";
+        label.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        [_updateFlagView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(20, 10));
+            make.center.mas_equalTo(0);
+        }];
+        
+        _updateFlagView.hidden = YES;
         
         _chapterNameLabel = [[UILabel alloc] init];
         _chapterNameLabel.font = [UIFont systemFontOfSize:12];
@@ -107,6 +131,13 @@
     _chapterNameLabel.text = _bookInfo.lastChapterName;
     _readStatusLabel.text = _bookInfo.chapterIndexStatus;
     _updataTimeLabel.text = [NSString stringWithFormat:@"最后更新:%@", [CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate]];
+    
+    if (_bookInfo.updateFlag.boolValue) {
+        _updateFlagView.hidden = NO;
+    } else {
+        _updateFlagView.hidden = YES;
+    }
+    
     [self setNeedsDisplay];
 }
 

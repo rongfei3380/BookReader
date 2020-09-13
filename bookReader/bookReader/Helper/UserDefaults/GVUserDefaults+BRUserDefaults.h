@@ -50,6 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 /* 搜索热词*/
 @property (nonatomic,strong) NSArray* hotWordArr;
 
+/// 是否同意了 用户协议
+@property(nonatomic, assign) BOOL isAgreemented;
 
 @end
 

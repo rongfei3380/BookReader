@@ -56,7 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 阅读状态
 @property(nonatomic, strong) NSString *chapterIndexStatus;
 
-
+/// 是否章节更新 标识
+@property(nonatomic, strong) NSNumber *updateFlag;
 
 /// 获取书籍详情
 /// @param bookid 小说id
