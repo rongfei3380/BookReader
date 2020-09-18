@@ -102,6 +102,9 @@
 		C5BA672C250E2CA400AA1932 /* BRAgreementView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA672B250E2CA400AA1932 /* BRAgreementView.m */; };
 		C5BA672E250E569500AA1932 /* tanchuangtishi.html in Resources */ = {isa = PBXBuildFile; fileRef = C5BA672D250E569500AA1932 /* tanchuangtishi.html */; };
 		C5BA6731250E7F7200AA1932 /* CFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA6730250E7F7200AA1932 /* CFUtils.m */; };
+		C5BA6733250F6BFA00AA1932 /* bookLoading.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BA6732250F6BFA00AA1932 /* bookLoading.xcassets */; };
+		C5BA67362513717700AA1932 /* BRReadBgCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */; };
+		C5BA67392514A2DD00AA1932 /* BRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
 		C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F3C16F24879CCC00E4AF55 /* Assets.xcassets */; };
@@ -306,6 +309,11 @@
 		C5BA672D250E569500AA1932 /* tanchuangtishi.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = tanchuangtishi.html; sourceTree = "<group>"; };
 		C5BA672F250E7F7200AA1932 /* CFUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFUtils.h; sourceTree = "<group>"; };
 		C5BA6730250E7F7200AA1932 /* CFUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFUtils.m; sourceTree = "<group>"; };
+		C5BA6732250F6BFA00AA1932 /* bookLoading.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = bookLoading.xcassets; sourceTree = "<group>"; };
+		C5BA67342513717700AA1932 /* BRReadBgCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRReadBgCollectionViewCell.h; sourceTree = "<group>"; };
+		C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRReadBgCollectionViewCell.m; sourceTree = "<group>"; };
+		C5BA67372514A2DD00AA1932 /* BRSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSettingViewController.h; sourceTree = "<group>"; };
+		C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSettingViewController.m; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* 古今.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "古今.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -495,6 +503,8 @@
 				C5601D3324C82925007C7377 /* BRSearchCollectionViewCell.m */,
 				C57EB09224E93CD600AAA2BA /* BRBookListCollectionViewCell.h */,
 				C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */,
+				C5BA67342513717700AA1932 /* BRReadBgCollectionViewCell.h */,
+				C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */,
 			);
 			path = UICollectionView;
 			sourceTree = "<group>";
@@ -601,6 +611,8 @@
 				C56AF60F250B72A4006F0618 /* BRAboutSoftViewController.m */,
 				C5BA671C250C900500AA1932 /* BRWebviewViewController.h */,
 				C5BA671D250C900500AA1932 /* BRWebviewViewController.m */,
+				C5BA67372514A2DD00AA1932 /* BRSettingViewController.h */,
+				C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -692,6 +704,7 @@
 		C5F3C15724879CC700E4AF55 = {
 			isa = PBXGroup;
 			children = (
+				C5BA6732250F6BFA00AA1932 /* bookLoading.xcassets */,
 				C543F83A2501589500AD1630 /* AliyunEmasServices-Info.plist */,
 				C51B3D3D24D724BC0012D6CD /* Mine.xcassets */,
 				C51B3D3224D214D90012D6CD /* BookReader.xcassets */,
@@ -887,6 +900,7 @@
 				C59D064124C43B3100A8237F /* ReadBookToolBar.xcassets in Resources */,
 				C5601D1524C6CF26007C7377 /* BookShelf.xcassets in Resources */,
 				C5601D8224CE09B6007C7377 /* launcher_img_logo@3x.png in Resources */,
+				C5BA6733250F6BFA00AA1932 /* bookLoading.xcassets in Resources */,
 				C543F83B2501589500AD1630 /* AliyunEmasServices-Info.plist in Resources */,
 				C51A82F624B5D2F00078CB37 /* Tabbar.xcassets in Resources */,
 				C5601D2224C7404B007C7377 /* RecommendView.xcassets in Resources */,
@@ -980,6 +994,7 @@
 				C59D062A24C2DCB400A8237F /* BRBookSetingView.m in Sources */,
 				C543F84125093E7000AD1630 /* CFButtonLeftRight.m in Sources */,
 				C5BA671E250C900500AA1932 /* BRWebviewViewController.m in Sources */,
+				C5BA67392514A2DD00AA1932 /* BRSettingViewController.m in Sources */,
 				C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
 				C51A831E24B72A6D0078CB37 /* ZJContentView.m in Sources */,
@@ -1020,6 +1035,7 @@
 				C59D063B24C2F48D00A8237F /* BRBookReadContenViewController.m in Sources */,
 				C5601D2024C73CEF007C7377 /* BRRecommendCollectionReusableView.m in Sources */,
 				C5F3C17624879CCC00E4AF55 /* main.m in Sources */,
+				C5BA67362513717700AA1932 /* BRReadBgCollectionViewCell.m in Sources */,
 				C51A82FF24B70C6B0078CB37 /* BRBaseTableViewController.m in Sources */,
 				C51A82F424B5B3220078CB37 /* BRTabBarViewController.m in Sources */,
 				C59D063124C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m in Sources */,

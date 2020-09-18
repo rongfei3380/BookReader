@@ -32,6 +32,7 @@
     if (!_recommendArray || _recommendArray.count == 0) {
         self->_recommendArray = [ [self getCacheRecordsWithKey:@"recommendArray"] mutableCopy];
         [self.collectionView reloadData];
+        [self showProgressMessage:@"正在获取……"];
     }
     
     
@@ -42,10 +43,11 @@
         
         [self cacheRecords:rotationArray key:@"rotationArray"];
         [self cacheRecords:recommendArray key:@"recommendArray"];
-        
         [self.collectionView reloadData];
+        [self hideProgressMessage];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
+        [self hideProgressMessage];
         [self showErrorMessage:error];
     }];
 }

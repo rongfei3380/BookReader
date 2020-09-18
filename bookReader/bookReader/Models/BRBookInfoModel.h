@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 /*最后更新时间戳*/
 @property(nonatomic, strong) NSNumber *lastupdate;
 @property(nonatomic, strong) NSDate *lastupdateDate;
+/// 用户最后一次操作这本书的时间
+@property(nonatomic, strong) NSDate *userSelectTime;
 /*作者其他小说*/
 @property(nonatomic, strong) NSArray *otherBooks;
 

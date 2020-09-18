@@ -47,6 +47,14 @@
     }
 }
 
+
+- (void)willMoveToWindow:(UIWindow *)newWindow {
+    [super willMoveToWindow:newWindow];
+    
+    [_tableView reloadData];
+    
+}
+
 #pragma mark- super
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -207,13 +215,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"titleCell"];
     }
     
-//    NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
+    NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     
     
     BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@", chapter.name];
     cell.textLabel.font = [UIFont systemFontOfSize:14];
-    cell.textLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    
+    if (row - 1 == self.currentIndex){
+        cell.textLabel.textColor = CFUIColorFromRGBAInHex(0xFFA317, 1);
+    }else{
+        cell.textLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+    }
+        
     
     return cell;
 }

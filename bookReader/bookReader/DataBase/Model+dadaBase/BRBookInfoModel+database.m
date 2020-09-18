@@ -23,9 +23,8 @@
         self.intro = [result stringForColumn:@"book_intro"];
         self.desc = [result stringForColumn:@"book_desc"];
         self.lastupdate = [NSNumber numberWithInt:[result intForColumn:@"lastupdate_time"]];
-        
-        
         self.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:self.lastupdate.integerValue];
+        self.userSelectTime = [result dateForColumn:@"user_select_time"];
         
         NSString *base64String = [result stringForColumn:@"sites_text"];
         if (base64String) {
@@ -48,6 +47,7 @@
                 self.chapterIndexStatus = @"未读";
             }
         }
+        
        
         
     }

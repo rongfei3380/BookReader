@@ -13,6 +13,8 @@
 #import "BRHistoryBooksViewController.h"
 #import "BRAboutSoftViewController.h"
 #import "BRWebviewViewController.h"
+#import "BRSettingViewController.h"
+#import <StoreKit/StoreKit.h>:
 
 static NSString * const kAppKey = @"31185069";
 static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
@@ -151,6 +153,24 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
         webVC.loadHtmlName = @"mianzeshengming";
         webVC.headTitle = @"免责声明";
         [self.navigationController pushViewController:webVC animated:YES];
+    } else if ([title isEqualToString:@"给我好评"]){
+        if (@available(iOS 10.3, *)) {
+            [SKStoreReviewController requestReview];
+        } else {
+            NSString *appURL = @"https://itunes.apple.com/cn/app/1525341952?action=write-review";
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appURL] options:nil completionHandler:^(BOOL success) {
+                
+            }];
+        }
+    } else if ([title isEqualToString:@"分享给朋友"]) {
+        NSString *appURL = @"https://itunes.apple.com/cn/app/id493901993";
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        [pasteboard setString:appURL];
+        [self showSuccessMessage:@"App Store 链接，已复制"];
+
+    } else if ([title isEqualToString:@"设置"]) {
+        BRSettingViewController *vc = [[BRSettingViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
 }

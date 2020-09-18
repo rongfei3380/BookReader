@@ -22,6 +22,8 @@
 
 @property(nonatomic, strong) BRBookPageViewController *bookPageVC;
 @property(nonatomic, strong) CFButtonUpDwon *nightButton;
+@property(nonatomic, strong) CFButtonUpDwon *muluButton;
+@property(nonatomic, strong) CFButtonUpDwon *setButton;
 @property(nonatomic, strong) BRChaptersView *chaptersView;
 @property(nonatomic, strong) BRBookSetingView *settingView;
 @property (nonatomic,strong) UIView* brightnessView;
@@ -49,39 +51,48 @@
     }];
     
     
-    CFButtonUpDwon *muluButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [muluButton setTitle:@"目录" forState:UIControlStateNormal];
-    [muluButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    muluButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    [muluButton setImage:[UIImage imageNamed:@"btn_mune_normal"] forState:UIControlStateNormal];
-    [muluButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
-    [muluButton addTarget:self action:@selector(showMulu) forControlEvents:UIControlEventTouchUpInside];
-    [_toolbarView addSubview:muluButton];
+    self.muluButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [self.muluButton setTitle:@"目录" forState:UIControlStateNormal];
+    [self.muluButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [self.muluButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    self.muluButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [self.muluButton setImage:[UIImage imageNamed:@"btn_mune_normal"] forState:UIControlStateNormal];
+    [self.muluButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
+    [self.muluButton addTarget:self action:@selector(showMulu) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:self.muluButton];
     
     CFButtonUpDwon *nightButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [nightButton setTitle:@"白天" forState:UIControlStateNormal];
-    [nightButton setTitle:@"黑夜" forState:UIControlStateSelected];
+    [nightButton setTitle:@"黑夜" forState:UIControlStateNormal];
+    [nightButton setTitle:@"白天" forState:UIControlStateSelected];
     nightButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [nightButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [nightButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateSelected];
     [nightButton setImage:[UIImage imageNamed:@"btn_nightread_normal"] forState:UIControlStateNormal];
-//    [nightButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
-    [nightButton addTarget:self action:@selector(changeNightStyle) forControlEvents:UIControlEventTouchUpInside];
+    [nightButton setImage:[UIImage imageNamed:@"btn_nightread_selected"] forState:UIControlStateSelected];
+    [nightButton addTarget:self action:@selector(changeNightStyle:) forControlEvents:UIControlEventTouchUpInside];
     self.nightButton = nightButton;
+    if (BRUserDefault.isNightStyle){
+           self.nightButton.selected = YES;
+       }else{
+           self.nightButton.selected = NO;
+       }
     [_toolbarView addSubview:nightButton];
     
   
     
-    CFButtonUpDwon *setButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [setButton setTitle:@"设置" forState:UIControlStateNormal];
-    setButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    [setButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    [setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateNormal];
-//    [setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateSelected];
-    [setButton addTarget:self action:@selector(showSettingView) forControlEvents:UIControlEventTouchUpInside];
-    [_toolbarView addSubview:setButton];
+    self.setButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [self.setButton setTitle:@"设置" forState:UIControlStateNormal];
+    self.setButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [self.setButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [self.setButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    [self.setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateNormal];
+    [self.setButton setImage:[UIImage imageNamed:@"btn_setting_selected"] forState:UIControlStateSelected];
+    [self.setButton addTarget:self action:@selector(showSettingView) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:self.setButton];
     
     CFButtonUpDwon *readButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
     [readButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [readButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
     [readButton setTitle:@"缓存" forState:UIControlStateNormal];
     readButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [readButton setImage:[UIImage imageNamed:@"btn_download_normal"] forState:UIControlStateNormal];
@@ -89,7 +100,7 @@
     [_toolbarView addSubview:readButton];
     
     
-    NSArray *masonryViewArray = @[muluButton, nightButton, setButton, readButton];
+    NSArray *masonryViewArray = @[self.muluButton, nightButton, self.setButton, readButton];
     
     // 实现masonry水平固定控件宽度方法
     [masonryViewArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:30 tailSpacing:30];
@@ -108,18 +119,20 @@
     [self addChildViewController:self.bookPageVC];
     [self.view addSubview:_bookPageVC.view];
     
-    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
+    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
     self.chaptersView.chapters = self.viewModel.getAllChapters;
     self.chaptersView.bookName = self.viewModel.getBookName;
     kWeakSelf(self);
     self.chaptersView.didSelectChapter = ^(NSInteger index) {
         kStrongSelf(self);
         self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
         [self.viewModel loadChapterWithIndex:index];
     };
     self.chaptersView.didSelectHidden = ^{
         kStrongSelf(self);
         self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
     };
     [self.view addSubview:self.chaptersView];
     self.chaptersView.hidden = YES;
@@ -159,7 +172,7 @@
     [self.headView addSubview:changeBtn];
     [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-5);
-        make.centerY.mas_equalTo(0);
+        make.bottom.mas_equalTo(-2);
         make.size.mas_equalTo(CGSizeMake(40, 40));
     }];
 }
@@ -193,6 +206,7 @@
     [self createChangeSiteButton];
     self.isFirstLoad = YES;
     self.headView.hidden = YES;
+    self.headView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -248,7 +262,7 @@
 
 #pragma mark - func
 - (void)showWait {
-    [self showProgressMessage:@"暂未完成"];
+    [self showErrorStatus:@"暂未完工，敬请期待~"];
 }
 
 - (void)showBackAlert {
@@ -273,26 +287,39 @@
         self.chaptersView.bookName = [self.viewModel getBookName];
         self.chaptersView.chapters = [self.viewModel getAllChapters];
     }
-  
     
+    if (!self.settingView.hidden) {
+        self.settingView.hidden = YES;
+        self.setButton.selected = NO;
+    }
+  
+    self.muluButton.selected = !self.muluButton.selected;
     self.settingView.hidden = YES;
     self.chaptersView.hidden = !self.chaptersView.hidden;
 }
 
 - (void)showSettingView {
+    if (!self.chaptersView.hidden) {
+        self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
+    }
+    
+    self.setButton.selected = !self.setButton.selected;
     self.settingView.hidden = !self.settingView.hidden;
 }
 
-- (void)changeNightStyle {
+- (void)changeNightStyle:(UIButton *)button {
     BOOL isNight = BRUserDefault.isNightStyle;
     
-//    if (isNight){
-//        [self.nightView changeImageName:@"toolbar_night" Title:@"夜间"];
-//    }else{
-//        [self.nightView changeImageName:@"toolbar_day" Title:@"白天"];
-//    }
-    
     BRUserDefault.isNightStyle = !isNight;
+    
+    if (BRUserDefault.isNightStyle){
+        button.selected = YES;
+    }else{
+        button.selected = NO;
+    }
+    
+    
     [self.viewModel reloadContentViews];
 }
 
@@ -304,6 +331,7 @@
         _toolbarView.hidden = YES;
         self.headView.hidden = YES;
     }
+    self.setButton.selected = NO;
     self.settingView.hidden = YES;
 }
 
@@ -311,6 +339,7 @@
     if (!_toolbarView.hidden) {
         _toolbarView.hidden = YES;
         self.headView.hidden = YES;
+        self.setButton.selected = NO;
         self.settingView.hidden = YES;
     }
 }

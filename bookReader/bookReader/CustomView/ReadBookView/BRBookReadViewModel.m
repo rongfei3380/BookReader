@@ -133,10 +133,14 @@
             self.startLoadBlock();
         }
 
-        
-        BRSite *site = [self getTheLastSite];
-        NSInteger siteIndex = [_sitesArray indexOfObject:site];
-        self.bookModel.siteIndex = [NSNumber numberWithInteger:siteIndex];
+        BRSite *site = nil;
+        if (self.bookModel.siteIndex) {
+            site = [_sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
+        } else {
+            site = [self getTheLastSite];
+            NSInteger siteIndex = [_sitesArray indexOfObject:site];
+            self.bookModel.siteIndex = [NSNumber numberWithInteger:siteIndex];
+        }
         
         kWeakSelf(self)
         [BRChapter getChaptersListWithBookId:self.bookModel.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {

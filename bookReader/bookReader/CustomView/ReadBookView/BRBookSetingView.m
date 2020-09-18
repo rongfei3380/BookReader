@@ -10,12 +10,12 @@
 #import "CFCustomMacros.h"
 #import "Masonry.h"
 #import "GVUserDefaults+BRUserDefaults.h"
+#import "BRReadBgCollectionViewCell.h"
+#import "CFUtils.h"
 
 
 
-
-
-@interface BRBookSetingView ()
+@interface BRBookSetingView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 /* 字号*/
 @property (nonatomic,strong) UILabel* fontTitleLabel;
@@ -41,15 +41,22 @@
 
 /* 背景*/
 @property (nonatomic,strong) UILabel* backTitleLabel;
-@property (nonatomic,strong) UIButton* backBtn1;
-@property (nonatomic,strong) UIButton* backBtn2;
-@property (nonatomic,strong) UIButton* backBtn3;
-@property (nonatomic,strong) UIButton* backBtn4;
+@property (nonatomic,strong) UICollectionView *backBgCollectionView;
 
-@property (nonatomic,strong) UIButton* backBtn5;
-@property (nonatomic,strong) UIButton* backBtn6;
-@property (nonatomic,strong) UIButton* backBtn7;
-@property (nonatomic,strong) UIButton* backBtn8;
+
+//@property (nonatomic,strong) UIButton* backBtn1;
+//@property (nonatomic,strong) UIButton* backBtn2;
+//@property (nonatomic,strong) UIButton* backBtn3;
+//@property (nonatomic,strong) UIButton* backBtn4;
+//
+//@property (nonatomic,strong) UIButton* backBtn5;
+//@property (nonatomic,strong) UIButton* backBtn6;
+//@property (nonatomic,strong) UIButton* backBtn7;
+//@property (nonatomic,strong) UIButton* backBtn8;
+
+@property(nonatomic, strong) NSArray *bgIconArray;
+@property(nonatomic, strong) NSMutableArray *bgSelectedArray;
+@property(nonatomic, strong) NSArray *bgImageArray;
 
 @end
 
@@ -69,6 +76,11 @@
     return self;
 }
 
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    [self.backBgCollectionView reloadData];
+}
+
 #pragma mark- private
 
 - (void)initialSubViews {
@@ -77,33 +89,43 @@
     _fontTitleLabel = [self titleLabelWithTitle:@"字号"];
     [self addSubview:_fontTitleLabel];
 
-    _fontSubBtn = [self btnWithTitle:@"A-"];
+        
+    _fontSubBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _fontSubBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
+    _fontSubBtn.layer.cornerRadius = 10;
+    _fontSubBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [_fontSubBtn setTitle:@"A-" forState:UIControlStateNormal];
+    [_fontSubBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
     [_fontSubBtn addTarget:self action:@selector(fontSizeDownClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_fontSubBtn];
     
-    _fontSizeLabel = [self titleLabelWithTitle:@"18"];
+    _fontSizeLabel = [self titleLabelWithTitle:@"20"];
     [self addSubview:_fontSizeLabel];
-    
     [self reloadFontLable];
     
-    _fontAddBtn = [self btnWithTitle:@"A+"];
+    _fontAddBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    _fontAddBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
+    _fontAddBtn.layer.cornerRadius = 10;
+    _fontAddBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+    [_fontAddBtn setTitle:@"A+" forState:UIControlStateNormal];
+    [_fontAddBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
     [_fontAddBtn addTarget:self action:@selector(fontSizeUpClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_fontAddBtn];
     
     _spaceTitleLabel = [self titleLabelWithTitle:@"间距"];
     [self addSubview:_spaceTitleLabel];
     
-    _spaceBtn1 = [self btnWithTitle:@""];
+    _spaceBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn1 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
     [_spaceBtn1 setImage:[UIImage imageNamed:@"reading_spacing_five"] forState:UIControlStateNormal];
     [self addSubview:_spaceBtn1];
     
-    _spaceBtn2 = [self btnWithTitle:@""];
+    _spaceBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn2 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
     [_spaceBtn2 setImage:[UIImage imageNamed:@"reading_spacing_four"] forState:UIControlStateNormal];
     [self addSubview:_spaceBtn2];
     
-    _spaceBtn3 = [self btnWithTitle:@""];
+    _spaceBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn3 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
     [_spaceBtn3 setImage:[UIImage imageNamed:@"reading_spacing_three"] forState:UIControlStateNormal];
     [self addSubview:_spaceBtn3];
@@ -113,15 +135,24 @@
 //    [_spaceBtn4 setImage:[UIImage imageNamed:@"space_4"] forState:UIControlStateNormal];
 //    [self addSubview:_spaceBtn4];
     
-    _transitionTitleLabel = [self titleLabelWithTitle:@"翻页"];
-    [self addSubview:_transitionTitleLabel];
+//    _transitionTitleLabel = [self titleLabelWithTitle:@"翻页"];
+//    [self addSubview:_transitionTitleLabel];
     
-    _tranPageCurlBtn = [self btnWithTitle:@"仿真"];
+
+    _tranPageCurlBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_tranPageCurlBtn setTitle:@"仿真" forState:UIControlStateNormal];
+    _tranPageCurlBtn.clipsToBounds = YES;
+    _tranPageCurlBtn.layer.cornerRadius  = 10.f;
+    [_tranPageCurlBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
     [_tranPageCurlBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
     _tranPageCurlBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_tranPageCurlBtn];
     
-    _tranScrollBtn = [self btnWithTitle:@"滑动"];
+    _tranScrollBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_tranScrollBtn setTitle:@"滑动" forState:UIControlStateNormal];
+    _tranScrollBtn.clipsToBounds = YES;
+    [_tranScrollBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+    _tranScrollBtn.layer.cornerRadius  = 10.f;
     [_tranScrollBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
     _tranScrollBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_tranScrollBtn];
@@ -135,76 +166,106 @@
     _lightSlider.value = 1 -BRUserDefault.readBrightness;
     _lightSlider.minimumValueImage = [UIImage imageNamed:@"setting_sun_l"];
     _lightSlider.maximumValueImage = [UIImage imageNamed:@"setting_sun_s"];
-    _lightSlider.minimumTrackTintColor = CFUIColorFromRGBAInHex(0x44b750, 1);
-    _lightSlider.maximumTrackTintColor = CFUIColorFromRGBAInHex(0x696969, 1);
+    _lightSlider.minimumTrackTintColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
+    _lightSlider.maximumTrackTintColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
+    _lightSlider.thumbTintColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
     [_lightSlider addTarget:self action:@selector(sliderValueChange) forControlEvents:UIControlEventValueChanged];
     [self addSubview:_lightSlider];
     
     _backTitleLabel = [self titleLabelWithTitle:@"背景"];
     [self addSubview:_backTitleLabel];
     
-    _backBtn1 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xf7f7f7, 1)];
-    [_backBtn1 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn1];
+    UICollectionViewFlowLayout *_layout = [[UICollectionViewFlowLayout alloc] init];
+    [_layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    _layout.minimumLineSpacing = 19;
+    _layout.minimumInteritemSpacing = 1;
+    //设置每个item的大小为60*128
+    _layout.itemSize = CGSizeMake(28, 28);
+
     
-    _backBtn2 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xa39e8b, 1)];
-    [_backBtn2 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn2];
+    self.backBgCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:_layout];
+    self.backBgCollectionView.backgroundColor = [UIColor clearColor];
+    self.backBgCollectionView.delegate = self;
+    self.backBgCollectionView.dataSource = self;
+    [self addSubview:self.backBgCollectionView];
     
-    _backBtn3 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xfbe1e1, 1)];
-    [_backBtn3 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn3];
+    [self.backBgCollectionView registerClass:[BRReadBgCollectionViewCell class] forCellWithReuseIdentifier:@"BRReadBgCollectionViewCell"];
     
-    _backBtn4 = [self backBtnWithColor:CFUIColorFromRGBAInHex(0xd5e7c8, 1)];
-    [_backBtn4 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn4];
+    self.bgIconArray = @[[CFUtils pureColorImage:0xFFFFFF colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [CFUtils pureColorImage:0xE5E2D1 colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [CFUtils pureColorImage:0xC3CCC2 colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [CFUtils pureColorImage:0xDAD9D7 colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [CFUtils pureColorImage:0xEEE9E9 colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [CFUtils pureColorImage:0xDAE5E8 colorAlpha:1 size:CGSizeMake(60, 28)],
+                         [UIImage imageNamed:@"reading_bg_wenli1_def"],
+                         [UIImage imageNamed:@"reading_bg_wenli2_def"],
+                         [UIImage imageNamed:@"reading_bg_wenli3_def"],
+                         [UIImage imageNamed:@"reading_bg_wenli4_def"]];
     
+    self.bgSelectedArray = [NSMutableArray array];
+    for (int i=0; i<self.bgIconArray.count; i++) {
+        if (BRUserDefault.readBackColorIndex == i) {
+           [self.bgSelectedArray addObject:[NSNumber numberWithBool:YES]];
+        } else {
+           [self.bgSelectedArray addObject:[NSNumber numberWithBool:NO]];
+        }
+    }
     
-    UIColor *color5 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli1_def"]];
-    UIColor *color6 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli2_def"]];
-    UIColor *color7 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli3_def"]];
-    UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli4_def"]];
-    
-    _backBtn5 = [self backBtnWithColor:color5];
-    [_backBtn5 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn5];
-    
-    _backBtn6 = [self backBtnWithColor:color6];
-    [_backBtn6 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn6];
-    
-    _backBtn7 = [self backBtnWithColor:color7];
-    [_backBtn7 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn7];
-    
-    _backBtn8 = [self backBtnWithColor:color8];
-    [_backBtn8 addTarget:self action:@selector(colorBtnClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_backBtn8];
-    
-    
+    [self.backBgCollectionView reloadData];
     [self reloadSpaceBtn];
     [self reloadTransition];
     [self reloadBackColor];
 }
 
 - (void)initSubViewConstraints {
-    [_fontTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(28);
-        make.left.mas_equalTo(20);
+    
+    
+    [_spaceTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(30);
+        make.left.mas_equalTo(24.5);
         make.width.mas_equalTo(30);
         make.height.mas_equalTo(22);
     }];
+    
+    [_fontTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_spaceTitleLabel.mas_left).offset(0);
+        make.top.equalTo(_spaceTitleLabel.mas_bottom).offset(40);
+        make.width.mas_equalTo(30);
+        make.height.mas_equalTo(22);
+    }];
+    
+    [_lightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.top.equalTo(_fontTitleLabel.mas_bottom).offset(40);
+        make.height.mas_equalTo(22);
+    }];
+    
+    [_backTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+        make.width.mas_equalTo(30);
+        make.top.equalTo(_lightTitleLabel.mas_bottom).offset(40);
+        make.height.mas_equalTo(22);
+    }];
+    
+//    [_transitionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
+//        make.width.mas_equalTo(30);
+//        make.top.equalTo(_backTitleLabel.mas_bottom).offset(40);
+//        make.height.mas_equalTo(22);
+//    }];
+   
     
     [_fontSubBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(self.fontTitleLabel.mas_right).offset(20);
         make.height.mas_equalTo(28);
-        make.width.mas_equalTo(70);
+//        make.width.mas_equalTo(70);
     }];
     
     [_fontSizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_fontSubBtn.mas_right).offset(5);
-        make.width.mas_equalTo(20);
+//        make.width.mas_equalTo(20);
         make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
         make.height.mas_equalTo(22);
     }];
@@ -213,37 +274,38 @@
         make.centerY.mas_equalTo(_fontTitleLabel.mas_centerY).offset(0);
         make.left.equalTo(_fontSizeLabel.mas_right).offset(5);
         make.height.mas_equalTo(28);
-        make.width.mas_equalTo(70);
+//        make.width.mas_equalTo(70);
     }];
     
-    [_spaceTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
-        make.width.mas_equalTo(30);
-        make.centerY.equalTo(_fontTitleLabel.mas_bottom).offset(35);
-        make.height.mas_equalTo(22);
-    }];
     
-    [_spaceBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+     [@[_fontSubBtn, _fontAddBtn] mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:114 leadSpacing:80 tailSpacing:24];
+  
+    
+    [@[_spaceBtn3,_spaceBtn2,_spaceBtn1] mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:30 leadSpacing:80 tailSpacing:24];
+    
+    [_spaceBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
-        make.left.equalTo(self.spaceTitleLabel.mas_right).offset(20);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
+        make.left.equalTo(self.spaceTitleLabel.mas_right).offset(24);
+        make.height.mas_equalTo(20);
+        make.width.mas_equalTo(30);
     }];
     
     [_spaceBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
-        make.left.equalTo(self.spaceBtn1.mas_right).offset(8);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-        
+        make.height.mas_equalTo(20);
+        make.width.mas_equalTo(30);
     }];
     
-    [_spaceBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
-        make.left.equalTo(self.spaceBtn2.mas_right).offset(8);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-    }];
+    [_spaceBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
+           make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
+           make.right.mas_equalTo(-24);
+           make.height.mas_equalTo(20);
+           make.width.mas_equalTo(30);
+       }];
+    
+   
+
+    
     
 //    [_spaceBtn4 mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.centerY.equalTo(_spaceTitleLabel.mas_centerY).offset(0);
@@ -252,112 +314,45 @@
 //        make.width.mas_equalTo(60);
 //    }];
     
-    [_transitionTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
-        make.width.mas_equalTo(30);
-        make.top.equalTo(_spaceTitleLabel.mas_bottom).offset(35);
-        make.height.mas_equalTo(22);
-    }];
-    
     [_tranPageCurlBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_transitionTitleLabel.mas_centerY).offset(0);
-        make.left.equalTo(self.transitionTitleLabel.mas_right).offset(20);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
+        make.top.equalTo(_backTitleLabel.mas_bottom).offset(40);
+        make.left.mas_equalTo(24);
+        make.height.mas_equalTo(30);
+        make.right.mas_equalTo(self.mas_centerX).offset(-24);
     }];
     
     [_tranScrollBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_transitionTitleLabel.mas_centerY).offset(0);
-        make.left.equalTo(self.tranPageCurlBtn.mas_right).offset(8);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
+        make.centerY.equalTo(_tranPageCurlBtn.mas_centerY).offset(0);
+        make.left.equalTo(self.mas_centerX).offset(24);
+        make.height.mas_equalTo(30);
+        make.right.mas_equalTo(-24);
     }];
     
-    [_lightTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
-        make.width.mas_equalTo(30);
-        make.top.equalTo(_transitionTitleLabel.mas_bottom).offset(35);
-        make.height.mas_equalTo(22);
-    }];
+    
     
     [_lightSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_lightTitleLabel.mas_centerY).offset(0);
         make.height.mas_equalTo(50);
-        make.left.mas_equalTo(self.lightTitleLabel.mas_right).offset(20);
-        make.width.mas_equalTo(SCREEN_WIDTH-110);
+        make.left.mas_equalTo(self.lightTitleLabel.mas_right).offset(24);
+        make.right.mas_equalTo(-24);
     }];
     
-    [_backTitleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_fontTitleLabel.mas_left).offset(0);
-        make.width.mas_equalTo(30);
-        make.top.equalTo(_lightTitleLabel.mas_bottom).offset(35);
-        make.height.mas_equalTo(22);
-    }];
+   
     
-    [_backBtn1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
-        make.height.mas_equalTo(28);
-        make.left.mas_equalTo(self.backTitleLabel.mas_right).offset(20);
-        make.width.mas_equalTo(60);
+    [self.backBgCollectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(0);
+        make.centerY.mas_equalTo(_backTitleLabel.mas_centerY).offset(0);
+        make.left.mas_equalTo(_backTitleLabel.mas_right).offset(20);
+        make.height.mas_equalTo(40);
     }];
-    
-    [_backBtn2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
-        make.height.mas_equalTo(28);
-        make.left.mas_equalTo(self.backBtn1.mas_right).offset(8);
-        make.width.mas_equalTo(60);
-    }];
-    
-    [_backBtn3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
-        make.height.mas_equalTo(28);
-        make.left.mas_equalTo(self.backBtn2.mas_right).offset(8);
-        make.width.mas_equalTo(60);
-    }];
-    
-    [_backBtn4 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(_backTitleLabel.mas_centerY).offset(0);
-        make.height.mas_equalTo(28);
-        make.left.mas_equalTo(self.backBtn3.mas_right).offset(8);
-        make.width.mas_equalTo(60);
-    }];
-    
-    [_backBtn5 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_backBtn1.mas_bottom).offset(10);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-        make.left.mas_equalTo(_backBtn1.mas_left).offset(0);
-    }];
-    
-    [_backBtn6 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_backBtn2.mas_bottom).offset(10);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-        make.left.mas_equalTo(_backBtn2.mas_left).offset(0);
-    }];
-    
-    [_backBtn7 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_backBtn3.mas_bottom).offset(10);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-        make.left.mas_equalTo(_backBtn3.mas_left).offset(0);
-    }];
-    
-    [_backBtn8 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_backBtn4.mas_bottom).offset(10);
-        make.height.mas_equalTo(28);
-        make.width.mas_equalTo(60);
-        make.left.mas_equalTo(_backBtn4.mas_left).offset(0);
-    }];
-    
 }
 
 #pragma mark - init
 - (UILabel*)titleLabelWithTitle:(NSString*)title {
     UILabel* label = [[UILabel alloc] init];
-    label.font = [UIFont systemFontOfSize:14];
+    label.font = [UIFont fontWithName:@"PingFang SC" size:15];
     label.text = title;
-    label.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+    label.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
     label.textAlignment = NSTextAlignmentCenter;
     
     return label;
@@ -406,78 +401,27 @@
 - (void)reloadTransition {
     UIPageViewControllerTransitionStyle PageTransitionStyle = BRUserDefault.PageTransitionStyle;
     
-    self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
-    self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
+    self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
+    self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     
     if (PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl){
-        self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+        self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
     }else{
-        self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+        self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
     }
 }
 
 - (void)reloadBackColor {
-    UIColor* backColor = BRUserDefault.readBackColor;
     
-    _backBtn1.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn1.layer.borderWidth = 0.5;
-    
-    _backBtn2.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn2.layer.borderWidth = 0.5;
-    
-    _backBtn3.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn3.layer.borderWidth = 0.5;
-    
-    _backBtn4.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn4.layer.borderWidth = 0.5;
-    
-    _backBtn5.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn5.layer.borderWidth = 0.5;
-    
-    _backBtn6.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn6.layer.borderWidth = 0.5;
-    
-    _backBtn7.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn7.layer.borderWidth = 0.5;
-    
-    _backBtn8.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    _backBtn8.layer.borderWidth = 0.5;
-    
-
-    UIColor *color5 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_one"]];
-    UIColor *color6 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_two"]];
-    UIColor *color7 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_three"]];
-    UIColor *color8 = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_four"]];
-    
-    
-    if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xf7f7f7, 1).CGColor)){
-        _backBtn1.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn1.layer.borderWidth = 2.0;
-        
-    }else if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xa39e8b, 1).CGColor)){
-        _backBtn2.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn2.layer.borderWidth = 2.0;
-        
-    }else if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xfbe1e1, 1).CGColor)){
-        _backBtn3.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn3.layer.borderWidth = 2.0;
-        
-    }else if (CGColorEqualToColor(backColor.CGColor, CFUIColorFromRGBAInHex(0xd5e7c8, 1).CGColor)){
-        _backBtn4.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn4.layer.borderWidth = 2.0;
-    }else if (CGColorEqualToColor(backColor.CGColor, color5.CGColor)){
-        _backBtn5.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn5.layer.borderWidth = 2.0;
-    }else if (CGColorEqualToColor(backColor.CGColor, color6.CGColor)){
-        _backBtn6.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn6.layer.borderWidth = 2.0;
-    }else if (CGColorEqualToColor(backColor.CGColor, color7.CGColor)){
-        _backBtn7.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn7.layer.borderWidth = 2.0;
-    }else if (CGColorEqualToColor(backColor.CGColor, color8.CGColor)){
-        _backBtn8.layer.borderColor = CFUIColorFromRGBAInHex(0x44b750, 1).CGColor;
-        _backBtn8.layer.borderWidth = 2.0;
+    for (int i=0; i<self.bgSelectedArray.count; i++) {
+        if (BRUserDefault.readBackColorIndex == i) {
+            [self.bgSelectedArray replaceObjectAtIndex:i withObject:[NSNumber numberWithBool:YES]];
+        } else {
+            [self.bgSelectedArray replaceObjectAtIndex:i withObject:[NSNumber numberWithBool:NO]];
+        }
     }
+    [self.backBgCollectionView reloadData];
+
 }
 
 - (void)reloadFontLable {
@@ -485,7 +429,7 @@
     UIFont* font = [dic objectForKey:NSFontAttributeName];
     float size = font.pointSize;
     if (size == 0) {
-        size = 18;
+        size = KReadFontCustom;
     }
     _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
 }
@@ -499,27 +443,6 @@
 }
 
 - (void)colorBtnClick:(UIButton*)btn {
-    if (btn == self.backBtn1) {
-        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xf7f7f7, 1);
-    } else if (btn == self.backBtn2) {
-        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xa39e8b, 1);
-    } else if (btn == self.backBtn3) {
-        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xfbe1e1, 1);
-    } else if (btn == self.backBtn4) {
-        BRUserDefault.readBackColor = CFUIColorFromRGBAInHex(0xd5e7c8, 1);
-    } else if (btn == self.backBtn5) {
-        UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli1_def"]];
-        BRUserDefault.readBackColor = color;
-    } else if (btn == self.backBtn6) {
-        UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli2_def"]];
-        BRUserDefault.readBackColor = color;
-    } else if (btn == self.backBtn7) {
-        UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli3_def"]];
-        BRUserDefault.readBackColor = color;
-    } else if (btn == self.backBtn8) {
-        UIColor *color = [UIColor colorWithPatternImage:[UIImage imageNamed:@"reading_bg_wenli4_def"]];
-        BRUserDefault.readBackColor = color;
-    }
     
     if (self.block){
         self.block();
@@ -596,6 +519,39 @@
     }
 }
 
+#pragma mark -UICollectionViewDelegate
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    
+    BRReadBgCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRReadBgCollectionViewCell" forIndexPath:indexPath];
+    
+    UIImage *image = [self.bgIconArray objectAtIndex:indexPath.row];
+    BOOL isSelected = [[self.bgSelectedArray objectAtIndex:indexPath.row] boolValue];
+    
+    [cell setBackImage:image isSelected:isSelected];
+
+    return cell;
+}
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    //    space = nil;
+    BRUserDefault.readBackColorIndex = indexPath.row;
+    
+    [self reloadBackColor];
+    if (self.block){
+        self.block();
+    }
+}
+#pragma mark -UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.bgIconArray.count;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
 
 
 @end

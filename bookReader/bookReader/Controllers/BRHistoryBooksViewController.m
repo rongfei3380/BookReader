@@ -102,7 +102,7 @@
     [self.headView addSubview:moreBtn];
     [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(40, 40));
-        make.centerY.mas_equalTo(0);
+        make.bottom.mas_equalTo(-2);
         make.right.mas_equalTo(-5);
     }];
 }

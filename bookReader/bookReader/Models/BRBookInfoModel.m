@@ -108,6 +108,7 @@
                       size:(NSInteger)size
                     sucess:(BRObjectSuccessBlock)successBlock
               failureBlock:(BRObjectFailureBlock)failureBlock {
+
     [[BRAPIClient sharedInstance] searchBookWithName:name page:page size:size sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);

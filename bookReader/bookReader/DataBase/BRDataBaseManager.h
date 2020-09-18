@@ -90,6 +90,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param bookIds  书本id 数组
 - (void)deleteChapterContentWithBookIds:(NSArray<BRBookInfoModel*> *)bookIds;
 
+/// 删除未收藏书本 的章节内容
+- (BOOL)deleteChapterContentWithOtherBooks;
+
 #pragma mark- 阅读历史
 
 - (BOOL)saveRecordWithChapterModel:(BRBookRecord*)model;

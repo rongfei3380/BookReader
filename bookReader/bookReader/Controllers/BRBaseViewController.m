@@ -21,6 +21,7 @@
 @property(nonatomic, strong) UILabel *titleLabel;
 @property(nonatomic, strong) UIView *bookLoadingView;
 @property(nonatomic, strong) LOTAnimationView *loadingAnimationView;
+@property(nonatomic, strong) UIImageView *animationView;
 
 @end
 
@@ -44,8 +45,8 @@
         [self.view addSubview:_headView];
         [_headView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.mas_offset(0);
-            make.top.mas_offset(kStatusBarHeight());
-            make.height.mas_offset(44);
+            make.top.mas_offset(0);
+            make.height.mas_offset(44+kStatusBarHeight());
         }];
     }
     
@@ -56,7 +57,7 @@
         [_headView insertSubview:_backButton atIndex:999];
         [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_offset(5);
-            make.centerY.mas_offset(0);
+            make.bottom.mas_offset(-2);
             make.size.width.mas_offset(40);
             make.size.height.mas_offset(40);
         }];
@@ -70,7 +71,7 @@
         _titleLabel.text = _headTitle;
         [_headView addSubview:_titleLabel];
         [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.mas_offset(0);
+            make.bottom.mas_offset(-7);
             make.centerX.mas_offset(0);
             make.width.mas_offset(SCREEN_WIDTH -100);
             make.height.mas_offset(30);
@@ -84,7 +85,7 @@
         [_headView addSubview:searchBtn];
         [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.size.mas_equalTo(CGSizeMake(40, 40));
-            make.centerY.mas_offset(0);
+            make.bottom.mas_offset(-2);
             make.right.mas_equalTo(self.headView).offset(-5);
         }];
     }
@@ -287,42 +288,47 @@
 - (void)showProgressMessage:(NSString *)message {
     [self hideBookLoading];
     
-    
-    
     _bookLoadingView = [[UIView alloc] init];
-    _bookLoadingView.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.8);
+    _bookLoadingView.backgroundColor = CFUIColorFromRGBAInHex(0x000000, 0.6);
     _bookLoadingView.clipsToBounds = YES;
-    _bookLoadingView.layer.cornerRadius = 5.f;
-
-   
+    _bookLoadingView.layer.cornerRadius = 12.f;
     [self.view addSubview:_bookLoadingView];
-    
     [_bookLoadingView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.mas_equalTo(0);
-        make.height.mas_equalTo(200);
-        make.width.mas_equalTo(200);
+        make.height.mas_equalTo(100);
+        make.width.mas_equalTo(180);
     }];
     
-    _loadingAnimationView = [LOTAnimationView animationNamed:@"bookInfoLoading.json" inBundle:[NSBundle mainBundle]];
-    _loadingAnimationView.frame = CGRectMake(0, 0, 200, 200);
-    _loadingAnimationView.loopAnimation = YES;
-     [_bookLoadingView addSubview:_loadingAnimationView];
-     
-    [_loadingAnimationView mas_makeConstraints:^(MASConstraintMaker *make) {
-           make.center.mas_equalTo(0);
-           make.size.mas_equalTo(CGSizeMake(200, 200));
-       }];
-    [_loadingAnimationView play];
-//    UILabel *contenLabel = [[UILabel alloc] init];
-//    contenLabel.text = message;
-//    contenLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
-//    contenLabel.font = [UIFont systemFontOfSize:20];
-//    [_bookLoadingView addSubview:contenLabel];
-//    [contenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.mas_equalTo(_loadingAnimationView.mas_right).offset(10);
-//        make.right.mas_equalTo(-20);
-//        make.centerY.mas_equalTo(0);
-//    }];
+    NSMutableArray *images = [NSMutableArray array];
+    for (int i = 0; i<= 146; i++) {
+        NSString *imageName = [NSString stringWithFormat:@"img_bookLoading_%d", i];
+        UIImage *image = [UIImage imageNamed:imageName];
+        [images addObject:image];
+    }
+    
+    _animationView = [[UIImageView alloc] init];
+    _animationView.animationImages = images;
+    _animationView.animationRepeatCount = 1000;
+    [_animationView startAnimating];
+     [_bookLoadingView addSubview:_animationView];
+     [_animationView mas_makeConstraints:^(MASConstraintMaker *make) {
+         make.centerX.mas_equalTo(0);
+         make.top.mas_offset(20);
+         make.size.mas_equalTo(CGSizeMake(50, 30));
+     }];
+    [_animationView startAnimating];
+    
+    UILabel *contenLabel = [[UILabel alloc] init];
+    contenLabel.text = message;
+    contenLabel.textAlignment = NSTextAlignmentCenter;
+    contenLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    contenLabel.font = [UIFont systemFontOfSize:14];
+    [_bookLoadingView addSubview:contenLabel];
+    [contenLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(_animationView.mas_bottom).offset(12);
+        make.height.mas_equalTo(20);
+        make.centerX.mas_equalTo(0);
+    }];
 }
 
 - (void)showProgressMessage:(NSString *)message closable:(BOOL)closable {
@@ -339,9 +345,9 @@
 - (void)hideProgressMessage {
     if (_bookLoadingView && _bookLoadingView.superview) {
 
-           [_loadingAnimationView stop];
-           [_loadingAnimationView removeFromSuperview];
-           _loadingAnimationView = nil;
+           [_animationView stopAnimating];
+           [_animationView removeFromSuperview];
+           _animationView = nil;
 
            [_bookLoadingView removeFromSuperview];
            _bookLoadingView = nil;

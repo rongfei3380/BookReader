@@ -37,6 +37,8 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id,
 
 #define kBRDBDeleteChapterTextWithBookId(bookId) @"DELETE FROM t_chapter_text WHERE book_id=?",bookId
 
+#define kBRDBDeleteChapterTextOtherBooks @"SELECT DISTINCT t_chapter_text.book_id FROM t_chapter_text LEFT OUTER JOIN t_book_info ON t_chapter_text.book_id=t_book_info.book_id WHERE t_book_info.book_id is NULL"
+
 #pragma mark- t_chapter_list
 
 // 章节 列表
@@ -85,7 +87,7 @@ user_select_time DATETIME NOT NULL\
 
 //#define kBRDBSelectBookInfo @"SELECT * FROM t_book_info LEFT JOIN t_record on t_book_info.book_id=t_record.book_id order by user_select_time desc"
 
-#define kBRDBSelectBookInfo @"SELECT t_book_info.book_name,t_book_info.book_id, t_book_info.book_cover, t_book_info.author, t_book_info.author_id,t_book_info.category_id,t_book_info.category_name,t_book_info.lastupdate_time,t_book_info.lastchapter_name,t_book_info.book_intro,t_book_info.book_desc,t_book_info.sites_text,t_book_info.site_index, t_record.chapter_index,t_record.chapter_name FROM t_book_info LEFT join t_record on t_book_info.book_id=t_record.book_id order by user_select_time desc"
+#define kBRDBSelectBookInfo @"SELECT t_book_info.book_name,t_book_info.book_id, t_book_info.book_cover, t_book_info.author, t_book_info.author_id,t_book_info.category_id,t_book_info.category_name,t_book_info.lastupdate_time,t_book_info.lastchapter_name,t_book_info.book_intro,t_book_info.book_desc,t_book_info.sites_text,t_book_info.site_index, t_book_info.user_select_time,t_record.chapter_index,t_record.chapter_name FROM t_book_info LEFT join t_record on t_book_info.book_id=t_record.book_id order by user_select_time desc"
 
 #define kBRDBSelectBookInfoWithBookId(book_id) @"SELECT * FROM t_book_info WHERE book_id=?",book_id
 
@@ -124,7 +126,7 @@ time DATETIME NOT NULL\
 
 #define kBRDBInsertSearchHistory(book_name, time) @"INSERT OR REPLACE INTO t_search_history (book_name, time) VALUES (?, ?)",book_name, time
 
-#define kBRDBSelectSearchHistory @"SELECT * FROM t_search_history order by time desc"
+#define kBRDBSelectSearchHistory @"SELECT * FROM t_search_history order by time desc limit 8"
 
 #define kBRDBDeleteSearchHistoryWithName(book_name) @"DELETE FROM t_search_history WHERE book_name=?",book_name
 

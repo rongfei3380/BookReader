@@ -109,7 +109,7 @@
             @"lastchaptername": @"新书《前任无双》正式发布",
             @"isover": @"0",
             @"category_name": @"仙侠武侠"};
-        NSDictionary *book2 = @{@"id": @"31",
+        NSDictionary *book2 = @{@"id": @"66674",
             @"name": @"剑来",
             @"cover": @"http://www.oneoff.net/public/cover/f2/81/74/f281740604166d7a2ca1c7f0d87a3a1a.jpg",
             @"author": @"烽火戏诸侯",
@@ -417,7 +417,29 @@
     });
 }
 
-
+- (BOOL)deleteChapterContentWithOtherBooks {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]){
+            FMResultSet* result = [db executeQuery:kBRDBDeleteChapterTextOtherBooks];
+            NSMutableArray *bookIds = [[NSMutableArray alloc] init];
+            while ([result next]){
+                NSNumber *bookId = [NSNumber numberWithInteger:[result stringForColumn:@"book_id"].integerValue];
+                [bookIds addObject:bookId];
+            }
+           [result close];
+            
+            for (NSNumber *bookId in bookIds) {
+                BOOL del = [db executeUpdate:kBRDBDeleteChapterTextWithBookId(bookId)];
+                if (!del){
+                    CFDebugLog(@"delete chapter_text  error:%@",[db lastErrorMessage]);
+                }
+            }
+        }
+        [db close];
+    }];
+    
+    return YES;
+}
 #pragma mark- 搜索历史
 
 - (BOOL)saveSearchHistoryWithName:(NSString*)name {

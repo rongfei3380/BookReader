@@ -36,6 +36,11 @@
 
 
 - (void)searchBookWithName:(NSString *)keyWord page:(NSInteger )page {
+    
+    if (page == 0) {
+        [_searchResultArray removeAllObjects];
+    }
+    
     kWeakSelf(self)
     [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
@@ -47,6 +52,12 @@
         [self endGetData];
         if (recodes.count == 0 ) {
             [self showErrorStatus:@"未搜索到该书籍"];
+        }
+        
+       if (recodes.count <20 ) {
+            [self toggleLoadMore:NO];
+        } else {
+            [self toggleLoadMore:YES];
         }
         
     } failureBlock:^(NSError * _Nonnull error) {
@@ -89,7 +100,7 @@
     [self.headView addSubview:_searchBackView];
     [_searchBackView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
-        make.centerY.mas_equalTo(0);
+        make.bottom.mas_equalTo(-8);
         make.height.mas_equalTo(28);
         make.right.mas_equalTo(-65);
     }];
@@ -119,7 +130,7 @@
     [self.headView addSubview:cancelBtn];
     [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(-10);
-        make.centerY.mas_equalTo(0);
+        make.bottom.mas_equalTo(-2);
         make.width.mas_equalTo(40);
     }];
     
@@ -201,6 +212,7 @@
         [self showProgressMessage:@"正在搜索~~"];
         _page = 0;
         _searchTextField.text = word;
+        _keyWords = word;
         [self searchBookWithName:word page:0];
     } else if (indexPath.section == 1) {
         BRBookInfoModel *book = [_searchResultArray objectAtIndex:indexPath.row];

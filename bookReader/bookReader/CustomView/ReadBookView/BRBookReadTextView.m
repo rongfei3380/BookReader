@@ -27,8 +27,7 @@
     [self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();

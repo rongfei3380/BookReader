@@ -28,7 +28,6 @@ typedef void (^selectHidden)(void);
 @property (nonatomic,strong) select didSelectChapter;
 @property (nonatomic,strong) selectHidden didSelectHidden;
 
-
 @end
 
 NS_ASSUME_NONNULL_END

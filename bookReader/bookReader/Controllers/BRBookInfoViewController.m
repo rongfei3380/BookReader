@@ -56,6 +56,7 @@
 /// 小说源
 @property(nonatomic, strong)NSArray *sitesArray;
 @property(nonatomic, assign) NSInteger selectedSiteIndex;
+@property(nonatomic, assign) NSInteger currentIndex;
 
 @end
 
@@ -174,7 +175,7 @@
     
     NSString *lastChapter = self.bookInfo.lastChapterName;
     NSString *updateTime = [[CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate] stringByAppendingString:@"更新"];
-    if (self.bookInfo.lastupdateDate) {
+    if (self.bookInfo.lastupdateDate && lastChapter) {
         NSString *showStr = [NSString stringWithFormat:@"%@\n%@", updateTime, lastChapter];
         
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:showStr];
@@ -216,8 +217,9 @@
     [_infoActionView addSubview:likeBtn];
     
     CFButtonUpDwon *downloadBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [downloadBtn setImage:[UIImage imageNamed:@"btn_detail_download"] forState:UIControlStateNormal];
-    [downloadBtn setTitle:@"批量下载" forState:UIControlStateNormal];
+    [downloadBtn setImage:[UIImage imageNamed:@"icon_yuan"] forState:UIControlStateNormal];
+    [downloadBtn setTitle:@"更换源" forState:UIControlStateNormal];
+    [downloadBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
     downloadBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [downloadBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
     [_infoActionView addSubview:downloadBtn];
@@ -344,20 +346,31 @@
 
 
 - (void)createStartButton {
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    [self.view addSubview:bgView];
+    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.height.mas_equalTo(44 +(isIPhoneXSeries()? 42:30));
+        make.bottom.mas_equalTo(0);
+    }];
+    
+    
     startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [startBtn setTitle:@"开始阅读" forState:UIControlStateNormal];
     startBtn.titleLabel.font = [UIFont systemFontOfSize:16];
     [startBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFFFFF, 1) forState:UIControlStateNormal];
     [startBtn setBackgroundColor:CFUIColorFromRGBAInHex(0x292F3D, 1)];
     [startBtn addTarget:self action:@selector(startReadClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:startBtn];
+    [bgView addSubview:startBtn];
     startBtn.layer.cornerRadius = 8;
     startBtn.clipsToBounds = YES;
     [startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(22);
         make.right.mas_equalTo(-22);
         make.height.mas_equalTo(44);
-        make.bottom.mas_equalTo(isIPhoneXSeries()? -30-12 : -30);
+        make.top.mas_equalTo(0);
     }];
 }
 
@@ -398,18 +411,32 @@
            }];
        }
     }
+    
+    
     kWeakSelf(self);
     _chaptersView.didSelectChapter = ^(NSInteger index) {
         kStrongSelf(self);
+        
         self->_chaptersView.hidden = YES;
+        self->_chaptersView.currentIndex = index;
+        self.currentIndex = index;
         [self gotoReadWitnIndex:index];
     };
     _chaptersView.didSelectHidden = ^{
         kStrongSelf(self);
         self->_chaptersView.hidden = YES;
     };
+    
+    BRBookRecord* model = [[BRDataBaseManager sharedInstance] selectBookRecordWithBookId:self.bookInfo.bookId.stringValue];
+    /* 有阅读记录*/
+    if (model){
+        /* 改变记录值*/
+        self.currentIndex = model.chapterIndex;
+        _chaptersView.currentIndex = self.currentIndex;
+    }
+    
     _chaptersView.bookName = self.bookInfo.bookName;
-   
+    
     self->_chaptersView.hidden = NO;
 }
 
@@ -424,6 +451,7 @@
     
     /* 添加书本章节缓存*/
     BRSite *site = [self getTheLastSite];
+    
     NSInteger siteIndex = [_sitesArray indexOfObject:site];
     self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
     
@@ -573,14 +601,14 @@
     [_infoActionView round:12 RectCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)];
 }
 
-//- (void)clickChangeBtn:(id)sender{
-//    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
-//    vc.bookId = self.bookInfo.bookId;
-//    vc.sitesArray = _sitesArray;
-//    vc.selectedSiteIndex = self.bookInfo.siteIndex.integerValue;
-//    vc.delegate = self;
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
+- (void)clickChangeBtn:(id)sender{
+    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
+    vc.bookId = self.bookInfo.bookId;
+    vc.sitesArray = _sitesArray;
+    vc.selectedSiteIndex = self.bookInfo.siteIndex.integerValue;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark- super
 
@@ -659,7 +687,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.headTitle = @"书籍详情";
+//    self.headTitle = @"书籍详情";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -707,9 +735,15 @@
 
 
 
-//- (void)sitesSelectViewController:(NSInteger)index {
-//    self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];
-//}
+- (void)sitesSelectViewController:(NSInteger)index {
+    if(self.bookInfo.siteIndex.intValue != index) {
+        self.bookInfo.siteIndex = [NSNumber numberWithInteger:index];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.bookInfo.bookId sites:self.bookInfo.sitesArray curSiteIndex:self.bookInfo.siteIndex.intValue];
+    }
+    
+}
+
+
 
 
 @end

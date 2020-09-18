@@ -147,11 +147,15 @@
         [_recordsArray removeAllObjects];
         [_recordsArray addObjectsFromArray:[self getCacheRecordsWithKey:category.categoryId.stringValue]];
         [self.tableView reloadData];
+        [self showProgressMessage:@"正在获取……"];
     }
     
     kWeakSelf(self)
     [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue isOver:_bookStatus page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
+        
+        [self hideProgressMessage];
+        
         if (page == 0) {
             [self->_recordsArray removeAllObjects];
         }
@@ -170,6 +174,7 @@
         [self endGetData];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
+        [self hideProgressMessage];
         [self showErrorMessage:error];
         [self endGetData];
     }];
