@@ -1,0 +1,441 @@
+//
+//  BRBookReadViewController.m
+//  bookReader
+//
+//  Created by Jobs on 2020/7/18.
+//  Copyright © 2020 chengfeir. All rights reserved.
+//
+
+#import "BRBookReadViewController.h"
+#import "CFButtonUpDwon.h"
+#import "BRChaptersView.h"
+#import "BRBookSetingView.h"
+#import "BRBookPageViewController.h"
+#import "CFCustomMacros.h"
+#import "GVUserDefaults+BRUserDefaults.h"
+#import <Masonry.h>
+#import "BRNotificationMacros.h"
+#import "BRSitesSelectViewController.h"
+#import "BRDataBaseManager.h"
+
+@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate>
+
+@property(nonatomic, strong) BRBookPageViewController *bookPageVC;
+@property(nonatomic, strong) CFButtonUpDwon *nightButton;
+@property(nonatomic, strong) CFButtonUpDwon *muluButton;
+@property(nonatomic, strong) CFButtonUpDwon *setButton;
+@property(nonatomic, strong) BRChaptersView *chaptersView;
+@property(nonatomic, strong) BRBookSetingView *settingView;
+@property (nonatomic,strong) UIView* brightnessView;
+@property(nonatomic, strong) UIView *toolbarView;
+
+@end
+
+@implementation BRBookReadViewController
+
+
+#pragma mark- init View
+
+- (void)initialToolBar {
+    
+    
+    _toolbarView = [[UIView alloc] init];
+    _toolbarView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+    _toolbarView.layer.borderColor = CFUIColorFromRGBAInHex(0xEEEEEE, 1).CGColor;
+    _toolbarView.layer.borderWidth = 0.5;
+    [self.view addSubview:_toolbarView];
+    [_toolbarView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(SCREEN_WIDTH, BOTTOM_HEIGHT));
+        make.bottom.mas_equalTo(0);
+        make.left.right.mas_equalTo(0);
+    }];
+    
+    
+    self.muluButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [self.muluButton setTitle:@"目录" forState:UIControlStateNormal];
+    [self.muluButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [self.muluButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    self.muluButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [self.muluButton setImage:[UIImage imageNamed:@"btn_mune_normal"] forState:UIControlStateNormal];
+    [self.muluButton setImage:[UIImage imageNamed:@"btn_mune_selected"] forState:UIControlStateSelected];
+    [self.muluButton addTarget:self action:@selector(showMulu) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:self.muluButton];
+    
+    CFButtonUpDwon *nightButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [nightButton setTitle:@"黑夜" forState:UIControlStateNormal];
+    [nightButton setTitle:@"白天" forState:UIControlStateSelected];
+    nightButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [nightButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [nightButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateSelected];
+    [nightButton setImage:[UIImage imageNamed:@"btn_nightread_normal"] forState:UIControlStateNormal];
+    [nightButton setImage:[UIImage imageNamed:@"btn_nightread_selected"] forState:UIControlStateSelected];
+    [nightButton addTarget:self action:@selector(changeNightStyle:) forControlEvents:UIControlEventTouchUpInside];
+    self.nightButton = nightButton;
+    if (BRUserDefault.isNightStyle){
+           self.nightButton.selected = YES;
+       }else{
+           self.nightButton.selected = NO;
+       }
+    [_toolbarView addSubview:nightButton];
+    
+  
+    
+    self.setButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [self.setButton setTitle:@"设置" forState:UIControlStateNormal];
+    self.setButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [self.setButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [self.setButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    [self.setButton setImage:[UIImage imageNamed:@"btn_setting_normal"] forState:UIControlStateNormal];
+    [self.setButton setImage:[UIImage imageNamed:@"btn_setting_selected"] forState:UIControlStateSelected];
+    [self.setButton addTarget:self action:@selector(showSettingView) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:self.setButton];
+    
+    CFButtonUpDwon *readButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [readButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [readButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    [readButton setTitle:@"缓存" forState:UIControlStateNormal];
+    readButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [readButton setImage:[UIImage imageNamed:@"btn_download_normal"] forState:UIControlStateNormal];
+    [readButton addTarget:self action:@selector(showWait) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:readButton];
+    
+    
+    NSArray *masonryViewArray = @[self.muluButton, nightButton, self.setButton, readButton];
+    
+    // 实现masonry水平固定控件宽度方法
+    [masonryViewArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:30 tailSpacing:30];
+    
+    // 设置array的垂直方向的约束
+    [masonryViewArray mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.offset(5);
+        make.height.mas_equalTo(40);
+    }];
+    _toolbarView.hidden = YES;
+}
+
+- (void)initialSubViews {
+    self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
+    
+    [self addChildViewController:self.bookPageVC];
+    [self.view addSubview:_bookPageVC.view];
+    
+    self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
+    self.chaptersView.chapters = self.viewModel.getAllChapters;
+    self.chaptersView.bookName = self.viewModel.getBookName;
+    kWeakSelf(self);
+    self.chaptersView.didSelectChapter = ^(NSInteger index) {
+        kStrongSelf(self);
+        self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
+        [self.viewModel loadChapterWithIndex:index];
+    };
+    self.chaptersView.didSelectHidden = ^{
+        kStrongSelf(self);
+        self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
+    };
+    [self.view addSubview:self.chaptersView];
+    self.chaptersView.hidden = YES;
+    
+    self.settingView = [[BRBookSetingView alloc] init];
+    
+    self.settingView.block = ^{
+        kStrongSelf(self);
+        [self.viewModel reloadContentViews];
+        
+    };
+    self.settingView.sliderValueBlock = ^{
+        kStrongSelf(self);
+        self.brightnessView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:BRUserDefault.readBrightness];
+    };
+    
+    [self.view insertSubview:self.settingView aboveSubview:self.headView];
+    [self.settingView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(self.toolbarView.mas_top).offset(0);
+        make.height.mas_equalTo(330);
+    }];
+    self.settingView.hidden = YES;
+    
+    self.brightnessView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.brightnessView.userInteractionEnabled = NO;
+    self.brightnessView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:BRUserDefault.readBrightness];
+    [self.view addSubview:self.brightnessView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeNaviBarHidenWithAnimated) name:kNotifyReadContentTouchEnd object:nil];
+}
+
+- (void)createChangeSiteButton {
+    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [changeBtn setImage:[UIImage imageNamed:@"nav_yuan"] forState:UIControlStateNormal];
+    [changeBtn addTarget:self action:@selector(clickChangeBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.headView addSubview:changeBtn];
+    [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-5);
+        make.bottom.mas_equalTo(-2);
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+    }];
+}
+
+- (void)clickChangeBtn:(id)sender{
+    BRSitesSelectViewController *vc = [[BRSitesSelectViewController alloc] init];
+    vc.bookId = self.viewModel.BRBookInfoModel.bookId;
+    vc.sitesArray = self.viewModel.BRBookInfoModel.sitesArray;
+    vc.selectedSiteIndex = self.viewModel.BRBookInfoModel.siteIndex.integerValue;
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark- Life Cycle
+
+- (id)init {
+    if ([self superclass]) {
+        self.enableModule |= BaseViewEnableModuleHeadView | BaseViewEnableModuleBackBtn ;
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+   [self initialToolBar];
+   [self initialSubViews];
+   [self initialSubViewConstraints];
+   [self initialData];
+    [self createChangeSiteButton];
+    self.isFirstLoad = YES;
+    self.headView.hidden = YES;
+    self.headView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    
+    if (!self.isFirstLoad){
+        [self hidenView];
+        self.settingView.hidden = YES;
+    }
+    [super viewDidAppear:animated];
+}
+
+- (void)initialData {
+#pragma mark - 设置ViewModel的反向回调
+    /* 数据加载*/
+    kWeakSelf(self);
+    [self.viewModel loadDataWithSuccess:^(UIViewController *currentVC) {
+        kStrongSelf(self);
+        [self loadDataSuccess:currentVC];
+    } Fail:^(NSError *err) {
+        kStrongSelf(self);
+        [self loadDataFail];
+    }];
+    
+    /* 章节数据开始加载时*/
+    [self.viewModel startLoadData:^{
+        kStrongSelf(self);
+        [self showBookLoading];
+    }];
+    
+    /* 用于ViewModel反向通知VC显示提示框*/
+    [self.viewModel showHubWithSuccess:^(NSString *text) {
+        kStrongSelf(self)
+        [self hideBookLoading];
+        [self showSuccessMessage:text];
+    } Fail:^(NSString *text) {
+        kStrongSelf(self)
+        [self hideBookLoading];
+        [self showErrorStatus:text];
+    }];
+    
+    /* 通知VM,开始获取数据*/
+    [self.viewModel startInit];
+    if (self.index > 0) {
+        [self.viewModel loadChapterWithIndex:self.index];
+    }
+}
+
+- (void)initialSubViewConstraints {
+    [_bookPageVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.mas_equalTo(0);
+    }];
+}
+
+#pragma mark - func
+- (void)showWait {
+    [self showErrorStatus:@"暂未完工，敬请期待~"];
+}
+
+- (void)showBackAlert {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:@"功能" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"删除当前章节缓存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.viewModel deleteChapterSave];
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"删除书本章节缓存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self.viewModel deleteBookChapterSave];
+    }]];
+    
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)showMulu {
+    if (self.chaptersView.hidden){
+        self.chaptersView.currentIndex = [self.viewModel getCurrentChapterIndex];
+        self.chaptersView.bookName = [self.viewModel getBookName];
+        self.chaptersView.chapters = [self.viewModel getAllChapters];
+    }
+    
+    if (!self.settingView.hidden) {
+        self.settingView.hidden = YES;
+        self.setButton.selected = NO;
+    }
+  
+    self.muluButton.selected = !self.muluButton.selected;
+    self.settingView.hidden = YES;
+    self.chaptersView.hidden = !self.chaptersView.hidden;
+}
+
+- (void)showSettingView {
+    if (!self.chaptersView.hidden) {
+        self.chaptersView.hidden = YES;
+        self.muluButton.selected = NO;
+    }
+    
+    self.setButton.selected = !self.setButton.selected;
+    self.settingView.hidden = !self.settingView.hidden;
+}
+
+- (void)changeNightStyle:(UIButton *)button {
+    BOOL isNight = BRUserDefault.isNightStyle;
+    
+    BRUserDefault.isNightStyle = !isNight;
+    
+    if (BRUserDefault.isNightStyle){
+        button.selected = YES;
+    }else{
+        button.selected = NO;
+    }
+    
+    
+    [self.viewModel reloadContentViews];
+}
+
+- (void)changeNaviBarHidenWithAnimated {
+    if (_toolbarView.hidden) {
+        _toolbarView.hidden = NO;
+        self.headView.hidden = NO;
+    } else {
+        _toolbarView.hidden = YES;
+        self.headView.hidden = YES;
+    }
+    self.setButton.selected = NO;
+    self.settingView.hidden = YES;
+}
+
+- (void)hidenView {
+    if (!_toolbarView.hidden) {
+        _toolbarView.hidden = YES;
+        self.headView.hidden = YES;
+        self.setButton.selected = NO;
+        self.settingView.hidden = YES;
+    }
+}
+
+- (void)hidenNaviBar{
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    self.navigationController.toolbarHidden = YES;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+/* 章节数据加载成功*/
+- (void)loadDataSuccess:(UIViewController*)currentVC {
+    [self hideBookLoading];
+    
+    NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
+    [_bookPageVC.view removeFromSuperview];
+    _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+    
+    kWeakSelf(self);
+    _bookPageVC.block = ^{
+        kStrongSelf(self);
+        [self changeNaviBarHidenWithAnimated];
+    };
+    _bookPageVC.delegate = self;
+    _bookPageVC.dataSource = self;
+    /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
+    _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    
+    _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
+    
+    
+    [self.bookPageVC setViewControllers:viewControllers
+                                      direction:UIPageViewControllerNavigationDirectionReverse
+                                       animated:NO
+                                     completion:nil];
+    
+    [self.view insertSubview:_bookPageVC.view atIndex:0];
+}
+
+/* 章节数据加载失败*/
+- (void)loadDataFail {
+    [self hideBookLoading];
+    [self showErrorStatus:@"章节加载失败"];
+    [_bookPageVC.view removeFromSuperview];
+}
+
+#pragma mark - UIPageViewControllerDataSource
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    [self hidenView];
+    return [self.viewModel viewControllerBeforeViewController:viewController DoubleSided:isDouble];
+}
+
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    [self hidenView];
+    return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
+}
+
+#pragma mark - lazyLoad
+-(UIPageViewController *)bookPageVC {
+    if (!_bookPageVC) {
+        _bookPageVC = [[BRBookPageViewController  alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+        
+        kWeakSelf(self);
+        _bookPageVC.block = ^{
+            kStrongSelf(self);
+            [self changeNaviBarHidenWithAnimated];
+        };
+        _bookPageVC.delegate = self;
+        _bookPageVC.dataSource = self;
+        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+        [self.view addSubview:_bookPageVC.view];
+    }
+    return _bookPageVC;
+}
+
+
+//-(UIStatusBarStyle)preferredStatusBarStyle{
+//
+//    return UIStatusBarStyleLightContent;
+//}
+//
+//- (BOOL)prefersStatusBarHidden
+//{
+//    return self.navigationController.navigationBarHidden;
+//}
+#pragma mark-BRSitesSelectViewControllerDelegate
+
+- (void)sitesSelectViewController:(NSInteger)index {
+    if(self.viewModel.BRBookInfoModel.siteIndex.intValue != index) {
+        self.viewModel.BRBookInfoModel.siteIndex = [NSNumber numberWithInteger:index];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:self.viewModel.BRBookInfoModel.sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.intValue];
+        
+        [self.viewModel startInit];
+    }
+}
+
+@end

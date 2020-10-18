@@ -1,0 +1,6 @@
+[submodule "bookReader/Vendor/CFFoundation"]
+	path = bookReader/Vendor/CFFoundation
+	url = https://github.com/rongfei3380/CFFoundation
+[submodule "bookReader/Vendor/CFNetworkKit"]
+	path = bookReader/Vendor/CFNetworkKit
+	url = https://github.com/rongfei3380/CFNetworkKit

@@ -1,0 +1,35 @@
+# 指明cocoapod使用的源，可以多源
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/rongfei3380/Specs.git'
+source 'https://github.com/aliyun/aliyun-specs.git'
+
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+workspace '../bookReader.xcworkspace'
+
+target 'bookReader' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for bookReader
+  pod 'CFFoundation', :path => 'Vendor/CFFoundation'
+  pod 'CFNetworkKit', :path => 'Vendor/CFNetworkKit'
+  pod 'Masonry'
+  pod 'DZNEmptyDataSet'
+  pod 'IQKeyboardManager'
+  pod 'YYWebImage'
+  pod 'MJExtension'
+  pod 'MJRefresh'
+  pod 'FMDB'
+  pod 'YYModel'
+  pod 'MBProgressHUD'
+  pod 'GVUserDefaults'
+  pod 'ZKCycleScrollView'
+  pod 'FTPopOverMenu'
+  pod 'UMCCommon'
+  pod 'lottie-ios', '~> 2.5.3'
+  pod 'Bugly'
+  pod "DBGHTMLEntities"
+  pod 'AlicloudFeedback', '~> 3.3.8'
+end
