@@ -65,7 +65,7 @@
                 CFDebugLog(@"creat BookInfoTabel Table error:%@",[self.database lastErrorMessage]);
             }
 //            创建搜索历史表
-            creat = [self.database executeUpdate:kBRDBCreateHistoryBookInfoTabel];
+            creat = [self.database executeUpdate:kBRDBCreateSearchHistoryTabel];
             if (!creat) {
                 CFDebugLog(@"creat SearchHistoryTabel Table error:%@",[self.database lastErrorMessage]);
             }
@@ -74,7 +74,7 @@
             if (!creat) {
                 CFDebugLog(@"creat RecordTable Table error:%@",[self.database lastErrorMessage]);
             }
-            
+//            创建浏览历史表
             creat = [self.database executeUpdate:kBRDBCreateHistoryBookInfoTabel];
             if (!creat) {
                 CFDebugLog(@"creat HistoryBookInfo Table error:%@",[self.database lastErrorMessage]);
@@ -98,39 +98,39 @@
 
 - (void)addDefaultBooks {
     if (self.needInsertBooks) {
-        NSDictionary *book1 = @{@"id": @"27478",
-            @"name": @"道君",
-            @"cover":@"https://dss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/boxapp_novel/wh%3D267%2C357/sign=5ce401fa9522720e7b9beaf84dfc2675/5bafa40f4bfbfbedfe7792e775f0f736afc31f7f.jpg",
-            @"author": @"跃千愁",
+        NSDictionary *book1 = @{@"id": @"3788",
+            @"name": @"凡人修仙传",
+            @"cover":@"https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3532568136,513737371&fm=179&app=35&f=JPEG?w=267&h=356",
+            @"author": @"忘语",
             @"categoryid": @"3",
-            @"lastupdate": @"1599107872",
-            @"intro": @"一个地球神级盗墓宗师，闯入修真界的故事……桃花源里，有歌声。山外青山，白骨山。五花马，千金裘，倚天剑，应我多情，啾啾鬼鸣，美人薄嗔。天地无垠，谁家旗鼓，碧落黄泉，万古高楼。为义气争雄！为乱世争霸！你好，仙侠！作者自定义标签:争霸流",
-            @"authorid": @"1221",
-            @"lastchaptername": @"新书《前任无双》正式发布",
-            @"isover": @"0",
-            @"category_name": @"仙侠武侠"};
-        NSDictionary *book2 = @{@"id": @"66674",
-            @"name": @"剑来",
-            @"cover": @"http://www.oneoff.net/public/cover/f2/81/74/f281740604166d7a2ca1c7f0d87a3a1a.jpg",
-            @"author": @"烽火戏诸侯",
-            @"categoryid": @"1",
-            @"lastupdate": @"1599044353",
-            @"intro": @"大千世界，无奇不有。我陈平安，唯有一剑，可搬山，倒海，降妖，镇魔，敕神，摘星，断江，摧城，开天！",
-            @"authorid": @"31",
-            @"lastchaptername": @"第七百九十六章 不浩然",
-            @"isover": @"0",
-            @"category_name": @"玄幻奇幻"};
-        NSDictionary *book3 = @{@"id": @"6865",
-            @"name": @"全职高手",
-            @"cover": @"https://dss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/boxapp_novel/wh%3D267%2C357/sign=9789368ca81ea8d38a777c06a13d1c7d/faf2b2119313b07e6ef3d13f02d7912397dd8cbf.jpg",
-            @"author": @"蝴蝶蓝",
-            @"categoryid": @"8",
-            @"lastupdate": @"1598965401",
-            @"intro": @"网游荣耀中被誉为教科书级别的顶尖高手，因为种种原因遭到俱乐部的驱逐，离开职业圈的他寄身于一家网吧成了一个小小的网管，但是，拥有十年游戏经验的他，在荣耀新开的第十区重新投入了游戏，带着对往昔的回忆，和一把未完成的自制武器，开始了重返巅峰之路。===================================",
-            @"authorid": @"5672",
-            @"lastchaptername": @"最后一次上传，完本感言。",
+            @"lastupdate": @"1600616497",
+            @"intro": @"一个普通山村小子，偶然下进入到当地江湖小门派，成了一名记名弟子。他以这样身份，如何在门派中立足,如何以平庸的资质进入到修仙者的行列，从而笑傲三界之中！看凡人修仙传精彩书评集锦，请检索书号：{凡人凡语}新书《魔天记》（3022294）十一月一日将在网站正式上传，请凡人书友及时收藏关注！",
+            @"authorid": @"986",
+            @"lastchaptername": @"凡人外传仙界篇二",
             @"isover": @"1",
-            @"category_name": @"网游竞技"};
+            @"category_name": @"仙侠武侠"};
+        NSDictionary *book2 = @{@"id": @"124927",
+            @"name": @"如果还能这样爱你",
+            @"cover": @"https://www.oneoff.net/public/cover/84/db/64/84db646c4c13849bdd880bb2d1a39888.jpg",
+            @"author": @"柠檬",
+            @"categoryid": @"13",
+            @"lastupdate": @"1600346066",
+            @"intro": @"试婚半年，赵斌嫌我某些方面太冷淡，背着我在外面找了个女人。再见面，我挽着他望尘莫及的男人，“亲爱的，这里有只苍蝇。”“你以后不会再见到他。”如愿报复了渣男，却惹上了更大的麻烦，“女人，利用完之后就想一脚踢开，会不会太没有人性？”“人性是什么，能吃吗？”一场意外，我爱上了陆周承，情到浓时，才发现他的心里藏着一个人。在这场毫无胜算的角逐中，我选择主动退出，甚至为了成全他们牺牲了自己的孩子，结果却换来他疯狂的报复。“你是我见过最狠心的女人。”我说：“你也可以选择不见我。”陆周承咬牙切齿的看着我，“想摆脱我，做、梦！”",
+            @"authorid": @"34746",
+            @"lastchaptername": @"第三百八十二章 以后，将无所畏惧",
+            @"isover": @"0",
+            @"category_name": @"女生言情"};
+        NSDictionary *book3 = @{@"id": @"119040",
+            @"name": @"寒门狂婿",
+            @"cover": @"https://b-new.heiyanimg.com/book/130247.jpg@!bm?4",
+            @"author": @"黄金战甲",
+            @"categoryid": @"31",
+            @"lastupdate": @"1600506494",
+            @"intro": @"他出身寒门。三年前，为了给父亲买块墓地，穷苦小子徐强甘愿给青山市林家做了上门女婿。三年里，当牛做马，忍辱负重。三年后，得奇遇，一飞冲天。",
+            @"authorid": @"83550",
+            @"lastchaptername": @"第720章 生于平凡归于平凡（大结局）",
+            @"isover": @"0",
+            @"category_name": @"综合其他"};
         
         BRBookInfoModel *bookModel1 = [BRBookInfoModel parseDictionaryIntoObject:book1];
         if (![[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:bookModel1.bookId]) {

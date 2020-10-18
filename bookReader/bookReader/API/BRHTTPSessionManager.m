@@ -10,8 +10,8 @@
 
 @implementation BRHTTPSessionManager
 
-+ (instancetype)manager
-{
++ (instancetype)manager {
+     
     BRHTTPSessionManager* manager = [super manager];
     manager.requestSerializer = [AFHTTPRequestSerializer new];
     
@@ -25,5 +25,14 @@
 
     return manager;
 }
+
+static BRHTTPSessionManager *manager;
++(BRHTTPSessionManager *)sharedManager {
+       static dispatch_once_t onceToken;
+       dispatch_once(&onceToken, ^{
+           manager = [BRHTTPSessionManager manager];
+       });
+       return manager;
+   }
 
 @end

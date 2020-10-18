@@ -12,6 +12,7 @@
 #import <YYWebImage.h>
 #import <Lottie/Lottie.h>
 #import "BRSearchBookViewController.h"
+#import "BRHTTPSessionManager.h"
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -106,6 +107,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     self.isFirstLoad = NO;
+}
+
+- (void)dealloc {
+    [[BRHTTPSessionManager sharedManager].operationQueue cancelAllOperations];
 }
 
 #pragma mark- button methods

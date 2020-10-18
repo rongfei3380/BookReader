@@ -71,6 +71,8 @@
             kStrongSelf(self)
              [self endGetData];
         }];
+    } else{
+         [self endGetData];
     }
 }
 
@@ -115,6 +117,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (self.isFirstLoad) {
+        [self initData];
+    }
+}
+
+- (void)reloadGridViewDataSourceForHead {
     [self initData];
 }
 

@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BRHTTPSessionManager : AFHTTPSessionManager
 
++(BRHTTPSessionManager *)sharedManager;
+
 @end
 
 NS_ASSUME_NONNULL_END

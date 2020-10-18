@@ -31,5 +31,5 @@ target 'bookReader' do
   pod 'lottie-ios', '~> 2.5.3'
   pod 'Bugly'
   pod "DBGHTMLEntities"
-  pod 'AlicloudFeedback', '~> 3.2.0'
+  pod 'AlicloudFeedback', '~> 3.3.8'
 end
