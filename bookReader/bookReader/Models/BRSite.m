@@ -18,12 +18,14 @@
              @"bookId":@"novelid",
              @"siteName":@"sitename",
              @"lastChapterName":@"name",
-             @"oid":@"oid"
+             @"oid":@"oid",
+             @"lastupdate":@"time"
     };
 }
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
     BRSite *item = [[BRSite alloc] initWithAttributes:dic];
+    item.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:item.lastupdate.integerValue];
     return item;
 }
 

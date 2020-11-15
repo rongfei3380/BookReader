@@ -73,7 +73,7 @@ book_cover TEXT,\
 author TEXT NOT NULL,\
 author_id INTEGER NOT NULL,\
 category_id INTEGER NOT NULL,\
-category_name TEXT NOT NULL,\
+category_name TEXT,\
 lastupdate_time TEXT,\
 lastchapter_name TEXT,\
 book_intro TEXT,\
@@ -96,6 +96,8 @@ user_select_time DATETIME NOT NULL\
 #define kBRDBUpdateBookUserTime(user_select_time, book_id) @"UPDATE t_book_info set user_select_time=? WHERE book_id=?",user_select_time, book_id
 
 #define kBRDBUpdateBookSource(sites_text, site_index, book_id) @"UPDATE t_book_info set sites_text=?,site_index=? WHERE book_id=?",sites_text, site_index, book_id
+
+#define kBRDBUpdateBookLastChapter(lastchapter_name, lastupdate_time, book_id) @"UPDATE t_book_info set lastchapter_name=?,lastupdate_time=? WHERE book_id=?",lastchapter_name, lastupdate_time, book_id
 
 
 #pragma mark- t_record

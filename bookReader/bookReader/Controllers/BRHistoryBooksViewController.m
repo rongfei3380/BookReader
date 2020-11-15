@@ -8,7 +8,7 @@
 
 #import "BRHistoryBooksViewController.h"
 #import "BRDataBaseManager.h"
-#import "BRBookShelfLongCollectionViewCell.h"
+#import "BRBookHistoryCollectionViewCell.h"
 
 @interface BRHistoryBooksViewController () {
     NSArray *_recordsArray;
@@ -94,7 +94,7 @@
 
 - (void)loadView {
     [super loadView];
-    [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
+    [self.collectionView registerClass:[BRBookHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookHistoryCollectionViewCell"];
     
     UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [moreBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
@@ -131,7 +131,7 @@
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
-    BRBookShelfLongCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell" forIndexPath:indexPath];
+    BRBookHistoryCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRBookHistoryCollectionViewCell" forIndexPath:indexPath];
     cell.bookInfo = item;
     return cell;
 }
@@ -139,6 +139,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
+    [self goBookInfoViewWIthBook:item];
 //    [self gotoReadWithBook:item];
     //    space = nil;
 }
@@ -154,7 +155,7 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize size = CGSizeMake(SCREEN_WIDTH, kBookShelfLongCollectionViewCellHeight);
+    CGSize size = CGSizeMake(SCREEN_WIDTH, kBookHistoryCollectionViewCellHeight);
     return size;
 }
 

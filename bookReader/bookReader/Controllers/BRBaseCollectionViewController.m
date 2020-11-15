@@ -82,7 +82,6 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
         } else {
             make.top.mas_equalTo(kStatusBarHeight());
         }
-        
         make.left.right.bottom.mas_equalTo(0);
     }];
     

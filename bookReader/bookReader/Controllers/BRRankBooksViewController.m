@@ -58,7 +58,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle ;
         
         self.headTitle = @"排行";
     }

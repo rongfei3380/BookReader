@@ -12,6 +12,7 @@
 @protocol BRSitesSelectViewControllerDelegate <NSObject>
 
 - (void)sitesSelectViewController:(NSInteger )index;
+- (void)sitesUpdate:(NSArray<BRSite *> *_Nonnull)sitesArray;
 
 @end
 

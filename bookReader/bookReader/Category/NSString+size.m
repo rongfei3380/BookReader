@@ -38,8 +38,7 @@
     NSMutableArray* array = [NSMutableArray array];
     int nowLenght = 0;
     
-    while (nowLenght<str.length)
-    {
+    while (nowLenght<str.length) {
         CGPathRef path = CGPathCreateWithRect(CGRectMake(0, 0, size.width, size.height), NULL);
         CTFrameRef frame = CTFramesetterCreateFrame(setterRef, CFRangeMake(nowLenght, 0), path, NULL);
         
@@ -63,8 +62,7 @@
     return array;
 }
 
-- (CGFloat)getAttributedStringHeightWithText:(NSAttributedString *)attributedString andWidth:(CGFloat)width andFont:(UIFont *)font
-{
+- (CGFloat)getAttributedStringHeightWithText:(NSAttributedString *)attributedString andWidth:(CGFloat)width andFont:(UIFont *)font {
     static UILabel *stringLabel = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{

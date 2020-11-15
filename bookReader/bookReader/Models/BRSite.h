@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///  源标记 越大越新
 @property(nonatomic, strong) NSNumber *oid;
 
+/*最后更新时间戳*/
+@property(nonatomic, strong) NSNumber *lastupdate;
+@property(nonatomic, strong) NSDate *lastupdateDate;
+
 
 #pragma mark API
 

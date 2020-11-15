@@ -20,12 +20,43 @@
 #pragma mark- private
 
 - (void)getSelectedSiteDate {
-    BRSite *site = [_sitesArray objectAtIndex:self.selectedSiteIndex];
+    BRSite *site = nil;
+    if (self.selectedSiteIndex >= 0) {
+        if (self.selectedSiteIndex >= _sitesArray.count) {
+            self.selectedSiteIndex = _sitesArray.count -1;
+        }
+        site = [_sitesArray objectAtIndex:self.selectedSiteIndex];
+    } else {
+        site = [_sitesArray firstObject];
+    }
+    
     site.isSelected  = [NSNumber numberWithBool:YES];
     
     _selectedSite = site;
 }
 
+- (void)getNewSites {
+    kWeakSelf(self)
+   [BRSite getSiteListWithBookId:self.bookId sucess:^(NSArray * _Nonnull recodes) {
+       kStrongSelf(self)
+       self->_sitesArray = [recodes mutableCopy];
+       [self getSelectedSiteDate];
+       [self endMJRefreshHeader];
+       [self.tableView reloadData];
+       if (self.delegate && [self.delegate respondsToSelector:@selector(sitesUpdate:)]) {
+              [self.delegate sitesUpdate:self->_sitesArray];
+        }
+   } failureBlock:^(NSError * _Nonnull error) {
+       
+   }];
+}
+
+- (void)setSelectedSiteIndex:(NSInteger)selectedSiteIndex {
+    _selectedSiteIndex = selectedSiteIndex;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(sitesSelectViewController:)]) {
+           [self.delegate sitesSelectViewController:selectedSiteIndex];
+    }
+}
 
 #pragma mark- lifeCycle
 
@@ -47,20 +78,16 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getSelectedSiteDate];
+    if(self.isFirstLoad) {
+        [self getNewSites];
+    }
 }
+
 
 #pragma mark- Public: subclass implement
 
 - (void)reloadGridViewDataSourceForHead {
-    kWeakSelf(self)
-    [BRSite getSiteListWithBookId:self.bookId sucess:^(NSArray * _Nonnull recodes) {
-        kStrongSelf(self)
-        self->_sitesArray = [recodes mutableCopy];
-        [self getSelectedSiteDate];
-        [self endMJRefreshHeader];
-    } failureBlock:^(NSError * _Nonnull error) {
-        
-    }];
+    [self getNewSites];
 }
 
 
@@ -77,9 +104,8 @@
     
     [self.tableView reloadData];
     
-    if (self.delegate && [self.delegate respondsToSelector:@selector(sitesSelectViewController:)]) {
-        [self.delegate sitesSelectViewController:indexPath.row];
-    }
+    self.selectedSiteIndex = indexPath.row;
+   
     [self.navigationController popViewControllerAnimated:YES];
 }
 

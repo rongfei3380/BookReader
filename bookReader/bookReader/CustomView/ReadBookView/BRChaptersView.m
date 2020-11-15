@@ -50,9 +50,8 @@
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     [super willMoveToWindow:newWindow];
-    
     [_tableView reloadData];
-    
+    [self scrollToCurrentIndex];
 }
 
 #pragma mark- super
@@ -94,10 +93,9 @@
     [headView addSubview:self.updateTimeLabel];
     
     
-    self.button = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 40, 17, 30, 30)];
+    self.button = [[UIButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 60, 0, 60, 60)];
     [self.button addTarget:self action:@selector(changeScending) forControlEvents:UIControlEventTouchUpInside];
     [self.button setImage:[UIImage imageNamed:@"mulu_descending"] forState:UIControlStateNormal];
-//    self.button.touchAreaInsets = UIEdgeInsetsMake(5, 5, 5, 10);
     [headView addSubview:self.button];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, self.muluView.frame.size.width, self.muluView.frame.size.height - 64) style:UITableViewStylePlain];
@@ -144,8 +142,7 @@
             return;
         }
         
-//        NSIndexPath* index = [NSIndexPath indexPathForRow:self.dataArray.count - self.currentIndex - 1 inSection:0];
-        NSIndexPath* index = [NSIndexPath indexPathForRow:0 inSection:0];
+        NSIndexPath* index = [NSIndexPath indexPathForRow:self.dataArray.count - self.currentIndex - 1 inSection:0];
         [self.tableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:NO];
     }
 }
@@ -177,6 +174,7 @@
     }
     
     [_tableView reloadData];
+    [self scrollToCurrentIndex];
 }
 
 - (void)changeScending {
@@ -196,6 +194,12 @@
     
     self.isDescending = !self.isDescending;
     
+    [_tableView reloadData];
+    NSIndexPath* index = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:index atScrollPosition:UITableViewScrollPositionTop animated:NO];
+}
+
+- (void)reloadData {
     [_tableView reloadData];
     [self scrollToCurrentIndex];
 }

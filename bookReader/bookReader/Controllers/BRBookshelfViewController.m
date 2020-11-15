@@ -70,8 +70,8 @@
         
         book.lastupdate = apiBook.lastupdate;
         book.lastupdateDate = apiBook.lastupdateDate;
-        
-        [[BRDataBaseManager sharedInstance] saveBookInfoWithModel:book];
+
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:book.bookId lastChapterName:book.lastChapterName lastupdateDate:book.lastupdateDate];
 
     }
     [self.collectionView reloadData];
@@ -117,12 +117,27 @@
 
 - (void)loadView {
     [super loadView];
+    
+    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
+    bgImgView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:bgImgView];
+    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_offset(0);
+        make.top.mas_offset(0);
+        make.height.mas_equalTo(SCREEN_WIDTH*(210.f/375.f));
+    }];
+    
+    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(bgImgView.mas_bottom).offset(0);
+        make.left.right.bottom.mas_equalTo(0);
+    }];
+    
     self.collectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height);
     [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
     [self.collectionView registerClass:[BRBookShelfCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfCollectionViewCell"];
     
     self.collectionView.clipsToBounds = NO;
-    self.collectionView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);
+//    self.collectionView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);
     
     UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
@@ -135,15 +150,15 @@
     }];
     
     
-    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
-    [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:searchBtn];
-    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-        make.top.mas_equalTo(kStatusBarHeight() +2);
-        make.right.mas_equalTo(moreBtn.mas_left).offset(-5);
-    }];
+//    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+//    [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:searchBtn];
+//    [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.size.mas_equalTo(CGSizeMake(40, 40));
+//        make.top.mas_equalTo(kStatusBarHeight() +2);
+//        make.right.mas_equalTo(moreBtn.mas_left).offset(-5);
+//    }];
 
 }
 
@@ -235,6 +250,7 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
     [self gotoReadWithBook:item];
+    [[BRDataBaseManager sharedInstance] updateBookUserTimeWithBookId:item.bookId];
     //    space = nil;
 }
 #pragma mark -UICollectionViewDataSource
@@ -248,45 +264,45 @@
     return _recordsArray.count;
 }
 
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-    
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
-
-        UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
-        [view addSubview:bgImgView];
-        [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.mas_offset(0);
-            make.top.bottom.mas_offset(0);
-        }];
-        
-        return view;
-    }
-//    else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-//        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
-//        if (!_countLabel) {
-//            _countLabel = [[UILabel alloc] init];
-//            _countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-//            _countLabel.font = [UIFont systemFontOfSize:12];
-//            _countLabel.textAlignment = NSTextAlignmentCenter;
-//            [view addSubview:_countLabel];
-//            [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//                make.centerY.mas_offset(0);
-//                make.height.mas_offset(15);
-//                make.left.right.mas_offset(0);
-//            }];
-//        }
+//- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
 //
-//        _countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
+//    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+//        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
+//
+//        UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
+//        [view addSubview:bgImgView];
+//        [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.right.mas_offset(0);
+//            make.top.bottom.mas_offset(0);
+//        }];
 //
 //        return view;
 //    }
-    return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
-}
+////    else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
+////        UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier forIndexPath:indexPath];
+////        if (!_countLabel) {
+////            _countLabel = [[UILabel alloc] init];
+////            _countLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+////            _countLabel.font = [UIFont systemFontOfSize:12];
+////            _countLabel.textAlignment = NSTextAlignmentCenter;
+////            [view addSubview:_countLabel];
+////            [_countLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+////                make.centerY.mas_offset(0);
+////                make.height.mas_offset(15);
+////                make.left.right.mas_offset(0);
+////            }];
+////        }
+////
+////        _countLabel.text = [NSString stringWithFormat:@"- 您的书架中共%ld本书 -", _recordsArray.count];
+////
+////        return view;
+////    }
+//    return [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:kCollectionReuseViewIdentifier forIndexPath:indexPath];
+//}
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH, SCREEN_WIDTH*(210.f/375.f));
+    return CGSizeMake(SCREEN_WIDTH, 0);
 }
 
 //- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {

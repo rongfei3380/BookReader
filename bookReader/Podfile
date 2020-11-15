@@ -28,6 +28,7 @@ target 'bookReader' do
   pod 'ZKCycleScrollView'
   pod 'FTPopOverMenu'
   pod 'UMCCommon'
+  pod 'UMCCommonLog'
   pod 'lottie-ios', '~> 2.5.3'
   pod 'Bugly'
   pod "DBGHTMLEntities"

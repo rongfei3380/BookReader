@@ -105,6 +105,7 @@
 		C5BA6733250F6BFA00AA1932 /* bookLoading.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5BA6732250F6BFA00AA1932 /* bookLoading.xcassets */; };
 		C5BA67362513717700AA1932 /* BRReadBgCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */; };
 		C5BA67392514A2DD00AA1932 /* BRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */; };
+		C5C48D8F2544256100245E1C /* BRBookHistoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C48D8E2544256100245E1C /* BRBookHistoryCollectionViewCell.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
 		C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F3C16F24879CCC00E4AF55 /* Assets.xcassets */; };
@@ -314,6 +315,8 @@
 		C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRReadBgCollectionViewCell.m; sourceTree = "<group>"; };
 		C5BA67372514A2DD00AA1932 /* BRSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRSettingViewController.h; sourceTree = "<group>"; };
 		C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRSettingViewController.m; sourceTree = "<group>"; };
+		C5C48D8D2544256100245E1C /* BRBookHistoryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookHistoryCollectionViewCell.h; sourceTree = "<group>"; };
+		C5C48D8E2544256100245E1C /* BRBookHistoryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookHistoryCollectionViewCell.m; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* 万象小说.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "万象小说.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -505,6 +508,8 @@
 				C57EB09324E93CD600AAA2BA /* BRBookListCollectionViewCell.m */,
 				C5BA67342513717700AA1932 /* BRReadBgCollectionViewCell.h */,
 				C5BA67352513717700AA1932 /* BRReadBgCollectionViewCell.m */,
+				C5C48D8D2544256100245E1C /* BRBookHistoryCollectionViewCell.h */,
+				C5C48D8E2544256100245E1C /* BRBookHistoryCollectionViewCell.m */,
 			);
 			path = UICollectionView;
 			sourceTree = "<group>";
@@ -1043,6 +1048,7 @@
 				C51A833124B764270078CB37 /* BRMineViewController.m in Sources */,
 				C51A831C24B72A6D0078CB37 /* UIViewController+ZJScrollPageController.m in Sources */,
 				C5601D3424C82925007C7377 /* BRSearchCollectionViewCell.m in Sources */,
+				C5C48D8F2544256100245E1C /* BRBookHistoryCollectionViewCell.m in Sources */,
 				C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */,
 				C51B3D2E24D209770012D6CD /* UIView+Corner.m in Sources */,
 				C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */,
@@ -1231,7 +1237,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1116;
+				CURRENT_PROJECT_VERSION = 1136;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1239,6 +1245,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "万象小说";
 				SDKROOT = iphoneos;
@@ -1252,7 +1259,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1116;
+				CURRENT_PROJECT_VERSION = 1136;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1260,6 +1267,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "万象小说";
 				SDKROOT = iphoneos;

@@ -24,10 +24,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [UMConfigure initWithAppkey:@"5d898ec9570df3adff00089a" channel:@"App Store"];
-    [UMConfigure setLogEnabled:YES];
-
-
+    [UMConfigure initWithAppkey:@"5f1d8cabb4fa6023ce19c424" channel:@"App Store"];
+        
     [Bugly startWithAppId:@"61d703cac5"];
 
     
