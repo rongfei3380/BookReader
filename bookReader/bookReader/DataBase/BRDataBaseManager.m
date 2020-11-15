@@ -258,6 +258,37 @@
     return YES;
 }
 
+- (BOOL)updateBookUserTimeWithBookId:(NSNumber *)bookId {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            BOOL update = [db executeUpdate:kBRDBUpdateBookUserTime([NSDate date], bookId)];
+            if(!update) {
+                CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+            }
+        } else {
+            CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+        }
+        [db close];
+    }];
+    return YES;
+}
+
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId lastChapterName:(NSString *)lastChapterName lastupdateDate:(NSDate *)lastupdateDate {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]) {
+               BOOL update = [db executeUpdate:kBRDBUpdateBookLastChapter(lastChapterName, lastupdateDate, bookId)];
+               if(!update) {
+                   CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+               }
+           } else {
+               CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+           }
+           [db close];
+       }];
+       return YES;
+}
+
+
 #pragma mark- 章节信息
 
 - (BOOL)saveChapterWithModel:(BRChapter *)model{

@@ -199,6 +199,7 @@
     _addShelfBtn.titleLabel.font = [UIFont systemFontOfSize:12];
     [_addShelfBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
     [_infoActionView addSubview:_addShelfBtn];
+    _addShelfBtn.enabled = NO;
     [self changeSddShelfBtnStatus];
     
     CFButtonUpDwon *chapterBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
@@ -390,26 +391,32 @@
     [self hideProgressMessage];
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
-        
-        BRSite *site = [self getTheLastSite];
+    }
+    
+    BRSite *site = nil;
+    
+    if (self.bookInfo.siteIndex.integerValue >= 0) {
+        site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+    } else {
+        site = [self getTheLastSite];
         NSInteger siteIndex = [_sitesArray indexOfObject:site];
         self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
-
-       if (site) {
-           kWeakSelf(self)
-           [self showProgressMessage:@"正在获取章节信息..."];
-           [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
-               kStrongSelf(self)
-               [self hideProgressMessage];
-               self->_chaptersView.chapters = recodes;
-               self->_chaptersView.bookInfo = self.bookInfo;
-               [self.view addSubview:self->_chaptersView];
-           } failureBlock:^(NSError * _Nonnull error) {
-               kStrongSelf(self)
-               [self hideProgressMessage];
-               [self showErrorMessage:error];
-           }];
-       }
+    }
+    
+    if (site) {
+        kWeakSelf(self)
+        [self showProgressMessage:@"正在获取最新章节信息..."];
+        [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
+            kStrongSelf(self)
+            [self hideProgressMessage];
+            self->_chaptersView.chapters = recodes;
+            self->_chaptersView.bookInfo = self.bookInfo;
+            [self.view addSubview:self->_chaptersView];
+        } failureBlock:^(NSError * _Nonnull error) {
+            kStrongSelf(self)
+            [self hideProgressMessage];
+            [self showErrorMessage:error];
+        }];
     }
     
     
@@ -500,7 +507,7 @@
 - (BRSite *)getTheLastSite {
     BRSite *lastSite = [_sitesArray firstObject];
     for (BRSite *site in _sitesArray) {
-        if (lastSite.oid.intValue > site.oid.intValue) {
+        if (lastSite.oid.intValue >= site.oid.intValue) {
             
         } else {
             lastSite = site;
@@ -516,8 +523,12 @@
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
     
-     self.selectedSiteIndex = 0;
+    self.selectedSiteIndex = -1;
     BRBookInfoModel *dataBaseBook = [[BRDataBaseManager sharedInstance] selectBookInfoWithBookId:self.bookInfo.bookId];
+    if(dataBaseBook) {
+        self.selectedSiteIndex = dataBaseBook.siteIndex.integerValue;
+    }
+    
        
    kWeakSelf(self);
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
@@ -525,7 +536,9 @@
         dispatch_group_leave(group);
 
         self.bookInfo = bookInfo;
-        self.bookInfo.siteIndex = dataBaseBook.siteIndex;
+        if (dataBaseBook) {
+            self.bookInfo.siteIndex = dataBaseBook.siteIndex;
+        }
         
         [self createBookInfoViewIfNeed];
         [[BRDataBaseManager sharedInstance] saveHistoryBookInfoWithModel:self.bookInfo];
@@ -539,19 +552,26 @@
     
     [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self);
+        self->_sitesArray = [recodes mutableCopy];
+        if(self.selectedSiteIndex == -1) {
+            [self getTheLastSite];
+            BRSite *site = [self getTheLastSite];
+            NSInteger siteIndex = [self->_sitesArray indexOfObject:site];
+            self.selectedSiteIndex = siteIndex;
+            self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
+        }
+        
         dispatch_group_leave(group);
         
-        self->_sitesArray = [recodes mutableCopy];
-        
-        
     } failureBlock:^(NSError * _Nonnull error) {
-           kStrongSelf(self)
-           [self showErrorMessage:error];
+        kStrongSelf(self)
+        [self showErrorMessage:error];
     }];
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^(){
         kStrongSelf(self)
         self->_bookInfo.sitesArray = self->_sitesArray;
+        self->_addShelfBtn.enabled = YES;
     });
 
 

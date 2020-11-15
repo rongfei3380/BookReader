@@ -72,12 +72,12 @@
     _contentView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_contentView];
     
-    self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xFFFFFF, 1);
+    self.view.backgroundColor = BRUserDefault.readBackColor ? : CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
     _chapterNameLabel = [[UILabel alloc] init];
     _chapterNameLabel.text = self.chapterName;
     _chapterNameLabel.font = [UIFont systemFontOfSize:12];
-    _chapterNameLabel.textColor = BRUserDefault.readInfoColor?:CFUIColorFromRGBAInHex(0x8F9396, 1);
+    _chapterNameLabel.textColor = BRUserDefault.readInfoColor ? : CFUIColorFromRGBAInHex(0x8F9396, 1);
     [self.view addSubview:_chapterNameLabel];
     
     _indexLabel = [[UILabel alloc] init];
@@ -138,8 +138,7 @@
 /**
  * 生成页面"背面图"
  */
-- (UIViewController*)backImageV
-{
+- (UIViewController*)backImageV {
     UIViewController* bvc = [[UIViewController alloc] init];
     bvc.view.backgroundColor = self.view.backgroundColor;
 
@@ -161,8 +160,7 @@
     return bvc;
 }
 
-- (UIViewController *)backVC
-{
+- (UIViewController *)backVC {
     return [self backImageV];
 }
 

@@ -369,7 +369,7 @@
        
     [paramDic setObject:bookId forKey:@"id"];
     
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , siteId] forKey:@"yuan_id"];
+    [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)siteId] forKey:@"yuan_id"];
     
     if (sortType) {
         [paramDic setObject:@"asc" forKey:@"sort"];

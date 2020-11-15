@@ -48,6 +48,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param index 当前使用的源
 - (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index;
 
+/// 更新书记的操作时间
+/// @param bookId  书本id
+- (BOOL)updateBookUserTimeWithBookId:(NSNumber *)bookId;
+
+/// 更新书架的 最新章节
+/// @param bookId  书籍id
+/// @param lastChapterName 最后一章名称
+/// @param lastupdateDate 最后一次更新时间
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId lastChapterName:(NSString *)lastChapterName lastupdateDate:(NSDate *)lastupdateDate;
+
+
 #pragma mark- 章节信息
 
 /// 保存章节信息

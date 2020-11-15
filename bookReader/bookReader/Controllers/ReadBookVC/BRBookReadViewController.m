@@ -28,6 +28,8 @@
 @property(nonatomic, strong) BRBookSetingView *settingView;
 @property (nonatomic,strong) UIView* brightnessView;
 @property(nonatomic, strong) UIView *toolbarView;
+@property (nonatomic, strong) NSTimer *timer;
+
 
 @end
 
@@ -120,7 +122,7 @@
     [self.view addSubview:_bookPageVC.view];
     
     self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
-    self.chaptersView.chapters = self.viewModel.getAllChapters;
+//    self.chaptersView.chapters = self.viewModel.getAllChapters;
     self.chaptersView.bookName = self.viewModel.getBookName;
     kWeakSelf(self);
     self.chaptersView.didSelectChapter = ^(NSInteger index) {
@@ -198,6 +200,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor redColor];
     
    [self initialToolBar];
    [self initialSubViews];
@@ -207,6 +210,15 @@
     self.isFirstLoad = YES;
     self.headView.hidden = YES;
     self.headView.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+//    用来处理息屏的代码
+    
+    NSDate *scheduledTime = [NSDate dateWithTimeIntervalSinceNow:120.0];
+
+    self.timer =  [[NSTimer alloc] initWithFireDate:scheduledTime interval:120 target:self selector:@selector(idleTimerDisabledFire) userInfo:nil repeats:YES];
+    
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    //开启定时器
+    [self.timer fire];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -216,6 +228,20 @@
         self.settingView.hidden = YES;
     }
     [super viewDidAppear:animated];
+    
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+}
+
+- (void)dealloc {
+    
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 - (void)initialData {
@@ -234,6 +260,11 @@
     [self.viewModel startLoadData:^{
         kStrongSelf(self);
         [self showBookLoading];
+    }];
+    
+    [self.viewModel loadChapters:^{
+        kStrongSelf(self);
+        [self.chaptersView reloadData];
     }];
     
     /* 用于ViewModel反向通知VC显示提示框*/
@@ -285,6 +316,7 @@
     if (self.chaptersView.hidden){
         self.chaptersView.currentIndex = [self.viewModel getCurrentChapterIndex];
         self.chaptersView.bookName = [self.viewModel getBookName];
+        [self.viewModel getNewAllChapters];// 这里获取一下 最新的目录 更新目录缓存
         self.chaptersView.chapters = [self.viewModel getAllChapters];
     }
     
@@ -384,6 +416,12 @@
     [self hideBookLoading];
     [self showErrorStatus:@"章节加载失败"];
     [_bookPageVC.view removeFromSuperview];
+     [self changeNaviBarHidenWithAnimated];
+}
+
+- (void)idleTimerDisabledFire {
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    self.timer.fireDate = [NSDate distantFuture];
 }
 
 #pragma mark - UIPageViewControllerDataSource
@@ -399,6 +437,22 @@
     return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
 }
 
+#pragma mark- UIPageViewControllerDelegate
+
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
+    self.timer.fireDate = [NSDate distantFuture];
+
+    NSLog(@"pendingViewControllers");
+}
+
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
+    //再次开启定时器
+     [UIApplication sharedApplication].idleTimerDisabled = YES;
+    self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+    NSLog(@"completed");
+}
+
+
 #pragma mark - lazyLoad
 -(UIPageViewController *)bookPageVC {
     if (!_bookPageVC) {
@@ -411,7 +465,7 @@
         };
         _bookPageVC.delegate = self;
         _bookPageVC.dataSource = self;
-        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl?YES:NO;
         [self.view addSubview:_bookPageVC.view];
     }
     return _bookPageVC;
@@ -436,6 +490,12 @@
         
         [self.viewModel startInit];
     }
+}
+
+- (void)sitesUpdate:(NSArray<BRSite *> *_Nonnull)sitesArray {
+    self.viewModel.BRBookInfoModel.sitesArray = sitesArray;
+    [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.integerValue];
+    [self.chaptersView reloadData];
 }
 
 @end

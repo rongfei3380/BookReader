@@ -44,6 +44,7 @@
 @property(nonatomic, strong) LoadSuccess loadSuccess;
 @property(nonatomic, strong) Fail loadFail;
 @property(nonatomic, strong) block startLoadBlock;
+@property(nonatomic, strong) block loadChaptersSuccess;
 @property(nonatomic, strong) HubSuccess hubSuccess;
 @property(nonatomic, strong) HubFail hubFail;
 
@@ -102,14 +103,14 @@
         [self getSitesWithBook:dbModel];
     } else {
      /* 去数据库查找是否有本地缓存的章节信息*/
-        BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
+        BRSite *site = [self.sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.sitesArray.count ? self.sitesArray.count -1 : self.bookModel.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
         NSArray* arr = [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:self.bookModel.bookId siteId:site.siteId];
         if (arr.count >= 1){
             
     //        /* 已有章节缓存,去查找阅读记录*/
             self.chaptersArray = [NSArray arrayWithArray:arr];
             [self initialRecord];
-            [self loadChaptersWithRecord:YES];
+//            [self loadChaptersWithRecord:YES];
         }else{
             
             /* 没有章节缓存,去加载章节内容*/
@@ -125,17 +126,15 @@
  */
 - (void)loadChaptersWithRecord:(BOOL)isRecord{
     if (isRecord){
-//        if (self.startLoadBlock){
-//            self.startLoadBlock();
-//        }
-    } else {
         if (self.startLoadBlock){
             self.startLoadBlock();
         }
+    } else {
+        
 
         BRSite *site = nil;
         if (self.bookModel.siteIndex) {
-            site = [_sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
+            site = [_sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.bookModel.sitesArray.count ? self.bookModel.sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
         } else {
             site = [self getTheLastSite];
             NSInteger siteIndex = [_sitesArray indexOfObject:site];
@@ -146,7 +145,9 @@
         [BRChapter getChaptersListWithBookId:self.bookModel.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
             self.chaptersArray = [recodes mutableCopy];
-            /* 去查找阅读记录*/
+            if (self.loadChaptersSuccess){
+                self.loadChaptersSuccess();
+            }            /* 去查找阅读记录*/
             [self initialRecord];
         } failureBlock:^(NSError * _Nonnull error) {
             kStrongSelf(self)
@@ -287,7 +288,8 @@
     
     if (chapters.count >= 1 && _bookModel.sitesArray.count > 0){
         for (BRChapterDetail *item in chapters) {
-            BRSite *site = [_bookModel.sitesArray objectAtIndex:_bookModel.siteIndex.longLongValue];
+
+            BRSite *site = [self.bookModel.sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.bookModel.sitesArray.count ? self.bookModel.sitesArray.count -1 : self.bookModel.siteIndex.integerValue)];
             [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:item.chapterId.integerValue siteId:site.siteId.longLongValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
                 
             } failureBlock:^(NSError * _Nonnull error) {
@@ -313,8 +315,9 @@
        return;
    }
    
-    BRSite *site = [self.sitesArray objectAtIndex:self.bookModel.siteIndex.integerValue];
+    BRSite *site = [self.sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.bookModel.sitesArray.count ? self.bookModel.sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
     if (site) {
+        CFDebugLog(@"请求章节内容中……");
         kWeakSelf(self)
         [BRChapterDetail getChapterContentWithBookId:_bookModel.bookId chapterId:model.chapterId.integerValue siteId:site.siteId.longValue sucess:^(BRChapterDetail * _Nonnull chapterDetail) {
             kStrongSelf(self)
@@ -328,6 +331,7 @@
                
            /* 分页*/
            @try {
+               CFDebugLog(@"分页中……");
                [self pagingContentVCsWithisNext:isNext recordText:recordText];
            } @catch (NSException *exception) {
                CFDebugLog(@"书本分页失败");
@@ -339,6 +343,7 @@
            /* 预加载*/
            [self advanceLoadChapters];
         } failureBlock:^(NSError * _Nonnull error) {
+            CFDebugLog(@"请求章节失败……");
              if (self.loadFail){
                  self.loadFail(error);
              }
@@ -418,6 +423,10 @@
     return _chaptersArray;
 }
 
+- (void)getNewAllChapters {
+    [self loadChaptersWithRecord:NO];
+}
+
 - (void)loadChapterWithIndex:(NSInteger)index {
     if (index < self.chaptersArray.count){
         BRChapter* model = self.chaptersArray[index];
@@ -448,6 +457,10 @@
 
 - (void)startLoadData:(block)block {
     self.startLoadBlock = block;
+}
+
+- (void)loadChapters:(block)block {
+    self.loadChaptersSuccess = block;
 }
 
 /* 获取前一个界面*/

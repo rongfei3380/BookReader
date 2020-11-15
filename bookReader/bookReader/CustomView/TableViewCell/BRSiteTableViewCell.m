@@ -9,6 +9,7 @@
 #import "BRSiteTableViewCell.h"
 #import "CFCustomMacros.h"
 #import <Masonry/Masonry.h>
+#import "CFDataUtils.h"
 
 @interface BRSiteTableViewCell () {
     UILabel *_siteNameLabel;
@@ -92,8 +93,11 @@
 
 - (void)setSite:(BRSite *)site {
     _site = site;
+    
     _siteNameLabel.text = _site.siteName;
-    _lastChapterNameLabel.text = _site.lastChapterName;
+    NSString *showStr = [NSString stringWithFormat:@"%@更新 %@",[CFDataUtils createBookUpdateTime:_site.lastupdateDate], _site.siteName];
+    _lastChapterNameLabel.text = showStr;
+
     
     if (_site.isSelected.boolValue) {
            _selectedImg.image = [UIImage imageNamed:@"icon_radio_selected"];

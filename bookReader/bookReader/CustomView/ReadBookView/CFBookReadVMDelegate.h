@@ -49,6 +49,9 @@ typedef void (^HubFail)(NSString* text);
 /// 获取所有章节名称
 - (NSArray<BRChapter*>*)getAllChapters;
 
+/// 获取新的目录
+- (void)getNewAllChapters;
+
 /// 获取当前章节的index
 - (NSInteger)getCurrentChapterIndex;
 
@@ -68,6 +71,9 @@ typedef void (^HubFail)(NSString* text);
 /// @param block 回调
 - (void)startLoadData:(block)block;
 
+///  加载完新的章节
+/// @param block
+- (void)loadChapters:(block)block;
 
 /**
  * 该方法给VM传入block,用于VM与VC的方向交互
