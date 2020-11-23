@@ -93,6 +93,7 @@
 		C59D064824C5863B00A8237F /* NSError+BRError.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064724C5863B00A8237F /* NSError+BRError.m */; };
 		C59D064B24C58AF600A8237F /* NSString+size.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064A24C58AF600A8237F /* NSString+size.m */; };
 		C59D064E24C5C82600A8237F /* BRBookRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = C59D064D24C5C82600A8237F /* BRBookRecord.m */; };
+		C5A3095A256ADB33008FBF1C /* UIPageViewController+Fix.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A30959256ADB33008FBF1C /* UIPageViewController+Fix.m */; };
 		C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */; };
 		C5A9FB46250AB0B90054259A /* bookInfoLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = C5A9FB45250AB0B90054259A /* bookInfoLoading.json */; };
 		C5BA671E250C900500AA1932 /* BRWebviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA671D250C900500AA1932 /* BRWebviewViewController.m */; };
@@ -297,6 +298,8 @@
 		C59D064A24C58AF600A8237F /* NSString+size.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+size.m"; sourceTree = "<group>"; };
 		C59D064C24C5C82600A8237F /* BRBookRecord.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookRecord.h; sourceTree = "<group>"; };
 		C59D064D24C5C82600A8237F /* BRBookRecord.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookRecord.m; sourceTree = "<group>"; };
+		C5A30958256ADB33008FBF1C /* UIPageViewController+Fix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIPageViewController+Fix.h"; sourceTree = "<group>"; };
+		C5A30959256ADB33008FBF1C /* UIPageViewController+Fix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIPageViewController+Fix.m"; sourceTree = "<group>"; };
 		C5A9FB42250AA2D10054259A /* CFShadowCornerImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFShadowCornerImageView.h; sourceTree = "<group>"; };
 		C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFShadowCornerImageView.m; sourceTree = "<group>"; };
 		C5A9FB45250AB0B90054259A /* bookInfoLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bookInfoLoading.json; sourceTree = "<group>"; };
@@ -438,6 +441,8 @@
 				C51B3D2D24D209770012D6CD /* UIView+Corner.m */,
 				C543F8372500FACD00AD1630 /* CFStrokeLabel.h */,
 				C543F8382500FACD00AD1630 /* CFStrokeLabel.m */,
+				C5A30958256ADB33008FBF1C /* UIPageViewController+Fix.h */,
+				C5A30959256ADB33008FBF1C /* UIPageViewController+Fix.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1041,6 +1046,7 @@
 				C5601D2024C73CEF007C7377 /* BRRecommendCollectionReusableView.m in Sources */,
 				C5F3C17624879CCC00E4AF55 /* main.m in Sources */,
 				C5BA67362513717700AA1932 /* BRReadBgCollectionViewCell.m in Sources */,
+				C5A3095A256ADB33008FBF1C /* UIPageViewController+Fix.m in Sources */,
 				C51A82FF24B70C6B0078CB37 /* BRBaseTableViewController.m in Sources */,
 				C51A82F424B5B3220078CB37 /* BRTabBarViewController.m in Sources */,
 				C59D063124C2E8DB00A8237F /* GVUserDefaults+BRUserDefaults.m in Sources */,
@@ -1245,7 +1251,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "万象小说";
 				SDKROOT = iphoneos;
@@ -1267,7 +1273,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chengfeir.bookRead;
 				PRODUCT_NAME = "万象小说";
 				SDKROOT = iphoneos;

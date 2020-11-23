@@ -59,8 +59,11 @@
             if (![self.database tableExists:@"t_book_info"]) {
                 self.needInsertBooks = YES;
             }
+//            需要增加字段的话这里处理
+//            [self.database columnExists:@"" inTableWithName:@"t_book_info"];
             
             creat = [self.database executeUpdate:kBRDBCreateBookInfoTabel];
+            
             if (!creat) {
                 CFDebugLog(@"creat BookInfoTabel Table error:%@",[self.database lastErrorMessage]);
             }
@@ -100,7 +103,7 @@
     if (self.needInsertBooks) {
         NSDictionary *book1 = @{@"id": @"3788",
             @"name": @"凡人修仙传",
-            @"cover":@"https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3532568136,513737371&fm=179&app=35&f=JPEG?w=267&h=356",
+            @"cover":@"https://www.oneoff.net/public/cover/e8/de/d9/e8ded9e57039dea9abf506f46ef7a6d5.jpg",
             @"author": @"忘语",
             @"categoryid": @"3",
             @"lastupdate": @"1600616497",
@@ -122,7 +125,7 @@
             @"category_name": @"女生言情"};
         NSDictionary *book3 = @{@"id": @"119040",
             @"name": @"寒门狂婿",
-            @"cover": @"https://b-new.heiyanimg.com/book/130247.jpg@!bm?4",
+            @"cover": @"https://www.oneoff.net/public/cover/d1/c8/78/d1c878c84830fb0e8d4e088ac48c9d53.jpg",
             @"author": @"黄金战甲",
             @"categoryid": @"31",
             @"lastupdate": @"1600506494",
@@ -285,7 +288,22 @@
            }
            [db close];
        }];
-       return YES;
+    return YES;
+}
+
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId bookInfoWithModel:(BRBookInfoModel *)model {
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+           if ([db open]) {
+               BOOL update = [db executeUpdate:kBRDBUpdateBookInfoAndLastChapter(model.lastChapterName, model.lastupdateDate, model.cover,model.bookId)];
+               if(!update) {
+                   CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+               }
+           } else {
+               CFDebugLog(@"update BookInfoModel sits bookId = %@ error:%@",bookId, [db lastErrorMessage]);
+           }
+           [db close];
+       }];
+    return YES;
 }
 
 

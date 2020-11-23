@@ -154,7 +154,7 @@
     UIGraphicsEndImageContext();
     UIImageView* imageV = [[UIImageView alloc] initWithImage:screenshot];
     imageV.frame = self.view.bounds;
-    imageV.alpha = 0.5;
+    imageV.alpha = 1;
     [bvc.view addSubview:imageV];
     
     return bvc;

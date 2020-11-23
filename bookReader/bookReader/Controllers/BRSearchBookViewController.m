@@ -41,6 +41,10 @@
         [_searchResultArray removeAllObjects];
     }
     
+    if (!keyWord) {
+        return;
+    }
+    
     kWeakSelf(self)
     [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)

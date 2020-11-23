@@ -16,8 +16,12 @@
     manager.requestSerializer = [AFHTTPRequestSerializer new];
     
     [manager.requestSerializer setValue:@"application/x-www-form-urlencoded;charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript", @"text/html", @"text/plain",nil];
     
+    AFJSONResponseSerializer *JSONResponseSerializer = [AFJSONResponseSerializer serializer];
+    JSONResponseSerializer.removesKeysWithNullValues = YES;
+    manager.responseSerializer = JSONResponseSerializer;
+    
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",nil];
     [manager.requestSerializer willChangeValueForKey:@"timeoutInterval"];
     manager.requestSerializer.timeoutInterval = 30.f;
     [manager.requestSerializer didChangeValueForKey:@"timeoutInterval"];
