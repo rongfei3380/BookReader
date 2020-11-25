@@ -64,7 +64,7 @@
 
 #pragma mark- data
 
-- (void)getSitesWithBook:(BRBookInfoModel *)model {
+- (void) getSitesWithBook:(BRBookInfoModel *)model {
     kWeakSelf(self)
     [BRSite getSiteListWithBookId:model.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
@@ -134,7 +134,7 @@
 
         BRSite *site = nil;
         if (self.bookModel.siteIndex) {
-            site = [_sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.bookModel.sitesArray.count ? self.bookModel.sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
+            site = [_sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= _sitesArray.count ? _sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
         } else {
             site = [self getTheLastSite];
             NSInteger siteIndex = [_sitesArray indexOfObject:site];
@@ -315,7 +315,7 @@
        return;
    }
    
-    BRSite *site = [self.sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.bookModel.sitesArray.count ? self.bookModel.sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
+    BRSite *site = [self.sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= self.sitesArray.count ? self.sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
     if (site) {
         CFDebugLog(@"请求章节内容中……");
         kWeakSelf(self)
