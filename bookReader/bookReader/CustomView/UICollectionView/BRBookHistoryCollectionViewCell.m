@@ -29,7 +29,7 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
-        _coverImageView = [[YYAnimatedImageView alloc] init];
+        _coverImageView = [[UIImageView alloc] init];
         _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
         _coverImageView.clipsToBounds = YES;
         _coverImageView.layer.cornerRadius = 3.f;
