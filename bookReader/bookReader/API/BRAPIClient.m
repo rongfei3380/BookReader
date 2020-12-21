@@ -10,6 +10,7 @@
 #import "BRHTTPSessionManager.h"
 #import "CFBaseResponseErrorParser.h"
 #import "CFCustomMacros.h"
+#import "NSError+BRError.h"
 
 @implementation BRAPIClient
 
@@ -145,14 +146,23 @@
         }
     } else {
         NSDictionary *dataDic = (NSDictionary *)responseObject;
-        NSDictionary *dict = [responseObject objectForKey:@"data"];
+        NSDictionary *dict = [dataDic objectForKey:@"data"];
+        if (!responseObject) {
+            NSError *error = [NSError errorWithDescription:@"responseObject is nil"];
+            if (failureBlock) {
+                failureBlock(error);
+            }
+        } else {
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
+            NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            
+            CFDebugLog(@"path!!! = %@", task.originalRequest.URL);
+            CFDebugLog(@"retVal Str !!! = %@", jsonStr);
+            successBlock(dict);
+        }
         
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:responseObject options:NSJSONWritingPrettyPrinted error:nil];
-        NSString *jsonStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         
-        CFDebugLog(@"path!!! = %@", task.originalRequest.URL);
-        CFDebugLog(@"retVal Str !!! = %@", jsonStr);
-        successBlock(dict);
+        
     }
 }
 

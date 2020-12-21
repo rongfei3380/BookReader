@@ -61,6 +61,7 @@
         
         book.lastChapterName = apiBook.lastChapterName;
         book.lastChapterId = apiBook.lastChapterId;
+        book.cover = apiBook.cover;
         
         if(book.userSelectTime.timeIntervalSince1970 < apiBook.lastupdate.integerValue) {
             book.updateFlag = [NSNumber numberWithBool:YES];
@@ -71,7 +72,8 @@
         book.lastupdate = apiBook.lastupdate;
         book.lastupdateDate = apiBook.lastupdateDate;
 
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:book.bookId lastChapterName:book.lastChapterName lastupdateDate:book.lastupdateDate];
+        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:book.bookId bookInfoWithModel:book];
+//        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:book.bookId lastChapterName:book.lastChapterName lastupdateDate:book.lastupdateDate];
 
     }
     [self.collectionView reloadData];

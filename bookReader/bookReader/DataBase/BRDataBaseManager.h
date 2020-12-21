@@ -58,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param lastupdateDate 最后一次更新时间
 - (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId lastChapterName:(NSString *)lastChapterName lastupdateDate:(NSDate *)lastupdateDate;
 
+- (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId bookInfoWithModel:(BRBookInfoModel *)model;
+
 
 #pragma mark- 章节信息
 

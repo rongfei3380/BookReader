@@ -13,6 +13,8 @@
 
 @interface BRSiteTableViewCell () {
     UILabel *_siteNameLabel;
+    
+    UILabel *_lastChapterTimeLabel;
     UILabel *_lastChapterNameLabel;
     
     UIImageView *_selectedImg;
@@ -33,9 +35,15 @@
         _siteNameLabel.font = [UIFont systemFontOfSize:15];
         [self addSubview:_siteNameLabel];
         
+        
+        _lastChapterTimeLabel = [[UILabel alloc] init];
+        _lastChapterTimeLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
+        _lastChapterTimeLabel.font = [UIFont systemFontOfSize:12];
+        [self addSubview:_lastChapterTimeLabel];
+        
         _lastChapterNameLabel = [[UILabel alloc] init];
         _lastChapterNameLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
-        _lastChapterNameLabel.font = [UIFont systemFontOfSize:10];
+        _lastChapterNameLabel.font = [UIFont systemFontOfSize:12];
         [self addSubview:_lastChapterNameLabel];
         
         _selectedImg = [UIImageView new];
@@ -70,9 +78,15 @@
         make.height.mas_equalTo(18);
     }];
     
-    [_lastChapterNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_lastChapterTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(24);
         make.right.mas_equalTo(-24);
+        make.bottom.mas_equalTo(-8);
+        make.height.mas_equalTo(15);
+    }];
+    
+    [_lastChapterNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-45);
         make.bottom.mas_equalTo(-8);
         make.height.mas_equalTo(15);
     }];
@@ -95,9 +109,13 @@
     _site = site;
     
     _siteNameLabel.text = _site.siteName;
-    NSString *showStr = [NSString stringWithFormat:@"%@更新 %@",[CFDataUtils createBookUpdateTime:_site.lastupdateDate], _site.siteName];
-    _lastChapterNameLabel.text = showStr;
+    NSString *showStr = [NSString stringWithFormat:@"%@更新 %@",[CFDataUtils createBookUpdateTime:_site.lastupdateDate], _site.lastChapterName];
+    
+    _lastChapterTimeLabel.text = [NSString stringWithFormat:@"%@更新",[CFDataUtils createBookUpdateTime:_site.lastupdateDate]];
+    
+    _lastChapterNameLabel.text = _site.lastChapterName;
 
+    
     
     if (_site.isSelected.boolValue) {
            _selectedImg.image = [UIImage imageNamed:@"icon_radio_selected"];

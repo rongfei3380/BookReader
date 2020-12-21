@@ -11,8 +11,8 @@
 #import "BRBookInfoModel.h"
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^select)(NSInteger index);
-typedef void (^selectHidden)(void);
+typedef void (^BRSelect)(NSInteger index);
+typedef void (^BRSelectHidden)(void);
 
 
 
@@ -25,8 +25,8 @@ typedef void (^selectHidden)(void);
 @property (nonatomic,assign) BOOL isShowMulu;
 @property (nonatomic,assign) NSInteger currentIndex;
 
-@property (nonatomic,strong) select didSelectChapter;
-@property (nonatomic,strong) selectHidden didSelectHidden;
+@property (nonatomic,strong) BRSelect didSelectChapter;
+@property (nonatomic,strong) BRSelectHidden didSelectHidden;
 
 - (void)reloadData;
 

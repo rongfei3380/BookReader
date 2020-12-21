@@ -43,16 +43,14 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
     [self initialSubViews];
     [self initialSubViewConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
     if (BRUserDefault.isNightStyle){
@@ -66,13 +64,12 @@
 }
 
 
-- (void)initialSubViews
-{
+- (void)initialSubViews {
     _contentView = [[BRBookReadTextView alloc] initWithText:_text];
     _contentView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_contentView];
     
-    self.view.backgroundColor = BRUserDefault.readBackColor ? : CFUIColorFromRGBAInHex(0xFFFFFF, 1);
+    self.view.backgroundColor = BRUserDefault.readBackColor ? BRUserDefault.readBackColor : CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
     _chapterNameLabel = [[UILabel alloc] init];
     _chapterNameLabel.text = self.chapterName;
@@ -130,8 +127,7 @@
     _timeLabel.text = [[NSDate date] shortString];
 }
 
-- (BOOL)prefersStatusBarHidden
-{
+- (BOOL)prefersStatusBarHidden {
     return YES;
 }
 
@@ -154,7 +150,7 @@
     UIGraphicsEndImageContext();
     UIImageView* imageV = [[UIImageView alloc] initWithImage:screenshot];
     imageV.frame = self.view.bounds;
-    imageV.alpha = 0.5;
+    imageV.alpha = 1;
     [bvc.view addSubview:imageV];
     
     return bvc;

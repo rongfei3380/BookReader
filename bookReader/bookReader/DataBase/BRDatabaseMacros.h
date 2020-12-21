@@ -99,6 +99,7 @@ user_select_time DATETIME NOT NULL\
 
 #define kBRDBUpdateBookLastChapter(lastchapter_name, lastupdate_time, book_id) @"UPDATE t_book_info set lastchapter_name=?,lastupdate_time=? WHERE book_id=?",lastchapter_name, lastupdate_time, book_id
 
+#define kBRDBUpdateBookInfoAndLastChapter(lastchapter_name, lastupdate_time, book_cover, book_id) @"UPDATE t_book_info set lastchapter_name=?,lastupdate_time=?,book_cover=? WHERE book_id=?", lastchapter_name, lastupdate_time, book_cover, book_id
 
 #pragma mark- t_record
 /*-----------------------------------------  t_record  ----------------------------------------------------*/

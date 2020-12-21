@@ -54,7 +54,7 @@
 }
 
 /// 小说源
-@property(nonatomic, strong)NSArray *sitesArray;
+@property(nonatomic, strong) NSMutableArray *sitesArray;
 @property(nonatomic, assign) NSInteger selectedSiteIndex;
 @property(nonatomic, assign) NSInteger currentIndex;
 
@@ -188,6 +188,8 @@
         _updateTimeLabel.attributedText =  attributedString;
     }
     
+    // 这个方法有点迷幻~
+    [_infoActionView round:12 RectCorners:(UIRectCornerTopLeft | UIRectCornerTopRight)];
 }
 
 - (void)createActionButtons {
@@ -316,7 +318,7 @@
     booksLayout.itemSize = CGSizeMake(84, 160);
     booksLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     booksLayout.minimumLineSpacing = 10;
-    
+
     _otherBooksCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:booksLayout];
     _otherBooksCollectionView.delegate = self;
     _otherBooksCollectionView.dataSource = self;
@@ -396,7 +398,8 @@
     BRSite *site = nil;
     
     if (self.bookInfo.siteIndex.integerValue >= 0) {
-        site = [_sitesArray objectAtIndex:self.bookInfo.siteIndex.integerValue];
+        site = [_sitesArray objectAtIndex:(self.bookInfo.siteIndex.integerValue >= self.bookInfo.sitesArray.count ? self.bookInfo.sitesArray.count-1 : self.bookInfo.siteIndex.integerValue)];
+        
     } else {
         site = [self getTheLastSite];
         NSInteger siteIndex = [_sitesArray indexOfObject:site];
@@ -529,7 +532,6 @@
         self.selectedSiteIndex = dataBaseBook.siteIndex.integerValue;
     }
     
-       
    kWeakSelf(self);
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
         kStrongSelf(self);
@@ -674,7 +676,6 @@
         make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
         make.width.mas_equalTo(SCREEN_WIDTH);
         make.bottom.mas_equalTo(startBtn.mas_top).offset(0);
-//        make.bottom.mas_equalTo(0);
     }];
     
     // 设置scrollView的子视图，即过渡视图contentSize，并设置其约束
@@ -696,18 +697,15 @@
         make.left.bottom.and.right.equalTo(_verticalContainerView).with.insets(UIEdgeInsetsZero);
         make.left.right.mas_equalTo(0);
     }];
-
-    
-    [self createBookInfoViewIfNeed];
-    [self createActionButtons];
-    [self createInfoView];
-    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 //    self.headTitle = @"书籍详情";
+    [self createBookInfoViewIfNeed];
+    [self createActionButtons];
+    [self createInfoView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

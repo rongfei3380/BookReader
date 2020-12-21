@@ -432,7 +432,7 @@
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
 }
@@ -441,15 +441,12 @@
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     self.timer.fireDate = [NSDate distantFuture];
-
-    NSLog(@"pendingViewControllers");
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     //再次开启定时器
      [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
-    NSLog(@"completed");
 }
 
 
