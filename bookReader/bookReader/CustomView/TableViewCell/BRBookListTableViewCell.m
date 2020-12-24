@@ -33,13 +33,13 @@
         [self addSubview:_coverImgView];
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont systemFontOfSize:15];
-        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        _bookNameLabel.font = [UIFont boldSystemFontOfSize:15];
+        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
         [self addSubview:_bookNameLabel];
         
         _introLabel = [[UILabel alloc] init];
         _introLabel.font = [UIFont systemFontOfSize:13];
-        _introLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        _introLabel.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
         _introLabel.numberOfLines = 2;
         _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self addSubview:_introLabel];
