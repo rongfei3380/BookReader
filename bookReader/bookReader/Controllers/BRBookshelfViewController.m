@@ -34,12 +34,16 @@
 
 - (void)initData {
     self.emptyString = @"空空如也\n快去书城添加书吧";
-   _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
-    _apiBooksDict = [[NSMutableDictionary alloc] init];
-    self.isShelf = BRUserDefault.isShelfStyle;
-    [self.collectionView reloadData];
+//   _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
+    [[BRDataBaseManager sharedInstance] selectBookInfos:^(NSArray<BRBookInfoModel *> * books) {
+        self->_recordsArray = [books mutableCopy];
+        self->_apiBooksDict = [[NSMutableDictionary alloc] init];
+        self.isShelf = BRUserDefault.isShelfStyle;
+        [self.collectionView reloadData];
+        
+        [self getBookInfoOnShelf];
+    }];
     
-    [self getBookInfoOnShelf];
 }
 
 - (void)gotoReadWithBook:(BRBookInfoModel *)book {

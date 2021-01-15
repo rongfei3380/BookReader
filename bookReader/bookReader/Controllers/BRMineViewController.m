@@ -14,7 +14,8 @@
 #import "BRAboutSoftViewController.h"
 #import "BRWebviewViewController.h"
 #import "BRSettingViewController.h"
-#import <StoreKit/StoreKit.h>:
+#import <StoreKit/StoreKit.h>
+#import "BRBookCacheViewController.h"
 
 static NSString * const kAppKey = @"31185069";
 static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
@@ -107,6 +108,16 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
 //    }];
 }
 
+- (BOOL)joinGroup:(NSString *)groupUin key:(NSString *)key{
+    NSString *urlStr = [NSString stringWithFormat:@"mqqapi://card/show_pslcard?src_type=internal&version=1&uin=%@&key=%@&card_type=group&source=external&jump_from=webapi", @"684391880",@"2269151c0892867b485665960bac0391ad4d69d6cc4031b818c0be3e7eff44b0"];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        if([[UIApplication sharedApplication] canOpenURL:url]){
+            [[UIApplication sharedApplication] openURL:url];
+            return YES;
+        }
+        else return NO;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -118,10 +129,12 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
     
     _section1Array = @[
         @{@"icon":@"profile_list_helping", @"title":@"意见反馈"},
+        @{@"icon":@"profile_list_QQ", @"title": @"加入书友群"},
         @{@"icon":@"profile_list_praise", @"title":@"给我好评"},
         @{@"icon":@"profile_list_aboult", @"title":@"关于软件"},
         @{@"icon":@"profile_list_shen", @"title":@"免责声明"},
-        @{@"icon":@"profile_list_set", @"title":@"设置"}
+        @{@"icon":@"profile_list_set", @"title":@"设置"},
+        @{@"icon":@"btn_detail_download", @"title":@"小说缓存"}
     ];
     // Do any additional setup after loading the view.
 }
@@ -171,6 +184,11 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
     } else if ([title isEqualToString:@"设置"]) {
         BRSettingViewController *vc = [[BRSettingViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([title isEqualToString:@"小说缓存"]) {
+        BRBookCacheViewController *vc = [[BRBookCacheViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([title isEqualToString:@"加入书友群"]) {
+        [self joinGroup:nil key:nil];
     }
     
 }

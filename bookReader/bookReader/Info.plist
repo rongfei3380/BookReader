@@ -50,5 +50,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>mqq</string>
+		<string>mqqapi</string>
+	</array>
 </dict>
 </plist>

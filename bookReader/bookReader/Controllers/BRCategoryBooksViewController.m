@@ -8,10 +8,12 @@
 
 #import "BRCategoryBooksViewController.h"
 #import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 #import "BRBookCategory.h"
 #import "BRBookInfoModel.h"
 #import "BRAPIClient.h"
 #import "BRBookListTableViewCell.h"
+#import "CFUtils.h"
 
 @interface BRCategoryBooksViewController () {
     UIView *_categoryView;
@@ -47,8 +49,9 @@
        allBtn.frame = CGRectMake(10 , 10, 40, 30);
        allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
        [allBtn setTitle:@"全部" forState:UIControlStateNormal];
-       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [allBtn setBackgroundImage:[CFUtils pureColorImage:0xE7EFFF colorAlpha:1 size:CGSizeMake(40, 30)] forState:UIControlStateSelected];
+       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
        [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
        [_categoryView addSubview:allBtn];
        allBtn.selected = YES;
@@ -61,8 +64,9 @@
            itemBtn.frame = CGRectMake(10 +40+5 +i%numOfRow *buttonWidth, 10 +i/numOfRow*30, buttonWidth -5, 30);
            itemBtn.titleLabel.font = [UIFont systemFontOfSize:12];
            [itemBtn setTitle:item.categoryName forState:UIControlStateNormal];
-           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+           [itemBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
+           [itemBtn setBackgroundImage:[CFUtils pureColorImage:0xE7EFFF colorAlpha:1 size:CGSizeMake(40, 30)] forState:UIControlStateSelected];
            [itemBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
            [_categoryView addSubview:itemBtn];
        }
@@ -73,8 +77,9 @@
         allOverBtn.frame = CGRectMake(10 , 20 +row*60, 40, 30);
         allOverBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [allOverBtn setTitle:@"全部" forState:UIControlStateNormal];
+        [allOverBtn setBackgroundImage:[CFUtils pureColorImage:0xE7EFFF colorAlpha:1 size:CGSizeMake(40, 30)] forState:UIControlStateSelected];
         [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-        [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [allOverBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
         [allOverBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
         allOverBtn.tag = 1999;
         [_categoryView addSubview:allOverBtn];
@@ -85,8 +90,8 @@
         serializeBtn.frame = CGRectMake(10 +1*45 , 20 +row*60, 40, 30);
         serializeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [serializeBtn setTitle:@"连载" forState:UIControlStateNormal];
-        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+        [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
         [serializeBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
         serializeBtn.tag = 2000;
         [_categoryView addSubview:serializeBtn];
@@ -95,8 +100,8 @@
         overBtn.frame = CGRectMake(10 +2*45 , 20 +row*60, 40, 30);
         overBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [overBtn setTitle:@"完结" forState:UIControlStateNormal];
-        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x8F9396, 1) forState:UIControlStateNormal];
-        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+        [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
         [overBtn addTarget:self action:@selector(clickStatusButton:) forControlEvents:UIControlEventTouchUpInside];
         overBtn.tag = 2001;
         [_categoryView addSubview:overBtn];
@@ -213,7 +218,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle;
         self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
         
         _bookStatus = -1;
@@ -293,9 +298,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+//    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+//    BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
+//    vc.bookInfo = item;
+    
+    BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
-    vc.bookInfo = item;
+        vc.bookInfo = item;
+
     [self.navigationController pushViewController:vc animated:YES];
 }
 

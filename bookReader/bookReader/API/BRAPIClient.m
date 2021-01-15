@@ -17,7 +17,7 @@
 //- (instancetype)init{
 //    if (self = [super init]) {
 //        
-//        self.baseUrl = @"http://www.oneoff.net/index.php?m=api&c=apimap&a=";
+//        self.baseUrl = @"http://www.skcy.top/index.php?m=api&c=apimap&a=";
 //    
 //        
 //    }
@@ -160,9 +160,6 @@
             CFDebugLog(@"retVal Str !!! = %@", jsonStr);
             successBlock(dict);
         }
-        
-        
-        
     }
 }
 
@@ -189,7 +186,7 @@
         
     }];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getlist" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getlist" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -225,7 +222,7 @@
       BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
          
 
-      [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+      [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
               if (successBlock) {
                   NSDictionary *dict = (NSDictionary *)dataBody;
@@ -253,7 +250,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
 
-     [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+     [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
          [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
              if (successBlock) {
                  NSDictionary *dict = (NSDictionary *)dataBody;
@@ -276,7 +273,7 @@
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategory" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getcategory" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -316,7 +313,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"url: %@", task.currentRequest.URL);
         
@@ -351,7 +348,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=select" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=select" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -396,7 +393,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -429,17 +426,23 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-       [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
-            if (successBlock) {
-                successBlock(dataBody);
-            }
-        } failure:^(NSError * _Nonnull error) {
-            if (failureBlock){
-                failureBlock(error);
-            }
-        }];
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        kDISPATCH_ON_GLOBAL_QUEUE_DEFAULT(^{
+            [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
+                 if (successBlock) {
+                     kdispatch_main_sync_safe(^{
+                         successBlock(dataBody);
+                     });
+                 }
+             } failure:^(NSError * _Nonnull error) {
+                 if (failureBlock){
+                     kdispatch_main_sync_safe(^{
+                         failureBlock(error);
+                     });
+                 }
+             }];
+        });
+       
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failureBlock){
             failureBlock(error);
@@ -459,7 +462,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=source" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:@"https://www.skcy.top/index.php?m=api&c=apimap&a=source" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -483,7 +486,7 @@
     
         BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
        
-       [manager GET:@"http://www.oneoff.net/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+       [manager GET:@"http://www.skcy.top/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
            
           [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                if (successBlock) {

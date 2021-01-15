@@ -10,6 +10,7 @@
 #import "BRAPIClient.h"
 #import "BRDataBaseManager.h"
 #import "DBGHTMLEntityDecoder.h"
+#import "CFCustomMacros.h"
 
 @implementation BRChapterDetail
 
@@ -73,8 +74,9 @@
             if (successBlock) {
                 
                 BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
-                [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
-                
+//                kdispatch_main_async_safe(^{
+                    [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
+//                });
                 successBlock(chapterDetail);
             }
         } failureBlock:^(NSError * _Nonnull error) {

@@ -10,11 +10,13 @@
 #import "BRTabBarViewController.h"
 #import <UMCommon/UMConfigure.h>
 #import <Bugly/Bugly.h>
-
+#import "BRDataBaseCacheManager.h"
 
 @interface AppDelegate () {
     
 }
+
+@property(nonatomic, strong) BRDataBaseCacheManager *cacheManager;
 
 @end
 
@@ -27,6 +29,8 @@
     [UMConfigure initWithAppkey:@"5f1d8cabb4fa6023ce19c424" channel:@"App Store"];
         
     [Bugly startWithAppId:@"61d703cac5"];
+    
+    self.cacheManager = [BRDataBaseCacheManager sharedInstance];
 
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

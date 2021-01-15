@@ -17,6 +17,7 @@
 #import "BRNotificationMacros.h"
 #import "BRSitesSelectViewController.h"
 #import "BRDataBaseManager.h"
+#import "BRDataBaseCacheManager.h"
 
 @interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate>
 
@@ -92,17 +93,17 @@
     [self.setButton addTarget:self action:@selector(showSettingView) forControlEvents:UIControlEventTouchUpInside];
     [_toolbarView addSubview:self.setButton];
     
-    CFButtonUpDwon *readButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    [readButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    [readButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
-    [readButton setTitle:@"缓存" forState:UIControlStateNormal];
-    readButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    [readButton setImage:[UIImage imageNamed:@"btn_download_normal"] forState:UIControlStateNormal];
-    [readButton addTarget:self action:@selector(showWait) forControlEvents:UIControlEventTouchUpInside];
-    [_toolbarView addSubview:readButton];
+    CFButtonUpDwon *cacheButton = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+    [cacheButton setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+    [cacheButton setTitleColor:CFUIColorFromRGBAInHex(0xFFA317, 1) forState:UIControlStateSelected];
+    [cacheButton setTitle:@"缓存" forState:UIControlStateNormal];
+    cacheButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [cacheButton setImage:[UIImage imageNamed:@"btn_download_normal"] forState:UIControlStateNormal];
+    [cacheButton addTarget:self action:@selector(clickCacheButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_toolbarView addSubview:cacheButton];
     
     
-    NSArray *masonryViewArray = @[self.muluButton, nightButton, self.setButton, readButton];
+    NSArray *masonryViewArray = @[self.muluButton, nightButton, self.setButton, cacheButton];
     
     // 实现masonry水平固定控件宽度方法
     [masonryViewArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:30 tailSpacing:30];
@@ -292,8 +293,48 @@
 }
 
 #pragma mark - func
-- (void)showWait {
-    [self showErrorStatus:@"暂未完工，敬请期待~"];
+- (void)clickCacheButton:(UIButton *)button {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:@"缓存后续章节" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    BRBookInfoModel *book = self.viewModel.BRBookInfoModel;
+    BRSite *site = [book.sitesArray objectAtIndex:(book.siteIndex.integerValue >= book.sitesArray.count ? book.sitesArray.count -1 : book.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
+    [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:book.bookId siteId:site.siteId chapters:^(NSArray<BRChapter *> * _Nonnull chapters) {
+        NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
+        [alert addAction:[UIAlertAction actionWithTitle:@"后50章" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSInteger count = chapters.count < 50 ? chapters.count : 50;
+            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
+            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+            for (BRChapter *chapter in cacheArray) {
+                [cacheChaptersArray addObject:chapter.chapterId];
+            }
+            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
+            
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"后200章" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSInteger count = chapters.count < 200 ? chapters.count : 200;
+            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
+            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+            for (BRChapter *chapter in cacheArray) {
+                [cacheChaptersArray addObject:chapter.chapterId];
+            }
+            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
+            
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"全本缓存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, chapters.count-currentIndex)];
+            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+            for (BRChapter *chapter in cacheArray) {
+                [cacheChaptersArray addObject:chapter.chapterId];
+            }
+            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
+        }]];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
 }
 
 - (void)showBackAlert {

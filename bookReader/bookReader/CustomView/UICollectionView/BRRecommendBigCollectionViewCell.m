@@ -37,8 +37,8 @@
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
-        _titleLabel.font = [UIFont systemFontOfSize:16];
-        _titleLabel.text = @"热门推荐";
+        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+        _titleLabel.text = @"重磅推荐";
         [self addSubview:_titleLabel];
         
         _coverImgView = [[CFShadowCornerImageView alloc] init];
@@ -56,8 +56,8 @@
     
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont systemFontOfSize:15];
-        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:15];
+        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_bookNameLabel];
         
         _chapterNameLabel = [[UILabel alloc] init];
@@ -66,16 +66,16 @@
         [self addSubview:_chapterNameLabel];
         
         _introLabel = [[UILabel alloc] init];
-       _introLabel.font = [UIFont systemFontOfSize:14];
-       _introLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
-       _introLabel.numberOfLines = 3;
+       _introLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+       _introLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
+       _introLabel.numberOfLines = 2;
        _introLabel.lineBreakMode = NSLineBreakByWordWrapping;
        [self addSubview:_introLabel];
 
         
         _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.font = [UIFont systemFontOfSize:10];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        _categoryLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         [self addSubview:_categoryLabel];
         
         
@@ -93,7 +93,7 @@
     }];
     
     [_coverImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(96, 130));
+        make.size.mas_equalTo(CGSizeMake(75, 100));
         make.top.mas_equalTo(_titleLabel.mas_bottom).offset(15);
         make.left.mas_equalTo(0);
     }];
@@ -103,21 +103,21 @@
     
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_coverImgView.mas_top).offset(0);
-        make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
-        make.right.mas_equalTo(-40);
-        make.height.mas_equalTo(20);
+        make.left.mas_equalTo(_coverImgView.mas_right).offset(15.5);
+        make.right.mas_equalTo(-15);
+        make.height.mas_equalTo(30);
     }];
     
     [_introLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(8);
-        make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
-        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(5);
+        make.left.mas_equalTo(_coverImgView.mas_right).offset(15.5);
+        make.right.mas_equalTo(-18.5);
     }];
     
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
-        make.height.mas_equalTo(15);
-        make.top.mas_equalTo(_introLabel.mas_bottom).offset(10);
+        make.height.mas_equalTo(28);
+        make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
     }];
 }
 

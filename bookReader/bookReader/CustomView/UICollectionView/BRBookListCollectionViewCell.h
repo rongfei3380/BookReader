@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define kBookListCollectionViewCellHeight 100
+#define kBookListCollectionViewCellHeight 122
 
 
 @interface BRBookListCollectionViewCell : UICollectionViewCell
