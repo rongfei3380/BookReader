@@ -12,7 +12,7 @@
 #import "BRBookListCollectionViewCell.h"
 #import "BRSearchBookResultViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-#import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 
 @interface BRSearchBookViewController ()<UITextFieldDelegate> {
     UIView *_searchBackView; // 搜索框背景
@@ -220,7 +220,7 @@
         [self searchBookWithName:word page:0];
     } else if (indexPath.section == 1) {
         BRBookInfoModel *book = [_searchResultArray objectAtIndex:indexPath.row];
-        BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+        BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
         vc.bookInfo = book;
         [self.navigationController pushViewController:vc animated:YES];
     }

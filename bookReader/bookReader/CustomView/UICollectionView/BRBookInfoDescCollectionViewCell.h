@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BRBookInfoModel.h"
 
-#define kBRBookInfoDescCollectionViewCellHeight 128+40
+#define kBRBookInfoDescCollectionViewCellHeight 90+40
 
 @protocol BRBookInfoDescCollectionViewCellDelegate <NSObject>
 

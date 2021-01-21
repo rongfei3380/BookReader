@@ -42,8 +42,9 @@
     UIColor *color6 = [UIColor colorWithPatternImage: [self imageResize:[UIImage imageNamed:@"reading_bg_two"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
     UIColor *color7 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_three"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
     UIColor *color8 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_four"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
+    UIColor *color11 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_six"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
     
-    NSArray *colorArray = @[color1, color2, color3, color4, color9, color10, color5, color6, color7, color8];
+    NSArray *colorArray = @[color1, color2, color3, color4, color9, color10, color5, color6, color7, color8, color11];
     
     
     return [colorArray objectAtIndex:self.readBackColorIndex];

@@ -143,11 +143,13 @@
         _cacheStateLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         _cacheStateLabel.text = @"已完成";
         _controlBtn.hidden = YES;
+        _progressView.hidden = YES;
     } else {
         _controlBtn.hidden = NO;
         _progressLabel.text = [NSString stringWithFormat:@"%ld/%ld",_cacheTask.cachedChapterIds.count, [_cacheTask allChapterCount]];
         _cacheStateLabel.text = @"正在下载";
         _cacheStateLabel.textColor = CFUIColorFromRGBAInHex(0x4C8BFF, 1);
+        _progressView.hidden = NO;
     }
     
     if(cacheTask.state == BRCacheTaskStateDownloading) {
@@ -187,6 +189,7 @@
     _progressView.progress = progress;
     _cacheStateLabel.text = @"正在下载";
     _controlBtn.hidden = NO;
+    _progressView.hidden = NO;
     _cacheStateLabel.textColor = CFUIColorFromRGBAInHex(0x4C8BFF, 1);
 }
 
@@ -197,6 +200,7 @@
     _cacheStateLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
     _cacheStateLabel.text = @"已完成";
     _controlBtn.hidden = YES;
+    _progressView.hidden = YES;
 }
 
 #pragma mark- button Methods

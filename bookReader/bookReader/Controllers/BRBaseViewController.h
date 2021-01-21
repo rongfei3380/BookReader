@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "NSError+BRError.h"
 #import "BRBookInfoModel.h"
+#import "BRMessageHUD.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -200,7 +200,8 @@
                          [UIImage imageNamed:@"reading_bg_wenli1_def"],
                          [UIImage imageNamed:@"reading_bg_wenli2_def"],
                          [UIImage imageNamed:@"reading_bg_wenli3_def"],
-                         [UIImage imageNamed:@"reading_bg_wenli4_def"]];
+                         [UIImage imageNamed:@"reading_bg_wenli4_def"],
+                         [UIImage imageNamed:@"reading_bg_wenli5_def"]];
     
     self.bgSelectedArray = [NSMutableArray array];
     for (int i=0; i<self.bgIconArray.count; i++) {

@@ -59,7 +59,7 @@
         
         
         _bookNameLabel = [UILabel new];
-        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:15];
+        _bookNameLabel.font = [UIFont boldSystemFontOfSize:15];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self.contentView addSubview:_bookNameLabel];
         [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -83,7 +83,7 @@
         
         
         _categoryLabel = [UILabel new];
-        _categoryLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _categoryLabel.font = [UIFont systemFontOfSize:12];
         _categoryLabel.textColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
         _categoryLabel.backgroundColor = CFUIColorFromRGBAInHex(0xFF8731, 1);
         _categoryLabel.layer.cornerRadius = 10.f;
@@ -96,7 +96,7 @@
         }];
         
         _statusLabel = [UILabel new];
-        _statusLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:12];
+        _statusLabel.font = [UIFont systemFontOfSize:12];
         _statusLabel.textColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         _statusLabel.backgroundColor = CFUIColorFromRGBAInHex(0x4C8BFF , 1);
         _statusLabel.layer.cornerRadius = 10.f;
@@ -131,7 +131,7 @@
         [self.contentView addSubview:_addShelfBtn];
         _addShelfBtn.enabled = NO;
         
-        CFButtonUpDwon *chapterBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+        chapterBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
         [chapterBtn setImage:[UIImage imageNamed:@"btn_detail_chapter"] forState:UIControlStateNormal];
         [chapterBtn setTitle:@"章节列表" forState:UIControlStateNormal];
         chapterBtn.titleLabel.font = [UIFont systemFontOfSize:12];
@@ -139,14 +139,14 @@
         [chapterBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
         [self.contentView addSubview:chapterBtn];
         
-        CFButtonUpDwon *likeBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+        likeBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
         [likeBtn setImage:[UIImage imageNamed:@"btn_detail_support"] forState:UIControlStateNormal];
         [likeBtn setTitle:@"支持作品" forState:UIControlStateNormal];
         likeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [likeBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
         [self.contentView addSubview:likeBtn];
         
-        CFButtonUpDwon *downloadBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
+        downloadBtn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
         [downloadBtn setImage:[UIImage imageNamed:@"icon_yuan"] forState:UIControlStateNormal];
         [downloadBtn setTitle:@"批量下载" forState:UIControlStateNormal];
         [downloadBtn addTarget:self action:@selector(clickDownloadBtn:) forControlEvents:UIControlEventTouchUpInside];

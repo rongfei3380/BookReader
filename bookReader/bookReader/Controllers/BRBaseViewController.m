@@ -8,6 +8,7 @@
 
 #import "BRBaseViewController.h"
 #import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 #import <MBProgressHUD.h>
 #import <YYWebImage.h>
 #import <Lottie/Lottie.h>
@@ -128,7 +129,7 @@
 #pragma mark- public
 
 - (void)goBookInfoViewWIthBook:(BRBookInfoModel *)book {
-    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+    BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
     vc.bookInfo = book;
     [self.navigationController pushViewController:vc animated:YES];
 }

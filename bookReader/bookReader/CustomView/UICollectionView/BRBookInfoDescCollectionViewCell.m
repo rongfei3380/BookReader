@@ -40,9 +40,10 @@
         }];
         
         _descLabel = [[UILabel alloc] init];
-        _descLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);
-        _descLabel.font = [UIFont systemFontOfSize:14];
-        _descLabel.numberOfLines = 4;
+        _descLabel.textColor = CFUIColorFromRGBAInHex(0x7E8294, 1);
+        _descLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:16];
+        
+        _descLabel.numberOfLines = 2;
         _descLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self.contentView addSubview:_descLabel];
     
@@ -95,7 +96,7 @@
 ////
 //        [_attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_bookInfo.intro length])];
         [_attributedString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"PingFang-SC-Regular" size: 14] range:NSMakeRange(0, [_bookInfo.intro length])];
-        [_attributedString addAttribute:NSForegroundColorAttributeName value:CFUIColorFromRGBAInHex(0x161C2C, 1) range:NSMakeRange(0, [_bookInfo.intro length])];
+        [_attributedString addAttribute:NSForegroundColorAttributeName value:CFUIColorFromRGBAInHex(0x7E8294, 1) range:NSMakeRange(0, [_bookInfo.intro length])];
         
     }
     
@@ -116,7 +117,7 @@
         height = ceilf(attSize.height)  +95;
         
     } else {
-        _descLabel.numberOfLines = 4;
+        _descLabel.numberOfLines = 2;
     }
     
     [self setNeedsDisplay];

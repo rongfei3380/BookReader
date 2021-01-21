@@ -29,7 +29,8 @@
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
         _siteLabel = [UILabel new];
-        _siteLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:14];
+//        _siteLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:14];
+        _siteLabel.font = [UIFont systemFontOfSize:14];
         _siteLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self.contentView addSubview:_siteLabel];
         [_siteLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -40,7 +41,8 @@
         }];
         
         _lastChapterLabel = [UILabel new];
-        _lastChapterLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:16];
+//        _lastChapterLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:16];
+        _lastChapterLabel.font = [UIFont boldSystemFontOfSize:16];
         _lastChapterLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self.contentView addSubview:_lastChapterLabel];
         [_lastChapterLabel mas_makeConstraints:^(MASConstraintMaker *make) {

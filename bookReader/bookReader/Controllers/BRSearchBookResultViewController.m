@@ -9,7 +9,7 @@
 #import "BRSearchBookResultViewController.h"
 #import "BRBookInfoModel.h"
 #import "BRBookListTableViewCell.h"
-#import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 
 @interface BRSearchBookResultViewController ()
 
@@ -61,7 +61,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+    BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
     vc.bookInfo = item;
     [self.navigationController pushViewController:vc animated:YES];

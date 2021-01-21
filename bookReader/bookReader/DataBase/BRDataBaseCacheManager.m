@@ -266,6 +266,9 @@ static inline dispatch_queue_t BRDataBaseCacheManagerQueue() {
                     [self.lastAddedOperation addDependency:operation];
                     self.lastAddedOperation = operation;
                 }
+                if (completedBlock) {
+                    completedBlock(task ,nil ,NO);
+                }
                 
                 return operation;
             }];
@@ -288,6 +291,7 @@ static inline dispatch_queue_t BRDataBaseCacheManagerQueue() {
         BRCacheTask *task = [self cacheTaskForBook:book chapterIds:chapterIds siteId:siteId];
         BRDataCacheOperation *operation = [[BRDataCacheOperation alloc] initWithCacheTask:task];
         [self.cacheQueue addOperation:operation];
+        
         NSString *key = [NSString stringWithFormat:@"%@+%@", task.bookId, task.siteId];
         [self->_cacheOperations setObject:operation forKey:key];
         
@@ -296,7 +300,9 @@ static inline dispatch_queue_t BRDataBaseCacheManagerQueue() {
             [self.lastAddedOperation addDependency:operation];
             self.lastAddedOperation = operation;
         }
-        
+        if (completedBlock) {
+            completedBlock(task ,nil ,NO);
+        }
         return operation;
     }];
 }
@@ -332,7 +338,7 @@ static inline dispatch_queue_t BRDataBaseCacheManagerQueue() {
                                createCallback:(BRDataCacheOperation *(^)(void))createCallback {
     if (book == nil || book.bookId == nil || siteId == nil || chapterIds == nil || chapterIds.count == 0) {
         if (completedBlock != nil) {
-            completedBlock(nil, nil, NO);
+            completedBlock(nil, [NSError errorWithDomain:NSURLErrorDomain code:0 userInfo:@{NSLocalizedDescriptionKey : @"章节信息错误请稍后重试"}], NO);
         }
         return nil;
     }

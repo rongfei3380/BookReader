@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BRSite.h"
 
-#define kBRSiteTableViewCellHeight 58
+#define kBRSiteTableViewCellHeight 106
 
 NS_ASSUME_NONNULL_BEGIN
 

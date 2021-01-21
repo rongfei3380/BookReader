@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Img_launcher_logo.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLS-MW-KtI">
-                                <rect key="frame" x="87.5" y="144" width="145" height="200"/>
+                                <rect key="frame" x="26" y="73" width="268" height="342"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -31,11 +31,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.625" y="373.94366197183098"/>
+            <point key="canvasLocation" x="-928" y="254"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Img_launcher_logo.png" width="145" height="200"/>
+        <image name="Img_launcher_logo.png" width="268" height="342"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

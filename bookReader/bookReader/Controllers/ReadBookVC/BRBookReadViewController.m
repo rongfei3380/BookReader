@@ -18,8 +18,9 @@
 #import "BRSitesSelectViewController.h"
 #import "BRDataBaseManager.h"
 #import "BRDataBaseCacheManager.h"
+#import "BRChoseCacheView.h"
 
-@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate>
+@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate, BRChoseCacheViewDelegate>
 
 @property(nonatomic, strong) BRBookPageViewController *bookPageVC;
 @property(nonatomic, strong) CFButtonUpDwon *nightButton;
@@ -292,48 +293,89 @@
     }];
 }
 
-#pragma mark - func
-- (void)clickCacheButton:(UIButton *)button {
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:nil message:@"缓存后续章节" preferredStyle:UIAlertControllerStyleActionSheet];
+/// 按数量缓存 章节
+/// @param chapters 所有章节
+/// @param count  章节数量 0时 代表所有章节
+- (void)cacheChapters:(NSArray<BRChapter *> * _Nonnull)chapters count:(NSInteger)count {
     
     BRBookInfoModel *book = self.viewModel.BRBookInfoModel;
+    __weak BRSite *site = [book.sitesArray objectAtIndex:(book.siteIndex.integerValue >= book.sitesArray.count ? book.sitesArray.count -1 : book.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
+    NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
+    
+    NSInteger cacheCount = count;
+    if (count <= 0) {
+        cacheCount = chapters.count -currentIndex;
+    }
+    
+    if (!chapters || chapters.count == 0) {
+        kWeakSelf(self)
+            
+       [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:book.bookId siteId:site.siteId chapters:^(NSArray<BRChapter *> * _Nonnull chapters) {
+           kStrongSelf(self)
+           NSInteger count = chapters.count < cacheCount ? chapters.count : cacheCount;
+           NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
+           NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+           for (BRChapter *chapter in cacheArray) {
+               [cacheChaptersArray addObject:chapter.chapterId];
+           }
+        
+           [self showProgressMessage:@"正在添加章节缓存"];
+           [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
+               kdispatch_main_sync_safe(^{
+                   [self hideProgressMessage];
+                   [self hideBookLoading];
+                   [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
+               });
+            } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
+                    if (error) {
+                        [self hideProgressMessage];
+                        [self showErrorMessage:error];
+                    }
+                }];
+           
+        }];
+    } else {
+       [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:book.bookId siteId:site.siteId chapters:^(NSArray<BRChapter *> * _Nonnull chapters) {
+           NSInteger count = chapters.count < cacheCount ? chapters.count : cacheCount;
+           NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
+           NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+           for (BRChapter *chapter in cacheArray) {
+               [cacheChaptersArray addObject:chapter.chapterId];
+           }
+           [self showProgressMessage:@"正在添加章节缓存"];
+           [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
+                             
+            } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
+                kdispatch_main_sync_safe(^{
+                    if (error ) {
+                        [self hideProgressMessage];
+                        [self showErrorMessage:error];
+                    } else {
+                        if (!finished) {
+                            kdispatch_main_sync_safe(^{
+                                [self hideProgressMessage];
+                                [self hideBookLoading];
+                                [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
+                            });
+                        }
+                    }
+                });
+            }];
+            
+        }];
+    }
+}
+
+#pragma mark - func
+- (void)clickCacheButton:(UIButton *)button {
+    BRBookInfoModel *book = self.viewModel.BRBookInfoModel;
     BRSite *site = [book.sitesArray objectAtIndex:(book.siteIndex.integerValue >= book.sitesArray.count ? book.sitesArray.count -1 : book.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
+    
     [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:book.bookId siteId:site.siteId chapters:^(NSArray<BRChapter *> * _Nonnull chapters) {
-        NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
-        [alert addAction:[UIAlertAction actionWithTitle:@"后50章" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSInteger count = chapters.count < 50 ? chapters.count : 50;
-            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
-            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
-            for (BRChapter *chapter in cacheArray) {
-                [cacheChaptersArray addObject:chapter.chapterId];
-            }
-            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
-            
-        }]];
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"后200章" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSInteger count = chapters.count < 200 ? chapters.count : 200;
-            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
-            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
-            for (BRChapter *chapter in cacheArray) {
-                [cacheChaptersArray addObject:chapter.chapterId];
-            }
-            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
-            
-        }]];
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"全本缓存" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, chapters.count-currentIndex)];
-            NSMutableArray *cacheChaptersArray = [NSMutableArray array];
-            for (BRChapter *chapter in cacheArray) {
-                [cacheChaptersArray addObject:chapter.chapterId];
-            }
-            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:nil completed:nil];
-        }]];
-        
-        [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-        
-        [self presentViewController:alert animated:YES completion:nil];
+            BRChoseCacheView *vc = [[BRChoseCacheView alloc] init];
+            vc.delegate = self;
+            vc.allChapters  = chapters;
+            [vc show];
     }];
 }
 
@@ -535,5 +577,11 @@
     [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:self.viewModel.BRBookInfoModel.bookId sites:sitesArray curSiteIndex:self.viewModel.BRBookInfoModel.siteIndex.integerValue];
     [self.chaptersView reloadData];
 }
+
+#pragma mark-BRChoseCacheViewDelegate
+- (void)choseCacheViewClickCacheButtonWithChapter:(NSArray *)chapters count:(NSInteger)count {
+    [self cacheChapters:chapters count:count];
+}
+
 
 @end

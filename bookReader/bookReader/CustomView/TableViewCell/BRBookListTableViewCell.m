@@ -41,13 +41,13 @@
         
         _introLabel = [[UILabel alloc] init];
         _introLabel.font = [UIFont systemFontOfSize:13];
-        _introLabel.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
+        _introLabel.textColor = CFUIColorFromRGBAInHex(0x666666, 1);
         _introLabel.numberOfLines = 2;
         _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self addSubview:_introLabel];
         
         _authorLabel = [[UILabel alloc] init];
-        _authorLabel.font = [UIFont systemFontOfSize:10];
+        _authorLabel.font = [UIFont systemFontOfSize:12];
         _authorLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         [self addSubview:_authorLabel];
         

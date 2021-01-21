@@ -45,7 +45,7 @@
         
         _introLabel = [[UILabel alloc] init];
         _introLabel.font = [UIFont systemFontOfSize:13];
-        _introLabel.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
+        _introLabel.textColor = CFUIColorFromRGBAInHex(0x666666, 1);
         _introLabel.numberOfLines = 2;
         _introLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         [self addSubview:_introLabel];

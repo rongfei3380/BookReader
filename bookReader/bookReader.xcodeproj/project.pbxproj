@@ -118,6 +118,7 @@
 		C5BA67392514A2DD00AA1932 /* BRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */; };
 		C5C48D8F2544256100245E1C /* BRBookHistoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5C48D8E2544256100245E1C /* BRBookHistoryCollectionViewCell.m */; };
 		C5E04FA825B18D500034B9E0 /* BookCache.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5E04FA725B18D500034B9E0 /* BookCache.xcassets */; };
+		C5E04FD225B988A80034B9E0 /* BRChoseCacheView.m in Sources */ = {isa = PBXBuildFile; fileRef = C5E04FD125B988A80034B9E0 /* BRChoseCacheView.m */; };
 		C5F3C16524879CC700E4AF55 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16424879CC700E4AF55 /* AppDelegate.m */; };
 		C5F3C16B24879CC700E4AF55 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F3C16A24879CC700E4AF55 /* ViewController.m */; };
 		C5F3C17024879CCC00E4AF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5F3C16F24879CCC00E4AF55 /* Assets.xcassets */; };
@@ -351,6 +352,8 @@
 		C5C48D8D2544256100245E1C /* BRBookHistoryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookHistoryCollectionViewCell.h; sourceTree = "<group>"; };
 		C5C48D8E2544256100245E1C /* BRBookHistoryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookHistoryCollectionViewCell.m; sourceTree = "<group>"; };
 		C5E04FA725B18D500034B9E0 /* BookCache.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BookCache.xcassets; sourceTree = "<group>"; };
+		C5E04FD025B988A80034B9E0 /* BRChoseCacheView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChoseCacheView.h; sourceTree = "<group>"; };
+		C5E04FD125B988A80034B9E0 /* BRChoseCacheView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRChoseCacheView.m; sourceTree = "<group>"; };
 		C5F3C16024879CC700E4AF55 /* 万象小说.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "万象小说.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F3C16324879CC700E4AF55 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		C5F3C16424879CC700E4AF55 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -501,6 +504,8 @@
 				C5A9FB43250AA2D10054259A /* CFShadowCornerImageView.m */,
 				C5BA672A250E2CA400AA1932 /* BRAgreementView.h */,
 				C5BA672B250E2CA400AA1932 /* BRAgreementView.m */,
+				C5E04FD025B988A80034B9E0 /* BRChoseCacheView.h */,
+				C5E04FD125B988A80034B9E0 /* BRChoseCacheView.m */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -1066,6 +1071,7 @@
 				C543F84125093E7000AD1630 /* CFButtonLeftRight.m in Sources */,
 				C5BA671E250C900500AA1932 /* BRWebviewViewController.m in Sources */,
 				C5BA67392514A2DD00AA1932 /* BRSettingViewController.m in Sources */,
+				C5E04FD225B988A80034B9E0 /* BRChoseCacheView.m in Sources */,
 				C5A309E325A9A912008FBF1C /* BRDataCacheOperation.m in Sources */,
 				C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
@@ -1315,7 +1321,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1150;
+				CURRENT_PROJECT_VERSION = 1155;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1337,7 +1343,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1150;
+				CURRENT_PROJECT_VERSION = 1155;
 				DEVELOPMENT_TEAM = D52FXE4R6B;
 				INFOPLIST_FILE = bookReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
