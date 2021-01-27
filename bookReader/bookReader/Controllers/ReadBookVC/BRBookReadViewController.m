@@ -255,7 +255,9 @@
         [self loadDataSuccess:currentVC];
     } Fail:^(NSError *err) {
         kStrongSelf(self);
-        [self loadDataFail];
+        if (![err.domain isEqualToString:@"NSURLErrorDomain"]) {
+            [self loadDataFail];
+        }
     }];
     
     /* 章节数据开始加载时*/
