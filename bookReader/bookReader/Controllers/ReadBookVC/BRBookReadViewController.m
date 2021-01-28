@@ -259,7 +259,7 @@
             [self loadDataFail];
         }
     }];
-    
+
     /* 章节数据开始加载时*/
     [self.viewModel startLoadData:^{
         kStrongSelf(self);
