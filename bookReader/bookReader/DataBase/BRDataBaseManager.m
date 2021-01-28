@@ -229,7 +229,7 @@
 }
 
 - (void)deleteBookInfoWithBookId:(NSNumber *)bookId {
-    if (!bookId || (bookId.intValue <= 0)) {
+    if (bookId == nil || (bookId.intValue <= 0)) {
         return;
     }
     
@@ -272,7 +272,7 @@
 
 
 - (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index{
-    if (!bookId || !sites || sites.count == 0) {
+    if (bookId == nil || sites == nil || sites.count == 0) {
         return NO;
     }
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -634,9 +634,10 @@
         return NO;
     }
     
+    __block BOOL insert = NO;
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
            if ([db open]){
-               BOOL insert = [db executeUpdate:kBRDBInsertRecord(model.bookId,@(model.chapterIndex),model.recordText,[NSDate date], model.chapterName)];
+               insert = [db executeUpdate:kBRDBInsertRecord(model.bookId,@(model.chapterIndex),model.recordText,[NSDate date], model.chapterName)];
                
                insert = [db executeUpdate:kBRDBUpdateBookUserTime([NSDate date], model.bookId)];
                

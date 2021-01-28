@@ -623,8 +623,6 @@
 
 - (void)updateSoureSite {
     BRSite *site = [self getTheLastSite];
-    
-    NSString *lastChapter = self.bookInfo.lastChapterName;
     NSString *updateTime = [[CFDataUtils createBookUpdateTime:site.lastupdateDate] stringByAppendingString:@"更新"];
 //    if (self.bookInfo.lastupdateDate && lastChapter) {
 //        NSString *showStr = [NSString stringWithFormat:@"%@", lastChapter];

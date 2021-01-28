@@ -89,7 +89,7 @@
 }
 
 - (void)agreementViewDelegateClickLink:(NSURL *)url {
-    NSString *scheme = url.scheme;
+//    NSString *scheme = url.scheme;
     NSString *host = url.host;
     NSString *path = url.path;
         

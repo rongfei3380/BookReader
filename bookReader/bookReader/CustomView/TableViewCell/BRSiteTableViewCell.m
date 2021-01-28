@@ -130,7 +130,6 @@
     _site = site;
     
     _siteNameLabel.text = _site.siteName;
-    NSString *showStr = [NSString stringWithFormat:@"%@更新 %@",[CFDataUtils createBookUpdateTime:_site.lastupdateDate], _site.lastChapterName];
     
     _lastChapterTimeLabel.text = [NSString stringWithFormat:@"%@更新",[CFDataUtils createBookUpdateTime:_site.lastupdateDate]];
     

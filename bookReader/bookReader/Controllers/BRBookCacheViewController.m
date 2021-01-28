@@ -90,7 +90,7 @@
 
 - (void)bookCacheTableViewCellClickDeleteButton:(UIButton *)button cacheTask:(BRCacheTask *)cacheTask {
     [[BRDataBaseCacheManager sharedInstance] cancel:cacheTask completed:^{
-        _dict = [BRDataBaseCacheManager sharedInstance].allCacheTaskes;
+        self->_dict = [BRDataBaseCacheManager sharedInstance].allCacheTaskes;
         [self.tableView reloadData];
     }];
 }
