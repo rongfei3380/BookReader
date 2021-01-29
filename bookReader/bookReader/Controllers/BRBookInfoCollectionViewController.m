@@ -52,15 +52,15 @@
 }
 
 - (void)createStartButton {
-    UIView *bgView = [[UIView alloc] init];
-    bgView.backgroundColor = CFUIColorFromRGBAInHex(0x4C8BFF, 1);
-    [self.view addSubview:bgView];
-    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.height.mas_equalTo(44 +(isIPhoneXSeries()? 12:0));
-        make.bottom.mas_equalTo(0);
-    }];
+//    UIView *bgView = [[UIView alloc] init];
+//    bgView.backgroundColor = CFUIColorFromRGBAInHex(0x4C8BFF, 1);
+//    [self.view addSubview:bgView];
+//    [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.height.mas_equalTo(44 +(isIPhoneXSeries()? 12:0));
+//        make.bottom.mas_equalTo(0);
+//    }];
     
     
     UIButton *startBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -69,18 +69,15 @@
     [startBtn setTitleColor:CFUIColorFromRGBAInHex(0xFFFFFF, 1) forState:UIControlStateNormal];
     [startBtn setBackgroundColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1)];
     [startBtn addTarget:self action:@selector(startReadClick:) forControlEvents:UIControlEventTouchUpInside];
-    [bgView addSubview:startBtn];
+    [self.view addSubview:startBtn];
     [startBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.height.mas_equalTo(44);
-        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(15);
+        make.right.mas_equalTo(-15);
+        make.height.mas_equalTo(49);
+        make.bottom.mas_equalTo(((isIPhoneXSeries()? 12 +22:22))*(-1));
     }];
-    
-    [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo((44 +(isIPhoneXSeries()? 12:0))*(-1));
-    }];
-    [bgView bringSubviewToFront:self.collectionView];
+    startBtn.layer.cornerRadius = 49/2.f;
+    startBtn.clipsToBounds = YES;
 }
 
 - (void)gotoReadWitnIndex:(NSInteger )index {
@@ -414,6 +411,9 @@
     
     [self createStartButton];
     
+    [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo((49+ (isIPhoneXSeries()? 12 +22:22))*(-1));
+    }];
 }
 
 - (void)viewDidLoad {

@@ -19,6 +19,7 @@
         self.siteName = [result stringForColumn:@"site_name"];
         self.siteId = [NSNumber numberWithInt:[result intForColumn:@"site_id"]];
         self.time = [NSNumber numberWithInt:[result intForColumn:@"time"]];
+        self.chapterText = [result stringForColumn:@"chapter_text"];
     }
     return self;
 }

@@ -16,6 +16,7 @@
 #import "BRBooksManagerViewController.h"
 #import "GVUserDefaults+BRUserDefaults.h"
 #import "BRDataBaseManager.h"
+#import "CFUtils.h"
 
 @interface BRBookshelfViewController () {
     NSArray *_recordsArray;
@@ -39,9 +40,10 @@
         self->_recordsArray = [books mutableCopy];
         self->_apiBooksDict = [[NSMutableDictionary alloc] init];
         self.isShelf = BRUserDefault.isShelfStyle;
-        [self.collectionView reloadData];
-        
-        [self getBookInfoOnShelf];
+        kdispatch_main_sync_safe(^{
+            [self getBookInfoOnShelf];
+            [self.collectionView reloadData];
+        });
     }];
     
 }

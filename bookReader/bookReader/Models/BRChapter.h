@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,copy) NSString *siteName;
 
 @property(nonatomic,copy) NSNumber *time;
+/// 章节内容 主要用于章节缓存查询
+@property(nonatomic, strong) NSString *chapterText;
 
 /// 小说章节列表
 /// @param bookId 书籍id
