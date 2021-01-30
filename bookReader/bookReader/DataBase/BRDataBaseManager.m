@@ -102,7 +102,7 @@
     if (self.needInsertBooks) {
         NSDictionary *book1 = @{@"id": @"3788",
             @"name": @"凡人修仙传",
-            @"cover":@"https://www.skcy.top/public/cover/e8/de/d9/e8ded9e57039dea9abf506f46ef7a6d5.jpg",
+            @"cover":@"https://api.huaban800.com/public/cover/e8/de/d9/e8ded9e57039dea9abf506f46ef7a6d5.jpg",
             @"author": @"忘语",
             @"categoryid": @"3",
             @"lastupdate": @"1600616497",
@@ -113,7 +113,7 @@
             @"category_name": @"仙侠武侠"};
         NSDictionary *book2 = @{@"id": @"124927",
             @"name": @"如果还能这样爱你",
-            @"cover": @"https://www.skcy.top/public/cover/84/db/64/84db646c4c13849bdd880bb2d1a39888.jpg",
+            @"cover": @"https://api.huaban800.com/public/cover/84/db/64/84db646c4c13849bdd880bb2d1a39888.jpg",
             @"author": @"柠檬",
             @"categoryid": @"13",
             @"lastupdate": @"1600346066",
@@ -124,7 +124,7 @@
             @"category_name": @"女生言情"};
         NSDictionary *book3 = @{@"id": @"119040",
             @"name": @"寒门狂婿",
-            @"cover": @"https://www.skcy.top/public/cover/d1/c8/78/d1c878c84830fb0e8d4e088ac48c9d53.jpg",
+            @"cover": @"https://api.huaban800.com/public/cover/d1/c8/78/d1c878c84830fb0e8d4e088ac48c9d53.jpg",
             @"author": @"黄金战甲",
             @"categoryid": @"31",
             @"lastupdate": @"1600506494",
