@@ -117,17 +117,23 @@
     
     _spaceBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn1 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_spaceBtn1 setImage:[UIImage imageNamed:@"reading_spacing_five"] forState:UIControlStateNormal];
+    [_spaceBtn1 setImage:[UIImage imageNamed:@"reading_spacing_five_normal"] forState:UIControlStateNormal];
+    [_spaceBtn1 setImage:[UIImage imageNamed:@"reading_spacing_five"] forState:UIControlStateSelected];
+    [_spaceBtn1 setImage:[UIImage imageNamed:@"reading_spacing_five"] forState:UIControlStateHighlighted];
     [self addSubview:_spaceBtn1];
     
     _spaceBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn2 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_spaceBtn2 setImage:[UIImage imageNamed:@"reading_spacing_four"] forState:UIControlStateNormal];
+    [_spaceBtn2 setImage:[UIImage imageNamed:@"reading_spacing_four_normal"] forState:UIControlStateNormal];
+    [_spaceBtn2 setImage:[UIImage imageNamed:@"reading_spacing_four"] forState:UIControlStateSelected];
+    [_spaceBtn2 setImage:[UIImage imageNamed:@"reading_spacing_four"] forState:UIControlStateHighlighted];
     [self addSubview:_spaceBtn2];
     
     _spaceBtn3 = [UIButton buttonWithType:UIButtonTypeCustom];
     [_spaceBtn3 addTarget:self action:@selector(lineSpacingClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_spaceBtn3 setImage:[UIImage imageNamed:@"reading_spacing_three"] forState:UIControlStateNormal];
+    [_spaceBtn3 setImage:[UIImage imageNamed:@"reading_spacing_three_normal"] forState:UIControlStateNormal];
+    [_spaceBtn3 setImage:[UIImage imageNamed:@"reading_spacing_three"] forState:UIControlStateSelected];
+    [_spaceBtn3 setImage:[UIImage imageNamed:@"reading_spacing_three"] forState:UIControlStateHighlighted];
     [self addSubview:_spaceBtn3];
     
 //    _spaceBtn4 = [self btnWithTitle:@""];
@@ -386,16 +392,16 @@
     NSDictionary* dic = BRUserDefault.userReadAttConfig;
     NSMutableParagraphStyle *paragraphStyle = [dic objectForKey:NSParagraphStyleAttributeName];
     
-    self.spaceBtn1.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
-    self.spaceBtn2.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
-    self.spaceBtn3.backgroundColor = CFUIColorFromRGBAInHex(0xf8f8f8, 1);
+    self.spaceBtn1.selected = NO;
+    self.spaceBtn2.selected = NO;
+    self.spaceBtn3.selected = NO;
     
     if (paragraphStyle.lineSpacing == kLineSpacingLoose){
-        self.spaceBtn3.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+        self.spaceBtn3.selected = YES;
     }else if (paragraphStyle.lineSpacing == kLineSpacingCompact){
-        self.spaceBtn1.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+        self.spaceBtn1.selected = YES;
     }else {
-        self.spaceBtn2.backgroundColor = CFUIColorFromRGBAInHex(0xd1d1d1, 1);
+        self.spaceBtn2.selected = YES;
     }
 }
 
