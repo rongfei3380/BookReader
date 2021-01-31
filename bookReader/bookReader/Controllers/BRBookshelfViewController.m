@@ -23,6 +23,7 @@
     NSMutableDictionary *_apiBooksDict;
     
     UILabel *_countLabel;
+    NSURLSessionDataTask *_bookInfosShelfTask;
 }
 
 @property(nonatomic, assign) BOOL isShelf; // 是否为书架模式
@@ -95,6 +96,7 @@
         
         NSString *ids =  [idsArray componentsJoinedByString:@","];
         kWeakSelf(self)
+        _bookInfosShelfTask =
         [BRBookInfoModel getBookInfosShelfWithBookids:ids sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
             [self->_apiBooksDict removeAllObjects];
@@ -178,6 +180,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initData];
+}
+
+- (void)dealloc {
+    [_bookInfosShelfTask cancel];
 }
 
 #pragma mark- setter

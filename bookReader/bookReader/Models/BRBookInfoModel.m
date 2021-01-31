@@ -68,11 +68,11 @@
 
 #pragma mark- API
 
-+ (void)getbookinfoWithBookId:(NSInteger)bookid
++ (NSURLSessionDataTask *)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
                        sucess:(void(^)(BRBookInfoModel *bookInfo))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getbookinfoWithBookId:bookid isSelect:isSelect sucess:^(id  _Nonnull dataBody) {
+    return  [[BRAPIClient sharedInstance] getbookinfoWithBookId:bookid isSelect:isSelect sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             BRBookInfoModel *item = [BRBookInfoModel parseDictionaryIntoObject:dataBody];
             successBlock(item);
@@ -85,13 +85,13 @@
 }
 
 
-+ (void)getBookListWithCategory:(NSInteger)categoryId
++ (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
                          sucess:(BRObjectSuccessBlock)successBlock
                    failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getBookListWithCategory:categoryId isOver:isOver page:page size:size sucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getBookListWithCategory:categoryId isOver:isOver page:page size:size sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
         }
@@ -103,13 +103,13 @@
 }
 
 
-+ (void)searchBookWithName:(NSString *)name
++ (NSURLSessionDataTask *)searchBookWithName:(NSString *)name
                       page:(NSInteger)page
                       size:(NSInteger)size
                     sucess:(BRObjectSuccessBlock)successBlock
               failureBlock:(BRObjectFailureBlock)failureBlock {
 
-    [[BRAPIClient sharedInstance] searchBookWithName:name page:page size:size sucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] searchBookWithName:name page:page size:size sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
         }
@@ -121,9 +121,9 @@
 }
 
 
-+ (void)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
++ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getRecommendSuccess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getRecommendSuccess:^(id  _Nonnull dataBody) {
         NSDictionary *dict = (NSDictionary *)dataBody;
         
         NSArray *recommend = [BRBookInfoModel parseDictionaryIntoRecords:[dict objectForKey:@"recommend"]];
@@ -137,12 +137,12 @@
     }];
 }
 
-+ (void)getRankListWithType:(NSInteger)type
++ (NSURLSessionDataTask *)getRankListWithType:(NSInteger)type
                        page:(NSInteger)page
                        size:(NSInteger)size
                     success:(BRObjectSuccessBlock)successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getRankListWithType:type page:page size:size success:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getRankListWithType:type page:page size:size success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
         }
@@ -153,11 +153,11 @@
     }];
 }
 
-+ (void)getBookInfosShelfWithBookids:(NSString *)ids
++ (NSURLSessionDataTask *)getBookInfosShelfWithBookids:(NSString *)ids
                               sucess:(BRObjectSuccessBlock)successBlock
                         failureBlock:(BRObjectFailureBlock)failureBlock {
     
-    [[BRAPIClient sharedInstance] getBookInfosShelfWithBookids:ids sucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getBookInfosShelfWithBookids:ids sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookInfoModel parseDictionaryIntoRecords:dataBody]);
         }

@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-+ (void)getBookCategorySucess:(void(^)(NSArray *maleCategoryes, NSArray *famaleCategory))successBlock
++ (NSURLSessionDataTask *)getBookCategorySucess:(void(^)(NSArray *maleCategoryes, NSArray *famaleCategory))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock;
 
 

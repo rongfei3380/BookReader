@@ -31,7 +31,6 @@
 		C51A832B24B762A70078CB37 /* BRBookshelfViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A832A24B762A70078CB37 /* BRBookshelfViewController.m */; };
 		C51A832E24B763EB0078CB37 /* BRRankBooksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A832D24B763EB0078CB37 /* BRRankBooksViewController.m */; };
 		C51A833124B764270078CB37 /* BRMineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833024B764270078CB37 /* BRMineViewController.m */; };
-		C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833324B78E040078CB37 /* BRBookInfoViewController.m */; };
 		C51A833624BCC2F50078CB37 /* NavBar.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C51A833524BCC2F50078CB37 /* NavBar.xcassets */; };
 		C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833824BDB1370078CB37 /* CFDataUtils.m */; };
 		C51A834024BDBA990078CB37 /* NSDate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C51A833F24BDBA990078CB37 /* NSDate+Utilities.m */; };
@@ -197,8 +196,6 @@
 		C51A832D24B763EB0078CB37 /* BRRankBooksViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRRankBooksViewController.m; sourceTree = "<group>"; };
 		C51A832F24B764270078CB37 /* BRMineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRMineViewController.h; sourceTree = "<group>"; };
 		C51A833024B764270078CB37 /* BRMineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRMineViewController.m; sourceTree = "<group>"; };
-		C51A833224B78E040078CB37 /* BRBookInfoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookInfoViewController.h; sourceTree = "<group>"; };
-		C51A833324B78E040078CB37 /* BRBookInfoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookInfoViewController.m; sourceTree = "<group>"; };
 		C51A833524BCC2F50078CB37 /* NavBar.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = NavBar.xcassets; sourceTree = "<group>"; };
 		C51A833724BDB1370078CB37 /* CFDataUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFDataUtils.h; sourceTree = "<group>"; };
 		C51A833824BDB1370078CB37 /* CFDataUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFDataUtils.m; sourceTree = "<group>"; };
@@ -660,8 +657,6 @@
 				C51A832D24B763EB0078CB37 /* BRRankBooksViewController.m */,
 				C51A832F24B764270078CB37 /* BRMineViewController.h */,
 				C51A833024B764270078CB37 /* BRMineViewController.m */,
-				C51A833224B78E040078CB37 /* BRBookInfoViewController.h */,
-				C51A833324B78E040078CB37 /* BRBookInfoViewController.m */,
 				C5A30A3825AFFDD3008FBF1C /* BRBookInfoCollectionViewController.h */,
 				C5A30A3925AFFDD3008FBF1C /* BRBookInfoCollectionViewController.m */,
 				C5601D2C24C7DEFB007C7377 /* BRRankBookDetailViewController.h */,
@@ -1133,7 +1128,6 @@
 				C5C48D8F2544256100245E1C /* BRBookHistoryCollectionViewCell.m in Sources */,
 				C549888624A5A48700887AEE /* BRChapterDetail.m in Sources */,
 				C51B3D2E24D209770012D6CD /* UIView+Corner.m in Sources */,
-				C51A833424B78E040078CB37 /* BRBookInfoViewController.m in Sources */,
 				C51A830324B726330078CB37 /* BRCategoryBooksViewController.m in Sources */,
 				C5A30A4025B004CF008FBF1C /* BRBookInfoActionsCollectionViewCell.m in Sources */,
 				C5A30A4C25B00C62008FBF1C /* BRBookInfoSitesCollectionViewCell.m in Sources */,

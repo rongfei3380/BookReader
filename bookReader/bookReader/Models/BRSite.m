@@ -43,10 +43,10 @@
 
 #pragma mark- API
 
-+ (void)getSiteListWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getSiteListWithBookId:(NSNumber *)bookId
                        sucess:(BRObjectSuccessBlock)successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getSiteListWithBookId:bookId sucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getSiteListWithBookId:bookId sucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRSite parseDictionaryIntoRecords:dataBody]);
         }

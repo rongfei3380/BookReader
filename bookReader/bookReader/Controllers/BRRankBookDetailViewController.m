@@ -13,6 +13,7 @@
 
 @interface BRRankBookDetailViewController () {
     NSInteger _page;
+    NSURLSessionDataTask *_rankListTask;
 }
 
 @end
@@ -33,6 +34,7 @@
     }
     
     kWeakSelf(self)
+    _rankListTask =
     [BRBookInfoModel getRankListWithType:type page:_page size:20 success:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         [self cacheRecords:recodes key:[NSString stringWithFormat:@"%ld", type]];
@@ -74,9 +76,14 @@
     [self getRankBookWtihIndex:self.index page:_page];
 }
 
+- (void)dealloc {
+    [_rankListTask cancel];
+}
+
 #pragma mark-: subclass implement
 - (void)reloadGridViewDataSourceForHead {
     [super reloadGridViewDataSourceForHead];
+    [_rankListTask cancel];
     _page = 0;
     [_recordsArray removeAllObjects];
     [self getRankBookWtihIndex:self.index page:_page];

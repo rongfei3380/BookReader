@@ -62,6 +62,10 @@
     return self;
 }
 
+- (void)dealloc {
+    
+}
+
 #pragma mark- data
 
 - (void) getSitesWithBook:(BRBookInfoModel *)model {
