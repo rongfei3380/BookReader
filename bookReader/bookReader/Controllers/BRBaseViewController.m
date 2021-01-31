@@ -7,7 +7,6 @@
 //
 
 #import "BRBaseViewController.h"
-#import "BRBookInfoViewController.h"
 #import "BRBookInfoCollectionViewController.h"
 #import <MBProgressHUD.h>
 #import <YYWebImage.h>

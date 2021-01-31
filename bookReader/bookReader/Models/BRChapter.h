@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param sortType  章节排序,asc:升序,desc:降序  1 升序 0 降序
 /// @param successBlock 小说章节列表
 /// @param failureBlock  error
-+ (void)getChaptersListWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(BRObjectSuccessBlock)successBlock

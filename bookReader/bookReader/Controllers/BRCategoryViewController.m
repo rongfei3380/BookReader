@@ -13,6 +13,7 @@
 @interface BRCategoryViewController () {
     BRCategoryBooksViewController *_maleVC;
     BRCategoryBooksViewController *_femaleVC;
+    NSURLSessionDataTask *_categoryTask;
 }
 
 @end
@@ -91,6 +92,7 @@
    _femaleVC.categoryArray =  [self getCacheRecordsWithKey:@"famale"];
     
     kWeakSelf(self)
+    _categoryTask =
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
         kStrongSelf(self)
                     
@@ -139,6 +141,10 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+}
+
+- (void)dealloc {
+    [_categoryTask cancel];
 }
 
 - (BOOL)shouldAutomaticallyForwardAppearanceMethods {

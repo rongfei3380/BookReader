@@ -7,7 +7,6 @@
 //
 
 #import "BRBookInfoCollectionViewController.h"
-#import "BRBookInfoViewController.h"
 #import "BRDataBaseManager.h"
 #import "BRDataBaseCacheManager.h"
 
@@ -25,6 +24,9 @@
 @interface BRBookInfoCollectionViewController ()<BRBookInfoActionsCollectionViewCellDelegate, BRSitesSelectViewControllerDelegate, BRBookInfoDescCollectionViewCellDelegate, BRChoseCacheViewDelegate> {
     BRChaptersView *_chaptersView;
     CGFloat _height;
+    
+    NSURLSessionDataTask *_bookInfoTask;
+    NSURLSessionDataTask *_sitesTask;
 }
 
 /// 小说源
@@ -313,6 +315,7 @@
     }
     
    kWeakSelf(self);
+    _bookInfoTask =
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
         kStrongSelf(self);
         dispatch_group_leave(group);
@@ -321,7 +324,7 @@
         if (dataBaseBook) {
             self.bookInfo.siteIndex = dataBaseBook.siteIndex;
         }
-        [self.collectionView reloadData];
+//        [self.collectionView reloadData];
         [[BRDataBaseManager sharedInstance] saveHistoryBookInfoWithModel:self.bookInfo];
         
     } failureBlock:^(NSError * _Nonnull error) {
@@ -331,7 +334,7 @@
     
     dispatch_group_enter(group);
     
-    [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
+   _sitesTask = [BRSite getSiteListWithBookId:self.bookInfo.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self);
         self->_sitesArray = [recodes mutableCopy];
         if(self.selectedSiteIndex == -1) {
@@ -342,7 +345,7 @@
             self.selectedSiteIndex = siteIndex;
             self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
             
-            [self.collectionView reloadData];
+//            [self.collectionView reloadData];
         }
         
         dispatch_group_leave(group);
@@ -428,6 +431,11 @@
     if(self.isFirstLoad) {
         [self getBookInfoAndSites];
     }
+}
+
+- (void)dealloc {
+    [_bookInfoTask cancel];
+    [_sitesTask cancel];
 }
 
 #pragma mark- UICollectionViewDelegate

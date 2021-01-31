@@ -7,7 +7,6 @@
 //
 
 #import "BRCategoryBooksViewController.h"
-#import "BRBookInfoViewController.h"
 #import "BRBookInfoCollectionViewController.h"
 #import "BRBookCategory.h"
 #import "BRBookInfoModel.h"
@@ -21,6 +20,7 @@
     UIButton *_selectedOverButton;
     BRBookCategory *_selectedCategory;
     
+    NSURLSessionDataTask *_categoryTask;
     int _bookStatus; // 书记连载状况
 }
 
@@ -129,6 +129,7 @@
     self.categoryArray = [self getCacheRecordsWithKey:@"BRBookCategory"];
     
     kWeakSelf(self)
+    _categoryTask =
     [BRBookCategory getBookCategorySucess:^(NSArray * _Nonnull maleCategoryes, NSArray * _Nonnull famaleCategory) {
         kStrongSelf(self)
         NSMutableArray *array = [maleCategoryes mutableCopy];
@@ -241,6 +242,10 @@
             [self createCategoryViewIfNeed];
         }
     }
+}
+
+- (void)dealloc {
+    [_categoryTask cancel];
 }
 
 #pragma mark-  setter

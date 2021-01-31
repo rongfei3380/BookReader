@@ -38,12 +38,12 @@
 }
 
 #pragma mark- API
-+ (void)getChaptersListWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(BRObjectSuccessBlock)successBlock
                      failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getChaptersListWithBookId:bookId siteId:siteId sortType:sortType sucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getChaptersListWithBookId:bookId siteId:siteId sortType:sortType sucess:^(id  _Nonnull dataBody) {
         
         NSArray *list = [BRChapter parseDictionaryIntoRecords:dataBody];
         [[BRDataBaseManager sharedInstance] saveChaptersWithArray:list bookId:bookId];

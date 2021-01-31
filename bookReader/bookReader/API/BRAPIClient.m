@@ -163,7 +163,7 @@
     }
 }
 
-- (void)getRankListWithType:(NSInteger)type
+- (NSURLSessionDataTask *)getRankListWithType:(NSInteger)type
                        page:(NSInteger)page
                        size:(NSInteger)size
                     success:(CFAPIClientSuccessBlock)successBlock
@@ -186,7 +186,7 @@
         
     }];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getlist" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return  [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getlist" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -204,7 +204,7 @@
     }];
 }
 
-- (void)getbookinfoWithBookId:(NSInteger)bookid
+- (NSURLSessionDataTask *)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
                        sucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
@@ -220,7 +220,8 @@
 
     
       BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
-         
+       
+    NSURLSessionDataTask *task =
 
       [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
           [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
@@ -239,9 +240,11 @@
          }
          NSLog(@"error : %@", error);
       }];
+    
+    return task;
 }
 
-- (void)getBookInfosShelfWithBookids:(NSString *)ids
+- (NSURLSessionDataTask *)getBookInfosShelfWithBookids:(NSString *)ids
                               sucess:(CFAPIClientSuccessBlock)successBlock
                         failureBlock:(CFAPIClientFailureBlock)failureBlock{
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
@@ -250,7 +253,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
 
-     [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
          [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
              if (successBlock) {
                  NSDictionary *dict = (NSDictionary *)dataBody;
@@ -269,11 +272,11 @@
      }];
 }
 
-- (void)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
+- (NSURLSessionDataTask *)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getcategory" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getcategory" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 successBlock(dataBody);
@@ -291,7 +294,7 @@
     }];
 }
 
-- (void)getBookListWithCategory:(NSInteger)categoryId
+- (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
@@ -313,7 +316,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"url: %@", task.currentRequest.URL);
         
@@ -335,7 +338,7 @@
 }
 
 
-- (void)searchBookWithName:(NSString *)name
+- (NSURLSessionDataTask *)searchBookWithName:(NSString *)name
                       page:(NSInteger)page
                       size:(NSInteger)size
                     sucess:(CFAPIClientSuccessBlock)successBlock
@@ -348,7 +351,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=select" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=select" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -367,7 +370,7 @@
     }];
 }
 
-- (void)getChaptersListWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(CFAPIClientSuccessBlock)successBlock
@@ -393,7 +396,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -412,7 +415,7 @@
     }];
 }
 
-- (void)getChapterContentWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(CFAPIClientSuccessBlock)successBlock
@@ -426,7 +429,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         kDISPATCH_ON_GLOBAL_QUEUE_DEFAULT(^{
             [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                  if (successBlock) {
@@ -451,7 +454,7 @@
     }];
 }
 
-- (void)getSiteListWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getSiteListWithBookId:(NSNumber *)bookId
                        sucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
@@ -462,7 +465,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     
-    [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=source" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return [manager GET:@"https://api.huaban800.com/index.php?m=api&c=apimap&a=source" parameters:paramDic headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
        [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
             if (successBlock) {
@@ -481,12 +484,12 @@
     }];
 }
 
-- (void)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
+- (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
-        BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
+    BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
        
-       [manager GET:@"http://api.huaban800.com/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return  [manager GET:@"http://api.huaban800.com/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
            
           [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                if (successBlock) {

@@ -37,7 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param bookId  书籍id
 /// @param successBlock 源列表
 /// @param failureBlock error
-+ (void)getSiteListWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getSiteListWithBookId:(NSNumber *)bookId
                        sucess:(BRObjectSuccessBlock)successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock;
 
