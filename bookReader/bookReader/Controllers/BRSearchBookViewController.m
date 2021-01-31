@@ -22,6 +22,8 @@
     BOOL _isSearchResult;
     NSMutableArray *_searchResultArray;
     NSString *_keyWords;
+    
+    NSURLSessionDataTask *_searchTask;
 }
 
 @end
@@ -46,6 +48,7 @@
     }
     
     kWeakSelf(self)
+    _searchTask =
     [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         self->_isSearchResult = YES;
@@ -165,6 +168,9 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initDate];
+}
+- (void)dealloc {
+    [_searchTask cancel];
 }
 
 #pragma mark- button methods

@@ -11,7 +11,9 @@
 #import "BRBookListTableViewCell.h"
 #import "BRBookInfoCollectionViewController.h"
 
-@interface BRSearchBookResultViewController ()
+@interface BRSearchBookResultViewController () {
+    NSURLSessionDataTask *_searchTask;
+}
 
 @end
 
@@ -20,6 +22,7 @@
 #pragma mark- private
 - (void)searchBookWithName:(NSString *)keyWord page:(NSInteger )page {
     kWeakSelf(self)
+    _searchTask =
     [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         [self->_recordsArray addObjectsFromArray:recodes];
@@ -56,6 +59,9 @@
     self.headTitle = self.keyWords;
 }
 
+- (void)dealloc {
+    [_searchTask cancel];
+}
 
 #pragma mark- UITableViewDelegate
 

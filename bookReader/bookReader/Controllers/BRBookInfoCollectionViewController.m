@@ -27,6 +27,7 @@
     
     NSURLSessionDataTask *_bookInfoTask;
     NSURLSessionDataTask *_sitesTask;
+    NSURLSessionDataTask *_chaptersListTask;
 }
 
 /// 小说源
@@ -112,6 +113,8 @@
     if (site) {
         kWeakSelf(self)
         [self showProgressMessage:@"正在获取最新章节信息..."];
+        [_chaptersListTask cancel];
+        _chaptersListTask =
         [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
             [self hideProgressMessage];
@@ -338,15 +341,12 @@
         kStrongSelf(self);
         self->_sitesArray = [recodes mutableCopy];
         if(self.selectedSiteIndex == -1) {
-            
             BRSite *site = [self getTheLastSite];
             NSInteger siteIndex = [self->_sitesArray indexOfObject:site];
-            self.bookInfo.sitesArray = self->_sitesArray;
             self.selectedSiteIndex = siteIndex;
             self.bookInfo.siteIndex = [NSNumber numberWithInteger:siteIndex];
-            
-//            [self.collectionView reloadData];
         }
+       self.bookInfo.sitesArray = self->_sitesArray;
         
         dispatch_group_leave(group);
         
@@ -384,6 +384,8 @@
     }
     
     if (site) {
+        [_chaptersListTask cancel];
+        _chaptersListTask =
         [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             successBlock(recodes);
         } failureBlock:^(NSError * _Nonnull error) {
@@ -436,6 +438,7 @@
 - (void)dealloc {
     [_bookInfoTask cancel];
     [_sitesTask cancel];
+    [_chaptersListTask cancel];
 }
 
 #pragma mark- UICollectionViewDelegate
@@ -540,6 +543,8 @@
         kWeakSelf(self)
         if (site) {
             [self showProgressMessage:@"正在获取最新章节信息..."];
+            [_chaptersListTask cancel];
+            _chaptersListTask =
             [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
                 kStrongSelf(self)
                 [self hideProgressMessage];
