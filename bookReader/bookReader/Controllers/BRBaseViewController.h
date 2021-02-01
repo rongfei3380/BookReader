@@ -57,6 +57,7 @@ typedef enum _BaseViewEnableModule {
 - (void)showErrorMessage:(NSError *)error withDelay:(NSTimeInterval)delay;
 
 - (void)showProgressMessage:(NSString *)message;
+- (void)hideBookProgressMessage;
 - (void)showProgressMessage:(NSString *)message closable:(BOOL)closable;
 - (void)hideProgressMessage;
 

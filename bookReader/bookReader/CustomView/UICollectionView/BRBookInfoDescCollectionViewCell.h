@@ -24,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) BRBookInfoModel *bookInfo;
 @property(nonatomic, weak)id<BRBookInfoDescCollectionViewCellDelegate> delegate;
 
+- (void)clickDetailButton;
+
 @end
 
 NS_ASSUME_NONNULL_END

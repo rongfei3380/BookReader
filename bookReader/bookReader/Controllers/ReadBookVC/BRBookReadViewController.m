@@ -324,13 +324,13 @@
            [self showProgressMessage:@"正在添加章节缓存"];
            [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
                kdispatch_main_sync_safe(^{
-                   [self hideProgressMessage];
+                   [self hideBookProgressMessage];
                    [self hideBookLoading];
                    [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
                });
             } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
                     if (error) {
-                        [self hideProgressMessage];
+                        [self hideBookProgressMessage];
                         [self showErrorMessage:error];
                     }
                 }];
@@ -350,12 +350,12 @@
             } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
                 kdispatch_main_sync_safe(^{
                     if (error ) {
-                        [self hideProgressMessage];
+                        [self hideBookProgressMessage];
                         [self showErrorMessage:error];
                     } else {
                         if (!finished) {
                             kdispatch_main_sync_safe(^{
-                                [self hideProgressMessage];
+                                [self hideBookProgressMessage];
                                 [self hideBookLoading];
                                 [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
                             });

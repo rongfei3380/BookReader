@@ -336,18 +336,7 @@
     }];
 }
 
-- (void)showProgressMessage:(NSString *)message closable:(BOOL)closable {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-    // Set some text to show the initial status.
-    hud.label.text = message;
-    // Will look best, if we set a minimum size.
-    hud.minSize = CGSizeMake(150.f, 100.f);
-
-    [self hideProgressMessage];
-}
-
-- (void)hideProgressMessage {
+- (void)hideBookProgressMessage {
     if (_bookLoadingView && _bookLoadingView.superview) {
 
            [_animationView stopAnimating];
@@ -358,6 +347,23 @@
            _bookLoadingView = nil;
        }
 }
+
+- (void)showProgressMessage:(NSString *)message closable:(BOOL)closable {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+    // Set some text to show the initial status.
+    hud.label.text = message;
+    // Will look best, if we set a minimum size.
+    hud.minSize = CGSizeMake(150.f, 100.f);
+
+    [self hideBookProgressMessage];
+}
+
+- (void)hideProgressMessage {
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+
 
 
 #pragma mark- setter

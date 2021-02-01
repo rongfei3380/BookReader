@@ -45,10 +45,10 @@
         [self cacheRecords:rotationArray key:@"rotationArray"];
         [self cacheRecords:recommendArray key:@"recommendArray"];
         [self.collectionView reloadData];
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         [self showErrorMessage:error];
     }];
 }
