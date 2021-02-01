@@ -70,6 +70,10 @@
             make.size.mas_equalTo(CGSizeMake(50, 15));
         }];
         
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContentview:)];
+        [self.contentView addGestureRecognizer:tap];
+        
         UIView *lineView = [UIView new];
         lineView.backgroundColor = CFUIColorFromRGBAInHex(0xF8F6F9, 1);
         [self.contentView addSubview:lineView];
@@ -125,6 +129,14 @@
     if (self.delegate && [self.delegate respondsToSelector:@selector(bookInfoDescCollectionViewCellClickDetailButton:)]) {
         [self.delegate bookInfoDescCollectionViewCellClickDetailButton:height];
     }
+}
+
+- (void)clickDetailButton {
+    [self clickDetailBtn:_detailBtn];
+}
+
+- (void)tapContentview:(UITapGestureRecognizer *)tap {
+    [self clickDetailBtn:_detailBtn];
 }
 
 //- (UICollectionViewLayoutAttributes*)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes*)layoutAttributes {

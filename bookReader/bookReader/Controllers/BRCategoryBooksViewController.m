@@ -160,7 +160,7 @@
     [BRBookInfoModel getBookListWithCategory:category.categoryId.longValue isOver:_bookStatus page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         
         if (page == 0) {
             [self->_recordsArray removeAllObjects];
@@ -180,7 +180,7 @@
         [self endGetData];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         [self showErrorMessage:error];
         [self endGetData];
     }];

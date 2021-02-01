@@ -46,6 +46,7 @@ alpha:alphaValue]
 /* 版本号 相关 */
 //App版本号
 #define kAppVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]
+#define kAppBuildVersion [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]
 // 当前系统版本
 #define kFSystemVersion          ([[[UIDevice currentDevice] systemVersion] floatValue])
 #define kDSystemVersion          ([[[UIDevice currentDevice] systemVersion] doubleValue])

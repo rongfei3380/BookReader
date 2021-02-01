@@ -94,7 +94,7 @@
 }
 
 - (void)showChaptersView {
-    [self hideProgressMessage];
+    [self hideBookProgressMessage];
     if (!_chaptersView) {
         _chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height)];
     }
@@ -117,13 +117,13 @@
         _chaptersListTask =
         [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
-            [self hideProgressMessage];
+            [self hideBookProgressMessage];
             self->_chaptersView.chapters = recodes;
             self->_chaptersView.bookInfo = self.bookInfo;
             [self.view addSubview:self->_chaptersView];
         } failureBlock:^(NSError * _Nonnull error) {
             kStrongSelf(self)
-            [self hideProgressMessage];
+            [self hideBookProgressMessage];
             [self showErrorMessage:error];
         }];
     }
@@ -210,13 +210,13 @@
                 [self showProgressMessage:@"正在添加章节缓存"];
                 [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
                     kdispatch_main_sync_safe(^{
-                        [self hideProgressMessage];
+                        [self hideBookProgressMessage];
                         [self hideBookLoading];
                         [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
                     });
                  } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
                          if (error) {
-                             [self hideProgressMessage];
+                             [self hideBookProgressMessage];
                              [self showErrorMessage:error];
                          }
                      }];
@@ -240,12 +240,12 @@
             } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
                 kdispatch_main_sync_safe(^{
                     if (error ) {
-                        [self hideProgressMessage];
+                        [self hideBookProgressMessage];
                         [self showErrorMessage:error];
                     } else {
                         if (!finished) {
                             kdispatch_main_sync_safe(^{
-                                [self hideProgressMessage];
+                                [self hideBookProgressMessage];
                                 [self hideBookLoading];
                                 [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
                             });
@@ -316,7 +316,7 @@
     if(dataBaseBook) {
         self.selectedSiteIndex = dataBaseBook.siteIndex.integerValue;
     }
-    
+    [self showProgressMessage:@"" closable:YES];
    kWeakSelf(self);
     _bookInfoTask =
     [BRBookInfoModel getbookinfoWithBookId:self.bookInfo.bookId.longValue isSelect:NO sucess:^(BRBookInfoModel * _Nonnull bookInfo) {
@@ -332,6 +332,7 @@
         
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
+        [self hideProgressMessage];
         [self showErrorMessage:error];
     }];
     
@@ -352,6 +353,7 @@
         
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
+        [self hideProgressMessage];
         [self showErrorMessage:error];
     }];
     
@@ -359,6 +361,7 @@
         kStrongSelf(self)
         self->_bookInfo.sitesArray = self->_sitesArray;
         [self.collectionView reloadData];
+        [self hideProgressMessage];
     });
 }
 
@@ -414,6 +417,8 @@
     [self.collectionView registerClass:[BRBookInfoDescCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookInfoDescCollectionViewCell"];
     [self.collectionView registerClass:[BRBookInfoSitesCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookInfoSitesCollectionViewCell"];
     
+    [self.collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"othersReusableView"];
+    
     [self createStartButton];
     
     [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -448,7 +453,11 @@
         BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
         vc.bookInfo = item;
         [self.navigationController pushViewController:vc animated:YES];
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == 1) {
+//        BRBookInfoDescCollectionViewCell *descCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRBookInfoDescCollectionViewCell" forIndexPath:indexPath];
+//        [descCell clickDetailButton];
+    }
+    else if (indexPath.section == 2) {
         [self changeSite];
     }
 }
@@ -493,6 +502,40 @@
         return self.bookInfo.otherBooks.count;
     } else {
         return 1;
+    }
+}
+
+            //组头高度
+-(CGSize )collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    if (section == 3) {
+        return CGSizeMake(SCREEN_WIDTH, 40);
+    } else {
+        return CGSizeMake(0, 0);
+    }
+    
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath{
+    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
+        UICollectionReusableView *header = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"othersReusableView" forIndexPath:indexPath];
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"其他作品";
+        label.font = [UIFont boldSystemFontOfSize:18];
+        label.textColor = CFUIColorFromRGBAInHex(0x161c2c, 1);
+        for (UIView *view in header.subviews) {
+            [view removeFromSuperview];
+        }
+        [header addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(11);
+            make.right.mas_equalTo(-11);
+            make.top.mas_equalTo(12);
+            make.bottom.mas_equalTo(0);
+        }];
+        return header;
+        
+    } else {
+        return nil;
     }
     
 }
@@ -547,11 +590,11 @@
             _chaptersListTask =
             [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
                 kStrongSelf(self)
-                [self hideProgressMessage];
+                [self hideBookProgressMessage];
                 [self showAlertControllerWithChapters:recodes];
             } failureBlock:^(NSError * _Nonnull error) {
                 kStrongSelf(self)
-                [self hideProgressMessage];
+                [self hideBookProgressMessage];
                 [self showErrorMessage:error];
             }];
         }
@@ -561,7 +604,7 @@
             [self showAlertControllerWithChapters:recodes];
         } failureBlock:^(NSError * _Nonnull error) {
             kStrongSelf(self)
-            [self hideProgressMessage];
+            [self hideBookProgressMessage];
             [self showErrorMessage:error];
         }];
     }
