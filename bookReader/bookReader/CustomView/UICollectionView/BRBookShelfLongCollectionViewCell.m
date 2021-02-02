@@ -67,7 +67,7 @@
         
         _chapterNameLabel = [[UILabel alloc] init];
         _chapterNameLabel.font = [UIFont systemFontOfSize:12];
-        _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         [self addSubview:_chapterNameLabel];
         
         _readStatusLabel = [[UILabel alloc] init];
