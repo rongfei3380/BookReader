@@ -197,7 +197,8 @@
     
     [self.backBgCollectionView registerClass:[BRReadBgCollectionViewCell class] forCellWithReuseIdentifier:@"BRReadBgCollectionViewCell"];
     
-    self.bgIconArray = @[[CFUtils pureColorImage:0xFFFFFF colorAlpha:1 size:CGSizeMake(60, 28)],
+    self.bgIconArray = @[[UIImage imageNamed:@"reading_bg_wenli5_def"],
+                         [CFUtils pureColorImage:0xFFFFFF colorAlpha:1 size:CGSizeMake(60, 28)],
                          [CFUtils pureColorImage:0xE5E2D1 colorAlpha:1 size:CGSizeMake(60, 28)],
                          [CFUtils pureColorImage:0xC3CCC2 colorAlpha:1 size:CGSizeMake(60, 28)],
                          [CFUtils pureColorImage:0xDAD9D7 colorAlpha:1 size:CGSizeMake(60, 28)],
@@ -206,8 +207,7 @@
                          [UIImage imageNamed:@"reading_bg_wenli1_def"],
                          [UIImage imageNamed:@"reading_bg_wenli2_def"],
                          [UIImage imageNamed:@"reading_bg_wenli3_def"],
-                         [UIImage imageNamed:@"reading_bg_wenli4_def"],
-                         [UIImage imageNamed:@"reading_bg_wenli5_def"]];
+                         [UIImage imageNamed:@"reading_bg_wenli4_def"]];
     
     self.bgSelectedArray = [NSMutableArray array];
     for (int i=0; i<self.bgIconArray.count; i++) {

@@ -117,8 +117,21 @@
     _toolbarView.hidden = YES;
 }
 
+- (UIImage *)imageResize :(UIImage*)img andResizeTo:(CGSize)newSize {
+    CGFloat scale = [[UIScreen mainScreen]scale];
+    //UIGraphicsBeginImageContext(newSize);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, scale);
+    [img drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
 - (void)initialSubViews {
-    self.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
+    UIColor *color11 = [UIColor colorWithPatternImage:[self imageResize:[UIImage imageNamed:@"reading_bg_six"] andResizeTo:CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT)]];
+
+    
+    self.view.backgroundColor = BRUserDefault.readBackColor ? : color11;
     
     [self addChildViewController:self.bookPageVC];
     [self.view addSubview:_bookPageVC.view];
@@ -132,6 +145,7 @@
         self.chaptersView.hidden = YES;
         self.muluButton.selected = NO;
         [self.viewModel loadChapterWithIndex:index];
+        [self changeNaviBarHidenWithAnimated];
     };
     self.chaptersView.didSelectHidden = ^{
         kStrongSelf(self);

@@ -10,6 +10,7 @@
 #import "BRDataBaseCacheManager.h"
 #import "BRCacheTask.h"
 #import "BRBookCacheTableViewCell.h"
+#import "BRDataBaseManager.h"
 
 @interface BRBookCacheViewController ()<BRBookCacheTableViewCellDelegate>
 
@@ -89,10 +90,27 @@
 }
 
 - (void)bookCacheTableViewCellClickDeleteButton:(UIButton *)button cacheTask:(BRCacheTask *)cacheTask {
-    [[BRDataBaseCacheManager sharedInstance] cancel:cacheTask completed:^{
-        self->_dict = [BRDataBaseCacheManager sharedInstance].allCacheTaskes;
-        [self.tableView reloadData];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定需要取消缓存任务并清除缓存吗？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [[BRDataBaseCacheManager sharedInstance] cancel:cacheTask completed:^{
+            
+            [[BRDataBaseManager sharedInstance] deleteChapterContentWithBookId:cacheTask.bookId];
+            
+            self->_dict = [BRDataBaseCacheManager sharedInstance].allCacheTaskes;
+            
+            [self.tableView reloadData];
+        }];
     }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:okAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
 }
 
 @end

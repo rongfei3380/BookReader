@@ -30,10 +30,10 @@
             return @"刚刚";
         }
     } else {
-        if (createdDate.isThisWeek) {
-            NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
-            NSInteger day = deltaWithNow.hour/24;
-            
+        NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
+        NSInteger day = deltaWithNow.hour/24;
+        
+        if (day < 7) {
             return [NSString stringWithFormat:@"%ld天前", day];
         } else {
             return @"7天前";
