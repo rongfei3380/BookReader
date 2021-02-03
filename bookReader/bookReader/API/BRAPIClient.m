@@ -481,7 +481,7 @@
     
     BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
        
-    return  [manager GET:@"http://api.huaban800.com/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    return  [manager GET:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getrecommend" parameters:nil headers:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
            
           [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                if (successBlock) {
