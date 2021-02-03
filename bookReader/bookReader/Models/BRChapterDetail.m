@@ -75,10 +75,11 @@
             if (successBlock) {
                 
                 BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
-//                kdispatch_main_async_safe(^{
-                    [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
-//                });
-                successBlock(chapterDetail);
+                [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
+                kdispatch_main_async_safe(^{
+                    successBlock(chapterDetail);
+                });
+                
             }
         } failureBlock:^(NSError * _Nonnull error) {
             if (failureBlock) {
