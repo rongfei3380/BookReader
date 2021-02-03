@@ -425,15 +425,15 @@
         kDISPATCH_ON_GLOBAL_QUEUE_DEFAULT(^{
             [self responseObject:responseObject sessionDataTask:task success:^(id  _Nonnull dataBody) {
                  if (successBlock) {
-                     kdispatch_main_sync_safe(^{
+//                     kdispatch_main_sync_safe(^{
                          successBlock(dataBody);
-                     });
+//                     });
                  }
              } failure:^(NSError * _Nonnull error) {
                  if (failureBlock){
-                     kdispatch_main_sync_safe(^{
+//                     kdispatch_main_sync_safe(^{
                          failureBlock(error);
-                     });
+//                     });
                  }
              }];
         });

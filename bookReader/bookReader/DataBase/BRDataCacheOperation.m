@@ -156,9 +156,9 @@ typedef NSMutableDictionary<NSString *, id> BRCallbacksDictionary;
 //                        dispatch_async(dispatch_get_main_queue(), ^{
 //                            [[NSNotificationCenter defaultCenter] postNotificationName:BRCacheReceiveResponseNotification object:self];
 //                        });
-                kdispatch_main_sync_safe(^{
+//                kdispatch_main_sync_safe(^{
                     [[BRDataBaseCacheManager sharedInstance] saveAllCacheTask];
-                });
+//                });
                 [self chacheContentWithChapterId:nil completed:nil];
             } else {
                 CFDebugLog(@"==========最后一个下载的处理==========");
@@ -189,9 +189,9 @@ typedef NSMutableDictionary<NSString *, id> BRCallbacksDictionary;
                         self.cacheTask.cacheCompletedBlock(task, nil, YES);
                     }
                 });
-                kdispatch_main_sync_safe(^{
+//                kdispatch_main_sync_safe(^{
                     [[BRDataBaseCacheManager sharedInstance] saveAllCacheTask];
-                });
+//                });
 
                 [self done];
             }
