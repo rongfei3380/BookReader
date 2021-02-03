@@ -128,13 +128,13 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
     ];
     
     _section1Array = @[
-        @{@"icon":@"profile_list_helping", @"title":@"意见反馈"},
-        @{@"icon":@"profile_list_QQ", @"title": @"加入书友群"},
         @{@"icon":@"profile_list_praise", @"title":@"给我好评"},
         @{@"icon":@"profile_list_aboult", @"title":@"关于软件"},
+        @{@"icon":@"btn_detail_download", @"title":@"小说缓存"},
         @{@"icon":@"profile_list_shen", @"title":@"免责声明"},
-        @{@"icon":@"profile_list_set", @"title":@"设置"},
-        @{@"icon":@"btn_detail_download", @"title":@"小说缓存"}
+        @{@"icon":@"profile_list_helping", @"title":@"意见反馈"},
+        @{@"icon":@"profile_list_QQ", @"title": @"加入书友群"},
+        @{@"icon":@"profile_list_set", @"title":@"设置"}
     ];
     // Do any additional setup after loading the view.
 }
