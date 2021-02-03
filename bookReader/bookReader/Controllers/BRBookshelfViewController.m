@@ -41,7 +41,7 @@
         self->_recordsArray = [books mutableCopy];
         self->_apiBooksDict = [[NSMutableDictionary alloc] init];
         self.isShelf = BRUserDefault.isShelfStyle;
-        kdispatch_main_sync_safe(^{
+        ·(^{
             [self getBookInfoOnShelf];
             [self.collectionView reloadData];
         });
