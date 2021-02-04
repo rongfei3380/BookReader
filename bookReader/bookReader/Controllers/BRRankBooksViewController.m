@@ -13,6 +13,7 @@
 #import "BRRecommendCollectionViewCell.h"
 #import "BRBookInfoModel.h"
 #import "BRRankBookDetailViewController.h"
+#import "BRSearchBookViewController.h"
 
 @interface BRRankBooksViewController ()<BRRecommendCollectionReusableViewDelegate>{
     NSArray *_rotationArray;
@@ -44,10 +45,10 @@
         [self cacheRecords:rotationArray key:@"rotationArray"];
         [self cacheRecords:recommendArray key:@"recommendArray"];
         [self.collectionView reloadData];
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         [self showErrorMessage:error];
     }];
 }
@@ -58,11 +59,22 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle ;
+//        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle ;
         
         self.headTitle = @"排行";
     }
     return self;
+}
+- (void)loadView {
+    [super loadView];
+    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"bg_rank"]];
+    [self.view insertSubview:bgImgView belowSubview:self.collectionView];
+    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.mas_offset(0);
+        make.top.mas_offset(0);
+        make.height.mas_equalTo(SCREEN_WIDTH*(200.f/375.f));
+    }];
+    self.collectionView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidLoad {
@@ -121,15 +133,15 @@
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH -20*2, kRecommendCollectionReusableViewHeight);
+    return CGSizeMake(SCREEN_WIDTH -15*2, kRecommendCollectionReusableViewHeight);
 }
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
-        return CGSizeMake(SCREEN_WIDTH -20*2, kBRRecommendBigCollectionViewCellHeight);
+        return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
     } else  {
-        return CGSizeMake(96, 160);
+        return CGSizeMake(75, 100 +46);
     }
 }
 
@@ -140,16 +152,16 @@
 #pragma mark- UICollectionViewDelegateFlowLayout
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    return 24;
+    return 10;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    CGFloat space = (SCREEN_WIDTH -20*2 -96*3) /2.f ;
+    CGFloat space = (SCREEN_WIDTH -15*2 -75*4) /3.f ;
     return space;
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(0, 20, 0, 20);
+    UIEdgeInsets edgeInsets = UIEdgeInsetsMake(0, 15, 0, 15);
     return edgeInsets;
 }
 
@@ -166,6 +178,11 @@
 - (void)cycleScrollViewDidSelectItemAtIndex:(NSInteger )index {
     BRBookInfoModel *model = [_rotationArray objectAtIndex:index];
     [self goBookInfoViewWIthBook:model];
+}
+
+- (void)recommendCollectionReusableViewTapSearch {
+    BRSearchBookViewController *vc = [[BRSearchBookViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

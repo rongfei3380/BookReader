@@ -15,7 +15,7 @@
 
 @interface BRRecommendCollectionReusableView ()<ZKCycleScrollViewDelegate, ZKCycleScrollViewDataSource>{
     NSArray *_masonryBtnsArray;
-    
+    UIView *_searchViewBg;
     ZKCycleScrollView *cycleScrollView;
 }
 @end
@@ -26,9 +26,38 @@
     self = [super initWithFrame:frame];
     if (self) {
         
-        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 0);
         
-        cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, 20, SCREEN_WIDTH-20*2, (114/335.f)*(SCREEN_WIDTH -20*2))];
+        _searchViewBg = [[UIView alloc] initWithFrame:CGRectMake(15, 0, SCREEN_WIDTH -15*2, 33)];
+        _searchViewBg.backgroundColor = CFUIColorFromRGBAInHex(0xF8F6F9, 1);
+        _searchViewBg.layer.cornerRadius = 16.5;
+        [self addSubview:_searchViewBg];
+        
+        UIImageView *icon = [UIImageView new];
+        icon.image = [UIImage imageNamed:@"con_search"];
+        [_searchViewBg addSubview:icon];
+        [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(11.5);
+            make.size.mas_equalTo(CGSizeMake(18, 18));
+            make.centerY.mas_equalTo(0);
+        }];
+        
+        UILabel *label = [[UILabel alloc] init];
+        label.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:14];
+        label.textColor = CFUIColorFromRGBAInHex(0xB5B5B9, 1);
+        label.text = @"搜索书名/作者名";
+        [_searchViewBg addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(38);
+            make.right.mas_equalTo(-38);
+            make.height.mas_equalTo(20);
+            make.centerY.mas_equalTo(0);
+        }];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognizer:)] ;
+        [_searchViewBg addGestureRecognizer:tap];
+        
+        cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_searchViewBg.frame) +15, SCREEN_WIDTH-20*2, (114/335.f)*(SCREEN_WIDTH -20*2))];
         cycleScrollView.backgroundColor = [UIColor clearColor];
         cycleScrollView.delegate = self;
         cycleScrollView.dataSource = self;
@@ -41,8 +70,8 @@
         CFButtonUpDwon *popularBtn = [self btnWithTitle:@"人气榜" Image:@"ranking_popularity_list"];
         popularBtn.tag = 1000;
         
-        CFButtonUpDwon *hotBtn = [self btnWithTitle:@"热搜榜" Image:@"ranking_hot_search"];
-        hotBtn.tag = 1001;
+//        CFButtonUpDwon *hotBtn = [self btnWithTitle:@"热搜榜" Image:@"ranking_hot_search"];
+//        hotBtn.tag = 1001;
         
         CFButtonUpDwon *highBtn = [self btnWithTitle:@"好评榜" Image:@"ranking_high_opinion"];
         highBtn.tag = 1002;
@@ -54,12 +83,12 @@
         endBtn.tag = 1004;
         
         [self addSubview:popularBtn];
-        [self addSubview:hotBtn];
+//        [self addSubview:hotBtn];
         [self addSubview:highBtn];
         [self addSubview:newBtn];
         [self addSubview:endBtn];
         
-        _masonryBtnsArray = @[popularBtn, hotBtn, highBtn, newBtn, endBtn];
+        _masonryBtnsArray = @[popularBtn, highBtn, newBtn, endBtn];
         
         UIView *bottomView = [[UIView alloc] init];
         bottomView.backgroundColor = CFUIColorFromRGBAInHex(0xF5F5F5, 1);
@@ -97,6 +126,13 @@
         [self.delegate recommendCollectionReusableViewActionButtonsClick:sender.tag -1000 title:sender.titleLabel.text];
     }
 }
+
+- (void)tapGestureRecognizer:(UITapGestureRecognizer *)tapGest{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(recommendCollectionReusableViewTapSearch)]) {
+        [self.delegate recommendCollectionReusableViewTapSearch];
+    }
+}
+
 
 #pragma mark- private
 

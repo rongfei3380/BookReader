@@ -62,6 +62,10 @@
     return self;
 }
 
+- (void)dealloc {
+    
+}
+
 #pragma mark- data
 
 - (void) getSitesWithBook:(BRBookInfoModel *)model {
@@ -133,7 +137,7 @@
         
 
         BRSite *site = nil;
-        if (self.bookModel.siteIndex) {
+        if (self.bookModel.siteIndex.intValue >= 0) {
             site = [_sitesArray objectAtIndex:(self.bookModel.siteIndex.integerValue >= _sitesArray.count ? _sitesArray.count-1 : self.bookModel.siteIndex.integerValue)];
         } else {
             site = [self getTheLastSite];

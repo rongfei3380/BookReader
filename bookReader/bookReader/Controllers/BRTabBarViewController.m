@@ -26,9 +26,9 @@
     [super viewDidLoad];
     //1.设置tabBar的背景颜色
     self.view.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
-    self.tabBar.barTintColor = CFUIColorFromRGBAInHex(0xF9F9F9, 1);
+    self.tabBar.barTintColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     //2.字体颜色
-    self.tabBar.tintColor = [UIColor colorWithRed:41/255.0 green:47/255.0 blue:61/255.0 alpha:1.0];
+    self.tabBar.tintColor = CFUIColorFromRGBAInHex(0x333333, 1);
     //3.添加所有控制器
     [self addSubViewController];
     
@@ -64,7 +64,7 @@
     vc.title = title;
     vc.tabBarItem.title = title;
     NSString *selectedImg = [NSString stringWithFormat:@"%@_sel", imagename];
-    vc.tabBarItem.image = [UIImage imageNamed:imagename];
+    vc.tabBarItem.image = [[UIImage imageNamed:imagename] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     vc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImg] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     
     [self addChildViewController:vc];
@@ -89,7 +89,7 @@
 }
 
 - (void)agreementViewDelegateClickLink:(NSURL *)url {
-    NSString *scheme = url.scheme;
+//    NSString *scheme = url.scheme;
     NSString *host = url.host;
     NSString *path = url.path;
         

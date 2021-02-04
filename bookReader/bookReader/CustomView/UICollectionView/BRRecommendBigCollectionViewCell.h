@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "BRBookInfoModel.h"
 
-#define kBRRecommendBigCollectionViewCellHeight 185
+#define kBRRecommendBigCollectionViewCellHeight 160
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -352,7 +352,7 @@ static CGFloat const contentSizeXOff = 20.0;
                 weakSelf.coverLayer.zj_width = currentTitleView.zj_width + wGap;
             } else {
                 if (self.segmentStyle.isAdjustCoverOrLineWidth) {
-                    CGFloat coverW = [self.titleWidths[_currentIndex] floatValue] + wGap;
+                    CGFloat coverW = [self.titleWidths[self->_currentIndex] floatValue] + wGap;
                     CGFloat coverX = currentTitleView.zj_x + (currentTitleView.zj_width - coverW) * 0.5;
                     weakSelf.coverLayer.zj_x = coverX;
                     weakSelf.coverLayer.zj_width = coverW;

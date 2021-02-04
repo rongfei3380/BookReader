@@ -174,12 +174,12 @@
     [super loadView];
     self.headTitle = @"关于软件";
     
-    UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"profile_about_logo"]];
+    UIImageView *logoImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Logo"]];
     [self.view addSubview:logoImg];
     [logoImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(0);
         make.top.mas_equalTo(self.headView.mas_bottom).offset(120);
-        make.size.mas_equalTo(CGSizeMake(100, 114));
+        make.size.mas_equalTo(CGSizeMake(100, 100));
     }];
     
     _versionLabel = [[UILabel alloc] init];
@@ -194,7 +194,8 @@
         make.height.mas_equalTo(22);
     }];
     
-    _versionLabel.text = kAppVersion;
+    _versionLabel.text = [NSString stringWithFormat:@"%@ (%@)", kAppVersion, kAppBuildVersion];
+    
     
     _updateLabel = [[UILabel alloc] init];
     _updateLabel.textColor = CFUIColorFromRGBAInHex(0x8F9396, 1);

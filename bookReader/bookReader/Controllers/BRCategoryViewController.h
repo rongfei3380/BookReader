@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
     UIButton *_selectedButton;
 }
 
-@property(strong, nonatomic)NSArray<UIViewController<ZJScrollPageViewChildVcDelegate> *> *childVcs;
+@property(strong, nonatomic)NSArray<BRBaseViewController <ZJScrollPageViewChildVcDelegate> *> *childVcs;
 @property (weak, nonatomic) ZJContentView *contentView;
 @property (assign, nonatomic) NSInteger selectedIndex;
 

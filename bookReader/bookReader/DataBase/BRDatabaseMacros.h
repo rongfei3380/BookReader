@@ -57,6 +57,8 @@ time TEXT\
 VALUES (?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, time
 
 #define kBRDBSelectChaptersWithSiteIdAndBookId(site_id, book_id) @"SELECT * FROM t_chapter WHERE site_id=? AND book_id =?", site_id, book_id
+//#define kBRDBSelectChaptersWithSiteIdAndBookId(site_id, book_id) @"SELECT  * FROM t_chapter a left join t_chapter_text b ON a.chapter_id = b.chapter_id AND a.site_id = b.site_id WHERE site_id=? AND book_id =?", site_id, book_id
+
 
 #define kBRDBDeleteChapterWithSiteIdAndBookId(site_id, book_id) @"DELETE FROM t_chapter WHERE site_id=? AND book_id =? ", source_url, book_id
 

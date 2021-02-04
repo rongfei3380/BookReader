@@ -31,12 +31,12 @@
 }
 
 static BRHTTPSessionManager *manager;
-+(BRHTTPSessionManager *)sharedManager {
++ (BRHTTPSessionManager *)sharedManager {
        static dispatch_once_t onceToken;
        dispatch_once(&onceToken, ^{
            manager = [BRHTTPSessionManager manager];
        });
        return manager;
-   }
+}
 
 @end

@@ -16,12 +16,14 @@
 #import "BRBooksManagerViewController.h"
 #import "GVUserDefaults+BRUserDefaults.h"
 #import "BRDataBaseManager.h"
+#import "CFUtils.h"
 
 @interface BRBookshelfViewController () {
     NSArray *_recordsArray;
     NSMutableDictionary *_apiBooksDict;
     
     UILabel *_countLabel;
+    NSURLSessionDataTask *_bookInfosShelfTask;
 }
 
 @property(nonatomic, assign) BOOL isShelf; // 是否为书架模式
@@ -34,12 +36,17 @@
 
 - (void)initData {
     self.emptyString = @"空空如也\n快去书城添加书吧";
-   _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
-    _apiBooksDict = [[NSMutableDictionary alloc] init];
-    self.isShelf = BRUserDefault.isShelfStyle;
-    [self.collectionView reloadData];
+//   _recordsArray =  [[[BRDataBaseManager sharedInstance] selectBookInfos] mutableCopy];
+    [[BRDataBaseManager sharedInstance] selectBookInfos:^(NSArray<BRBookInfoModel *> * books) {
+        self->_recordsArray = [books mutableCopy];
+        self->_apiBooksDict = [[NSMutableDictionary alloc] init];
+        self.isShelf = BRUserDefault.isShelfStyle;
+//        kdispatch_main_sync_safe(^{
+            [self getBookInfoOnShelf];
+            [self.collectionView reloadData];
+//        });
+    }];
     
-    [self getBookInfoOnShelf];
 }
 
 - (void)gotoReadWithBook:(BRBookInfoModel *)book {
@@ -89,6 +96,7 @@
         
         NSString *ids =  [idsArray componentsJoinedByString:@","];
         kWeakSelf(self)
+        _bookInfosShelfTask =
         [BRBookInfoModel getBookInfosShelfWithBookids:ids sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
             [self->_apiBooksDict removeAllObjects];
@@ -172,6 +180,10 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self initData];
+}
+
+- (void)dealloc {
+    [_bookInfosShelfTask cancel];
 }
 
 #pragma mark- setter

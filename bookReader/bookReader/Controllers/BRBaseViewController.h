@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "NSError+BRError.h"
 #import "BRBookInfoModel.h"
+#import "BRMessageHUD.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -56,6 +57,7 @@ typedef enum _BaseViewEnableModule {
 - (void)showErrorMessage:(NSError *)error withDelay:(NSTimeInterval)delay;
 
 - (void)showProgressMessage:(NSString *)message;
+- (void)hideBookProgressMessage;
 - (void)showProgressMessage:(NSString *)message closable:(BOOL)closable;
 - (void)hideProgressMessage;
 

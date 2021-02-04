@@ -19,7 +19,7 @@
 @interface BRDataBaseManager()
 
 @property(nonatomic, strong) FMDatabaseQueue *databaseQueue;
-@property(nonatomic, strong) FMDatabase *database;
+//@property(nonatomic, strong) FMDatabase *database;
 @property(nonatomic, assign) BOOL needInsertBooks;
 
 @end
@@ -40,56 +40,55 @@
 - (instancetype)initDataBase {
     self = [super init];
     if (self) {
-        self.database = [FMDatabase databaseWithPath:kBRDatabasePath];
+//        self.database = [FMDatabase databaseWithPath:kBRDatabasePath];
         CFDebugLog(@"DB path: %@", kBRDatabasePath);
         self.databaseQueue = [FMDatabaseQueue databaseQueueWithPath:kBRDatabasePath];
-        if ([self.database open]) {
-            //  创建章节内容表
-            BOOL creat = [self.database executeUpdate:kBRDBCreateChapterTextTable];
-            if (!creat) {
-                CFDebugLog(@"creat ChapterText Table error:%@",[self.database lastErrorMessage]);
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]) {
+                //  创建章节内容表
+                BOOL creat = [db executeUpdate:kBRDBCreateChapterTextTable];
+                if (!creat) {
+                    CFDebugLog(@"creat ChapterText Table error:%@",[db lastErrorMessage]);
+                }
+    //            创建章节列表 表
+                creat = [db executeUpdate:kBRDBCreateChapterTable];
+                if (!creat) {
+                    CFDebugLog(@"creat ChapterList Table error:%@",[db lastErrorMessage]);
+                }
+                // 创建小说内容表
+                
+                if (![db tableExists:@"t_book_info"]) {
+                    self.needInsertBooks = YES;
+                }
+    //            需要增加字段的话这里处理
+    //            [self.database columnExists:@"" inTableWithName:@"t_book_info"];
+                
+                creat = [db executeUpdate:kBRDBCreateBookInfoTabel];
+                
+                if (!creat) {
+                    CFDebugLog(@"creat BookInfoTabel Table error:%@",[db lastErrorMessage]);
+                }
+    //            创建搜索历史表
+                creat = [db executeUpdate:kBRDBCreateSearchHistoryTabel];
+                if (!creat) {
+                    CFDebugLog(@"creat SearchHistoryTabel Table error:%@",[db lastErrorMessage]);
+                }
+    //            创建阅读历史表
+                creat = [db executeUpdate:kBRDBCreateRecordTable];
+                if (!creat) {
+                    CFDebugLog(@"creat RecordTable Table error:%@",[db lastErrorMessage]);
+                }
+    //            创建浏览历史表
+                creat = [db executeUpdate:kBRDBCreateHistoryBookInfoTabel];
+                if (!creat) {
+                    CFDebugLog(@"creat HistoryBookInfo Table error:%@",[db lastErrorMessage]);
+                }
+                [self addTableColumn];
+            } else {
+                CFDebugLog(@"open database error !!!");
             }
-//            创建章节列表 表
-            creat = [self.database executeUpdate:kBRDBCreateChapterTable];
-            if (!creat) {
-                CFDebugLog(@"creat ChapterList Table error:%@",[self.database lastErrorMessage]);
-            }
-            // 创建小说内容表
-            
-            if (![self.database tableExists:@"t_book_info"]) {
-                self.needInsertBooks = YES;
-            }
-//            需要增加字段的话这里处理
-//            [self.database columnExists:@"" inTableWithName:@"t_book_info"];
-            
-            creat = [self.database executeUpdate:kBRDBCreateBookInfoTabel];
-            
-            if (!creat) {
-                CFDebugLog(@"creat BookInfoTabel Table error:%@",[self.database lastErrorMessage]);
-            }
-//            创建搜索历史表
-            creat = [self.database executeUpdate:kBRDBCreateSearchHistoryTabel];
-            if (!creat) {
-                CFDebugLog(@"creat SearchHistoryTabel Table error:%@",[self.database lastErrorMessage]);
-            }
-//            创建阅读历史表
-            creat = [self.database executeUpdate:kBRDBCreateRecordTable];
-            if (!creat) {
-                CFDebugLog(@"creat RecordTable Table error:%@",[self.database lastErrorMessage]);
-            }
-//            创建浏览历史表
-            creat = [self.database executeUpdate:kBRDBCreateHistoryBookInfoTabel];
-            if (!creat) {
-                CFDebugLog(@"creat HistoryBookInfo Table error:%@",[self.database lastErrorMessage]);
-            }
-            
-            [self addTableColumn];
-            
-        } else {
-            CFDebugLog(@"open database error !!!");
-        }
+        }];
     }
-    
     return self;
 }
 
@@ -173,31 +172,64 @@
 }
 
 - (NSArray<BRBookInfoModel*>*)selectBookInfos {
-    FMResultSet *result = [self.database executeQuery:kBRDBSelectBookInfo];
-    NSMutableArray *array = [NSMutableArray array];
-    while ([result next]) {
-        BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
-        if (model) {
-            [array addObject:model];
-        }
-    }
-    [result close];
-    return array;
     
+    __block  NSMutableArray *array = [NSMutableArray array];
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            FMResultSet *result = [db executeQuery:kBRDBSelectBookInfo];
+            while ([result next]) {
+                BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
+                if (model) {
+                    [array addObject:model];
+                }
+            }
+            [result close];
+        }
+        [db close];
+    }];
+    return array;
+}
+
+- (void)selectBookInfos:(void(^)(NSArray<BRBookInfoModel*> *books))books {
+    kDISPATCH_ON_GLOBAL_QUEUE_LOW(^{
+        __block  NSMutableArray *array = [NSMutableArray array];
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]) {
+                FMResultSet *result = [db executeQuery:kBRDBSelectBookInfo];
+                while ([result next]) {
+                    BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
+                    if (model) {
+                        [array addObject:model];
+                    }
+                }
+                [result close];
+            }
+            [db close];
+        }];
+        if(books){
+            kdispatch_main_sync_safe(^{
+                books(array);
+            });
+        }
+    });
 }
 
 - (BRBookInfoModel *)selectBookInfoWithBookId:(NSNumber *)bookId {
-    FMResultSet *result = [self.database executeQuery:kBRDBSelectBookInfoWithBookId(bookId)];
-    if ([result next]) {
-        BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
-        [result close];
-        return model;
-    }
-    return nil;
+    __block BRBookInfoModel *model;
+    
+   
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet *result = [db executeQuery:kBRDBSelectBookInfoWithBookId(bookId)];
+        if ([result next]) {
+            model = [[BRBookInfoModel alloc] initWithFMResult:result];
+            [result close];
+        }
+    }];
+    return model;
 }
 
 - (void)deleteBookInfoWithBookId:(NSNumber *)bookId {
-    if (!bookId || (bookId.intValue <= 0)) {
+    if (bookId == nil || (bookId.intValue <= 0)) {
         return;
     }
     
@@ -240,7 +272,7 @@
 
 
 - (BOOL)updateBookSourceWithBookId:(NSNumber *)bookId sites:(NSArray *)sites curSiteIndex:(NSInteger )index{
-    if (!bookId || !sites || sites.count == 0) {
+    if (bookId == nil || sites == nil || sites.count == 0) {
         return NO;
     }
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -355,22 +387,43 @@
     return [NSArray array];
 }
 
+- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId{
+    __block NSMutableArray* dataArr = [NSMutableArray array];
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            FMResultSet* result = [db executeQuery:kBRDBSelectChaptersWithSiteIdAndBookId(siteId, bookId)];
+              while ([result next]) {
+                  BRChapter *model = [[BRChapter alloc] initWithFMResult:result];
+                  if (model){
+                      [dataArr addObject:model];
+                  }
+              }
+            [result close];
+            [db close];
+        }
+    }];
+    return dataArr;
+}
+
 /// 查询固定源 下面的章节缓存
 /// @param bookId 书籍id
 /// @param siteId 源id
-- (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId {
-     FMResultSet* result = [self.database executeQuery:kBRDBSelectChaptersWithSiteIdAndBookId(siteId, bookId)];
-       
-       NSMutableArray* dataArr = [NSMutableArray array];
-       
-       while ([result next]) {
-           BRChapter *model = [[BRChapter alloc] initWithFMResult:result];
-           if (model){
-               [dataArr addObject:model];
-           }
-       }
-       [result close];
-       return dataArr;
+- (void)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId chapters:(void(^)(NSArray<BRChapter*>* chapters))chapters {
+    __block NSMutableArray* dataArr = [NSMutableArray array];
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            FMResultSet* result = [db executeQuery:kBRDBSelectChaptersWithSiteIdAndBookId(siteId, bookId)];
+              while ([result next]) {
+                  BRChapter *model = [[BRChapter alloc] initWithFMResult:result];
+                  if (model){
+                      [dataArr addObject:model];
+                  }
+              }
+            [result close];
+            [db close];
+            chapters(dataArr);
+        }
+    }];
 }
 
 #pragma mark- 章节内容
@@ -379,31 +432,58 @@
     if (kNumberIsEmpty(model.bookId) || kNumberIsEmpty(model.chapterId)) {
         return NO;
     }
-    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        if ([db open]) {
-            BOOL insert = [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
-            if(!insert){
-                CFDebugLog(@"insert BookChapterTextModel url = %@ error:%@",model.chapterName ,[db lastErrorMessage]);
+    kDISPATCH_ON_GLOBAL_QUEUE_LOW(^(){
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]) {
+                BOOL insert = [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
+                if(!insert){
+                    CFDebugLog(@"insert BookChapterTextModel url = %@ error:%@",model.chapterName ,[db lastErrorMessage]);
+                }
+                [db close];
             }
-            [db close];
-        }
-    }];
-    
+        }];
+    });
     return YES;
 }
 
+- (void)saveChapterContentWithArray:(NSArray<BRChapterDetail*>*)modelsArray{
+    
+    kDISPATCH_ON_GLOBAL_QUEUE_LOW(^(){
+        [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+            if ([db open]){
+                
+                [db beginTransaction];
+                BOOL isRollBack = NO;
+                @try {
+                    for (BRChapterDetail *model in modelsArray) {
+                        [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
+                    }
+                } @catch (NSException *exception) {
+                    isRollBack = YES;
+                    [db rollback];
+                } @finally {
+                    if (!isRollBack) {
+                        [db commit];
+                    }
+                }
+            }
+            [db close];
+        }];
+    });
+}
 
 - (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId {
-    FMResultSet* result = [self.database executeQuery:kBRDBSelectChapterTextWithId(chapterId)];
-    
-    if ([result next]){
-        BRChapterDetail* model = [[BRChapterDetail alloc] initWithFMResult:result];
-        [result close];
-        return model;
-    }
-    
-    return nil;
+    __block BRChapterDetail* model = nil;
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet* result = [db executeQuery:kBRDBSelectChapterTextWithId(chapterId)];
+        
+        if ([result next]){
+            model = [[BRChapterDetail alloc] initWithFMResult:result];
+            [result close];
+        }
 
+    }];
+    return model;
 }
 
 - (BOOL)deleteChapterContentWithChapterId:(NSNumber *)chapterId{
@@ -509,15 +589,14 @@
 }
 
 - (NSArray<NSString*>*)selectSearchHistorys {
-    FMResultSet* result = [self.database executeQuery:kBRDBSelectSearchHistory];
-    
-    NSMutableArray* arr = [NSMutableArray array];
-    
-    while ([result next]) {
-        [arr addObject:[result stringForColumn:@"book_name"]];
-    }
-    
-    [result close];
+    __block NSMutableArray* arr = [NSMutableArray array];
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet* result = [db executeQuery:kBRDBSelectSearchHistory];
+        while ([result next]) {
+            [arr addObject:[result stringForColumn:@"book_name"]];
+        }
+        [result close];
+    }];
     return arr;
 }
 
@@ -555,9 +634,10 @@
         return NO;
     }
     
+    __block BOOL insert = NO;
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
            if ([db open]){
-               BOOL insert = [db executeUpdate:kBRDBInsertRecord(model.bookId,@(model.chapterIndex),model.recordText,[NSDate date], model.chapterName)];
+               insert = [db executeUpdate:kBRDBInsertRecord(model.bookId,@(model.chapterIndex),model.recordText,[NSDate date], model.chapterName)];
                
                insert = [db executeUpdate:kBRDBUpdateBookUserTime([NSDate date], model.bookId)];
                
@@ -572,16 +652,20 @@
 }
 
 - (BRBookRecord*)selectBookRecordWithBookId:(NSString*)bookId {
-    FMResultSet* result = [self.database executeQuery:kBRDBSelectRecordWithBook_id(bookId)];
-    
-    if ([result next]){
-        BRBookRecord* model = [[BRBookRecord alloc] initWithFMResult:result];
-        [result close];
-        if (model){
-            return model;
+    __block BRBookRecord* model = nil;
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        if ([db open]) {
+            FMResultSet* result = [db executeQuery:kBRDBSelectRecordWithBook_id(bookId)];
+            
+            if ([result next]){
+                model = [[BRBookRecord alloc] initWithFMResult:result];
+                [result close];
+            }
+            [db close];
         }
-    }
-    return nil;
+
+    }];
+    return model;
 
 }
 
@@ -612,15 +696,17 @@
 
 /// 获取 全部浏览的书籍
 - (NSArray<BRBookInfoModel*>*)selectHistoryBookInfos {
-    FMResultSet *result = [self.database executeQuery:kBRDBSelectHistoryBookInfo];
-    NSMutableArray *array = [NSMutableArray array];
-    while ([result next]) {
-        BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
-        if (model) {
-            [array addObject:model];
+    __block NSMutableArray *array = [NSMutableArray array];
+    [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
+        FMResultSet *result = [db executeQuery:kBRDBSelectHistoryBookInfo];
+        while ([result next]) {
+            BRBookInfoModel *model = [[BRBookInfoModel alloc] initWithFMResult:result];
+            if (model) {
+                [array addObject:model];
+            }
         }
-    }
-    [result close];
+        [result close];
+    }];
     return array;
 }
 

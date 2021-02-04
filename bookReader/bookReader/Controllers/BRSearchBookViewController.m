@@ -12,7 +12,7 @@
 #import "BRBookListCollectionViewCell.h"
 #import "BRSearchBookResultViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
-#import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 
 @interface BRSearchBookViewController ()<UITextFieldDelegate> {
     UIView *_searchBackView; // 搜索框背景
@@ -22,6 +22,8 @@
     BOOL _isSearchResult;
     NSMutableArray *_searchResultArray;
     NSString *_keyWords;
+    
+    NSURLSessionDataTask *_searchTask;
 }
 
 @end
@@ -46,10 +48,11 @@
     }
     
     kWeakSelf(self)
+    _searchTask =
     [BRBookInfoModel searchBookWithName:keyWord page:page size:20 sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         self->_isSearchResult = YES;
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         [self->_searchResultArray addObjectsFromArray:recodes];
         [self.collectionView reloadData];
         
@@ -67,7 +70,7 @@
     } failureBlock:^(NSError * _Nonnull error) {
         kStrongSelf(self)
         [self endGetData];
-        [self hideProgressMessage];
+        [self hideBookProgressMessage];
         [self showErrorMessage:error];
     }];
 }
@@ -166,6 +169,9 @@
     [super viewWillAppear:animated];
     [self initDate];
 }
+- (void)dealloc {
+    [_searchTask cancel];
+}
 
 #pragma mark- button methods
 
@@ -220,7 +226,7 @@
         [self searchBookWithName:word page:0];
     } else if (indexPath.section == 1) {
         BRBookInfoModel *book = [_searchResultArray objectAtIndex:indexPath.row];
-        BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+        BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
         vc.bookInfo = book;
         [self.navigationController pushViewController:vc animated:YES];
     }
