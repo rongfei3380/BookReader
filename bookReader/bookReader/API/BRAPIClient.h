@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页数量,默认10
 /// @param successBlock 返回的数据
 /// @param failureBlock 返回的错误码
-- (void)getRankListWithType:(NSInteger)type
+- (NSURLSessionDataTask *)getRankListWithType:(NSInteger)type
                        page:(NSInteger)page
                        size:(NSInteger)size
                      success:(CFAPIClientSuccessBlock)successBlock
@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param isSelect 是否为搜索点击,0:否,1:是 默认为0
 /// @param successBlock 书籍详情
 /// @param failureBlock error
-- (void)getbookinfoWithBookId:(NSInteger)bookid
+- (NSURLSessionDataTask *)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
                        sucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param ids  书籍id 逗号隔开
 /// @param successBlock 返回书架 书籍的信息
 /// @param failureBlock  失败信息
-- (void)getBookInfosShelfWithBookids:(NSString *)ids
+- (NSURLSessionDataTask *)getBookInfosShelfWithBookids:(NSString *)ids
                               sucess:(CFAPIClientSuccessBlock)successBlock
                         failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取书籍分类
 /// @param successBlock
 /// @param failureBlock
-- (void)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
+- (NSURLSessionDataTask *)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
 
@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页显示数量,默认为10
 /// @param successBlock
 /// @param failureBlock 
-- (void)getBookListWithCategory:(NSInteger)categoryId
+- (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页数量,默认10
 /// @param successBlock 搜索得到的书籍列表
 /// @param failureBlock error
-- (void)searchBookWithName:(NSString *)name
+- (NSURLSessionDataTask *)searchBookWithName:(NSString *)name
                       page:(NSInteger)page
                       size:(NSInteger)size
                     sucess:(CFAPIClientSuccessBlock)successBlock
@@ -88,7 +88,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param sortType  章节排序,asc:升序,   desc:降序  1 升序 0 降序
 /// @param successBlock 小说章节列表
 /// @param failureBlock  error
-- (void)getChaptersListWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getChaptersListWithBookId:(NSNumber *)bookId
                            siteId:(NSInteger)siteId
                          sortType:(NSInteger)sortType
                            sucess:(CFAPIClientSuccessBlock)successBlock
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param siteId 源id
 /// @param successBlock  章节内容
 /// @param failureBlock error
-- (void)getChapterContentWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(CFAPIClientSuccessBlock)successBlock
@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param bookId  书籍id
 /// @param successBlock 源列表
 /// @param failureBlock error
-- (void)getSiteListWithBookId:(NSNumber *)bookId
+- (NSURLSessionDataTask *)getSiteListWithBookId:(NSNumber *)bookId
                        sucess:(CFAPIClientSuccessBlock)successBlock
                  failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
@@ -122,7 +122,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取排行榜推荐和轮播
 /// @param successBlock  成功内容
 /// @param failureBlock 失败内容
-- (void)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
+- (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
 

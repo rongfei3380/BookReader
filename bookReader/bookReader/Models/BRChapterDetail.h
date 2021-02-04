@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param siteId 源id
 /// @param successBlock  章节内容
 /// @param failureBlock error
-+ (void)getChapterContentWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(void(^)(BRChapterDetail *chapterDetail))successBlock

@@ -26,7 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param book 书本对象
 - (BOOL)saveBookInfoWithModel:(BRBookInfoModel *)model;
 
-/// 获取全部存储的书籍
+/// 异步 获取全部存储的书籍
+//NSArray<BRBookInfoModel*>*
+- (void)selectBookInfos:(void(^)(NSArray<BRBookInfoModel*>* books))books;
+
 - (NSArray<BRBookInfoModel*>*)selectBookInfos;
 
 /// g根据书本id 获取书籍内容
@@ -80,12 +83,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param siteId 源id
 - (NSArray<BRChapter*>*)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId;
 
-
+- (void)selectChaptersWithBookId:(NSNumber *)bookId siteId:(NSNumber *)siteId chapters:(void(^)(NSArray<BRChapter*>* chapters))chapters;
+                                                                                        
 #pragma mark- 章节内容
 
 /// 保存章节内容
 /// @param model 章节内容
 - (BOOL)saveChapterContentWithModel:(BRChapterDetail *)model;
+
+
+/// 批量插入 章节内容
+/// @param modelsArray 章节内容数组
+- (void)saveChapterContentWithArray:(NSArray<BRChapterDetail*>*)modelsArray;
 
 /// 获取章节id
 /// @param chapterId 章节id

@@ -13,6 +13,8 @@
 #import "BRChapter.h"
 #import "BRMessageHUD.h"
 #import "CFDataUtils.h"
+#import "BRDataBaseManager.h"
+#import "BRChaptersTableViewCell.h"
 
 @interface BRChaptersView ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -213,26 +215,24 @@
     return 40;
 }
 
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell"];
+    BRChaptersTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell"];
     if (!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"titleCell"];
+        cell = [[BRChaptersTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"titleCell"];
     }
     
-    NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
+    NSInteger row = self.isDescending ? (self.dataArray.count -indexPath.row) : (indexPath.row + 1);
+    
     
     
     BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", chapter.name];
-    cell.textLabel.font = [UIFont systemFontOfSize:14];
-    
+    cell.chapter = chapter;
     if (row - 1 == self.currentIndex){
-        cell.textLabel.textColor = CFUIColorFromRGBAInHex(0xFFA317, 1);
-    }else{
-        cell.textLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        cell.isCurrentIndex = YES;
+    } else{
+        cell.isCurrentIndex = NO;
     }
-        
-    
     return cell;
 }
 
@@ -240,7 +240,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     NSInteger row = self.isDescending?(self.dataArray.count-indexPath.row):(indexPath.row + 1);
     if (self.didSelectChapter){
-        self.didSelectChapter(row-1);
+        self.didSelectChapter(row -1);
     }
     self.isShowMulu = NO;
 }

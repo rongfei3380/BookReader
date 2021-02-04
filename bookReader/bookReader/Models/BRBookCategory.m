@@ -45,9 +45,9 @@
     return [NSArray arrayWithArray:ret];
 }
 
-+ (void)getBookCategorySucess:(void(^)(NSArray *maleCategoryes, NSArray *famaleCategory))successBlock
++ (NSURLSessionDataTask *)getBookCategorySucess:(void(^)(NSArray *maleCategoryes, NSArray *famaleCategory))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock {
-    [[BRAPIClient sharedInstance] getBookCategorySucess:^(id  _Nonnull dataBody) {
+    return [[BRAPIClient sharedInstance] getBookCategorySucess:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock([BRBookCategory parseDictionaryIntoRecords:dataBody], nil);
         }

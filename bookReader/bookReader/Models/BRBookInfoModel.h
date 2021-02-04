@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param isSelect 是否为搜索点击,0:否,1:是 默认为0
 /// @param successBlock 书籍信息
 /// @param failureBlock error
-+ (void)getbookinfoWithBookId:(NSInteger)bookid
++ (NSURLSessionDataTask *)getbookinfoWithBookId:(NSInteger)bookid
                      isSelect:(BOOL)isSelect
                        sucess:(void(^)(BRBookInfoModel *bookInfo))successBlock
                  failureBlock:(BRObjectFailureBlock)failureBlock;
@@ -79,7 +79,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页显示数量,默认为10
 /// @param successBlock
 /// @param failureBlock
-+ (void)getBookListWithCategory:(NSInteger)categoryId
++ (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page
                            size:(NSInteger)size
@@ -92,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页数量,默认10
 /// @param successBlock 搜索得到的书籍列表
 /// @param failureBlock error
-+ (void)searchBookWithName:(NSString *)name
++ (NSURLSessionDataTask *)searchBookWithName:(NSString *)name
                       page:(NSInteger)page
                       size:(NSInteger)size
                     sucess:(BRObjectSuccessBlock)successBlock
@@ -102,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取排行榜推荐和轮播
 /// @param successBlock  成功内容
 /// @param failureBlock 失败内容
-+ (void)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
++ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock;
 
 
@@ -112,7 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param size 每页数量,默认10
 /// @param successBlock 返回的数据
 /// @param failureBlock 返回的错误码
-+ (void)getRankListWithType:(NSInteger)type
++ (NSURLSessionDataTask *)getRankListWithType:(NSInteger)type
                        page:(NSInteger)page
                        size:(NSInteger)size
                      success:(BRObjectSuccessBlock)successBlock
@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param ids  书籍id 逗号隔开
 /// @param successBlock 返回书架 书籍的信息
 /// @param failureBlock  失败信息
-+ (void)getBookInfosShelfWithBookids:(NSString *)ids
++ (NSURLSessionDataTask *)getBookInfosShelfWithBookids:(NSString *)ids
                               sucess:(BRObjectSuccessBlock)successBlock
                         failureBlock:(BRObjectFailureBlock)failureBlock;
 

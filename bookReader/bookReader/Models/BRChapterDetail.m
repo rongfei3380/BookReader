@@ -10,6 +10,7 @@
 #import "BRAPIClient.h"
 #import "BRDataBaseManager.h"
 #import "DBGHTMLEntityDecoder.h"
+#import "CFCustomMacros.h"
 
 @implementation BRChapterDetail
 
@@ -58,7 +59,7 @@
 
 #pragma mark- API
 
-+ (void)getChapterContentWithBookId:(NSNumber *)bookId
++ (NSURLSessionDataTask *)getChapterContentWithBookId:(NSNumber *)bookId
                           chapterId:(NSInteger)chapterId
                              siteId:(NSInteger)siteId
                              sucess:(void(^)(BRChapterDetail *chapterDetail))successBlock
@@ -68,14 +69,17 @@
         if (successBlock) {
             successBlock(dbDetai);
         }
+        return nil;
     } else {
-        [[BRAPIClient sharedInstance] getChapterContentWithBookId:bookId chapterId:chapterId siteId:siteId sucess:^(id  _Nonnull dataBody) {
+        return [[BRAPIClient sharedInstance] getChapterContentWithBookId:bookId chapterId:chapterId siteId:siteId sucess:^(id  _Nonnull dataBody) {
             if (successBlock) {
                 
                 BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
                 [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
+                kdispatch_main_async_safe(^{
+                    successBlock(chapterDetail);
+                });
                 
-                successBlock(chapterDetail);
             }
         } failureBlock:^(NSError * _Nonnull error) {
             if (failureBlock) {

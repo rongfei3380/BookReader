@@ -9,10 +9,11 @@
 #import "BRRankBookDetailViewController.h"
 #import "BRBookInfoModel.h"
 #import "BRBookListTableViewCell.h"
-#import "BRBookInfoViewController.h"
+#import "BRBookInfoCollectionViewController.h"
 
 @interface BRRankBookDetailViewController () {
     NSInteger _page;
+    NSURLSessionDataTask *_rankListTask;
 }
 
 @end
@@ -33,6 +34,7 @@
     }
     
     kWeakSelf(self)
+    _rankListTask =
     [BRBookInfoModel getRankListWithType:type page:_page size:20 success:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
         [self cacheRecords:recodes key:[NSString stringWithFormat:@"%ld", type]];
@@ -74,9 +76,14 @@
     [self getRankBookWtihIndex:self.index page:_page];
 }
 
+- (void)dealloc {
+    [_rankListTask cancel];
+}
+
 #pragma mark-: subclass implement
 - (void)reloadGridViewDataSourceForHead {
     [super reloadGridViewDataSourceForHead];
+    [_rankListTask cancel];
     _page = 0;
     [_recordsArray removeAllObjects];
     [self getRankBookWtihIndex:self.index page:_page];
@@ -93,7 +100,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    BRBookInfoViewController *vc = [[BRBookInfoViewController alloc] init];
+    BRBookInfoCollectionViewController *vc = [[BRBookInfoCollectionViewController alloc] init];
     BRBookInfoModel *item = [_recordsArray objectAtIndex:indexPath.row];
     vc.bookInfo = item;
     [self.navigationController pushViewController:vc animated:YES];

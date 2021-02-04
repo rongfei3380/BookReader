@@ -9,7 +9,9 @@
 #import "BRSitesSelectViewController.h"
 #import "BRSiteTableViewCell.h"
 
-@interface BRSitesSelectViewController ()
+@interface BRSitesSelectViewController (){
+    NSURLSessionDataTask *_sitesTask;
+}
 
 @property(nonatomic, strong) BRSite *selectedSite;
 
@@ -37,6 +39,7 @@
 
 - (void)getNewSites {
     kWeakSelf(self)
+    _sitesTask =
    [BRSite getSiteListWithBookId:self.bookId sucess:^(NSArray * _Nonnull recodes) {
        kStrongSelf(self)
        self->_sitesArray = [recodes mutableCopy];
@@ -83,6 +86,9 @@
     }
 }
 
+- (void)dealloc {
+    [_sitesTask cancel];
+}
 
 #pragma mark- Public: subclass implement
 

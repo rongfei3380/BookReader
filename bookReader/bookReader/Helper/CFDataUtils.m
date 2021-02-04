@@ -30,13 +30,16 @@
             return @"刚刚";
         }
     } else {
-        if (createdDate.isThisYear) {
-            fmt.dateFormat = @"MM-dd HH:mm";
+        NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
+        NSInteger day = deltaWithNow.hour/24;
+        
+        if (day < 7) {
+            return [NSString stringWithFormat:@"%ld天前", day];
         } else {
-            fmt.dateFormat = @"yyyy-MM-dd HH:mm";
+            return @"7天前";
         }
         
-        return [fmt stringFromDate:createdDate];
+        return @"7天前";
     }
 }
 

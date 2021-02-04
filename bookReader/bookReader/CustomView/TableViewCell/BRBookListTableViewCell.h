@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define kBookListTableViewCellHeight 120
+#define kBookListTableViewCellHeight 122
 
 
 /// 分类页面的书籍cell
