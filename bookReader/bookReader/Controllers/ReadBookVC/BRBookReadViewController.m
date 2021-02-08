@@ -319,6 +319,11 @@
     NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
     
     NSInteger cacheCount = count;
+    
+    if(currentIndex +count > chapters.count -1) {
+        cacheCount = chapters.count - currentIndex;
+    }
+    
     if (count <= 0) {
         cacheCount = chapters.count -currentIndex;
     }

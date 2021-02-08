@@ -189,8 +189,13 @@
     BRBookInfoModel *book = self.bookInfo;
     __weak BRSite *site = [book.sitesArray objectAtIndex:(book.siteIndex.integerValue >= book.sitesArray.count ? book.sitesArray.count -1 : book.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
     NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
-    
     NSInteger cacheCount = count;
+    
+    if(currentIndex +count > chapters.count -1) {
+        cacheCount = chapters.count - currentIndex;
+    }
+    
+    
     if (count <= 0) {
         cacheCount = chapters.count -currentIndex;
     }
@@ -199,28 +204,29 @@
         kWeakSelf(self)
         [self addBookModelSucess:^(NSArray * _Nonnull recodes) {
             [[BRDataBaseManager sharedInstance] selectChaptersWithBookId:book.bookId siteId:site.siteId chapters:^(NSArray<BRChapter *> * _Nonnull chapters) {
-                kWeakSelf(self)
+                kStrongSelf(self)
                 NSInteger count = chapters.count < cacheCount ? chapters.count : cacheCount;
-                NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
-                NSMutableArray *cacheChaptersArray = [NSMutableArray array];
-                for (BRChapter *chapter in cacheArray) {
-                    [cacheChaptersArray addObject:chapter.chapterId];
+                if(count > 0) {
+                    NSArray *cacheArray = [chapters subarrayWithRange:NSMakeRange(currentIndex, count)];
+                    NSMutableArray *cacheChaptersArray = [NSMutableArray array];
+                    for (BRChapter *chapter in cacheArray) {
+                        [cacheChaptersArray addObject:chapter.chapterId];
+                    }
+                 
+                    [self showProgressMessage:@"正在添加章节缓存"];
+                    [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
+                        kdispatch_main_sync_safe(^{
+                            [self hideBookProgressMessage];
+                            [self hideBookLoading];
+                            [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
+                        });
+                     } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
+                             if (error) {
+                                 [self hideBookProgressMessage];
+                                 [self showErrorMessage:error];
+                             }
+                    }];
                 }
-             
-                [self showProgressMessage:@"正在添加章节缓存"];
-                [[BRDataBaseCacheManager sharedInstance] cacheChapterContentWithBook:book chapterIds:cacheChaptersArray siteId:site.siteId progress:^(NSInteger receivedCount, NSInteger expectedCount, BRCacheTask * _Nullable task) {
-                    kdispatch_main_sync_safe(^{
-                        [self hideBookProgressMessage];
-                        [self hideBookLoading];
-                        [BRMessageHUD showSuccessMessage:@"已添加章节缓存" to:self.view];
-                    });
-                 } completed:^(BRCacheTask * _Nullable task, NSError * _Nullable error, BOOL finished) {
-                         if (error) {
-                             [self hideBookProgressMessage];
-                             [self showErrorMessage:error];
-                         }
-                     }];
-                
              }];
         } failureBlock:^(NSError * _Nonnull error) {
             kStrongSelf(self)
