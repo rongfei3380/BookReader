@@ -16,6 +16,7 @@
 #import "BRSettingViewController.h"
 #import <StoreKit/StoreKit.h>
 #import "BRBookCacheViewController.h"
+#import "CFAltUtils.h"
 
 static NSString * const kAppKey = @"31185069";
 static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
@@ -109,7 +110,7 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
 }
 
 - (BOOL)joinGroup:(NSString *)groupUin key:(NSString *)key{
-    NSString *urlStr = [NSString stringWithFormat:@"mqqapi://card/show_pslcard?src_type=internal&version=1&uin=%@&key=%@&card_type=group&source=external&jump_from=webapi", @"684391880",@"2269151c0892867b485665960bac0391ad4d69d6cc4031b818c0be3e7eff44b0"];
+    NSString *urlStr = [NSString stringWithFormat:@"mqqapi://card/show_pslcard?src_type=internal&version=1&uin=%@&key=%@&card_type=group&source=external&jump_from=webapi", [CFAltUtils QQGroupUin],[CFAltUtils QQGroupUin]];
         NSURL *url = [NSURL URLWithString:urlStr];
         if([[UIApplication sharedApplication] canOpenURL:url]){
             [[UIApplication sharedApplication] openURL:url];
