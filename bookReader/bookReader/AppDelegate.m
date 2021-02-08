@@ -11,6 +11,7 @@
 #import <UMCommon/UMConfigure.h>
 #import <Bugly/Bugly.h>
 #import "BRDataBaseCacheManager.h"
+#import "CFAltUtils.h"
 
 @interface AppDelegate () {
     
@@ -26,7 +27,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [UMConfigure initWithAppkey:@"5f1d8cabb4fa6023ce19c424" channel:@"App Store"];
+    [UMConfigure initWithAppkey:[CFAltUtils UMConfigureKey] channel:@"App Store"];
         
     [Bugly startWithAppId:@"61d703cac5"];
     
