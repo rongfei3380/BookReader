@@ -288,7 +288,6 @@
 		5F83A1D025D1140E00E78F5C /* CFAltUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CFAltUtils.h; sourceTree = "<group>"; };
 		5F83A1D125D1140E00E78F5C /* CFAltUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CFAltUtils.m; sourceTree = "<group>"; };
 		5F8A060E25CB945800C16076 /* bookReaderBQG.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bookReaderBQG.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F8A060F25CB945900C16076 /* bookReader copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "bookReader copy-Info.plist"; path = "/Users/chengfei/Development/iOS/BookReader/bookReader/bookReader copy-Info.plist"; sourceTree = "<absolute>"; };
 		5F93995D25C41D0900E686B1 /* BRChaptersTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRChaptersTableViewCell.h; sourceTree = "<group>"; };
 		5F93995E25C41D0900E686B1 /* BRChaptersTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRChaptersTableViewCell.m; sourceTree = "<group>"; };
 		BAA7E16F446E0AE0E16CF0F6 /* Pods-bookReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookReader.release.xcconfig"; path = "Target Support Files/Pods-bookReader/Pods-bookReader.release.xcconfig"; sourceTree = "<group>"; };
@@ -987,7 +986,6 @@
 				C5F3C16124879CC700E4AF55 /* Products */,
 				61FB9BB862C77A8BB0F7638E /* Pods */,
 				221D6696AA4BBA68612E44E3 /* Frameworks */,
-				5F8A060F25CB945900C16076 /* bookReader copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
