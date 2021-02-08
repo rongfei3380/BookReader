@@ -10,32 +10,40 @@
 
 @implementation CFAltUtils
 
-+ (NSString *)UMConfigureKey {
++ (NSDictionary *)configDictionary {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    return dict;
+}
+
++ (NSString *)UMConfigureKey {
+    NSDictionary *dict = [CFAltUtils configDictionary];
     NSString *UMConfigureKey = [dict objectForKey:@"UMConfigureKey"];
     return UMConfigureKey;
 }
 
 + (NSString *)QQGroupUin {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDictionary *dict = [CFAltUtils configDictionary];
     NSString *QQGroup = [dict objectForKey:@"QQGroupUin"];
     return QQGroup;
 }
 
 + (NSString *)QQGroupKey {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDictionary *dict = [CFAltUtils configDictionary];
     NSString *QQGroup = [dict objectForKey:@"QQGroupKey"];
     return QQGroup;
 }
 
 + (NSString *)AppStoreId {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSDictionary *dict = [CFAltUtils configDictionary];
     NSString *AppStoreId = [dict objectForKey:@"AppStoreId"];
     return AppStoreId;
+}
+
++ (NSString *)BuglyAppId {
+    NSDictionary *dict = [CFAltUtils configDictionary];
+    NSString *BuglyAppId = [dict objectForKey:@"BuglyAppId"];
+    return BuglyAppId;
 }
 
 @end

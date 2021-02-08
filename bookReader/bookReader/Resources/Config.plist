@@ -12,5 +12,7 @@
 	<string>2269151c0892867b485665960bac0391ad4d69d6cc4031b818c0be3e7eff44b0</string>
 	<key>AppStoreId</key>
 	<string>1525341952</string>
+	<key>BuglyAppId</key>
+	<string>61d703cac5</string>
 </dict>
 </plist>

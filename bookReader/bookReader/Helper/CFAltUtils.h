@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)AppStoreId;
 
++ (NSString *)BuglyAppId;
+
 @end
 
 NS_ASSUME_NONNULL_END

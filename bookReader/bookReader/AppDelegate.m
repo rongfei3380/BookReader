@@ -29,7 +29,7 @@
     // Override point for customization after application launch.
     [UMConfigure initWithAppkey:[CFAltUtils UMConfigureKey] channel:@"App Store"];
         
-    [Bugly startWithAppId:@"61d703cac5"];
+    [Bugly startWithAppId:[CFAltUtils BuglyAppId]];
     
     self.cacheManager = [BRDataBaseCacheManager sharedInstance];
 
