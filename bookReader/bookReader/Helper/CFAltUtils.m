@@ -31,4 +31,11 @@
     return QQGroup;
 }
 
++ (NSString *)AppStoreId {
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"Config" ofType:@"plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    NSString *AppStoreId = [dict objectForKey:@"AppStoreId"];
+    return AppStoreId;
+}
+
 @end
