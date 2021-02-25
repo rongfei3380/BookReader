@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		407CA2BA7C0F983708305874 /* Pods_bookReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3C52A0DBADC223E7494EA0 /* Pods_bookReader.framework */; };
+		5F2108C025E67E8600DB75D9 /* DZMCoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2108BF25E67E8600DB75D9 /* DZMCoverController.m */; };
 		5F83A0B625D038F000E78F5C /* BQG.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A0B025D0383B00E78F5C /* BQG.xcassets */; };
 		5F83A0D025D0495C00E78F5C /* Launch Screen BQ.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A0CF25D0495C00E78F5C /* Launch Screen BQ.storyboard */; };
 		5F83A12825D04DF200E78F5C /* Img_launcher_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A12425D04DF200E78F5C /* Img_launcher_logo@2x.png */; };
@@ -272,6 +273,8 @@
 
 /* Begin PBXFileReference section */
 		279BA9DC590A91C1CEA07738 /* Pods-bookReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookReader.debug.xcconfig"; path = "Target Support Files/Pods-bookReader/Pods-bookReader.debug.xcconfig"; sourceTree = "<group>"; };
+		5F2108BE25E67E8600DB75D9 /* DZMCoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZMCoverController.h; sourceTree = "<group>"; };
+		5F2108BF25E67E8600DB75D9 /* DZMCoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZMCoverController.m; sourceTree = "<group>"; };
 		5F83A0B025D0383B00E78F5C /* BQG.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BQG.xcassets; sourceTree = "<group>"; };
 		5F83A0CF25D0495C00E78F5C /* Launch Screen BQ.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen BQ.storyboard"; sourceTree = "<group>"; };
 		5F83A12425D04DF200E78F5C /* Img_launcher_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Img_launcher_logo@2x.png"; sourceTree = "<group>"; };
@@ -558,6 +561,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5F2108BD25E67E8600DB75D9 /* DZMCoverController */ = {
+			isa = PBXGroup;
+			children = (
+				5F2108BE25E67E8600DB75D9 /* DZMCoverController.h */,
+				5F2108BF25E67E8600DB75D9 /* DZMCoverController.m */,
+			);
+			path = DZMCoverController;
+			sourceTree = "<group>";
+		};
 		5F83A09725D0329F00E78F5C /* BQG */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +632,7 @@
 		C51A830524B72A6C0078CB37 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5F2108BD25E67E8600DB75D9 /* DZMCoverController */,
 				C51A830624B72A6C0078CB37 /* ZJScrollPageView */,
 			);
 			path = Extensions;
@@ -1479,6 +1492,7 @@
 				C5A9FB44250AA2D10054259A /* CFShadowCornerImageView.m in Sources */,
 				C549888324A33A0B00887AEE /* BRBookCategory.m in Sources */,
 				C51A831E24B72A6D0078CB37 /* ZJContentView.m in Sources */,
+				5F2108C025E67E8600DB75D9 /* DZMCoverController.m in Sources */,
 				C5601D7024CACA72007C7377 /* BRBooksManagerViewController.m in Sources */,
 				C59D063824C2F34900A8237F /* BRBookPageViewController.m in Sources */,
 				C51A832E24B763EB0078CB37 /* BRRankBooksViewController.m in Sources */,

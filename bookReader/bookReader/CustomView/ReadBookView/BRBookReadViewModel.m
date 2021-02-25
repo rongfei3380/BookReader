@@ -14,7 +14,6 @@
 #import "CFCustomMacros.h"
 #import "CFReadViewMacros.h"
 #import "NSError+BRError.h"
-
 #import "BRBookInfoModel.h"
 #import "BRChapterDetail.h"
 #import "BRChapter.h"
@@ -29,6 +28,11 @@
 /// 当前章节
 @property(nonatomic, strong) BRChapter *currentChapter;
 @property(nonatomic, strong) BRChapterDetail *currentChapterDetail;
+
+// 上一章节的内容  用于处理章节切换时的问题
+@property(nonatomic, strong) BRChapterDetail *preChapterDetail;
+// 上一章节的内容  用于处理章节切换时的问题
+@property(nonatomic, strong) BRChapterDetail *nextChapterDetail;
 
 /// 当前页数
 @property(nonatomic, assign) NSInteger currentVCIndex;
@@ -227,8 +231,8 @@
 /// @param recordText 阅读历史内容
 - (void)pagingContentVCsWithisNext:(BOOL)isNext recordText:(NSString*)recordText {
     NSArray* textArr = [NSString pagingWith:self.currentChapterDetail.content Size:CGSizeMake(SCREEN_WIDTH -15*2, SCREEN_HEIGHT  -kStatusBarHeight() -kChapterNameLabelHeight -kReadStatusHeight -kReadContentOffSetY)];
-    NSMutableArray* vcs = [NSMutableArray array];
     
+    NSMutableArray* vcs = [NSMutableArray array];
     NSInteger index = 0;
     for (NSInteger len = 0; len < textArr.count; len++) {
         NSString* text = textArr[len];
@@ -239,7 +243,7 @@
             }
         }
         /* 初始化显示界面*/
-        BRBookReadContenViewController* vc = [[BRBookReadContenViewController alloc] initWithText:text chapterName:self.currentChapter.name totalNum:textArr.count index:len+1];
+        BRBookReadContenViewController* vc = [[BRBookReadContenViewController alloc] initWithText:text chapterName:self.currentChapter.name totalNum:textArr.count index:len +1];
         if(vc){
             [vcs addObject:vc];
         }
@@ -381,11 +385,11 @@
     CFDebugLog(@"加载下一章节");
     NSInteger index = self.currentIndex;
     
-    if (index + 1>=0 && index + 1<self.chaptersArray.count){
-        BRChapter* model = self.chaptersArray[index + 1];
+    if (index + 1 >= 0 && index + 1<self.chaptersArray.count){
+        BRChapter *model = self.chaptersArray[index + 1];
         [self loadChapterTextWith:model isNext:YES recordText:nil];
     }else{
-        CFDebugLog(@"chaptersArray.count=%ld,index=%ld",self.chaptersArray.count,index);
+        CFDebugLog(@"chaptersArray.count = %ld,index = %ld",self.chaptersArray.count,index);
         if (self.hubFail){
             self.hubFail(@"已经是最后一章了");
         }
@@ -496,16 +500,16 @@
         return self.currentVC;
     }
     if (!doubleSided && index==0){
-        if (scrollTimes > 0)
+//        if (scrollTimes > 0)
             [self loadBeforeChapterText];
-        else{
-            BRBookReadContenViewController* lv = self.vcArray.firstObject;
-            BRBookReadContenViewController* newV = [[BRBookReadContenViewController alloc] initWithText:lv.text chapterName:lv.chapterName totalNum:lv.totalNum index:lv.index];
-            return newV;
-            
-        }
+//        else{
+//            BRBookReadContenViewController* lv = self.vcArray.firstObject;
+//            BRBookReadContenViewController* newV = [[BRBookReadContenViewController alloc] initWithText:lv.text chapterName:lv.chapterName totalNum:lv.totalNum index:lv.index];
+//            return newV;
+//
+//        }
         
-        scrollTimes = 1;
+//        scrollTimes = 1;
         return nil;
     }
     /* 网络加载*/
@@ -521,9 +525,9 @@
     if (doubleSided){
         index = [self.vcArray indexOfObject:self.currentVC];
         scrollTimes = 0;
-    }
-    else
+    } else {
         index = [self.vcArray indexOfObject:viewController];
+    }
     
     /* 返回背面*/
     if (doubleSided && [viewController isKindOfClass:[BRBookReadContenViewController class]]){
@@ -531,7 +535,7 @@
         return self.currentVC.backVC;
     }
     
-    if (index + 1>=0 && index + 1<self.vcArray.count){
+    if (index + 1 >= 0 && index + 1 < self.vcArray.count){
         /* 记录阅读历史*/
         self.currentVCIndex = index + 1;
         [self saveBookRecordWithPageIndex:index + 1];
@@ -540,19 +544,21 @@
         return self.currentVC;
     }
     
-    if (!doubleSided && index==self.vcArray.count - 1){
-        if (scrollTimes > 0)
-            [self loadBeforeChapterText];
-        else{
-            BRBookReadContenViewController* lv = self.vcArray.lastObject;
-            BRBookReadContenViewController* newV = [[BRBookReadContenViewController alloc] initWithText:lv.text chapterName:lv.chapterName totalNum:lv.totalNum index:lv.index];
-            return newV;
-            
-        }
-        
+    if (!doubleSided && index == self.vcArray.count - 1){
+//        if (scrollTimes > 0)
+//            [self loadBeforeChapterText];
+//        else{
+//            BRBookReadContenViewController* lv = self.vcArray.lastObject;
+//            BRBookReadContenViewController* newV = [[BRBookReadContenViewController alloc] initWithText:lv.text chapterName:lv.chapterName totalNum:lv.totalNum index:lv.index];
+//            return newV;
+            [self loadNextChapterText];
+//        }
         scrollTimes = 1;
         return nil;
+    } else {
+        
     }
+    
     /* 网络加载*/
     [self loadNextChapterText];
     return nil;
