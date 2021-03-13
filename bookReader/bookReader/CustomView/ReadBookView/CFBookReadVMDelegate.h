@@ -89,6 +89,13 @@ typedef void (^HubFail)(NSString* text);
  */
 - (void)showHubWithSuccess:(HubSuccess)success Fail:(HubSuccess)fail;
 
+
+/// 获取 全部的显示page
+- (NSArray<UIViewController *> *)viewModelGetAllVCs;
+
+/// 获取分页后的 章节内容
+- (NSMutableDictionary *)viewModelGetAllDataDict;
+
 /// 获取书本信息model
 - (BRBookInfoModel *)BRBookInfoModel;
 

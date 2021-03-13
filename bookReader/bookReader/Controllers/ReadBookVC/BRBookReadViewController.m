@@ -20,11 +20,15 @@
 #import "BRDataBaseCacheManager.h"
 #import "BRChoseCacheView.h"
 #import "DZMCoverController.h"
+#import "BRBookUpDownPageViewController.h"
 
-@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate, BRChoseCacheViewDelegate, DZMCoverControllerDelegate>
+@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate, BRChoseCacheViewDelegate, DZMCoverControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
+    
+}
 
 @property(nonatomic, strong) BRBookPageViewController *bookPageVC;
 @property(nonatomic, strong) DZMCoverController *coverController;
+@property(nonatomic, strong) BRBookUpDownPageViewController *bookUpDownPageViewController;
 
 @property(nonatomic, strong) CFButtonUpDwon *nightButton;
 @property(nonatomic, strong) CFButtonUpDwon *muluButton;
@@ -138,11 +142,10 @@
     
     if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
         [self addChildViewController:self.bookPageVC];
-        [self.view addSubview:_bookPageVC.view];
-
+        [self.view insertSubview:_bookPageVC.view atIndex:0];
     } else {
         [self addChildViewController:self.coverController];
-        [self.view addSubview:_coverController.view];
+        [self.view insertSubview:_coverController.view atIndex:0];
     }
         
     self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
@@ -274,7 +277,9 @@
     kWeakSelf(self);
     [self.viewModel loadDataWithSuccess:^(UIViewController *currentVC) {
         kStrongSelf(self);
-        [self loadDataSuccess:currentVC];
+        kdispatch_main_sync_safe(^{
+            [self loadDataSuccess:currentVC];
+        });
     } Fail:^(NSError *err) {
         kStrongSelf(self);
         if (![err.domain isEqualToString:@"NSURLErrorDomain"]) {
@@ -498,48 +503,100 @@
 - (void)loadDataSuccess:(UIViewController*)currentVC {
     [self hideBookLoading];
     
-    if(_bookPageVC) {
-        [_bookPageVC.view removeFromSuperview];
-        _bookPageVC = nil;
-    }
-    
-    if (_coverController) {
-        [_coverController.view removeFromSuperview];
-        _coverController = nil;
-    }
-    
     if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+        
+        if (_bookUpDownPageViewController) {
+            [_bookUpDownPageViewController.view removeFromSuperview];
+            _bookUpDownPageViewController = nil;
+        }
+        
         NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
-        
-        _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
-        
-        kWeakSelf(self);
-        _bookPageVC.block = ^{
-            kStrongSelf(self);
-            [self changeNaviBarHidenWithAnimated];
-        };
-        _bookPageVC.delegate = self;
-        _bookPageVC.dataSource = self;
-        /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
-        _bookPageVC.doubleSided = (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO);
-        
-        _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
-        
+        if (!_bookPageVC) {
+            _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+            kWeakSelf(self);
+            _bookPageVC.block = ^{
+                kStrongSelf(self);
+                [self changeNaviBarHidenWithAnimated];
+            };
+            _bookPageVC.delegate = self;
+            _bookPageVC.dataSource = self;
+            /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
+            _bookPageVC.doubleSided = (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO);
+            [self.view insertSubview:_bookPageVC.view atIndex:0];
+        }
         [self.bookPageVC setViewControllers:viewControllers
                                           direction:UIPageViewControllerNavigationDirectionForward
-                                           animated:NO
+                                           animated:YES
                                          completion:nil];
+                
+        _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+       
         
-        [self.view insertSubview:_bookPageVC.view atIndex:0];
+        
     } else if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStyleScroll){
-        _coverController = [[DZMCoverController alloc] init];
-        _coverController.delegate = self;
-        _coverController.openAnimate = false;
-//        _coverController.gestureRecognizerEnabled = false;
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+                
+        if (_bookUpDownPageViewController) {
+            [_bookUpDownPageViewController.view removeFromSuperview];
+            _bookUpDownPageViewController = nil;
+        }
+        
+        if (!_coverController) {
+            _coverController = [[DZMCoverController alloc] init];
+            _coverController.delegate = self;
+            _coverController.openAnimate = false;
+            [self.view insertSubview:_coverController.view atIndex:0];
+        }
         [_coverController setController:currentVC animated:YES isAbove:YES];
         
-        [self.view insertSubview:_coverController.view atIndex:0];
-//        [self addChildViewController:_coverController];
+        _coverController.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+        
+        
+    } else if (BRUserDefault.PageTransitionStyle == 2){
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+        
+
+        if (!_bookUpDownPageViewController) {
+            _bookUpDownPageViewController = [[BRBookUpDownPageViewController alloc] init];
+            _bookUpDownPageViewController.viewModel = self.viewModel;
+            kWeakSelf(self);
+            _bookUpDownPageViewController.block = ^{
+                kStrongSelf(self);
+                [self changeNaviBarHidenWithAnimated];
+            };
+            _bookUpDownPageViewController.tableView.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+
+            
+            [self.view insertSubview:_bookUpDownPageViewController.view atIndex:0];
+        }
     }
     
     
@@ -642,7 +699,7 @@
 #pragma mark - lazyLoad
 - (UIPageViewController *)bookPageVC {
     if (!_bookPageVC) {
-        _bookPageVC = [[BRBookPageViewController  alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+        _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
         
         kWeakSelf(self);
         _bookPageVC.block = ^{
@@ -652,7 +709,7 @@
         _bookPageVC.delegate = self;
         _bookPageVC.dataSource = self;
         _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
-        [self.view addSubview:_bookPageVC.view];
+        [self.view insertSubview:_bookPageVC.view atIndex:0];
     }
     return _bookPageVC;
 }
@@ -662,9 +719,18 @@
         _coverController = [[DZMCoverController alloc] init];
         _coverController.delegate = self;
         _coverController.openAnimate = false;
-        [self.view addSubview:_coverController.view];
+        [self.view insertSubview:_coverController.view atIndex:0];
     }
     return _coverController;
+}
+
+- (BRBookUpDownPageViewController *)bookUpDownPageViewController {
+    if (!_bookUpDownPageViewController) {
+        _bookUpDownPageViewController = [[BRBookUpDownPageViewController alloc] init];
+        _bookUpDownPageViewController.viewModel = self.viewModel;
+    }
+    
+    return _bookUpDownPageViewController;
 }
 //-(UIStatusBarStyle)preferredStatusBarStyle{
 //
