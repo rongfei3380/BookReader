@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addUsingView:(nullable UIViewController *)view;
 
+- (void)removeUsingView:(nullable UIViewController *)view;
+
 - (void)reloadData;
 
 - (void)reset;

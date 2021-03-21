@@ -522,7 +522,7 @@
         
         NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
         if (!_bookPageVC) {
-            _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+            _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
             kWeakSelf(self);
             _bookPageVC.block = ^{
                 kStrongSelf(self);

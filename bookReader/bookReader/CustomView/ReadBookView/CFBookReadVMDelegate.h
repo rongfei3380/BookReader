@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^block)(void);
 typedef void (^LoadSuccess)(UIViewController* currentVC);
+//typedef void (^aLoadSuccess)(NSArray<UIViewController* > * pagesVCs, NSInteger currentVCIndex);
 typedef void (^Fail)(NSError* err);
 
 typedef void (^HubSuccess)(NSString* text);

@@ -51,6 +51,17 @@
     [_usingQueue addObject:viewController];
 }
 
+- (void)removeUsingView:(nullable UIViewController *)viewController {
+    if (viewController == nil) {
+        return;
+    }
+//    添加视图到使用中的队列
+    if ([_usingQueue containsObject:viewController]) {
+        [_usingQueue removeObject:viewController];
+        [_waitUsedQueue addObject:viewController];
+    }
+}
+
 - (void)reset {
     UIViewController *viewController = nil;
     while ((viewController = [_usingQueue anyObject])) {
@@ -59,6 +70,11 @@
 //        加入等待使用的队列
         [_waitUsedQueue addObject:viewController];
     }
+}
+
+- (void)reloadData {
+    [_usingQueue removeAllObjects];
+    [_waitUsedQueue removeAllObjects];
 }
 
 @end
