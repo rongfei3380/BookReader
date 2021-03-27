@@ -266,11 +266,11 @@
             }
         }
             
-        BRBookReadContenViewController* vc = (BRBookReadContenViewController* )[self.readViewReusePool dequeueReusebleView];
-        if (!vc) {
-            vc = [[BRBookReadContenViewController alloc] initWithText:text chapterName:self.currentChapter.name totalNum:textArr.count index:len +1];
-            [self.readViewReusePool addUsingView:vc];
-        }
+//        BRBookReadContenViewController* vc = (BRBookReadContenViewController* )[self.readViewReusePool dequeueReusebleView];
+//        if (!vc) {
+//            vc = [[BRBookReadContenViewController alloc] initWithText:text chapterName:self.currentChapter.name totalNum:textArr.count index:len +1];
+//            [self.readViewReusePool addUsingView:vc];
+//        }
 //        [self.vcArray addObject:vc];
     }
     
@@ -617,8 +617,6 @@
         
         [vc reloadContentWithText:textArr[self.currentVCIndex] chapterName:self.currentChapter.name totalNum:textArr.count index:self.currentVCIndex+1];
         
-//        [self.readViewReusePool removeUsingView:self.currentVC];
-        
         self.currentVC = vc;
         
         return vc;
@@ -631,6 +629,10 @@
         return nil;
     }
     
+}
+
+- (void)removeUsingView:(nullable UIViewController *)view {
+    [self.readViewReusePool removeUsingView:view];
 }
 
 - (NSArray<UIViewController *> *)viewModelGetAllVCs {

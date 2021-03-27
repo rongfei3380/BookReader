@@ -38,6 +38,9 @@ typedef void (^HubFail)(NSString* text);
 /// @param doubleSided 是否
 - (UIViewController*)viewControllerAfterViewController:(UIViewController *)viewController DoubleSided:(BOOL)doubleSided;
 
+/// 重用池 修改标志
+/// @param view 即将重用的 vc
+- (void)removeUsingView:(nullable UIViewController *)view;
 
 /// 按序号加载章节
 /// @param index 序号

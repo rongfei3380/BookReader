@@ -639,6 +639,9 @@
     //再次开启定时器
      [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+    if (finished) {
+        [self.viewModel removeUsingView:previousViewControllers.firstObject];
+    }
 }
 
 #pragma mark- DZMCoverControllerDelegate
