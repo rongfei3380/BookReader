@@ -38,6 +38,7 @@
 @property(nonatomic, strong) BRBookReadContenViewController *currentVC;
 /// 章节数组
 @property(nonatomic, strong) NSArray <BRChapter*>*chaptersArray;
+
 /// 章节对用的页面数组
 //@property(nonatomic, strong) NSMutableArray *vcArray;
 
@@ -250,13 +251,8 @@
     NSString *content = [NSString stringWithFormat:@"%@\n%@", self.currentChapter.name, self.currentChapterDetail.content];
     
     NSArray* textArr = [NSString pagingWith:content Size:CGSizeMake(SCREEN_WIDTH -15*2, SCREEN_HEIGHT  -kStatusBarHeight() -kChapterNameLabelHeight -kReadStatusHeight -kReadContentOffSetY)];
-    
-//    NSMutableArray* vcs = [NSMutableArray array];
+
     NSInteger index = 0;
-    
-    [self.readViewReusePool reloadData];
-//    [self.vcArray removeAllObjects];
-    
     for (NSInteger len = 0; len < textArr.count; len++) {
         NSString* text = textArr[len];
         /* 查找记录值所在的页*/
@@ -265,13 +261,6 @@
                 index = len;
             }
         }
-            
-//        BRBookReadContenViewController* vc = (BRBookReadContenViewController* )[self.readViewReusePool dequeueReusebleView];
-//        if (!vc) {
-//            vc = [[BRBookReadContenViewController alloc] initWithText:text chapterName:self.currentChapter.name totalNum:textArr.count index:len +1];
-//            [self.readViewReusePool addUsingView:vc];
-//        }
-//        [self.vcArray addObject:vc];
     }
     
     /* 通知pageView刷新界面*/
@@ -575,19 +564,13 @@
         
         [vc reloadContentWithText:textArr[self.currentVCIndex] chapterName:self.currentChapter.name totalNum:textArr.count index:self.currentVCIndex+1];
         
-//        [self.readViewReusePool removeUsingView:self.currentVC];
-        
         self.currentVC = vc;
 
         return vc;
-    }
-    if (!doubleSided && index==0){
+    } else {
         [self loadBeforeChapterText];
         return nil;
     }
-    /* 网络加载*/
-    [self loadBeforeChapterText];
-    return nil;
 }
 
 /* 获取后一界面*/

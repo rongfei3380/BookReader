@@ -362,6 +362,8 @@
         
         [self.currentController removeFromParentViewController];
         
+        _previousController = _currentController;
+        
         _currentController = self.pendingController;
         
         self.pendingController = nil;

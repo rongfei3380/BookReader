@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// 分页过的章节id 数组
 @property(nonatomic, strong) NSMutableArray *pagedArray;
 
-
 - (void)loadBeforeChapterTextSucess:(nullable void (^)(void))sucess;
 - (void)loadNextChapterTextSucess:(nullable void (^)(void))sucess;
 - (void)saveBookRecordWithPageIndex:(NSInteger)pageIndex;

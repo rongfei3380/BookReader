@@ -626,7 +626,9 @@
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
-    return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
+    UIViewController *currentVC = [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
+    CFDebugLog(@"page current ViewControllers : %@", currentVC);
+    return currentVC;
 }
 
 #pragma mark- UIPageViewControllerDelegate
@@ -640,6 +642,7 @@
      [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
     if (finished) {
+        CFDebugLog(@"page previousViewControllers : %@", previousViewControllers);
         [self.viewModel removeUsingView:previousViewControllers.firstObject];
     }
 }
@@ -654,7 +657,12 @@
  *  @param isFinish          切换是否成功
  */
 - (void)coverController:(DZMCoverController * _Nonnull)coverController currentController:(UIViewController * _Nullable)currentController finish:(BOOL)isFinish {
-    
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+    if (isFinish) {
+       CFDebugLog(@"page previousViewControllers : %@", currentController);
+       [self.viewModel removeUsingView:coverController.previousController];
+    }
 }
 
 /**
@@ -664,7 +672,7 @@
  *  @param pendingController 将要显示的控制器
  */
 - (void)coverController:(DZMCoverController * _Nonnull)coverController willTransitionToPendingController:(UIViewController * _Nullable)pendingController {
-    
+    self.timer.fireDate = [NSDate distantFuture];
 }
 
 /**

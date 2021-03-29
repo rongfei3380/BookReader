@@ -27,6 +27,7 @@
  *
  *  @param coverController   coverController
  *  @param currentController 当前正在显示的控制器
+ *  @param previousController  已切换的控制器
  *  @param isFinish          切换是否成功
  */
 - (void)coverController:(DZMCoverController * _Nonnull)coverController currentController:(UIViewController * _Nullable)currentController finish:(BOOL)isFinish;
@@ -92,6 +93,9 @@
  *  当前控制器
  */
 @property (nonatomic,strong,readonly,nullable) UIViewController *currentController;
+
+/// 已经切换出去的控制器
+@property (nonatomic,strong,readonly,nullable) UIViewController *previousController;
 
 /**
  *  手动设置显示控制器 无动画
