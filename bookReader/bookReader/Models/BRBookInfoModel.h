@@ -77,8 +77,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param categoryId 分类id
 /// @param page 页码,默认为0
 /// @param size 每页显示数量,默认为10
-/// @param successBlock
-/// @param failureBlock
+/// @param successBlock 书籍数组
+/// @param failureBlock 失败原因
 + (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page

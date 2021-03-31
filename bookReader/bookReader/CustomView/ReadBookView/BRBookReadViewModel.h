@@ -20,6 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSArray<BRSite *> *sitesArray;
 /// 当前是那个章节
 @property(nonatomic, assign) NSInteger currentIndex;
+/// 分页过的章节id 数组
+@property(nonatomic, strong) NSMutableArray *pagedArray;
+
+- (void)loadBeforeChapterTextSucess:(nullable void (^)(void))sucess;
+- (void)loadNextChapterTextSucess:(nullable void (^)(void))sucess;
+- (void)saveBookRecordWithPageIndex:(NSInteger)pageIndex;
 
 @end
 

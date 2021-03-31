@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5F8A058F25CB945800C16076"
-               BuildableName = "biquBookReader.app"
-               BlueprintName = "biquBookReader"
+               BuildableName = "bookReaderBQG.app"
+               BlueprintName = "bookReaderBQG"
                ReferencedContainer = "container:bookReader.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F8A058F25CB945800C16076"
-            BuildableName = "biquBookReader.app"
-            BlueprintName = "biquBookReader"
+            BuildableName = "bookReaderBQG.app"
+            BlueprintName = "bookReaderBQG"
             ReferencedContainer = "container:bookReader.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "5F8A058F25CB945800C16076"
-            BuildableName = "biquBookReader.app"
-            BlueprintName = "biquBookReader"
+            BuildableName = "bookReaderBQG.app"
+            BlueprintName = "bookReaderBQG"
             ReferencedContainer = "container:bookReader.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
