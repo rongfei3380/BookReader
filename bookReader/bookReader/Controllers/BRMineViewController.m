@@ -16,6 +16,7 @@
 #import "BRSettingViewController.h"
 #import <StoreKit/StoreKit.h>
 #import "BRBookCacheViewController.h"
+#import "CFAltUtils.h"
 
 static NSString * const kAppKey = @"31185069";
 static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
@@ -109,7 +110,7 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
 }
 
 - (BOOL)joinGroup:(NSString *)groupUin key:(NSString *)key{
-    NSString *urlStr = [NSString stringWithFormat:@"mqqapi://card/show_pslcard?src_type=internal&version=1&uin=%@&key=%@&card_type=group&source=external&jump_from=webapi", @"684391880",@"2269151c0892867b485665960bac0391ad4d69d6cc4031b818c0be3e7eff44b0"];
+    NSString *urlStr = [NSString stringWithFormat:@"mqqapi://card/show_pslcard?src_type=internal&version=1&uin=%@&key=%@&card_type=group&source=external&jump_from=webapi", [CFAltUtils QQGroupUin],[CFAltUtils QQGroupUin]];
         NSURL *url = [NSURL URLWithString:urlStr];
         if([[UIApplication sharedApplication] canOpenURL:url]){
             [[UIApplication sharedApplication] openURL:url];
@@ -170,13 +171,13 @@ static NSString * const kAppSecret = @"cc5b1c1bfd72ab42519d341c40849ebe";
 //        if (@available(iOS 10.3, *)) {
 //            [SKStoreReviewController requestReview];
 //        } else {
-            NSString *appURL = @"https://itunes.apple.com/cn/app/1525341952?action=write-review";
+            NSString *appURL = [NSString stringWithFormat:@"https://itunes.apple.com/cn/app/%@?action=write-review", [CFAltUtils AppStoreId]];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appURL] options:nil completionHandler:^(BOOL success) {
                 
             }];
 //        }
     } else if ([title isEqualToString:@"分享给朋友"]) {
-        NSString *appURL = @"https://itunes.apple.com/cn/app/id1525341952";
+        NSString *appURL = [NSString stringWithFormat:@"https://itunes.apple.com/cn/app/id%@", [CFAltUtils AppStoreId]];
         UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
         [pasteboard setString:appURL];
         [self showSuccessMessage:@"App Store 链接，已复制"];

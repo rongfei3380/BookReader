@@ -19,10 +19,17 @@
 #import "BRDataBaseManager.h"
 #import "BRDataBaseCacheManager.h"
 #import "BRChoseCacheView.h"
+#import "DZMCoverController.h"
+#import "BRBookUpDownPageViewController.h"
 
-@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate, BRChoseCacheViewDelegate>
+@interface BRBookReadViewController ()<UIPageViewControllerDelegate, UIPageViewControllerDataSource, BRSitesSelectViewControllerDelegate, BRChoseCacheViewDelegate, DZMCoverControllerDelegate, UITableViewDelegate, UITableViewDataSource> {
+    
+}
 
 @property(nonatomic, strong) BRBookPageViewController *bookPageVC;
+@property(nonatomic, strong) DZMCoverController *coverController;
+@property(nonatomic, strong) BRBookUpDownPageViewController *bookUpDownPageViewController;
+
 @property(nonatomic, strong) CFButtonUpDwon *nightButton;
 @property(nonatomic, strong) CFButtonUpDwon *muluButton;
 @property(nonatomic, strong) CFButtonUpDwon *setButton;
@@ -133,9 +140,14 @@
     
     self.view.backgroundColor = BRUserDefault.readBackColor ? : color11;
     
-    [self addChildViewController:self.bookPageVC];
-    [self.view addSubview:_bookPageVC.view];
-    
+    if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+        [self addChildViewController:self.bookPageVC];
+        [self.view insertSubview:_bookPageVC.view atIndex:0];
+    } else {
+        [self addChildViewController:self.coverController];
+        [self.view insertSubview:_coverController.view atIndex:0];
+    }
+        
     self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
 //    self.chaptersView.chapters = self.viewModel.getAllChapters;
     self.chaptersView.bookName = self.viewModel.getBookName;
@@ -216,7 +228,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor redColor];
     
    [self initialToolBar];
    [self initialSubViews];
@@ -266,7 +277,9 @@
     kWeakSelf(self);
     [self.viewModel loadDataWithSuccess:^(UIViewController *currentVC) {
         kStrongSelf(self);
-        [self loadDataSuccess:currentVC];
+        kdispatch_main_sync_safe(^{
+            [self loadDataSuccess:currentVC];
+        });
     } Fail:^(NSError *err) {
         kStrongSelf(self);
         if (![err.domain isEqualToString:@"NSURLErrorDomain"]) {
@@ -319,6 +332,11 @@
     NSInteger currentIndex = self.viewModel.getCurrentChapterIndex;
     
     NSInteger cacheCount = count;
+    
+    if(currentIndex +count > chapters.count -1) {
+        cacheCount = chapters.count - currentIndex;
+    }
+    
     if (count <= 0) {
         cacheCount = chapters.count -currentIndex;
     }
@@ -485,29 +503,104 @@
 - (void)loadDataSuccess:(UIViewController*)currentVC {
     [self hideBookLoading];
     
-    NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
-    [_bookPageVC.view removeFromSuperview];
-    _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+    if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+        
+        if (_bookUpDownPageViewController) {
+            [_bookUpDownPageViewController.view removeFromSuperview];
+            _bookUpDownPageViewController = nil;
+        }
+        
+        NSArray *viewControllers = [NSArray arrayWithObject:currentVC];
+        if (!_bookPageVC) {
+            _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+            kWeakSelf(self);
+            _bookPageVC.block = ^{
+                kStrongSelf(self);
+                [self changeNaviBarHidenWithAnimated];
+            };
+            _bookPageVC.delegate = self;
+            _bookPageVC.dataSource = self;
+            /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
+            _bookPageVC.doubleSided = (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO);
+            [self.view insertSubview:_bookPageVC.view atIndex:0];
+        }
+        [self.bookPageVC setViewControllers:viewControllers
+                                          direction:UIPageViewControllerNavigationDirectionForward
+                                           animated:YES
+                                         completion:nil];
+                
+        _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+       
+        
+        
+    } else if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStyleScroll){
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+                
+        if (_bookUpDownPageViewController) {
+            [_bookUpDownPageViewController.view removeFromSuperview];
+            _bookUpDownPageViewController = nil;
+        }
+        
+        if (!_coverController) {
+            _coverController = [[DZMCoverController alloc] init];
+            _coverController.delegate = self;
+            _coverController.openAnimate = false;
+            [self.view insertSubview:_coverController.view atIndex:0];
+        }
+        [_coverController setController:currentVC animated:YES isAbove:YES];
+        
+        _coverController.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+        
+        
+    } else if (BRUserDefault.PageTransitionStyle == 2){
+        
+        if(_bookPageVC) {
+            [_bookPageVC.view removeFromSuperview];
+            _bookPageVC = nil;
+        }
+        
+        if (_coverController) {
+            [_coverController.view removeFromSuperview];
+            _coverController = nil;
+        }
+        
+
+        if (!_bookUpDownPageViewController) {
+            _bookUpDownPageViewController = [[BRBookUpDownPageViewController alloc] init];
+            _bookUpDownPageViewController.viewModel = self.viewModel;
+            kWeakSelf(self);
+            _bookUpDownPageViewController.block = ^{
+                kStrongSelf(self);
+                [self changeNaviBarHidenWithAnimated];
+            };
+            _bookUpDownPageViewController.tableView.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
+
+            
+            [self.view insertSubview:_bookUpDownPageViewController.view atIndex:0];
+        }
+    }
     
-    kWeakSelf(self);
-    _bookPageVC.block = ^{
-        kStrongSelf(self);
-        [self changeNaviBarHidenWithAnimated];
-    };
-    _bookPageVC.delegate = self;
-    _bookPageVC.dataSource = self;
-    /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
-    _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
-    
-    _bookPageVC.view.backgroundColor = BRUserDefault.readBackColor?:CFUIColorFromRGBAInHex(0xa39e8b, 1);
     
     
-    [self.bookPageVC setViewControllers:viewControllers
-                                      direction:UIPageViewControllerNavigationDirectionReverse
-                                       animated:NO
-                                     completion:nil];
-    
-    [self.view insertSubview:_bookPageVC.view atIndex:0];
 }
 
 /* 章节数据加载失败*/
@@ -515,7 +608,7 @@
     [self hideBookLoading];
     [self showErrorStatus:@"章节加载失败"];
     [_bookPageVC.view removeFromSuperview];
-     [self changeNaviBarHidenWithAnimated];
+    [self changeNaviBarHidenWithAnimated];
 }
 
 - (void)idleTimerDisabledFire {
@@ -525,15 +618,17 @@
 
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl?YES:NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     return [self.viewModel viewControllerBeforeViewController:viewController DoubleSided:isDouble];
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle==UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
-    return [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
+    UIViewController *currentVC = [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
+    CFDebugLog(@"page current ViewControllers : %@", currentVC);
+    return currentVC;
 }
 
 #pragma mark- UIPageViewControllerDelegate
@@ -546,13 +641,76 @@
     //再次开启定时器
      [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+    if (finished) {
+        CFDebugLog(@"page previousViewControllers : %@", previousViewControllers);
+        [self.viewModel removeUsingView:previousViewControllers.firstObject];
+    }
 }
 
+#pragma mark- DZMCoverControllerDelegate
+
+/**
+ *  切换是否完成
+ *
+ *  @param coverController   coverController
+ *  @param currentController 当前正在显示的控制器
+ *  @param isFinish          切换是否成功
+ */
+- (void)coverController:(DZMCoverController * _Nonnull)coverController currentController:(UIViewController * _Nullable)currentController finish:(BOOL)isFinish {
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+    self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
+    if (isFinish) {
+       CFDebugLog(@"page previousViewControllers : %@", currentController);
+       [self.viewModel removeUsingView:coverController.previousController];
+    }
+}
+
+/**
+ *  将要显示的控制器
+ *
+ *  @param coverController   coverController
+ *  @param pendingController 将要显示的控制器
+ */
+- (void)coverController:(DZMCoverController * _Nonnull)coverController willTransitionToPendingController:(UIViewController * _Nullable)pendingController {
+    self.timer.fireDate = [NSDate distantFuture];
+}
+
+/**
+ *  获取上一个控制器
+ *
+ *  @param coverController   coverController
+ *  @param currentController 当前正在显示的控制器
+ *
+ *  @return 返回当前显示控制器的上一个控制器
+ */
+- (UIViewController * _Nullable)coverController:(DZMCoverController * _Nonnull)coverController getAboveControllerWithCurrentController:(UIViewController * _Nullable)currentController {
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    [self hidenView];
+    return [self.viewModel viewControllerBeforeViewController:currentController DoubleSided:isDouble];
+}
+
+/**
+ *  获取下一个控制器
+ *
+ *  @param coverController   coverController
+ *  @param currentController 当前正在显示的控制器
+ *
+ *  @return 返回当前显示控制器的下一个控制器
+ */
+- (UIViewController * _Nullable)coverController:(DZMCoverController * _Nonnull)coverController getBelowControllerWithCurrentController:(UIViewController * _Nullable)currentController {
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    [self hidenView];
+    return [self.viewModel viewControllerAfterViewController:currentController DoubleSided:isDouble];
+}
+
+- (void)tapCoverControllerCenter:(DZMCoverController * _Nonnull)coverController {
+    [self changeNaviBarHidenWithAnimated];
+}
 
 #pragma mark - lazyLoad
--(UIPageViewController *)bookPageVC {
+- (UIPageViewController *)bookPageVC {
     if (!_bookPageVC) {
-        _bookPageVC = [[BRBookPageViewController  alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
+        _bookPageVC = [[BRBookPageViewController alloc] initWithTransitionStyle:BRUserDefault.PageTransitionStyle navigationOrientation:BRUserDefault.PageNaviOrientation options:nil];
         
         kWeakSelf(self);
         _bookPageVC.block = ^{
@@ -561,13 +719,30 @@
         };
         _bookPageVC.delegate = self;
         _bookPageVC.dataSource = self;
-        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl?YES:NO;
-        [self.view addSubview:_bookPageVC.view];
+        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+        [self.view insertSubview:_bookPageVC.view atIndex:0];
     }
     return _bookPageVC;
 }
 
+- (DZMCoverController *)coverController {
+    if (!_coverController) {
+        _coverController = [[DZMCoverController alloc] init];
+        _coverController.delegate = self;
+        _coverController.openAnimate = false;
+        [self.view insertSubview:_coverController.view atIndex:0];
+    }
+    return _coverController;
+}
 
+- (BRBookUpDownPageViewController *)bookUpDownPageViewController {
+    if (!_bookUpDownPageViewController) {
+        _bookUpDownPageViewController = [[BRBookUpDownPageViewController alloc] init];
+        _bookUpDownPageViewController.viewModel = self.viewModel;
+    }
+    
+    return _bookUpDownPageViewController;
+}
 //-(UIStatusBarStyle)preferredStatusBarStyle{
 //
 //    return UIStatusBarStyleLightContent;

@@ -21,7 +21,11 @@
     //    NSDate *createdDate = [fmt dateFromString:_created_at];
     
     // 2..判断dashboard发送时间 和 现在时间 的差距
-    if (createdDate.isToday) { // 今天
+    
+    NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
+    NSInteger day = deltaWithNow.hour/24;
+    
+    if(day == 0) {
         if (createdDate.deltaWithNow.hour >= 1) {
             return [NSString stringWithFormat:@"%ld小时前", (long)createdDate.deltaWithNow.hour];
         } else if (createdDate.deltaWithNow.minute >= 1) {
@@ -29,18 +33,13 @@
         } else {
             return @"刚刚";
         }
+    } else if (day > 0 && day < 7) {
+        return [NSString stringWithFormat:@"%ld天前", day];
     } else {
-        NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
-        NSInteger day = deltaWithNow.hour/24;
-        
-        if (day < 7) {
-            return [NSString stringWithFormat:@"%ld天前", day];
-        } else {
-            return @"7天前";
-        }
-        
         return @"7天前";
     }
+    
+    return @"7天前";
 }
 
 @end

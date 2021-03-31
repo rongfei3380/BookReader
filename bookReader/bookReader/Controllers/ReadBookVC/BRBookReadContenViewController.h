@@ -30,6 +30,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param index 位置
 - (instancetype)initWithText:(NSString*)text chapterName:(NSString*)chapterName totalNum:(NSInteger)totalNum index:(NSInteger)index;
 
+
+- (void)reloadContentWithText:(NSString*)text chapterName:(NSString*)chapterName totalNum:(NSInteger)totalNum index:(NSInteger)index;
+
+
 @property (nonatomic,strong,readonly) UIViewController* backVC;
 
 @end

@@ -34,6 +34,7 @@
 @property (nonatomic,strong) UILabel* transitionTitleLabel;
 @property (nonatomic,strong) UIButton* tranPageCurlBtn;
 @property (nonatomic,strong) UIButton* tranScrollBtn;
+@property (nonatomic,strong) UIButton* tranUpDownBtn;
 
 /* 亮度*/
 @property (nonatomic,strong) UILabel* lightTitleLabel;
@@ -162,6 +163,15 @@
     [_tranScrollBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
     _tranScrollBtn.titleLabel.font = [UIFont systemFontOfSize:14];
     [self addSubview:_tranScrollBtn];
+    
+    _tranUpDownBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_tranUpDownBtn setTitle:@"上下" forState:UIControlStateNormal];
+    _tranUpDownBtn.clipsToBounds = YES;
+    [_tranUpDownBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+    _tranUpDownBtn.layer.cornerRadius  = 10.f;
+    [_tranUpDownBtn addTarget:self action:@selector(transitionClick:) forControlEvents:UIControlEventTouchUpInside];
+    _tranUpDownBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self addSubview:_tranUpDownBtn];
     
     _lightTitleLabel = [self titleLabelWithTitle:@"亮度"];
     [self addSubview:_lightTitleLabel];
@@ -323,18 +333,20 @@
     
     [_tranPageCurlBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_backTitleLabel.mas_bottom).offset(40);
-        make.left.mas_equalTo(24);
         make.height.mas_equalTo(30);
-        make.right.mas_equalTo(self.mas_centerX).offset(-24);
     }];
     
     [_tranScrollBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(_tranPageCurlBtn.mas_centerY).offset(0);
-        make.left.equalTo(self.mas_centerX).offset(24);
         make.height.mas_equalTo(30);
-        make.right.mas_equalTo(-24);
     }];
     
+    [_tranUpDownBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_tranPageCurlBtn.mas_centerY).offset(0);
+        make.height.mas_equalTo(30);
+    }];
+    
+    [@[_tranPageCurlBtn, _tranScrollBtn, _tranUpDownBtn] mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:80 leadSpacing:24 tailSpacing:24];
     
     
     [_lightSlider mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -410,11 +422,14 @@
     
     self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
+    self.tranUpDownBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     
     if (PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl){
         self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
-    }else{
+    } else if (PageTransitionStyle == UIPageViewControllerTransitionStyleScroll){
         self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
+    } else if (PageTransitionStyle == 2){
+        self.tranUpDownBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
     }
 }
 
@@ -459,10 +474,12 @@
 }
 
 - (void)transitionClick:(UIButton*)btn {
-    if (btn==self.tranPageCurlBtn){
+    if (btn == self.tranPageCurlBtn){
         BRUserDefault.PageTransitionStyle = UIPageViewControllerTransitionStylePageCurl;
-    }else if (btn==self.tranScrollBtn){
+    } else if (btn == self.tranScrollBtn){
         BRUserDefault.PageTransitionStyle = UIPageViewControllerTransitionStyleScroll;
+    } else if (btn == self.tranUpDownBtn) {
+        BRUserDefault.PageTransitionStyle = 2;
     }
     
     if (self.block){

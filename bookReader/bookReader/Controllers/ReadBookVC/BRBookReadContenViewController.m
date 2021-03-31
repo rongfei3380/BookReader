@@ -160,4 +160,40 @@
     return [self backImageV];
 }
 
+#pragma mark- setter
+
+- (void)setText:(NSString *)text{
+    _text = text;
+    _contentView.text = _text;
+}
+
+- (void)setIndex:(NSInteger)index {
+    _index = index;
+    _indexLabel.text = [NSString stringWithFormat:@"第%ld/%ld页",self.index,self.totalNum];
+}
+
+- (void)setTotalNum:(NSInteger)totalNum {
+    _totalNum = totalNum;
+    _indexLabel.text = [NSString stringWithFormat:@"第%ld/%ld页",self.index,self.totalNum];
+}
+
+- (void)setChapterName:(NSString *)chapterName {
+    _chapterName = chapterName;
+    _chapterNameLabel.text = self.chapterName;
+}
+
+- (void)reloadContentWithText:(NSString*)text chapterName:(NSString*)chapterName totalNum:(NSInteger)totalNum index:(NSInteger)index {
+    _text = text;
+    _contentView.text = _text;
+    
+    _index = index;
+    _totalNum = totalNum;
+    _indexLabel.text = [NSString stringWithFormat:@"第%ld/%ld页",self.index,self.totalNum];
+    
+    _chapterName = chapterName;
+    _chapterNameLabel.text = self.chapterName;
+}
+
+
+
 @end

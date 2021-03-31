@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef void (^block)(void);
 typedef void (^LoadSuccess)(UIViewController* currentVC);
+//typedef void (^aLoadSuccess)(NSArray<UIViewController* > * pagesVCs, NSInteger currentVCIndex);
 typedef void (^Fail)(NSError* err);
 
 typedef void (^HubSuccess)(NSString* text);
@@ -37,6 +38,9 @@ typedef void (^HubFail)(NSString* text);
 /// @param doubleSided 是否
 - (UIViewController*)viewControllerAfterViewController:(UIViewController *)viewController DoubleSided:(BOOL)doubleSided;
 
+/// 重用池 修改标志
+/// @param view 即将重用的 vc
+- (void)removeUsingView:(nullable UIViewController *)view;
 
 /// 按序号加载章节
 /// @param index 序号
@@ -88,6 +92,13 @@ typedef void (^HubFail)(NSString* text);
  * @param fail 失败
  */
 - (void)showHubWithSuccess:(HubSuccess)success Fail:(HubSuccess)fail;
+
+
+/// 获取 全部的显示page
+- (NSArray<UIViewController *> *)viewModelGetAllVCs;
+
+/// 获取分页后的 章节内容
+- (NSMutableDictionary *)viewModelGetAllDataDict;
 
 /// 获取书本信息model
 - (BRBookInfoModel *)BRBookInfoModel;
