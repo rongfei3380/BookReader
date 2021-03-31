@@ -72,24 +72,24 @@ extern NSString * _Nonnull const MCDownloadStopNotification;
 
 
 /// 暂停任务
-/// @param token
-/// @param completed
+/// @param token 缓存任务有唯一标识
+/// @param completed 是否完成任务
 - (void)suspended:(nullable BRCacheTask *)token completed:(nullable void (^)(void))completed;
 
 /// 恢复任务
-/// @param token
-/// @param completed
+/// @param token 缓存任务有唯一标识
+/// @param completed 是否完成任务
 - (void)resume:(nullable BRCacheTask *)token completed:(nullable void (^)(void))completed;
 
 
 ///  取消缓存
 /// @param token 缓存书籍的task
-/// @param completed
+/// @param completed 是否完成任务
 - (void)cancel:(nullable BRCacheTask *)token completed:(nullable void (^)(void))completed;
 
 /// 删除缓存
 /// @param token 缓存书籍的task
-/// @param completed
+/// @param completed 是否完成任务
 - (void)remove:(nullable BRCacheTask *)token completed:(nullable void (^)(void))completed;
 /**
  * Sets the download queue suspension state
