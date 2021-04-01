@@ -82,15 +82,16 @@
     kWeakSelf(self)
     [BRSite getSiteListWithBookId:model.bookId sucess:^(NSArray * _Nonnull recodes) {
         kStrongSelf(self)
-        self.sitesArray = [recodes mutableCopy];
-        
-        BRSite *site = [self getTheLastSite];
-        NSInteger siteIndex = [self->_sitesArray indexOfObject:site];
-        model.siteIndex = [NSNumber numberWithInteger:siteIndex];
-        
-        
-        [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:model.bookId sites:self.sitesArray curSiteIndex:siteIndex];
-        [self initiaData];
+//        if(recodes.count > 0) {
+            self.sitesArray = [recodes mutableCopy];
+            BRSite *site = [self getTheLastSite];
+        if ([self->_sitesArray indexOfObject:site] != NSNotFound) {
+            NSInteger siteIndex = [self->_sitesArray indexOfObject:site];
+            model.siteIndex = [NSNumber numberWithInteger:siteIndex];
+            [[BRDataBaseManager sharedInstance] updateBookSourceWithBookId:model.bookId sites:self.sitesArray curSiteIndex:siteIndex];
+            [self initiaData];
+        }   
+//        }
     } failureBlock:^(NSError * _Nonnull error) {
         if (self.loadFail){
             self.loadFail(error);
@@ -115,7 +116,7 @@
     
     self.dataDict = [NSMutableDictionary dictionary];
         
-    if (!self.sitesArray) {
+    if (!self.sitesArray || self.sitesArray.count == 0) {
         [self getSitesWithBook:dbModel];
     } else {
      /* 去数据库查找是否有本地缓存的章节信息*/

@@ -23,8 +23,7 @@
 - (instancetype)init{
     if (self = [super init]) {
         
-//        self.baseUrl = @"https://www.oneoff.net/index.php?m=api&c=apimap&a=";
-        self.baseUrl = nil;
+        self.baseUrl = @"https://wx.huaban800.com:9443/appapi";
         
         
 //        _configuration = [CFBaseAPIClient defaultURLSessionConfiguration];
@@ -173,7 +172,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , size] forKey:@"size"];
      
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getlist" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"recommend.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -197,7 +196,7 @@
          [paramDic setObject:@0 forKey:@"is_select"];
     }
      
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookinfo" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"info.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -215,7 +214,7 @@
             
     [paramDic setObject:ids forKey:@"id"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbooklistinfo" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"userCollect.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -230,7 +229,7 @@
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategory" parameters:nil success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"category.json" parameters:nil success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -259,7 +258,7 @@
     }
     [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
     [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getcategorybook" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"list.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -282,7 +281,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)page] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)size] forKey:@"size"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=select" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -310,7 +309,7 @@
         [paramDic setObject:@"desc" forKey:@"sort"];
     }
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookpage" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"chapters.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -332,7 +331,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , chapterId] forKey:@"chapterid"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , siteId] forKey:@"siteid"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getbookcontent" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"chapterInfo.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -351,7 +350,7 @@
        
     [paramDic setObject:bookId forKey:@"bookid"];
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=source" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"source.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -365,7 +364,7 @@
 - (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"https://www.oneoff.net/index.php?m=api&c=apimap&a=getrecommend" parameters:nil success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"recommend.json" parameters:nil success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }

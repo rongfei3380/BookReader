@@ -101,7 +101,10 @@
             kStrongSelf(self)
             [self->_apiBooksDict removeAllObjects];
             for (BRBookInfoModel *book in recodes) {
-                [self->_apiBooksDict setObject:book forKey:book.bookId];
+                if(book.bookId){
+                    [self->_apiBooksDict setObject:book forKey:book.bookId];
+                }
+                
             }
             [self updateBooksInfo];
             [self endGetData];
