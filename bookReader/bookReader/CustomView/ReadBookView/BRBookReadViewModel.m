@@ -249,7 +249,7 @@
                         recordText:(NSString*)recordText
                             sucess:(nullable void (^)(void))sucess{
     
-    NSString *content = [NSString stringWithFormat:@"%@\n%@", self.currentChapter.name, self.currentChapterDetail.content];
+    NSString *content = [NSString stringWithFormat:@"%@", self.currentChapterDetail.content];
     
     NSArray* textArr = [NSString pagingWith:content Size:CGSizeMake(SCREEN_WIDTH -15*2, SCREEN_HEIGHT  -kStatusBarHeight() -kChapterNameLabelHeight -kReadStatusHeight -kReadContentOffSetY)];
 

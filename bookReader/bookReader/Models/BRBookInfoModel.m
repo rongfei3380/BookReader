@@ -121,14 +121,25 @@
 }
 
 
-+ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray))successBlock
++ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray, NSArray *hotArray, NSArray *endArray))successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock {
     return [[BRAPIClient sharedInstance] getRecommendSuccess:^(id  _Nonnull dataBody) {
         NSDictionary *dict = (NSDictionary *)dataBody;
         
-        NSArray *recommend = [BRBookInfoModel parseDictionaryIntoRecords:[dict objectForKey:@"recommend"]];
-        NSArray *rotation = [BRBookInfoModel parseDictionaryIntoRecords:[dict objectForKey:@"rotation"]];
-        successBlock(rotation, recommend);
+        NSDictionary *rotationDict = [dict objectForKey:@"3"];
+        NSArray *rotation = [BRBookInfoModel parseDictionaryIntoRecords:[rotationDict objectForKey:@"list"]];
+        
+        NSDictionary *recommendDict = [dict objectForKey:@"7"];
+        NSArray *recommend = [BRBookInfoModel parseDictionaryIntoRecords:[recommendDict objectForKey:@"list"]];
+        
+        NSDictionary *hotDict = [dict objectForKey:@"8"];
+        NSArray *hot = [BRBookInfoModel parseDictionaryIntoRecords:[hotDict objectForKey:@"list"]];
+        
+        NSDictionary *endDict = [dict objectForKey:@"9"];
+        NSArray *end = [BRBookInfoModel parseDictionaryIntoRecords:[endDict objectForKey:@"list"]];
+        
+        
+        successBlock(rotation, recommend, hot, end);
         
     } failureBlock:^(NSError * _Nonnull error) {
         if (failureBlock) {

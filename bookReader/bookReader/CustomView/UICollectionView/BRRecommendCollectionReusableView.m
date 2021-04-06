@@ -17,6 +17,7 @@
     NSArray *_masonryBtnsArray;
     UIView *_searchViewBg;
     ZKCycleScrollView *cycleScrollView;
+    UILabel *_titleLabel;
 }
 @end
 
@@ -96,9 +97,19 @@
         [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.right.mas_equalTo(0);
             make.height.mas_equalTo(8);
-            make.bottom.mas_equalTo(0);
+            make.bottom.mas_equalTo(-(15+22));
         }];
         
+        _titleLabel = [[UILabel alloc] init];
+        _titleLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
+        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+        _titleLabel.text = @"重磅推荐";
+        [self addSubview:_titleLabel];
+        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(15);
+            make.top.mas_equalTo(bottomView.mas_bottom).offset(7.5);
+            make.height.mas_offset(22);
+        }];
     }
     return self;
 }
@@ -108,7 +119,7 @@
     [_masonryBtnsArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:20 tailSpacing:20];
        // 设置array的垂直方向的约束
     [_masonryBtnsArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-25);
+        make.bottom.mas_equalTo(-25-(15+22));
         make.height.mas_equalTo(55);
     }];
     

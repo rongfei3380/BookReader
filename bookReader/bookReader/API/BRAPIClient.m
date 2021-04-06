@@ -364,7 +364,7 @@
 - (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"recommend.json" parameters:nil success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"home.json" parameters:nil success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }

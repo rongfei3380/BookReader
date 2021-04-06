@@ -75,6 +75,16 @@
             if (successBlock) {
                 
                 BRChapterDetail *chapterDetail = [BRChapterDetail parseDictionaryIntoObject:dataBody];
+                if(chapterDetail.bookId == nil | chapterDetail.bookId.intValue == 0) {
+                    chapterDetail.bookId = bookId;
+                }
+                if(chapterDetail.chapterId == nil | chapterDetail.chapterId.intValue == 0) {
+                    chapterDetail.chapterId = [NSNumber numberWithInteger:chapterId];
+                }
+                if (chapterDetail.siteId == nil | chapterDetail.siteId.integerValue == 0) {
+                    chapterDetail.siteId = [NSNumber numberWithInteger:siteId];
+                }
+                
                 [[BRDataBaseManager sharedInstance] saveChapterContentWithModel:chapterDetail];
                 kdispatch_main_async_safe(^{
                     successBlock(chapterDetail);

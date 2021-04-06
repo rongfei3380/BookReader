@@ -14,10 +14,13 @@
 #import "BRBookInfoModel.h"
 #import "BRRankBookDetailViewController.h"
 #import "BRSearchBookViewController.h"
+#import "BRRecommendSectionHeaderCollectionReusableView.h"
 
 @interface BRRankBooksViewController ()<BRRecommendCollectionReusableViewDelegate>{
     NSArray *_rotationArray;
     NSArray *_recommendArray;
+    NSArray *_hotArray;
+    NSArray *_endArray;
 }
 
 @end
@@ -38,12 +41,17 @@
     
     
     kWeakSelf(self)
-    [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray) {
+    [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray, NSArray * _Nonnull hotArray, NSArray * _Nonnull endArray) {
         self->_rotationArray = [rotationArray mutableCopy];
         self->_recommendArray = [recommendArray mutableCopy];
+        self->_hotArray = [hotArray mutableCopy];
+        self->_endArray = [endArray mutableCopy];
         
         [self cacheRecords:rotationArray key:@"rotationArray"];
         [self cacheRecords:recommendArray key:@"recommendArray"];
+        [self cacheRecords:hotArray key:@"hotArray"];
+        [self cacheRecords:endArray key:@"endArray"];
+        
         [self.collectionView reloadData];
         [self hideBookProgressMessage];
     } failureBlock:^(NSError * _Nonnull error) {
@@ -51,6 +59,7 @@
         [self hideBookProgressMessage];
         [self showErrorMessage:error];
     }];
+    
 }
 
 
@@ -82,6 +91,8 @@
     // Do any additional setup after loading the view.
     
     [self.collectionView registerClass:[BRRecommendCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendCollectionReusableView"];
+    [self.collectionView registerClass:[BRRecommendSectionHeaderCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendSectionHeaderCollectionReusableView"];
+    
     [self.collectionView registerClass:[BRRecommendBigCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendBigCollectionViewCell"];
     [self.collectionView registerClass:[BRRecommendCollectionViewCell class] forCellWithReuseIdentifier:@"BRRecommendCollectionViewCell"];
 }
@@ -106,47 +117,100 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     
-    BRRecommendCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendCollectionReusableView" forIndexPath:indexPath];
-    view.delegate = self;
-    view.booksArray = _rotationArray;
-    
-    return view;
+    if (indexPath.section == 0) {
+        BRRecommendCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendCollectionReusableView" forIndexPath:indexPath];
+        view.delegate = self;
+        view.booksArray = _rotationArray;
+//        [view setSectionHeader:@"重磅推荐"];
+        return view;
+    } else if (indexPath.section == 1) {
+        BRRecommendSectionHeaderCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendSectionHeaderCollectionReusableView" forIndexPath:indexPath];
+        [view setSectionHeader:@"抖音热书"];
+        return view;
+    } else if (indexPath.section == 2) {
+        BRRecommendSectionHeaderCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendSectionHeaderCollectionReusableView" forIndexPath:indexPath];
+        [view setSectionHeader:@"完本精选"];
+        return view;
+    } else {
+        return nil;
+    }
 }
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    BRBookInfoModel *model = [_recommendArray objectAtIndex:indexPath.row];
-    
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
+        BRBookInfoModel *model = [_recommendArray objectAtIndex:indexPath.row];
+        if (indexPath.row == 0) {
+            BRRecommendBigCollectionViewCell *bigCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendBigCollectionViewCell" forIndexPath:indexPath];
+            
+            bigCell.bookInfo = model;
+            
+            return bigCell;
+            
+            
+        } else {
+            BRRecommendCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendCollectionViewCell" forIndexPath:indexPath];
+            cell.bookInfo = model;
+            return cell;
+        }
+    } else if (indexPath.section == 1) {
+        BRBookInfoModel *model = [_hotArray objectAtIndex:indexPath.row];
         BRRecommendBigCollectionViewCell *bigCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendBigCollectionViewCell" forIndexPath:indexPath];
         
         bigCell.bookInfo = model;
         
         return bigCell;
-        
-        
-    } else {
+    } else if (indexPath.section == 2) {
+        BRBookInfoModel *model = [_endArray objectAtIndex:indexPath.row];
         BRRecommendCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendCollectionViewCell" forIndexPath:indexPath];
         cell.bookInfo = model;
         return cell;
     }
+    
+    return nil;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
-    return CGSizeMake(SCREEN_WIDTH -15*2, kRecommendCollectionReusableViewHeight);
+    if (section == 0) {
+        return CGSizeMake(SCREEN_WIDTH -15*2, kRecommendCollectionReusableViewHeight);
+    } else {
+        return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendSectionHeaderCollectionReusableViewHeight);
+    }
+    
 }
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
+        } else  {
+            return CGSizeMake(75, 100 +46);
+        }
+    } else if (indexPath.section == 1) {
         return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
-    } else  {
+    } else if (indexPath.section == 2) {
         return CGSizeMake(75, 100 +46);
+    } else {
+        return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
     }
+    
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _recommendArray.count;
+    NSInteger rows = 0;
+    if (section == 0) {
+        rows = _recommendArray.count;
+    } else if (section == 1){
+        rows = _hotArray.count;
+    } else if (section == 2){
+        rows = _endArray.count;
+    }
+    return rows;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 3;
 }
 
 #pragma mark- UICollectionViewDelegateFlowLayout

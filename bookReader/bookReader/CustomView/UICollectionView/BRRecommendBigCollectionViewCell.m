@@ -14,7 +14,7 @@
 
 @interface BRRecommendBigCollectionViewCell (){
     
-    UILabel *_titleLabel;
+//    UILabel *_titleLabel;
     
     CFShadowCornerImageView *_coverImgView;
     UILabel *_bookNameLabel;
@@ -35,11 +35,11 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
-        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
-        _titleLabel.text = @"重磅推荐";
-        [self addSubview:_titleLabel];
+//        _titleLabel = [[UILabel alloc] init];
+//        _titleLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+//        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+//        _titleLabel.text = @"重磅推荐";
+//        [self addSubview:_titleLabel];
         
         _coverImgView = [[CFShadowCornerImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
@@ -86,15 +86,16 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.top.mas_equalTo(15);
-        make.height.mas_offset(22);
-    }];
+//    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.top.mas_equalTo(15);
+//        make.height.mas_offset(22);
+//    }];
     
     [_coverImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(75, 100));
-        make.top.mas_equalTo(_titleLabel.mas_bottom).offset(15);
+//        make.top.mas_equalTo(_titleLabel.mas_bottom).offset(15);
+        make.top.mas_equalTo(7.5);
         make.left.mas_equalTo(0);
     }];
     
