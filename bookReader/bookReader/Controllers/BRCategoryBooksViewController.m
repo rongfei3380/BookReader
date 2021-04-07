@@ -32,30 +32,28 @@
 
 - (void)createCategoryViewIfNeed {
     
-    NSInteger row = _categoryArray.count/4 +_categoryArray.count%4>0 ? 1:0;
+    NSInteger row = _categoryArray.count/4 +(_categoryArray.count%4>0 ? 1:0);
     NSInteger numOfRow = 4;
     CGFloat buttonWidth = (SCREEN_WIDTH -5*2 -60) /numOfRow;
     
     
     if (!_categoryView) {
-        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*60 +40)];
+        _categoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 20 +row*30 +40)];
         _categoryView.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF,1);
-        
-      
        
         // 分类筛选
-       UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-       allBtn.tag = 999;
-       allBtn.frame = CGRectMake(10 , 10, 40, 30);
-       allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-       [allBtn setTitle:@"全部" forState:UIControlStateNormal];
+        UIButton *allBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        allBtn.tag = 999;
+        allBtn.frame = CGRectMake(10 , 10, 40, 30);
+        allBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+        [allBtn setTitle:@"全部" forState:UIControlStateNormal];
         [allBtn setBackgroundImage:[CFUtils pureColorImage:0xE7EFFF colorAlpha:1 size:CGSizeMake(40, 30)] forState:UIControlStateSelected];
-       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
-       [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
-       [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
-       [_categoryView addSubview:allBtn];
-       allBtn.selected = YES;
-       _selectedCategoryButton = allBtn;
+        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
+        [allBtn setTitleColor:CFUIColorFromRGBAInHex(0x4C8BFF, 1) forState:UIControlStateSelected];
+        [allBtn addTarget:self action:@selector(clickCategoryButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_categoryView addSubview:allBtn];
+        allBtn.selected = YES;
+        _selectedCategoryButton = allBtn;
 
        for (int i = 0; i<_categoryArray.count; i++) {
            BRBookCategory *item = [_categoryArray objectAtIndex:i];
@@ -74,7 +72,7 @@
         
         // 完结 连载
         UIButton *allOverBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        allOverBtn.frame = CGRectMake(10 , 20 +row*60, 40, 30);
+        allOverBtn.frame = CGRectMake(10 , 10 + row*30, 40, 30);
         allOverBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [allOverBtn setTitle:@"全部" forState:UIControlStateNormal];
         [allOverBtn setBackgroundImage:[CFUtils pureColorImage:0xE7EFFF colorAlpha:1 size:CGSizeMake(40, 30)] forState:UIControlStateSelected];
@@ -87,7 +85,7 @@
         _selectedOverButton = allOverBtn;
         
         UIButton *serializeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        serializeBtn.frame = CGRectMake(10 +1*45 , 20 +row*60, 40, 30);
+        serializeBtn.frame = CGRectMake(10 +1*45 , 10 +row*30, 40, 30);
         serializeBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [serializeBtn setTitle:@"连载" forState:UIControlStateNormal];
         [serializeBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
@@ -97,7 +95,7 @@
         [_categoryView addSubview:serializeBtn];
         
         UIButton *overBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        overBtn.frame = CGRectMake(10 +2*45 , 20 +row*60, 40, 30);
+        overBtn.frame = CGRectMake(10 +2*45 , 10 +row*30, 40, 30);
         overBtn.titleLabel.font = [UIFont systemFontOfSize:12];
         [overBtn setTitle:@"完结" forState:UIControlStateNormal];
         [overBtn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];

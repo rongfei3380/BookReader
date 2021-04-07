@@ -150,7 +150,7 @@ book_name TEXT NOT NULL,\
 book_id INTEGER NOT NULL UNIQUE,\
 book_cover TEXT,\
 author TEXT NOT NULL,\
-author_id INTEGER NOT NULL,\
+author_id INTEGER,\
 category_id INTEGER NOT NULL,\
 category_name TEXT NOT NULL,\
 lastupdate_time TEXT,\

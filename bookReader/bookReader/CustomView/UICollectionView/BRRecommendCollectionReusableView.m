@@ -58,7 +58,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognizer:)] ;
         [_searchViewBg addGestureRecognizer:tap];
         
-        cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_searchViewBg.frame) +15, SCREEN_WIDTH-20*2, (114/335.f)*(SCREEN_WIDTH -20*2))];
+        cycleScrollView = [[ZKCycleScrollView alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(_searchViewBg.frame) +15, SCREEN_WIDTH-20*2, (130/345.f)*(SCREEN_WIDTH -20*2))];
         cycleScrollView.backgroundColor = [UIColor clearColor];
         cycleScrollView.delegate = self;
         cycleScrollView.dataSource = self;
@@ -91,25 +91,12 @@
         
         _masonryBtnsArray = @[popularBtn, highBtn, newBtn, endBtn];
         
-        UIView *bottomView = [[UIView alloc] init];
-        bottomView.backgroundColor = CFUIColorFromRGBAInHex(0xF5F5F5, 1);
-        [self addSubview:bottomView];
-        [bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.mas_equalTo(0);
-            make.height.mas_equalTo(8);
-            make.bottom.mas_equalTo(-(15+22));
-        }];
         
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
-        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:18];
         _titleLabel.text = @"重磅推荐";
         [self addSubview:_titleLabel];
-        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(15);
-            make.top.mas_equalTo(bottomView.mas_bottom).offset(7.5);
-            make.height.mas_offset(22);
-        }];
     }
     return self;
 }
@@ -119,8 +106,14 @@
     [_masonryBtnsArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedItemLength:40 leadSpacing:20 tailSpacing:20];
        // 设置array的垂直方向的约束
     [_masonryBtnsArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-25-(15+22));
-        make.height.mas_equalTo(55);
+        make.top.mas_equalTo(cycleScrollView.mas_bottom).offset(22);
+        make.height.mas_equalTo(50);
+    }];
+    
+    [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(15);
+        make.top.mas_equalTo(cycleScrollView.mas_bottom).offset(95);
+        make.height.mas_offset(22);
     }];
     
 }
@@ -151,10 +144,11 @@
     
     CFButtonUpDwon* btn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
     btn.titleLabel.font = [UIFont systemFontOfSize:12];
+//    btn.titleLabel.font = [UIFont fontWithName:@"PingFang-SC" size:12];
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
     [btn addTarget:self action:@selector(clickActionButton:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setTitleColor:CFUIColorFromRGBAInHex(0x666666, 1) forState:UIControlStateNormal];
+    [btn setTitleColor:CFUIColorFromRGBAInHex(0x333333, 1) forState:UIControlStateNormal];
     return btn;
 }
 

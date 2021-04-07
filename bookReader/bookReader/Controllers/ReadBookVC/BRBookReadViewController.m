@@ -642,7 +642,7 @@
      [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
     if (finished) {
-        CFDebugLog(@"page previousViewControllers : %@", previousViewControllers);
+//        CFDebugLog(@"page previousViewControllers : %@", previousViewControllers);
         [self.viewModel removeUsingView:previousViewControllers.firstObject];
     }
 }
@@ -660,7 +660,8 @@
     [UIApplication sharedApplication].idleTimerDisabled = YES;
     self.timer.fireDate = [NSDate dateWithTimeIntervalSinceNow:120.0];
     if (isFinish) {
-       CFDebugLog(@"page previousViewControllers : %@", currentController);
+//       CFDebugLog(@"page previousViewControllers : %@", currentController);
+        
        [self.viewModel removeUsingView:coverController.previousController];
     }
 }

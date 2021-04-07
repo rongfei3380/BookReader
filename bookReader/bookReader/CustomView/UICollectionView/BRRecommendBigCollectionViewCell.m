@@ -13,10 +13,7 @@
 #import "CFShadowCornerImageView.h"
 
 @interface BRRecommendBigCollectionViewCell (){
-    
-//    UILabel *_titleLabel;
-    
-    CFShadowCornerImageView *_coverImgView;
+    UIImageView *_coverImgView;
     UILabel *_bookNameLabel;
     UILabel *_chapterNameLabel;
     
@@ -35,28 +32,23 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
-//        _titleLabel = [[UILabel alloc] init];
-//        _titleLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
-//        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
-//        _titleLabel.text = @"重磅推荐";
-//        [self addSubview:_titleLabel];
-        
-        _coverImgView = [[CFShadowCornerImageView alloc] init];
+        _coverImgView = [[UIImageView alloc] init];
         _coverImgView.clipsToBounds = YES;
         _coverImgView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_coverImgView];
         
         
-        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
-        [_coverImgView addSubview:leftShadowImg];
-        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.bottom.mas_equalTo(0);
-            make.width.mas_equalTo(13);
-        }];
+//        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
+//        [_coverImgView addSubview:leftShadowImg];
+//        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.top.bottom.mas_equalTo(0);
+//            make.width.mas_equalTo(13);
+//        }];
     
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:15];
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:15];
+//        _bookNameLabel.font = [UIFont systemFontOfSize:15];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_bookNameLabel];
         
@@ -99,14 +91,14 @@
         make.left.mas_equalTo(0);
     }];
     
-    [_coverImgView setImageCornerRadius:4];
-    [_coverImgView setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
+//    [_coverImgView setImageCornerRadius:4];
+//    [_coverImgView setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
     
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_coverImgView.mas_top).offset(0);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(15.5);
         make.right.mas_equalTo(-15);
-        make.height.mas_equalTo(30);
+        make.height.mas_equalTo(25);
     }];
     
     [_introLabel mas_makeConstraints:^(MASConstraintMaker *make) {

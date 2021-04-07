@@ -41,6 +41,9 @@
     BRBookInfoModel *item = [[BRBookInfoModel alloc] initWithAttributes:dic];
     item.lastupdateDate = [NSDate dateWithTimeIntervalSince1970:item.lastupdate.integerValue];
     item.siteIndex = [NSNumber numberWithInt:-1]; // 默认-1  表示未选择
+    if (!item.authorId) {
+        item.authorId = @0;
+    }
     if (item.intro) {
         DBGHTMLEntityDecoder *decoder = [[DBGHTMLEntityDecoder alloc] init];
         item.intro = [decoder decodeString:item.intro];

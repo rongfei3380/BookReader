@@ -357,7 +357,7 @@
     return YES;
 }
 
-- (void)saveChaptersWithArray:(NSArray<BRChapterDetail*>*)modelsArray bookId:(NSNumber *)bookId{
+- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray bookId:(NSNumber *)bookId{
     
     kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
         [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {

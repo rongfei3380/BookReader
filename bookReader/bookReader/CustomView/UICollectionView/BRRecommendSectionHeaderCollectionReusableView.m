@@ -19,7 +19,7 @@
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 0);
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
-        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+        _titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:18];
         [self addSubview:_titleLabel];
         
         

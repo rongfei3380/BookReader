@@ -101,7 +101,7 @@
 
     BRSite *site = nil;
 
-    if (self.bookInfo.siteIndex.integerValue >= 0) {
+    if (self.bookInfo.sitesArray.count >0 && self.bookInfo.siteIndex.integerValue >= 0) {
         site = [_sitesArray objectAtIndex:(self.bookInfo.siteIndex.integerValue >= self.bookInfo.sitesArray.count ? self.bookInfo.sitesArray.count-1 : self.bookInfo.siteIndex.integerValue)];
 
     } else {

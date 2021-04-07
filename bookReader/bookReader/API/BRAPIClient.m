@@ -23,8 +23,7 @@
 - (instancetype)init{
     if (self = [super init]) {
         
-        self.baseUrl = @"https://wx.huaban800.com:9443/appapi";
-        
+        self.baseUrl = @"https://api.21skcy.com:16888/appapi";
         
 //        _configuration = [CFBaseAPIClient defaultURLSessionConfiguration];
 //
@@ -281,7 +280,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)page] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)size] forKey:@"size"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodPOST path:@"search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
