@@ -35,7 +35,7 @@
         [self addSubview:_coverImgView];
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont boldSystemFontOfSize:15];
+        _bookNameLabel.font = [UIFont systemFontOfSize:15];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x333333, 1);
         [self addSubview:_bookNameLabel];
         
@@ -85,7 +85,7 @@
     [super layoutSubviews];
 
     [_coverImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(76, 100));
+        make.size.mas_equalTo(CGSizeMake(75, 100));
         make.left.mas_equalTo(15);
         make.centerY.mas_equalTo(0);
     }];

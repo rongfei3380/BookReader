@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "BRTabBarViewController.h"
 #import <UMCommon/UMConfigure.h>
+#import <UMCommon/MobClick.h>
 #import <Bugly/Bugly.h>
 #import "BRDataBaseCacheManager.h"
 #import "CFAltUtils.h"
@@ -28,6 +29,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     [UMConfigure initWithAppkey:[CFAltUtils UMConfigureKey] channel:@"App Store"];
+    //设置为自动采集页面
+    [MobClick setAutoPageEnabled:YES];
+
         
     [Bugly startWithAppId:[CFAltUtils BuglyAppId]];
     

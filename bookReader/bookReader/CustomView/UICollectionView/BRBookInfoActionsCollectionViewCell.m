@@ -14,7 +14,7 @@
 #import "BRDataBaseManager.h"
 
 @interface BRBookInfoActionsCollectionViewCell () {
-    CFShadowCornerImageView *_corverImg;
+    UIImageView *_corverImg;
     UILabel *_bookNameLabel;
     UILabel *_authorLabel;
     UILabel *_categoryLabel;
@@ -39,7 +39,7 @@
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
         
-        _corverImg = [CFShadowCornerImageView new];
+        _corverImg = [UIImageView new];
         _corverImg.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:_corverImg];
         [_corverImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -47,15 +47,15 @@
             make.top.mas_equalTo(12);
             make.size.mas_equalTo(CGSizeMake(90, 122));
         }];
-        [_corverImg setImageCornerRadius:4];
-        [_corverImg setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
+//        [_corverImg setImageCornerRadius:4];
+//        [_corverImg setShadowWithColor: CFUIColorFromRGBAInHex(0x4C5F68, 1) shadowXOffset:3 shadowYOffset:2 shadowRadius:5 shadowOpacity:0.7];
         
-        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
-        [_corverImg addSubview:leftShadowImg];
-        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.top.bottom.mas_equalTo(0);
-            make.width.mas_equalTo(13);
-        }];
+//        UIImageView *leftShadowImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_left_shadow"]];
+//        [_corverImg addSubview:leftShadowImg];
+//        [leftShadowImg mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.top.bottom.mas_equalTo(0);
+//            make.width.mas_equalTo(13);
+//        }];
         
         
         _bookNameLabel = [UILabel new];

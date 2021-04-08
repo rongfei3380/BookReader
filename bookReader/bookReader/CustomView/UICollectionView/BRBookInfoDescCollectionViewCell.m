@@ -29,7 +29,7 @@
         
         UILabel *label = [[UILabel alloc] init];
         label.text = @"简介";
-        label.font = [UIFont fontWithName:@"PingFang-SC-Bold" size:18];
+        label.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:18];
         label.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self.contentView addSubview:label];
         [label mas_makeConstraints:^(MASConstraintMaker *make) {

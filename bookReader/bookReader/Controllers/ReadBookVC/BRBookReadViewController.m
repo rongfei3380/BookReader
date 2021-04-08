@@ -140,7 +140,7 @@
     
     self.view.backgroundColor = BRUserDefault.readBackColor ? : color11;
     
-    if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+    if (BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl) {
         [self addChildViewController:self.bookPageVC];
         [self.view insertSubview:_bookPageVC.view atIndex:0];
     } else {
@@ -503,7 +503,7 @@
 - (void)loadDataSuccess:(UIViewController*)currentVC {
     [self hideBookLoading];
     
-    if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl) {
+    if (BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl) {
         
         if(_bookPageVC) {
             [_bookPageVC.view removeFromSuperview];
@@ -531,7 +531,7 @@
             _bookPageVC.delegate = self;
             _bookPageVC.dataSource = self;
             /* 通过双面显示,解决UIPageViewController仿真翻页时背面发白的问题*/
-            _bookPageVC.doubleSided = (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO);
+            _bookPageVC.doubleSided = (BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO);
             [self.view insertSubview:_bookPageVC.view atIndex:0];
         }
         [self.bookPageVC setViewControllers:viewControllers
@@ -543,7 +543,7 @@
        
         
         
-    } else if (BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStyleScroll){
+    } else if (BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStyleScroll){
         
         if(_bookPageVC) {
             [_bookPageVC.view removeFromSuperview];
@@ -618,13 +618,13 @@
 
 #pragma mark - UIPageViewControllerDataSource
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     return [self.viewModel viewControllerBeforeViewController:viewController DoubleSided:isDouble];
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     UIViewController *currentVC = [self.viewModel viewControllerAfterViewController:viewController DoubleSided:isDouble];
     CFDebugLog(@"page current ViewControllers : %@", currentVC);
@@ -685,7 +685,7 @@
  *  @return 返回当前显示控制器的上一个控制器
  */
 - (UIViewController * _Nullable)coverController:(DZMCoverController * _Nonnull)coverController getAboveControllerWithCurrentController:(UIViewController * _Nullable)currentController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     return [self.viewModel viewControllerBeforeViewController:currentController DoubleSided:isDouble];
 }
@@ -699,7 +699,7 @@
  *  @return 返回当前显示控制器的下一个控制器
  */
 - (UIViewController * _Nullable)coverController:(DZMCoverController * _Nonnull)coverController getBelowControllerWithCurrentController:(UIViewController * _Nullable)currentController {
-    BOOL isDouble = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+    BOOL isDouble = BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO;
     [self hidenView];
     return [self.viewModel viewControllerAfterViewController:currentController DoubleSided:isDouble];
 }
@@ -720,7 +720,7 @@
         };
         _bookPageVC.delegate = self;
         _bookPageVC.dataSource = self;
-        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl ? YES : NO;
+        _bookPageVC.doubleSided = BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl ? YES : NO;
         [self.view insertSubview:_bookPageVC.view atIndex:0];
     }
     return _bookPageVC;

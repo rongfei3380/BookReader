@@ -13,6 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define BRUserDefault [GVUserDefaults standardUserDefaults]
 
+typedef NS_ENUM(NSInteger, BRPageViewControllerTransitionStyle) {
+    BRPageViewControllerTransitionStyleScroll = 0 ,// Navigate between views by scrolling.
+    BRPageViewControllerTransitionStylePageCurl = 1, // Navigate between views via a page curl transition.
+    BRPageViewControllerTransitionStyleUpDown = 2 // Navigate between views via a page curl transition.
+};
+
 /// 用来存储一些用户设置
 @interface GVUserDefaults (BRUserDefaults)
 
@@ -28,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 /* 阅读器的翻页方向(右<->左 下<->上)*/
 @property (nonatomic,assign) enum UIPageViewControllerNavigationDirection PageNaviDirection;
 /* 翻页方式(页面卷曲 滚动)*/
-@property (nonatomic,assign) enum UIPageViewControllerTransitionStyle PageTransitionStyle;
+@property (nonatomic,assign) enum BRPageViewControllerTransitionStyle PageTransitionStyle;
 
 @property (nonatomic,assign) enum UIPageViewControllerNavigationOrientation PageNaviOrientation;
 /* 阅读界面背景颜色*/

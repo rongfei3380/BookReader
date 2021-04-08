@@ -332,7 +332,7 @@
     
     return [self sendRequest:CFHTTPRequestMethodGET path:@"chapterInfo.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
-            successBlock(dataBody);
+             successBlock(dataBody);
         }
     } failure:^(NSError * _Nonnull error) {
         if (failureBlock){

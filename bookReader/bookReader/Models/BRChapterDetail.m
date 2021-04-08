@@ -31,6 +31,13 @@
 }
 
 + (id)parseDictionaryIntoObject:(NSDictionary *)dic {
+    
+    // 给白痴的API 返回结构容错用的
+//    if ([dic isKindOfClass:[NSArray class]]) {
+//        NSArray *array = (NSArray *)dic;
+//        dic = array.firstObject;
+//    }
+    
     BRChapterDetail *item = [[BRChapterDetail alloc] initWithAttributes:dic];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"　　<br/><br/>" withString:@""];
     item.content = [item.content stringByReplacingOccurrencesOfString:@"<br/><br/>" withString:@"<br/>"];

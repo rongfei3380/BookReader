@@ -418,17 +418,17 @@
 }
 
 - (void)reloadTransition {
-    UIPageViewControllerTransitionStyle PageTransitionStyle = BRUserDefault.PageTransitionStyle;
+    BRPageViewControllerTransitionStyle PageTransitionStyle = BRUserDefault.PageTransitionStyle;
     
     self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     self.tranUpDownBtn.backgroundColor = CFUIColorFromRGBAInHex(0xEFEFEF, 1);
     
-    if (PageTransitionStyle == UIPageViewControllerTransitionStylePageCurl){
+    if (PageTransitionStyle == BRPageViewControllerTransitionStylePageCurl){
         self.tranPageCurlBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
-    } else if (PageTransitionStyle == UIPageViewControllerTransitionStyleScroll){
+    } else if (PageTransitionStyle == BRPageViewControllerTransitionStyleScroll){
         self.tranScrollBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
-    } else if (PageTransitionStyle == 2){
+    } else if (PageTransitionStyle == BRPageViewControllerTransitionStyleUpDown){
         self.tranUpDownBtn.backgroundColor = CFUIColorFromRGBAInHex(0xFEB038, 1);
     }
 }
@@ -475,11 +475,11 @@
 
 - (void)transitionClick:(UIButton*)btn {
     if (btn == self.tranPageCurlBtn){
-        BRUserDefault.PageTransitionStyle = UIPageViewControllerTransitionStylePageCurl;
+        BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStylePageCurl;
     } else if (btn == self.tranScrollBtn){
-        BRUserDefault.PageTransitionStyle = UIPageViewControllerTransitionStyleScroll;
+        BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStyleScroll;
     } else if (btn == self.tranUpDownBtn) {
-        BRUserDefault.PageTransitionStyle = 2;
+        BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStyleUpDown;
     }
     
     if (self.block){

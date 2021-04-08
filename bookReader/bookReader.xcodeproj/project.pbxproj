@@ -13,6 +13,8 @@
 		5F2108C725E7FBC700DB75D9 /* BRBookUpDownPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2108C625E7FBC700DB75D9 /* BRBookUpDownPageViewController.m */; };
 		5F2108D225EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2108D125EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m */; };
 		5F78B7F9261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F78B7F8261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m */; };
+		5F82C071261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */; };
+		5F82C072261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */; };
 		5F83A0B625D038F000E78F5C /* BQG.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A0B025D0383B00E78F5C /* BQG.xcassets */; };
 		5F83A0D025D0495C00E78F5C /* Launch Screen BQ.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A0CF25D0495C00E78F5C /* Launch Screen BQ.storyboard */; };
 		5F83A12825D04DF200E78F5C /* Img_launcher_logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A12425D04DF200E78F5C /* Img_launcher_logo@2x.png */; };
@@ -285,6 +287,8 @@
 		5F2108D125EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadTextTableViewCell.m; sourceTree = "<group>"; };
 		5F78B7F7261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRRecommendSectionHeaderCollectionReusableView.h; sourceTree = "<group>"; };
 		5F78B7F8261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRRecommendSectionHeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		5F82C06F261F3FF9005A4602 /* UIViewController+Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Analysis.h"; sourceTree = "<group>"; };
+		5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Analysis.m"; sourceTree = "<group>"; };
 		5F83A0B025D0383B00E78F5C /* BQG.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BQG.xcassets; sourceTree = "<group>"; };
 		5F83A0CF25D0495C00E78F5C /* Launch Screen BQ.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen BQ.storyboard"; sourceTree = "<group>"; };
 		5F83A12425D04DF200E78F5C /* Img_launcher_logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Img_launcher_logo@2x.png"; sourceTree = "<group>"; };
@@ -578,6 +582,15 @@
 			path = DZMCoverController;
 			sourceTree = "<group>";
 		};
+		5F82C06E261F3B64005A4602 /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				5F82C06F261F3FF9005A4602 /* UIViewController+Analysis.h */,
+				5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */,
+			);
+			path = Analysis;
+			sourceTree = "<group>";
+		};
 		5F83A09725D0329F00E78F5C /* BQG */ = {
 			isa = PBXGroup;
 			children = (
@@ -675,6 +688,7 @@
 		C51A833A24BDB8680078CB37 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				5F82C06E261F3B64005A4602 /* Analysis */,
 				C51B3D3024D20F260012D6CD /* UIImage+ImageEffects.h */,
 				C51B3D2F24D20F260012D6CD /* UIImage+ImageEffects.m */,
 				C51A833E24BDBA990078CB37 /* NSDate+Utilities.h */,
@@ -1464,6 +1478,7 @@
 				5F8A05D425CB945800C16076 /* BRAgreementView.m in Sources */,
 				5F8A05D525CB945800C16076 /* BRChapterDetail+database.m in Sources */,
 				5F8A05D625CB945800C16076 /* ZJCollectionView.m in Sources */,
+				5F82C072261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */,
 				5F8A05D725CB945800C16076 /* BRCategoryViewController.m in Sources */,
 				5F8A05D825CB945800C16076 /* BRBookCacheViewController.m in Sources */,
 				5F8A05D925CB945800C16076 /* BRSiteTableViewCell.m in Sources */,
@@ -1576,6 +1591,7 @@
 				C59D061D24C2083E00A8237F /* BRBookReadViewModel.m in Sources */,
 				C51A833924BDB1370078CB37 /* CFDataUtils.m in Sources */,
 				C5714BD224A0681500DE0277 /* BRBookInfoModel.m in Sources */,
+				5F82C071261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */,
 				C5A309F525AB7841008FBF1C /* BRBookCacheTableViewCell.m in Sources */,
 				C5601D2824C747C6007C7377 /* BRRecommendCollectionViewCell.m in Sources */,
 				C543F8392500FACD00AD1630 /* CFStrokeLabel.m in Sources */,
