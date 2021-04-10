@@ -49,6 +49,17 @@
     label.textAlignment = NSTextAlignmentLeft;
     label.alpha = 1.0;
     
+    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+//    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [self.headView addSubview:moreBtn];
+    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(40, 40));
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(-5);
+    }];
+    
+    
     ZJSegmentStyle *style = [[ZJSegmentStyle alloc] init];
     //显示滚动条
     style.showLine = YES;
