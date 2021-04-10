@@ -8,6 +8,7 @@
 
 #import "BRBaseTableViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "ZJScrollPageViewDelegate.h"
 
 @interface BRBaseTableViewController ()<DZNEmptyDataSetSource, DZNEmptyDataSetDelegate>
 
@@ -41,7 +42,11 @@
     [self.view addSubview:_tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         if (self.enableModule & BaseViewEnableModuleHeadView) {
-            make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+            if (!self.ischildVC) {
+                make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+            } else {
+                make.top.offset(0);
+            }
         } else {
             make.top.offset(0);
         }

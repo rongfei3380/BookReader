@@ -131,36 +131,36 @@
 - (void)loadView {
     [super loadView];
     
-    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
-    bgImgView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:bgImgView];
-    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.mas_offset(0);
-        make.top.mas_offset(0);
-        make.height.mas_equalTo(SCREEN_WIDTH*(210.f/375.f));
-    }];
-    
-    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(bgImgView.mas_bottom).offset(0);
-        make.left.right.bottom.mas_equalTo(0);
-    }];
-    
-    self.collectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height);
+//    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"img_bg_bookshelf"]];
+//    bgImgView.backgroundColor = [UIColor whiteColor];
+//    [self.view addSubview:bgImgView];
+//    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.mas_offset(0);
+//        make.top.mas_offset(0);
+//        make.height.mas_equalTo(SCREEN_WIDTH*(210.f/375.f));
+//    }];
+//
+//    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(bgImgView.mas_bottom).offset(0);
+//        make.left.right.bottom.mas_equalTo(0);
+//    }];
+//
+//    self.collectionView.frame = CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height);
     [self.collectionView registerClass:[BRBookShelfLongCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfLongCollectionViewCell"];
     [self.collectionView registerClass:[BRBookShelfCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookShelfCollectionViewCell"];
     
-    self.collectionView.clipsToBounds = NO;
+//    self.collectionView.clipsToBounds = NO;
 //    self.collectionView.contentInset = UIEdgeInsetsMake(kStatusBarHeight()*(-1), 0, 0, 0);
     
-    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
-    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:moreBtn];
-    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-        make.top.mas_equalTo(kStatusBarHeight() +2);
-        make.right.mas_equalTo(-5);
-    }];
+//    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
+//    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:moreBtn];
+//    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.size.mas_equalTo(CGSizeMake(40, 40));
+//        make.top.mas_equalTo(kStatusBarHeight() +2);
+//        make.right.mas_equalTo(-5);
+//    }];
     
     
 //    UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];

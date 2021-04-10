@@ -13,6 +13,7 @@
 #import <Lottie/Lottie.h>
 #import "BRSearchBookViewController.h"
 #import "BRHTTPSessionManager.h"
+#import "ZJScrollPageViewDelegate.h"
 
 @interface BRBaseViewController () {
     UIButton *_backButton;
@@ -41,55 +42,74 @@
     [super loadView];
     self.view.backgroundColor = CFUIColorFromRGBAInHex(0xFFFFFF, 1);
     
-    if (_enableModule & BaseViewEnableModuleHeadView) {
-        _headView = [[UIView alloc] init];
-        [self.view addSubview:_headView];
-        [_headView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.mas_offset(0);
-            make.top.mas_offset(0);
-            make.height.mas_offset(44+kStatusBarHeight());
-        }];
+    [self.parentViewController isMemberOfClass:[UINavigationController class]];
+    [self.parentViewController isMemberOfClass:[UITabBarController class]];
+    if (class_conformsToProtocol([self class], @protocol(ZJScrollPageViewChildVcDelegate))) {
+            self.ischildVC = true;
+        if ([self.parentViewController isMemberOfClass:[UINavigationController class]]) {
+            self.ischildVC = false;
+        }
+        
+        if ([self.parentViewController isMemberOfClass:[UITabBarController class]]) {
+            self.ischildVC = false;
+        }
+    }
+
+    if (!self.ischildVC) {
+        
+//    if ([self.parentViewController isMemberOfClass:[UINavigationController class]]) {
+        if (_enableModule & BaseViewEnableModuleHeadView) {
+            _headView = [[UIView alloc] init];
+            [self.view addSubview:_headView];
+            [_headView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.right.mas_offset(0);
+                make.top.mas_offset(0);
+                make.height.mas_offset(44+kStatusBarHeight());
+            }];
+        }
+        
+        if (_enableModule & BaseViewEnableModuleBackBtn) {
+            _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_backButton setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
+            [_backButton addTarget:self action:@selector(clickBackButton:) forControlEvents:UIControlEventTouchUpInside];
+            [_headView insertSubview:_backButton atIndex:999];
+            [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.mas_offset(5);
+                make.bottom.mas_offset(-2);
+                make.size.width.mas_offset(40);
+                make.size.height.mas_offset(40);
+            }];
+        }
+        
+        if (_enableModule & BaseViewEnableModuleTitle) {
+            _titleLabel = [UILabel new];
+            _titleLabel.font = [UIFont systemFontOfSize:17];
+            _titleLabel.textAlignment = NSTextAlignmentCenter;
+            _titleLabel.textColor = [UIColor blackColor];
+            _titleLabel.text = _headTitle;
+            [_headView addSubview:_titleLabel];
+            [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.mas_offset(-7);
+                make.centerX.mas_offset(0);
+                make.width.mas_offset(SCREEN_WIDTH -100);
+                make.height.mas_offset(30);
+            }];
+        }
+        
+        if (_enableModule & BaseViewEnableModuleSearch) {
+            UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
+            [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
+            [_headView addSubview:searchBtn];
+            [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo(CGSizeMake(40, 40));
+                make.bottom.mas_offset(-2);
+                make.right.mas_equalTo(self.headView).offset(-5);
+            }];
+        }
     }
     
-    if (_enableModule & BaseViewEnableModuleBackBtn) {
-        _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_backButton setImage:[UIImage imageNamed:@"nav_back"] forState:UIControlStateNormal];
-        [_backButton addTarget:self action:@selector(clickBackButton:) forControlEvents:UIControlEventTouchUpInside];
-        [_headView insertSubview:_backButton atIndex:999];
-        [_backButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_offset(5);
-            make.bottom.mas_offset(-2);
-            make.size.width.mas_offset(40);
-            make.size.height.mas_offset(40);
-        }];
-    }
     
-    if (_enableModule & BaseViewEnableModuleTitle) {
-        _titleLabel = [UILabel new];
-        _titleLabel.font = [UIFont systemFontOfSize:17];
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.textColor = [UIColor blackColor];
-        _titleLabel.text = _headTitle;
-        [_headView addSubview:_titleLabel];
-        [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_offset(-7);
-            make.centerX.mas_offset(0);
-            make.width.mas_offset(SCREEN_WIDTH -100);
-            make.height.mas_offset(30);
-        }];
-    }
-    
-    if (_enableModule & BaseViewEnableModuleSearch) {
-        UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [searchBtn setImage:[UIImage imageNamed:@"nav_search"] forState:UIControlStateNormal];
-        [searchBtn addTarget:self action:@selector(clickSearchBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [_headView addSubview:searchBtn];
-        [searchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(40, 40));
-            make.bottom.mas_offset(-2);
-            make.right.mas_equalTo(self.headView).offset(-5);
-        }];
-    }
 }
 
 - (void)viewDidLoad {

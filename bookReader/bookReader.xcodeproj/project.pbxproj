@@ -13,6 +13,7 @@
 		5F2108C725E7FBC700DB75D9 /* BRBookUpDownPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2108C625E7FBC700DB75D9 /* BRBookUpDownPageViewController.m */; };
 		5F2108D225EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2108D125EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m */; };
 		5F78B7F9261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F78B7F8261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m */; };
+		5F7B21962621D85E00B43B51 /* BRBookshelfParentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7B21952621D85E00B43B51 /* BRBookshelfParentViewController.m */; };
 		5F82C071261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */; };
 		5F82C072261F3FF9005A4602 /* UIViewController+Analysis.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */; };
 		5F83A0B625D038F000E78F5C /* BQG.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F83A0B025D0383B00E78F5C /* BQG.xcassets */; };
@@ -287,6 +288,8 @@
 		5F2108D125EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookReadTextTableViewCell.m; sourceTree = "<group>"; };
 		5F78B7F7261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRRecommendSectionHeaderCollectionReusableView.h; sourceTree = "<group>"; };
 		5F78B7F8261C661700931A4C /* BRRecommendSectionHeaderCollectionReusableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRRecommendSectionHeaderCollectionReusableView.m; sourceTree = "<group>"; };
+		5F7B21942621D85E00B43B51 /* BRBookshelfParentViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRBookshelfParentViewController.h; sourceTree = "<group>"; };
+		5F7B21952621D85E00B43B51 /* BRBookshelfParentViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BRBookshelfParentViewController.m; sourceTree = "<group>"; };
 		5F82C06F261F3FF9005A4602 /* UIViewController+Analysis.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Analysis.h"; sourceTree = "<group>"; };
 		5F82C070261F3FF9005A4602 /* UIViewController+Analysis.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Analysis.m"; sourceTree = "<group>"; };
 		5F83A0B025D0383B00E78F5C /* BQG.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = BQG.xcassets; sourceTree = "<group>"; };
@@ -905,6 +908,8 @@
 				C5BA67382514A2DD00AA1932 /* BRSettingViewController.m */,
 				C5A309EA25AB6B6B008FBF1C /* BRBookCacheViewController.h */,
 				C5A309EB25AB6B6B008FBF1C /* BRBookCacheViewController.m */,
+				5F7B21942621D85E00B43B51 /* BRBookshelfParentViewController.h */,
+				5F7B21952621D85E00B43B51 /* BRBookshelfParentViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1601,6 +1606,7 @@
 				C59D064824C5863B00A8237F /* NSError+BRError.m in Sources */,
 				5F2108D225EA4E4300DB75D9 /* BRBookReadTextTableViewCell.m in Sources */,
 				5F03A48E25FB106100C04774 /* BRReadViewReusePool.m in Sources */,
+				5F7B21962621D85E00B43B51 /* BRBookshelfParentViewController.m in Sources */,
 				C59D062124C2120D00A8237F /* BRBookReadViewController.m in Sources */,
 				C51A831D24B72A6D0078CB37 /* OBTabControlScrollSegmentView.m in Sources */,
 				5F93995F25C41D0900E686B1 /* BRChaptersTableViewCell.m in Sources */,

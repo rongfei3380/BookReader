@@ -9,6 +9,7 @@
 #import "BRBaseCollectionViewController.h"
 #import <MJRefresh.h>
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
+#import "ZJScrollPageViewDelegate.h"
 
 
 NSString * const kCollectionViewCellIdentifier = @"collectionViewCellIdentifier";
@@ -49,11 +50,13 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
         _layout.itemSize = CGSizeMake(SCREEN_WIDTH, 60);
     }
     CGFloat offSetY = kStatusBarHeight();
-    if (self.enableModule & BaseViewEnableModuleHeadView) {
-        offSetY = CGRectGetMaxY(self.headView.frame);
+    if (self.ischildVC) {
+        offSetY = 0;
+    } else {
+        if (self.enableModule & BaseViewEnableModuleHeadView) {
+            offSetY = CGRectGetMaxY(self.headView.frame);
+        }
     }
-    
-    
     
     _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, offSetY, SCREEN_WIDTH, self.view.frame.size.height -offSetY) collectionViewLayout:_layout];
     _collectionView.delegate = self;
@@ -75,13 +78,20 @@ NSString * const kCollectionReuseViewFooterIdentifier = @"collectionElementKindS
     
     [_collectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:kCollectionReuseViewFooterIdentifier];
     
+    
+    
     [self.view addSubview:_collectionView];
     [_collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        if (self.enableModule & BaseViewEnableModuleHeadView) {
-            make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+        if (!self.ischildVC) {
+            if (self.enableModule & BaseViewEnableModuleHeadView) {
+                make.top.mas_equalTo(self.headView.mas_bottom).offset(0);
+            } else {
+                make.top.mas_equalTo(kStatusBarHeight());
+            }
         } else {
-            make.top.mas_equalTo(kStatusBarHeight());
+            make.top.mas_equalTo(0);
         }
+       
         make.left.right.bottom.mas_equalTo(0);
     }];
     

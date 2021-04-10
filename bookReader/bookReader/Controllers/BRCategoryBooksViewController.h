@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// 分类列表下的书籍列表
-@interface BRCategoryBooksViewController : BRBaseTableViewController<ZJScrollPageViewChildVcDelegate>
+@interface BRCategoryBooksViewController : BRBaseTableViewController
 
 
 @property(nonatomic, strong) NSArray *categoryArray;

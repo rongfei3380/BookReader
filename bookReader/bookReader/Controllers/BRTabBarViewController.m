@@ -15,6 +15,7 @@
 #import "BRAgreementView.h"
 #import "GVUserDefaults+BRUserDefaults.h"
 #import "BRWebviewViewController.h"
+#import "BRBookshelfParentViewController.h"
 
 @interface BRTabBarViewController ()<BRAgreementViewDelegate>
 
@@ -49,7 +50,8 @@
 #pragma mark 添加所有控制器
 - (void)addSubViewController
 {
-    [self addChildViewControllerWithClassname:@"BRBookshelfViewController" imagename:@"tab_bookshelf" title:@"书架"];
+//    [self addChildViewControllerWithClassname:@"BRBookshelfViewController" imagename:@"tab_bookshelf" title:@"书架"];
+    [self addChildViewControllerWithClassname:@"BRBookshelfParentViewController" imagename:@"tab_bookshelf" title:@"书架"];
     [self addChildViewControllerWithClassname:@"BRRankBooksViewController" imagename:@"tab_ranking" title:@"排行"];
     [self addChildViewControllerWithClassname:@"BRCategoryBooksViewController" imagename:@"tab_classification" title:@"分类"];
     [self addChildViewControllerWithClassname:@"BRMineViewController" imagename:@"tab_profile" title:@"我的"];

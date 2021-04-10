@@ -7,11 +7,12 @@
 //
 
 #import "BRBaseCollectionViewController.h"
+#import "ZJScrollPageViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// 书架 页面
-@interface BRBookshelfViewController : BRBaseCollectionViewController
+@interface BRBookshelfViewController : BRBaseCollectionViewController<ZJScrollPageViewChildVcDelegate>
 
 @end
 

@@ -8,11 +8,12 @@
 
 #import "BRBaseTableViewController.h"
 #import "BRBaseCollectionViewController.h"
+#import "ZJScrollPageViewDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 /// 浏览历史
-@interface BRHistoryBooksViewController : BRBaseCollectionViewController
+@interface BRHistoryBooksViewController : BRBaseCollectionViewController<ZJScrollPageViewChildVcDelegate>
 
 @end
 

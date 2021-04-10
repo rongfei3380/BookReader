@@ -96,17 +96,19 @@
     [super loadView];
     [self.collectionView registerClass:[BRBookHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"BRBookHistoryCollectionViewCell"];
     
-    UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [moreBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    moreBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [moreBtn setTitle:@"清空" forState:UIControlStateNormal];
-    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [self.headView addSubview:moreBtn];
-    [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(40, 40));
-        make.bottom.mas_equalTo(-2);
-        make.right.mas_equalTo(-5);
-    }];
+    if (self.headView) {
+        UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [moreBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+        moreBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+        [moreBtn setTitle:@"清空" forState:UIControlStateNormal];
+        [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [self.headView addSubview:moreBtn];
+        [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.size.mas_equalTo(CGSizeMake(40, 40));
+            make.bottom.mas_equalTo(-2);
+            make.right.mas_equalTo(-5);
+        }];
+    }
 }
 
 - (void)viewDidLoad {

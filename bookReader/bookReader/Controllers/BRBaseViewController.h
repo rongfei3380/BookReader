@@ -31,6 +31,7 @@ typedef enum _BaseViewEnableModule {
 @property (nonatomic, strong) UIImage *emptyImg; //页面为空时提示图片
 @property (nonatomic, strong) NSString *emptyString;  //页面为空时提示文字
 @property (nonatomic,assign) BOOL isFirstLoad;
+@property(nonatomic, assign) BOOL ischildVC;
 
 
 #pragma mark- public
