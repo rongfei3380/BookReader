@@ -40,7 +40,8 @@
         
         _bookNameLabel = [[UILabel alloc] init];
         _bookNameLabel.font = [UIFont systemFontOfSize:15];
-        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:15];
+        _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_bookNameLabel];
         
         _updateFlagView = [[UIView alloc] init];
@@ -66,18 +67,19 @@
         _updateFlagView.hidden = YES;
         
         _chapterNameLabel = [[UILabel alloc] init];
-        _chapterNameLabel.font = [UIFont systemFontOfSize:12];
+//        _chapterNameLabel.font = [UIFont systemFontOfSize:12];
+        _chapterNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
         _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         [self addSubview:_chapterNameLabel];
         
         _readStatusLabel = [[UILabel alloc] init];
-        _readStatusLabel.font = [UIFont systemFontOfSize:12];
-        _readStatusLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        _readStatusLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+        _readStatusLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         [self addSubview:_readStatusLabel];
         
         _updataTimeLabel = [[UILabel alloc] init];
-        _updataTimeLabel.font = [UIFont systemFontOfSize:10];
-        _updataTimeLabel.textColor = CFUIColorFromRGBAInHex(0xA1AAB3, 1);
+        _updataTimeLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+        _updataTimeLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
         _updataTimeLabel.textAlignment = NSTextAlignmentRight;
         [self addSubview:_updataTimeLabel];
         
