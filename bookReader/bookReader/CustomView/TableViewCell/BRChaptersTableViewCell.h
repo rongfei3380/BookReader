@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "BRChapter.h"
+#import "BRBookInfoModel.h"
 
 #define kBRChaptersTableViewCellHeight 40
 
@@ -18,9 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
     UILabel *_cacheStateLabel;
 }
 
-@property(nonatomic, strong) BRChapter *chapter;
+
 @property(nonatomic, assign) BOOL isCurrentIndex;
 
+- (void)setChapter:(BRChapter * _Nonnull)chapter bookInfo:(BRBookInfoModel *)book;
 
 @end
 

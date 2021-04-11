@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 浏览历史
 @interface BRHistoryBooksViewController : BRBaseCollectionViewController<ZJScrollPageViewChildVcDelegate>
 
+- (void)deleteHistoryBooksInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

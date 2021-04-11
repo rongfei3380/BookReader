@@ -96,9 +96,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param modelsArray 章节内容数组
 - (void)saveChapterContentWithArray:(NSArray<BRChapterDetail*>*)modelsArray;
 
-/// 获取章节id
+/// 获取章节内容
 /// @param chapterId 章节id
-- (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId;
+- (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId bookId:(NSNumber *)bookId siteId:(NSNumber *)siteId;
 
 /// 删除章节内容
 /// @param chapterId 章节id

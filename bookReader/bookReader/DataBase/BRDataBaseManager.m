@@ -472,10 +472,10 @@
     });
 }
 
-- (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId {
+- (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId bookId:(NSNumber *)bookId siteId:(NSNumber *)siteId {
     __block BRChapterDetail* model = nil;
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        FMResultSet* result = [db executeQuery:kBRDBSelectChapterTextWithId(chapterId)];
+        FMResultSet* result = [db executeQuery:kBRDBSelectChapterTextWithId(chapterId, bookId, siteId)];
         
         if ([result next]){
             model = [[BRChapterDetail alloc] initWithFMResult:result];

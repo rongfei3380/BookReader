@@ -77,8 +77,12 @@
 }
 
 - (void)clickMoreBtn:(UIButton *)button {
+    [self deleteHistoryBooksInfo];
+}
+
+- (void)deleteHistoryBooksInfo {
     [[BRDataBaseManager sharedInstance] deleteHistoryBooksInfo];
-    [self.collectionView reloadData];
+    [self initData];
 }
 
 #pragma mark- LifeClycle

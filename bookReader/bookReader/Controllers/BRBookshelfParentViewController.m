@@ -10,9 +10,11 @@
 #import "ZJScrollPageView.h"
 #import "BRHistoryBooksViewController.h"
 #import "BRBookshelfViewController.h"
+#import "FTPopOverMenu.h"
+#import "GVUserDefaults+BRUserDefaults.h"
 
 @interface BRBookshelfParentViewController ()<ZJScrollPageViewDelegate> {
-    
+    BRBaseViewController *_currentViewController;
 }
 
 @property(nonatomic, strong) NSArray *titles;
@@ -51,7 +53,7 @@
     
     UIButton *moreBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [moreBtn setImage:[UIImage imageNamed:@"nav_more"] forState:UIControlStateNormal];
-//    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [moreBtn addTarget:self action:@selector(clickMoreBtn:) forControlEvents:UIControlEventTouchUpInside];
     [self.headView addSubview:moreBtn];
     [moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(40, 40));
@@ -99,6 +101,78 @@
         childVc.title = [self.titles objectAtIndex:index];
     }
     return childVc;
+}
+
+
+- (void)scrollPageController:(UIViewController *)scrollPageController childViewControllDidAppear:(UIViewController *)childViewController forIndex:(NSInteger)index {
+    _currentViewController = childViewController;
+}
+
+#pragma mark-
+
+-(void)clickMoreBtn:(UIButton *)button {
+    
+    if (_currentViewController == [self.vcArray objectAtIndex:0]) {
+        NSArray *menuNameArray = @[@"书籍管理", (BRUserDefault.isShelfStyle ? @"列表模式"  : @"书架模式")];
+        NSArray *menuImageNameArray = @[@"ico_bookshelf_menu",@"icon_bookshelf_menu"];
+
+        FTPopOverMenuConfiguration *config = [FTPopOverMenuConfiguration defaultConfiguration];
+        config.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        config.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        config.borderColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        config.separatorColor = [UIColor clearColor];
+        config.shadowColor = CFUIColorFromRGBAInHex(0x000000, 1);
+        config.borderWidth = 0.5f;
+        
+        config.borderColor = UIColor.whiteColor;
+        kWeakSelf(self)
+        [FTPopOverMenu showForSender:button
+                       withMenuArray:menuNameArray
+                          imageArray:menuImageNameArray
+                       configuration:config
+                           doneBlock:^(NSInteger selectedIndex) {
+            BRBookshelfViewController *shelfVC = (BRBookshelfViewController *)[self.vcArray objectAtIndex:0];
+
+            if (selectedIndex == 0) {
+                [shelfVC gotoBooksManager];
+            } else if (selectedIndex == 1) {
+                shelfVC.isShelf = !shelfVC.isShelf;
+            }
+        } dismissBlock:^{
+                               
+        }];
+    } else if (_currentViewController == [self.vcArray objectAtIndex:1]) {
+        NSArray *menuNameArray = @[@"清空浏览"];
+        NSArray *menuImageNameArray = @[@"ico_bookshelf_menu"];
+
+        FTPopOverMenuConfiguration *config = [FTPopOverMenuConfiguration defaultConfiguration];
+        config.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
+        config.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        config.borderColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        config.separatorColor = [UIColor clearColor];
+        config.shadowColor = CFUIColorFromRGBAInHex(0x000000, 1);
+        config.borderWidth = 0.5f;
+        
+        config.borderColor = UIColor.whiteColor;
+        kWeakSelf(self)
+        [FTPopOverMenu showForSender:button
+                       withMenuArray:menuNameArray
+                          imageArray:menuImageNameArray
+                       configuration:config
+                           doneBlock:^(NSInteger selectedIndex) {
+            kStrongSelf(self)
+            BRHistoryBooksViewController *historyVC = (BRHistoryBooksViewController *)_currentViewController;
+            if (selectedIndex == 0) {
+                [historyVC deleteHistoryBooksInfo]; 
+            }
+                               
+                               
+        } dismissBlock:^{
+                               
+        }];
+    }
+    
+   
 }
 
 @end

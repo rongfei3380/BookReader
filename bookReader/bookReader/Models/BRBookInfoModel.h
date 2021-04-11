@@ -46,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 当前选择的源index
 @property(nonatomic, strong) NSNumber *siteIndex;
 
+@property(nonatomic, strong) BRSite *selectSite;
+
 /// 是否选中用于书籍管理
 @property(nonatomic, strong) NSNumber *isSelected;
 

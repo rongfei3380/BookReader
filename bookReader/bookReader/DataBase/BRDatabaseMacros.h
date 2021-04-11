@@ -31,7 +31,7 @@ time DATETIME NOT NULL)"
 #define kBRDBInsertChapterText(book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time) @"INSERT OR REPLACE INTO t_chapter_text (book_id, chapter_id, chapter_name, site_id, site_name, chapter_text,    pre_chapter_id, next_chapter_id, time)\
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time
 
-#define kBRDBSelectChapterTextWithId(chapterId) @"SELECT * FROM t_chapter_text WHERE chapter_id=? LIMIT 1",chapterId
+#define kBRDBSelectChapterTextWithId(chapterId, bookId, siteId) @"SELECT * FROM t_chapter_text WHERE chapter_id=? AND book_id=? AND site_id=? LIMIT 1",chapterId,bookId,siteId
 
 #define kBRDBDeleteChapterTextWithId(chapterId) @"DELETE FROM t_chapter_text WHERE id=?",chapterId
 

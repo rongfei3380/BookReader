@@ -74,7 +74,7 @@
 //        CFButtonUpDwon *hotBtn = [self btnWithTitle:@"热搜榜" Image:@"ranking_hot_search"];
 //        hotBtn.tag = 1001;
         
-        CFButtonUpDwon *highBtn = [self btnWithTitle:@"好评榜" Image:@"ranking_high_opinion"];
+        CFButtonUpDwon *highBtn = [self btnWithTitle:@"收藏榜" Image:@"ranking_high_opinion"];
         highBtn.tag = 1002;
         
         CFButtonUpDwon *newBtn = [self btnWithTitle:@"新书榜" Image:@"ranking_new_book"];

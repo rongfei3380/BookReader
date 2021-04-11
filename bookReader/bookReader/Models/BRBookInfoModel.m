@@ -69,6 +69,17 @@
 #pragma mark- setter
 
 
+#pragma mark- getter
+
+- (BRSite *)selectSite {
+    if (!_selectSite) {
+        BRSite *site = [self.sitesArray objectAtIndex:(self.siteIndex.integerValue >= self.sitesArray.count ? self.sitesArray.count -1 : self.siteIndex.integerValue)]; // 这里需要避免 源变更导致的问题
+        _selectSite = site;
+    }
+    return _selectSite;
+}
+
+
 #pragma mark- API
 
 + (NSURLSessionDataTask *)getbookinfoWithBookId:(NSInteger)bookid

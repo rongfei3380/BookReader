@@ -165,13 +165,36 @@
                failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+    NSString *typeStr = nil;
+    switch (type) {
+        case 1:{
+            typeStr = @"renqi";
+        }
+            break;
+        case 2:{
+            typeStr = @"shoucang";
+        }
+            break;
+        case 3:{
+            typeStr = @"xinshu";
+        }
+            break;
+        case 4:{
+            typeStr = @"wanjie";
+        }
+            break;
+            
+        default:
+            break;
+    }
        
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , type] forKey:@"type"];
+//    [paramDic setObject:[NSString stringWithFormat:@"%ld" , type] forKey:@"type"];
+    [paramDic setObject:[NSString stringWithFormat:@"%@" , typeStr] forKey:@"type"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , page] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , size] forKey:@"size"];
      
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"recommend.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"tops.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -364,6 +387,24 @@
                failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
     return [self sendRequest:CFHTTPRequestMethodGET path:@"home.json" parameters:nil success:^(id  _Nonnull dataBody) {
+        if (successBlock) {
+            successBlock(dataBody);
+        }
+    } failure:^(NSError * _Nonnull error) {
+        if (failureBlock){
+            failureBlock(error);
+        }
+    }];
+}
+
+- (NSURLSessionDataTask *)addbookWithBookId:(NSNumber *)bookId
+                                     sucess:(CFAPIClientSuccessBlock)successBlock
+                               failureBlock:(CFAPIClientFailureBlock)failureBlock {
+    NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
+       
+    [paramDic setObject:bookId forKey:@"id"];
+
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"mark.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }

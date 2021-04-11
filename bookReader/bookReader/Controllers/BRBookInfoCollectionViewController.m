@@ -20,6 +20,7 @@
 #import "BRChaptersView.h"
 #import "BRSitesSelectViewController.h"
 #import "BRChoseCacheView.h"
+#import "BRAPIClient.h"
 
 @interface BRBookInfoCollectionViewController ()<BRBookInfoActionsCollectionViewCellDelegate, BRSitesSelectViewControllerDelegate, BRBookInfoDescCollectionViewCellDelegate, BRChoseCacheViewDelegate> {
     BRChaptersView *_chaptersView;
@@ -171,6 +172,13 @@
         
     } else {
         kWeakSelf(self)
+                  
+      [[BRAPIClient sharedInstance] addbookWithBookId:self.bookInfo.bookId sucess:^(id  _Nonnull dataBody) {
+          
+      } failureBlock:^(NSError * _Nonnull error) {
+          
+      }];
+        
         [self addBookModelSucess:^(NSArray * _Nonnull recodes) {
             
         } failureBlock:^(NSError * _Nonnull error) {

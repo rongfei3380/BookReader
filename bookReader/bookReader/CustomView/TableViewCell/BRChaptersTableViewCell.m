@@ -13,6 +13,12 @@
 #import "BRDataBaseManager.h"
 #import "BRChapterDetail.h"
 
+@interface BRChaptersTableViewCell ()
+
+@property(nonatomic, strong) BRChapter *chapter;
+
+@end
+
 
 @implementation BRChaptersTableViewCell
 
@@ -65,11 +71,30 @@
     // Configure the view for the selected state
 }
 
-- (void)setChapter:(BRChapter *)chapter {
+//- (void)setChapter:(BRChapter *)chapter {
+//    _chapter = chapter;
+//    _chapterNameLabel.text = _chapter.name;
+//
+//    BRChapterDetail *chapterDetail = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:chapter.chapterId bookId:chapter.bookId];
+//
+//    if (chapterDetail.content == nil || chapterDetail.content.length == 0) {
+//        _cacheStateLabel.hidden = YES;
+//        [_chapterNameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.right.mas_equalTo(-15);
+//        }];
+//    } else {
+//        [_chapterNameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.right.mas_equalTo(-80);
+//        }];
+//        _cacheStateLabel.hidden = NO;
+//    }
+//}
+
+- (void)setChapter:(BRChapter * _Nonnull)chapter bookInfo:(BRBookInfoModel *)book {
     _chapter = chapter;
     _chapterNameLabel.text = _chapter.name;
     
-    BRChapterDetail *chapterDetail = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:chapter.chapterId];
+    BRChapterDetail *chapterDetail = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:chapter.chapterId bookId:book.bookId siteId:book.selectSite.siteId];
     
     if (chapterDetail.content == nil || chapterDetail.content.length == 0) {
         _cacheStateLabel.hidden = YES;
@@ -83,6 +108,7 @@
         _cacheStateLabel.hidden = NO;
     }
 }
+
 
 - (void)setIsCurrentIndex:(BOOL)isCurrentIndex {
     _isCurrentIndex = isCurrentIndex;

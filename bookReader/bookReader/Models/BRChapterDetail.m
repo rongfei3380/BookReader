@@ -71,7 +71,7 @@
                              siteId:(NSInteger)siteId
                              sucess:(void(^)(BRChapterDetail *chapterDetail))successBlock
                        failureBlock:(BRObjectFailureBlock)failureBlock {
-    BRChapterDetail *dbDetai = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:[NSNumber numberWithInteger:chapterId]];
+    BRChapterDetail *dbDetai = [[BRDataBaseManager sharedInstance] selectChapterContentWithChapterId:[NSNumber numberWithInteger:chapterId] bookId:bookId siteId:[NSNumber numberWithInteger:siteId]];
     if (dbDetai) {
         if (successBlock) {
             successBlock(dbDetai);

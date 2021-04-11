@@ -26,7 +26,7 @@
     NSURLSessionDataTask *_bookInfosShelfTask;
 }
 
-@property(nonatomic, assign) BOOL isShelf; // 是否为书架模式
+
 
 @end
 

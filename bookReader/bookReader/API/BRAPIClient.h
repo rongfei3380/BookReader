@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 获取榜单列表
 /// @param type 榜单类型,默认为1:人气榜,2:热搜榜,3:完结榜,4:新书榜,5:好评榜
+/// shoucang        收藏榜
+//  xinshu     新书榜
+//  renqi      人气榜
+//  wanjie     完结榜
 /// @param page 页码,默认0
 /// @param size 每页数量,默认10
 /// @param successBlock 返回的数据
@@ -125,6 +129,16 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
+
+
+
+/// 收藏 书本 用来统计使用
+/// @param bookId  书籍id
+/// @param successBlock 成功
+/// @param failureBlock 失败
+- (NSURLSessionDataTask *)addbookWithBookId:(NSNumber *)bookId
+                                     sucess:(CFAPIClientSuccessBlock)successBlock
+                               failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
 @end
 
