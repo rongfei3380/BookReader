@@ -28,7 +28,8 @@
              @"isOver":@"isover",
              @"lastChapterId":@"lastChapterId",
              @"lastChapterName":@"lastchaptername",
-             @"lastupdateDate":@"lastupdate"
+             @"lastupdateDate":@"lastupdate",
+             @"banner":@"banner"
     };
 }
 + (nullable NSDictionary*)modelContainerPropertyGenericClass {

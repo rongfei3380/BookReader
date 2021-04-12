@@ -39,7 +39,7 @@
 
 - (void)setBookInfo:(BRBookInfoModel *)bookInfo {
     _bookInfo = bookInfo;
-    [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.cover] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
+    [_coverImageView yy_setImageWithURL:[NSURL URLWithString:_bookInfo.banner] placeholder:[UIImage imageNamed:@"img_book_placehold"]];
 }
 
 

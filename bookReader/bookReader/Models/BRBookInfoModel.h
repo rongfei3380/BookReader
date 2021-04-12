@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, strong) NSNumber *bookId;
 /*小说封面图*/
 @property(nonatomic, strong) NSString *cover;
+/*小说封面图 用于轮播*/
+@property(nonatomic, strong) NSString *banner;
 /*小说作者*/
 @property(nonatomic, strong) NSString *author;
 /*作者id*/
