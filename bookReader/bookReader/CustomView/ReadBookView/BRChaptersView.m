@@ -228,6 +228,7 @@
     
     BRChapter *chapter = [self.dataArray objectAtIndex:indexPath.row];
     [cell setChapter:chapter bookInfo:self.bookInfo];
+    
     if (row - 1 == self.currentIndex){
         cell.isCurrentIndex = YES;
     } else{

@@ -9,15 +9,17 @@
 #ifndef BRDatabaseMacros_h
 #define BRDatabaseMacros_h
 
-#define kBRDatabaseName @"BRDatabase.sqlite"
+#define kBRDatabaseName @"BRDatabase01.sqlite"
 #define kBRDatabasePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).lastObject stringByAppendingPathComponent:kBRDatabaseName]
 
 #pragma mark- t_chapter_text
 
-// 章节内容表        
+// 章节内容表
+// unique_id  章节内容唯一id "book_id+chapter_id+site_id"
 /*-----------------------------------------  t_chapter_text  ----------------------------------------------------*/
 #define kBRDBCreateChapterTextTable @"CREATE TABLE IF NOT EXISTS t_chapter_text (\
 id INTEGER PRIMARY KEY AUTOINCREMENT,\
+unique_id TEXT NOT NULL UNIQUE,\
 book_id TEXT NOT NULL,\
 chapter_id TEXT NOT NULL,\
 chapter_name TEXT NOT NULL,\
@@ -28,12 +30,13 @@ pre_chapter_id TEXT,\
 next_chapter_id TEXT,\
 time DATETIME NOT NULL)"
 
-#define kBRDBInsertChapterText(book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time) @"INSERT OR REPLACE INTO t_chapter_text (book_id, chapter_id, chapter_name, site_id, site_name, chapter_text,    pre_chapter_id, next_chapter_id, time)\
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time
 
-#define kBRDBSelectChapterTextWithId(chapterId, bookId, siteId) @"SELECT * FROM t_chapter_text WHERE chapter_id=? AND book_id=? AND site_id=? LIMIT 1",chapterId,bookId,siteId
+#define kBRDBInsertChapterText(unique_id, book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time) @"INSERT OR REPLACE INTO t_chapter_text (unique_id, book_id, chapter_id, chapter_name, site_id, site_name, chapter_text,    pre_chapter_id, next_chapter_id, time)\
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",unique_id, book_id, chapter_id, chapter_name, site_id, site_name, chapter_text, pre_chapter_id, next_chapter_id, time
 
-#define kBRDBDeleteChapterTextWithId(chapterId) @"DELETE FROM t_chapter_text WHERE id=?",chapterId
+#define kBRDBSelectChapterTextWithId(uniqueId) @"SELECT * FROM t_chapter_text WHERE unique_id=?",uniqueId
+
+#define kBRDBDeleteChapterTextWithId(chapterId) @"DELETE FROM t_chapter_text WHERE unique_id=?",chapterId
 
 #define kBRDBDeleteChapterTextWithBookId(bookId) @"DELETE FROM t_chapter_text WHERE book_id=?",bookId
 

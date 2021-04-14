@@ -276,6 +276,7 @@
     }
     [_dataDict setObject:textArr forKey:self.currentChapterDetail.chapterId];
     
+
     NSString* currenText = textArr[self.currentVCIndex];
     BRBookReadContenViewController* currenVC = (BRBookReadContenViewController* )[self.readViewReusePool dequeueReusebleView];
     if (!currenVC) {
@@ -319,7 +320,7 @@
 - (void)advanceLoadChapters {
     NSInteger index = self.currentIndex;
     NSMutableArray* chapters = [NSMutableArray array];
-    NSInteger adLoadChapters = (BRUserDefault.adLoadChapters>=1?:3)<= 20?:20;
+    NSInteger adLoadChapters = (BRUserDefault.adLoadChapters>= 1?:3)<= 20?:20;
     for (NSInteger i = 0; i < adLoadChapters; i++) {
         ++index;
         if (index < self.chaptersArray.count){

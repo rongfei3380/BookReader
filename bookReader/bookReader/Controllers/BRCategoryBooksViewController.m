@@ -217,7 +217,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle;
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleSearch;
         self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
         
         _bookStatus = -1;
@@ -229,6 +229,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.titleLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:22];
+    self.titleLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
 }
 
 - (void)viewWillAppear:(BOOL)animated {

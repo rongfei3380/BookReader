@@ -150,6 +150,7 @@
         
     self.chaptersView = [[BRChaptersView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, self.view.frame.size.height -(BOTTOM_HEIGHT))];
 //    self.chaptersView.chapters = self.viewModel.getAllChapters;
+    self.chaptersView.bookInfo = self.viewModel.BRBookInfoModel;
     self.chaptersView.bookName = self.viewModel.getBookName;
     kWeakSelf(self);
     self.chaptersView.didSelectChapter = ^(NSInteger index) {
@@ -320,6 +321,17 @@
     [_bookPageVC.view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.left.right.mas_equalTo(0);
     }];
+    
+    [_coverController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.mas_equalTo(0);
+    }];
+    
+    [_bookUpDownPageViewController.view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.mas_equalTo(0);
+    }];
+
+    
+//    [_coverController reloadInputViews];
 }
 
 /// 按数量缓存 章节
@@ -571,7 +583,7 @@
         _coverController.view.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
         
         
-    } else if (BRUserDefault.PageTransitionStyle == 2){
+    } else if (BRUserDefault.PageTransitionStyle == BRPageViewControllerTransitionStyleUpDown){
         
         if(_bookPageVC) {
             [_bookPageVC.view removeFromSuperview];
@@ -592,11 +604,10 @@
                 kStrongSelf(self);
                 [self changeNaviBarHidenWithAnimated];
             };
-            _bookUpDownPageViewController.tableView.backgroundColor = BRUserDefault.readBackColor ? CFUIColorFromRGBAInHex(0xffffff, 1): CFUIColorFromRGBAInHex(0xa39e8b, 1);
-
-            
-            [self.view insertSubview:_bookUpDownPageViewController.view atIndex:0];
         }
+        [self.view insertSubview:_bookUpDownPageViewController.view atIndex:0];
+        _bookUpDownPageViewController.view.backgroundColor = BRUserDefault.readBackColor ? BRUserDefault.readBackColor: CFUIColorFromRGBAInHex(0xa39e8b, 1);
+        
     }
     
     

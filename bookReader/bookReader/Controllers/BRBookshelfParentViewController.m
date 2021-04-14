@@ -143,7 +143,7 @@
         }];
     } else if (_currentViewController == [self.vcArray objectAtIndex:1]) {
         NSArray *menuNameArray = @[@"清空浏览"];
-        NSArray *menuImageNameArray = @[@"ico_bookshelf_menu"];
+        NSArray *menuImageNameArray = @[@"ico_history_clear"];
 
         FTPopOverMenuConfiguration *config = [FTPopOverMenuConfiguration defaultConfiguration];
         config.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);

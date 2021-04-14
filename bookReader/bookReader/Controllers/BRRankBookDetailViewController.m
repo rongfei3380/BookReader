@@ -23,7 +23,7 @@
 #pragma mark- private
 
 - (void)getRankBookWtihIndex:(NSInteger )index page:(NSInteger )page {
-    NSArray *typesArray = @[@1, @2, @5, @4, @3];
+    NSArray *typesArray = @[@1, @2, @3, @4];
     NSInteger type = [[typesArray objectAtIndex:index] integerValue];
     
     if (self.isFirstLoad && page == 0) {

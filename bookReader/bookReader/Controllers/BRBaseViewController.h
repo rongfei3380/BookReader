@@ -27,6 +27,7 @@ typedef enum _BaseViewEnableModule {
 
 @property(nonatomic, strong, readonly) UIView *headView;
 @property(nonatomic, assign) BaseViewEnableModule enableModule;
+@property(nonatomic, strong) UILabel *titleLabel;
 @property(nonatomic, strong) NSString *headTitle;
 @property (nonatomic, strong) UIImage *emptyImg; //页面为空时提示图片
 @property (nonatomic, strong) NSString *emptyString;  //页面为空时提示文字

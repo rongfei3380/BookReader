@@ -29,7 +29,14 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 0);
         
-        _searchViewBg = [[UIView alloc] initWithFrame:CGRectMake(15, 0, SCREEN_WIDTH -15*2, 33)];
+        UILabel *searchLabel = [[UILabel alloc] init];
+        searchLabel.frame = CGRectMake(15, 0, 50, 33);
+        searchLabel.text = @"书城";
+        searchLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
+        searchLabel.font = [UIFont fontWithName:@"PingFang-SC-Medium" size:22];
+        [self addSubview:searchLabel];
+        
+        _searchViewBg = [[UIView alloc] initWithFrame:CGRectMake(75, 0, SCREEN_WIDTH -15 -75, 33)];
         _searchViewBg.backgroundColor = CFUIColorFromRGBAInHex(0xF8F6F9, 1);
         _searchViewBg.layer.cornerRadius = 16.5;
         [self addSubview:_searchViewBg];

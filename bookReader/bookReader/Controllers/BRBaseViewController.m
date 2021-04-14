@@ -20,7 +20,7 @@
 }
 
 @property(nonatomic, strong, readwrite) UIView *headView;
-@property(nonatomic, strong) UILabel *titleLabel;
+
 @property(nonatomic, strong) UIView *bookLoadingView;
 @property(nonatomic, strong) LOTAnimationView *loadingAnimationView;
 @property(nonatomic, strong) UIImageView *animationView;

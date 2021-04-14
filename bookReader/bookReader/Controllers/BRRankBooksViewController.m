@@ -76,14 +76,14 @@
 }
 - (void)loadView {
     [super loadView];
-    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"bg_rank"]];
-    [self.view insertSubview:bgImgView belowSubview:self.collectionView];
-    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.mas_offset(0);
-        make.top.mas_offset(0);
-        make.height.mas_equalTo(SCREEN_WIDTH*(200.f/375.f));
-    }];
-    self.collectionView.backgroundColor = [UIColor clearColor];
+//    UIImageView *bgImgView =[[UIImageView alloc] initWithImage: [UIImage imageNamed:@"bg_rank"]];
+//    [self.view insertSubview:bgImgView belowSubview:self.collectionView];
+//    [bgImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.right.mas_offset(0);
+//        make.top.mas_offset(0);
+//        make.height.mas_equalTo(SCREEN_WIDTH*(200.f/375.f));
+//    }];
+//    self.collectionView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidLoad {

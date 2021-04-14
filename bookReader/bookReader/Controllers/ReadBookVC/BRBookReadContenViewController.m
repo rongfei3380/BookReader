@@ -90,6 +90,13 @@
 //    [self.view addSubview:_timeLabel];
     
     [self initialData];
+    
+    if (BRUserDefault.isNightStyle){
+        self.view.backgroundColor   = CFUIColorFromRGBAInHex(0x171a21, 1);
+        _chapterNameLabel.textColor = CFUIColorFromRGBAInHex(0x576071, 1);
+        _indexLabel.textColor       = CFUIColorFromRGBAInHex(0x576071, 1);
+        _timeLabel.textColor        = CFUIColorFromRGBAInHex(0x576071, 1);
+    }
 }
 
 - (void)initialSubViewConstraints {
@@ -183,6 +190,7 @@
 }
 
 - (void)reloadContentWithText:(NSString*)text chapterName:(NSString*)chapterName totalNum:(NSInteger)totalNum index:(NSInteger)index {
+        
     _text = text;
     _contentView.text = _text;
     

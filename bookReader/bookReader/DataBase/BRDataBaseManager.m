@@ -432,10 +432,12 @@
     if (kNumberIsEmpty(model.bookId) || kNumberIsEmpty(model.chapterId)) {
         return NO;
     }
+    NSString *uniqueId = [NSString stringWithFormat:@"%@+%@+%@", model.bookId, model.chapterId, model.siteId];
+    
     kDISPATCH_ON_GLOBAL_QUEUE_LOW(^(){
         [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             if ([db open]) {
-                BOOL insert = [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
+                BOOL insert = [db executeUpdate:kBRDBInsertChapterText(uniqueId ,model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
                 if(!insert){
                     CFDebugLog(@"insert BookChapterTextModel url = %@ error:%@",model.chapterName ,[db lastErrorMessage]);
                 }
@@ -448,7 +450,7 @@
 
 - (void)saveChapterContentWithArray:(NSArray<BRChapterDetail*>*)modelsArray{
     
-    kDISPATCH_ON_GLOBAL_QUEUE_LOW(^(){
+    kDISPATCH_ON_GLOBAL_QUEUE_LOW((^(){
         [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
             if ([db open]){
                 
@@ -456,7 +458,9 @@
                 BOOL isRollBack = NO;
                 @try {
                     for (BRChapterDetail *model in modelsArray) {
-                        [db executeUpdate:kBRDBInsertChapterText(model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
+                        NSString *uniqueId = [NSString stringWithFormat:@"%@+%@+%@", model.bookId, model.chapterId, model.siteId];
+                        
+                        [db executeUpdate:kBRDBInsertChapterText(uniqueId ,model.bookId, model.chapterId, model.chapterName, model.siteId, model.siteName, model.content, model.preChapterId, model.nextChapterId, [NSDate date])];
                     }
                 } @catch (NSException *exception) {
                     isRollBack = YES;
@@ -469,14 +473,15 @@
             }
             [db close];
         }];
-    });
+    }));
 }
 
 - (BRChapterDetail *)selectChapterContentWithChapterId:(NSNumber *)chapterId bookId:(NSNumber *)bookId siteId:(NSNumber *)siteId {
+    
+    NSString *uniqueId = [NSString stringWithFormat:@"%@+%@+%@", bookId, chapterId, siteId];
     __block BRChapterDetail* model = nil;
     [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
-        FMResultSet* result = [db executeQuery:kBRDBSelectChapterTextWithId(chapterId, bookId, siteId)];
-        
+        FMResultSet* result = [db executeQuery:kBRDBSelectChapterTextWithId(uniqueId)];
         if ([result next]){
             model = [[BRChapterDetail alloc] initWithFMResult:result];
             [result close];
