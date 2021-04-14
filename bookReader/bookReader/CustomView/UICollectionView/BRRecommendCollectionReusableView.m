@@ -82,13 +82,13 @@
 //        hotBtn.tag = 1001;
         
         CFButtonUpDwon *highBtn = [self btnWithTitle:@"收藏榜" Image:@"ranking_high_opinion"];
-        highBtn.tag = 1002;
+        highBtn.tag = 1001;
         
         CFButtonUpDwon *newBtn = [self btnWithTitle:@"新书榜" Image:@"ranking_new_book"];
-        newBtn.tag = 1003;
+        newBtn.tag = 1002;
         
         CFButtonUpDwon *endBtn = [self btnWithTitle:@"完结榜" Image:@"ranking_end_list"];
-        endBtn.tag = 1004;
+        endBtn.tag = 1003;
         
         [self addSubview:popularBtn];
 //        [self addSubview:hotBtn];
