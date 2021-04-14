@@ -11,6 +11,7 @@
 #import "CFBaseResponseErrorParser.h"
 #import "CFCustomMacros.h"
 #import "NSError+BRError.h"
+#import <CommonCrypto/CommonCrypto.h>
 
 @interface BRAPIClient ()
 
@@ -20,10 +21,27 @@
 
 @implementation BRAPIClient
 
+
+/// String's md5 hash.
+static NSString *_BRNSStringMD5(NSString *string) {
+    if (!string) return nil;
+    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(data.bytes, (CC_LONG)data.length, result);
+    return [NSString stringWithFormat:
+                @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+                result[0],  result[1],  result[2],  result[3],
+                result[4],  result[5],  result[6],  result[7],
+                result[8],  result[9],  result[10], result[11],
+                result[12], result[13], result[14], result[15]
+            ];
+}
+
+
 - (instancetype)init{
     if (self = [super init]) {
         
-        self.baseUrl = @"https://api.21skcy.com:16888/appapi";
+        self.baseUrl = @"https://api.21skcy.com:16888";
         
 //        _configuration = [CFBaseAPIClient defaultURLSessionConfiguration];
 //
@@ -95,6 +113,14 @@
 
     };
 
+    // 开启 url 加密
+    {
+        NSInteger timestamp = [NSDate date].timeIntervalSince1970;
+        NSString *key = @"21skcy2021";
+        NSString *codeStr = [NSString stringWithFormat:@"%@%ld/%@", key, timestamp, path];
+        NSString *md5hashStr = _BRNSStringMD5(codeStr);
+        path = [NSString stringWithFormat:@"%ld/%@/%@", timestamp, md5hashStr, path];
+    }
 //    BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     switch (method) {
         case CFHTTPRequestMethodGET: {
@@ -194,7 +220,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , size] forKey:@"size"];
      
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"tops.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/tops.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -218,7 +244,7 @@
          [paramDic setObject:@0 forKey:@"is_select"];
     }
      
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"info.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/info.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -236,7 +262,7 @@
             
     [paramDic setObject:ids forKey:@"id"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"userCollect.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/userCollect.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -251,7 +277,7 @@
                  failureBlock:(CFAPIClientFailureBlock)failureBlock{
     
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"category.json" parameters:nil success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/category.json" parameters:nil success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -280,7 +306,7 @@
     }
     [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
     [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"list.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/list.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -303,7 +329,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)page] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)size] forKey:@"size"];
     
-    return [self sendRequest:CFHTTPRequestMethodPOST path:@"search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodPOST path:@"appapi/search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -331,7 +357,7 @@
         [paramDic setObject:@"desc" forKey:@"sort"];
     }
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"chapters.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/chapters.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -353,7 +379,7 @@
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , chapterId] forKey:@"chapterid"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , siteId] forKey:@"siteid"];
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"chapterInfo.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/chapterInfo.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
              successBlock(dataBody);
         }
@@ -372,7 +398,7 @@
        
     [paramDic setObject:bookId forKey:@"bookid"];
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"source.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/source.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -386,7 +412,7 @@
 - (NSURLSessionDataTask *)getRecommendSuccess:(CFAPIClientSuccessBlock)successBlock
                failureBlock:(CFAPIClientFailureBlock)failureBlock {
     
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"home.json" parameters:nil success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/home.json" parameters:nil success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }
@@ -404,7 +430,7 @@
        
     [paramDic setObject:bookId forKey:@"id"];
 
-    return [self sendRequest:CFHTTPRequestMethodGET path:@"mark.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
+    return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/mark.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
             successBlock(dataBody);
         }

@@ -58,7 +58,7 @@
         [self addSubview:_chapterNameLabel];
         
         _introLabel = [[UILabel alloc] init];
-       _introLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+       _introLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:13];
        _introLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
        _introLabel.numberOfLines = 2;
        _introLabel.lineBreakMode = NSLineBreakByWordWrapping;
