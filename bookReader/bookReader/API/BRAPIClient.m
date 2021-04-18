@@ -216,7 +216,7 @@ static NSString *_BRNSStringMD5(NSString *string) {
        
 //    [paramDic setObject:[NSString stringWithFormat:@"%ld" , type] forKey:@"type"];
     [paramDic setObject:[NSString stringWithFormat:@"%@" , typeStr] forKey:@"type"];
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , page] forKey:@"page"];
+    [paramDic setObject:[NSString stringWithFormat:@"%ld" , page +1] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , size] forKey:@"size"];
      
 
@@ -304,7 +304,7 @@ static NSString *_BRNSStringMD5(NSString *string) {
     if(categoryId > 0) {
         [paramDic setObject:[NSNumber numberWithInteger:categoryId] forKey:@"id"];
     }
-    [paramDic setObject:[NSNumber numberWithInteger:page] forKey:@"page"];
+    [paramDic setObject:[NSNumber numberWithInteger:page +1] forKey:@"page"];
     [paramDic setObject:[NSNumber numberWithInteger:size] forKey:@"size"];
     return [self sendRequest:CFHTTPRequestMethodGET path:@"appapi/list.json" parameters:paramDic success:^(id  _Nonnull dataBody) {
         if (successBlock) {
@@ -326,7 +326,7 @@ static NSString *_BRNSStringMD5(NSString *string) {
     NSMutableDictionary *paramDic = [NSMutableDictionary dictionary];
        
     [paramDic setObject:name forKey:@"name"];
-    [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)page] forKey:@"page"];
+    [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)page +1] forKey:@"page"];
     [paramDic setObject:[NSString stringWithFormat:@"%ld" , (long)size] forKey:@"size"];
     
     return [self sendRequest:CFHTTPRequestMethodPOST path:@"appapi/search.json" parameters:paramDic success:^(id  _Nonnull dataBody) {

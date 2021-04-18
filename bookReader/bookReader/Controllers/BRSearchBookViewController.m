@@ -13,6 +13,7 @@
 #import "BRSearchBookResultViewController.h"
 #import <DZNEmptyDataSet/UIScrollView+EmptyDataSet.h>
 #import "BRBookInfoCollectionViewController.h"
+#import "CFUtils.h"
 
 @interface BRSearchBookViewController ()<UITextFieldDelegate> {
     UIView *_searchBackView; // 搜索框背景
@@ -75,6 +76,12 @@
     }];
 }
 
+- (void)clickClearBtn:(UIButton *)button {
+    [[BRDataBaseManager sharedInstance] deleteAllSearch];
+    [self initDate];
+    [self.collectionView reloadData];
+}
+
 #pragma mark- Public: subclass implement
 
 - (void)reloadGridViewDataSourceForHead {
@@ -91,7 +98,7 @@
 
 - (id)init {
     if (self = [super init]) {
-        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle;
+        self.enableModule = BaseViewEnableModuleHeadView | BaseViewEnableModuleTitle | BaseViewEnableModuleBackBtn;
         self.enableCollectionBaseModules = CollectionBaseEnableModuleLoadmore | CollectionBaseEnableModulePullRefresh;
         _searchResultArray = [NSMutableArray array];
         
@@ -106,18 +113,37 @@
     _searchBackView.clipsToBounds = YES;
     [self.headView addSubview:_searchBackView];
     [_searchBackView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(20);
+        make.left.mas_equalTo(50);
         make.bottom.mas_equalTo(-8);
         make.height.mas_equalTo(28);
-        make.right.mas_equalTo(-65);
+        make.right.mas_equalTo(-15);
     }];
 
 
     _searchTextField = [[UITextField alloc] init];
 //    [_searchTextField addTarget:self action:@selector(textFieldChange) forControlEvents:UIControlEventEditingChanged];
-    _searchTextField.placeholder = @"请输入书名和作者搜索";
+//    _searchTextField.placeholder = @"输入书名/作者";
+    NSString *placeholder = @" 输入书名/作者";
+    
+    NSMutableAttributedString *placeholderString = [[NSMutableAttributedString alloc] initWithString:placeholder];
+    [placeholderString addAttribute:NSFontAttributeName
+                              value:[UIFont systemFontOfSize:12]
+                              range:NSMakeRange(0, placeholder.length)];
+    
+    [placeholderString addAttribute:NSForegroundColorAttributeName
+                              value:CFUIColorFromRGBAInHex(0xC8C9CC, 1)
+                              range:NSMakeRange(0, placeholder.length)];
+
+    NSTextAttachment *attach = [[NSTextAttachment alloc] init];
+    attach.image = [UIImage imageNamed:@"icon_search"];
+    attach.bounds = CGRectMake(0, -4, 16, 16);
+    NSAttributedString *attachString = [NSAttributedString attributedStringWithAttachment:attach];
+    //将图片插入到合适的位置
+    [placeholderString insertAttributedString:attachString atIndex:0];
+    
+    _searchTextField.attributedPlaceholder = placeholderString;
     _searchTextField.delegate = self;
-    _searchTextField.font = [UIFont systemFontOfSize:14];
+    _searchTextField.font = [UIFont systemFontOfSize:12];
     _searchTextField.backgroundColor = CFUIColorFromRGBAInHex(0xF2F2F2, 1);
     _searchTextField.returnKeyType = UIReturnKeySearch;
     _searchTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -129,17 +155,17 @@
         make.centerY.mas_equalTo(0);
     }];
     
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
-    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:15];
-    [cancelBtn addTarget:self action:@selector(clickCancelBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [cancelBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
-    [self.headView addSubview:cancelBtn];
-    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-2);
-        make.width.mas_equalTo(40);
-    }];
+//    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
+//    cancelBtn.titleLabel.font = [UIFont systemFontOfSize:15];
+//    [cancelBtn addTarget:self action:@selector(clickCancelBtn:) forControlEvents:UIControlEventTouchUpInside];
+//    [cancelBtn setTitleColor:CFUIColorFromRGBAInHex(0x292F3D, 1) forState:UIControlStateNormal];
+//    [self.headView addSubview:cancelBtn];
+//    [cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(-10);
+//        make.bottom.mas_equalTo(-2);
+//        make.width.mas_equalTo(40);
+//    }];
     
 }
 
@@ -239,15 +265,27 @@
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     
     UICollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"UICollectionReusableView" forIndexPath:indexPath];
+    view.userInteractionEnabled = YES;
     
     UILabel *title = [[UILabel alloc] init];
-    title.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
-    title.font = [UIFont boldSystemFontOfSize:15];
-    title.text = @"历史搜索";
+    title.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
+    title.font = [UIFont boldSystemFontOfSize:16];
+    title.text = @"搜索历史";
     [view addSubview:title];
     [title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(0);
+        make.height.mas_equalTo(30);
+        make.centerY.mas_equalTo(0);
+    }];
+    
+    UIButton *clearBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [clearBtn setImage:[UIImage imageNamed:@"icon_clear"] forState:UIControlStateNormal];
+    [clearBtn addTarget:self action:@selector(clickClearBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:clearBtn];
+    [clearBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(0);
+        make.width.mas_equalTo(50);
         make.height.mas_equalTo(30);
         make.centerY.mas_equalTo(0);
     }];
@@ -282,7 +320,8 @@
         if (_isSearchResult) {
             size = CGSizeMake(0, 0);
         } else  {
-            size = CGSizeMake(SCREEN_WIDTH, 40);
+//            size = CGSizeMake(SCREEN_WIDTH, 40);
+            size = CGSizeMake(SCREEN_WIDTH, 60);
         }
     } else if (section == 1) {
         size = CGSizeMake(0, 0);

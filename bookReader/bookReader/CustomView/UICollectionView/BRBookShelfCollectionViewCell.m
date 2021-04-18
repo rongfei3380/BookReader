@@ -82,12 +82,12 @@
     }];
 
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(4);
+        make.top.mas_equalTo(_coverImageView.mas_bottom).offset(8);
         make.left.right.mas_equalTo(0);
         
     }];
     [_readStatusLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(3);
+        make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(5);
         make.left.right.mas_equalTo(0);
     }];
 }

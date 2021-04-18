@@ -65,7 +65,9 @@
     ZJSegmentStyle *style = [[ZJSegmentStyle alloc] init];
     //显示滚动条
     style.showLine = YES;
-    style.scrollLineHeight = 3.f;
+    style.scrollLineOffBottom = 8.f;
+    style.scrollLineOffX = 10.f;
+    style.scrollLineHeight = 2.f;
     style.titleMargin = 15;
     style.normalTitleColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
     style.selectedTitleColor = CFUIColorFromRGBAInHex(0x161C2C, 1);

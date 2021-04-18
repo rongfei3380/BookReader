@@ -106,7 +106,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 获取排行榜推荐和轮播
 /// @param successBlock  成功内容
 /// @param failureBlock 失败内容
-+ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray, NSArray *hotArray, NSArray *endArray))successBlock
++ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray, NSArray *hotArray, NSArray *endArray, NSArray *likeArray))successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock;
 
 

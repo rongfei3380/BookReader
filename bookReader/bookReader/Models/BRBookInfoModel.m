@@ -136,7 +136,7 @@
 }
 
 
-+ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray, NSArray *hotArray, NSArray *endArray))successBlock
++ (NSURLSessionDataTask *)getRecommendSuccess:(void(^)(NSArray *rotationArray, NSArray *recommendArray, NSArray *hotArray, NSArray *endArray, NSArray *likeArray))successBlock
                failureBlock:(BRObjectFailureBlock)failureBlock {
     return [[BRAPIClient sharedInstance] getRecommendSuccess:^(id  _Nonnull dataBody) {
         NSDictionary *dict = (NSDictionary *)dataBody;
@@ -153,8 +153,13 @@
         NSDictionary *endDict = [dict objectForKey:@"9"];
         NSArray *end = [BRBookInfoModel parseDictionaryIntoRecords:[endDict objectForKey:@"list"]];
         
+//        女生最爱
+        NSDictionary *likeDict = [dict objectForKey:@"10"];
+        NSArray *like = [BRBookInfoModel parseDictionaryIntoRecords:[endDict objectForKey:@"list"]];
+
         
-        successBlock(rotation, recommend, hot, end);
+        
+        successBlock(rotation, recommend, hot, end, like);
         
     } failureBlock:^(NSError * _Nonnull error) {
         if (failureBlock) {

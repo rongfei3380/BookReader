@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 //  xinshu     新书榜
 //  renqi      人气榜
 //  wanjie     完结榜
-/// @param page 页码,默认0
+/// @param page 页码,默认1
 /// @param size 每页数量,默认10
 /// @param successBlock 返回的数据
 /// @param failureBlock 返回的错误码
@@ -50,20 +50,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /// 获取书籍分类
-/// @param successBlock
+/// @param successBlock 
 /// @param failureBlock
 - (NSURLSessionDataTask *)getBookCategorySucess:(CFAPIClientSuccessBlock)successBlock
-                 failureBlock:(CFAPIClientFailureBlock)failureBlock;
+                                   failureBlock:(CFAPIClientFailureBlock)failureBlock;
 
 
 
 /// 获取分类下的书籍列表
 /// @param categoryId 分类id
 /// @param isOver 小说状态,0=连载,1=完结
-/// @param page 页码,默认为0
+/// @param page 页码,默认为1
 /// @param size 每页显示数量,默认为10
-/// @param successBlock
-/// @param failureBlock 
+/// @param successBlock 成功
+/// @param failureBlock  失败
 - (NSURLSessionDataTask *)getBookListWithCategory:(NSInteger)categoryId
                          isOver:(int)isOver
                            page:(NSInteger)page
@@ -74,7 +74,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 搜索书籍
 /// @param name 搜索关键字 书名
-/// @param page 页码,默认0
+/// @param page 页码,默认1
 /// @param size 每页数量,默认10
 /// @param successBlock 搜索得到的书籍列表
 /// @param failureBlock error

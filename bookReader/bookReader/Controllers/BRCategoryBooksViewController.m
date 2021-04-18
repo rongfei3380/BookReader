@@ -221,6 +221,7 @@
         self.enableTableBaseModules |= TableBaseEnableModulePullRefresh | TableBaseEnableModuleLoadmore;
         
         _bookStatus = -1;
+        
         self.headTitle = @"分类";
     }
     return self;

@@ -67,6 +67,10 @@ typedef NS_OPTIONS(NSInteger, SegmentViewComponent) {
 @property (strong, nonatomic) NSString *extraBtnBackgroundImageName;
 /** 滚动条的高度 默认为2 */
 @property (assign, nonatomic) CGFloat scrollLineHeight;
+/// 距离bottom 的偏移量 默认0
+@property (assign, nonatomic) CGFloat scrollLineOffBottom;
+/// 距离左右两边 的偏移量 默认0   
+@property (assign, nonatomic) CGFloat scrollLineOffX;
 /** 滚动条的颜色 */
 @property (strong, nonatomic) UIColor *scrollLineColor;
 /** 遮盖的颜色 */

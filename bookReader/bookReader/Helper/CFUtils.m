@@ -20,4 +20,15 @@
     return pressedColorImg;
 }
 
++ (NSMutableParagraphStyle *)defaultParagraphStyleWithFontOfSize:(CGFloat)size lineSpacing:(CGFloat)lineSpacing{
+    NSMutableParagraphStyle * paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:lineSpacing];
+    [paragraphStyle setMinimumLineHeight:25];
+    [paragraphStyle setMaximumLineHeight:30];
+    // 确保垂直居中
+    paragraphStyle.minimumLineHeight = [UIFont systemFontOfSize:size].lineHeight - ([UIFont systemFontOfSize:size].lineHeight - [UIFont systemFontOfSize:14.0].lineHeight) / 2.0;
+    [paragraphStyle setLineBreakMode:NSLineBreakByCharWrapping];
+    return paragraphStyle;
+}
+
 @end

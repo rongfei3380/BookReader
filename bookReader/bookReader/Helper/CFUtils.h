@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIImage *)pureColorImage:(int)color colorAlpha:(CGFloat)alpha size:(CGSize)size;
 
++ (NSMutableParagraphStyle *)defaultParagraphStyleWithFontOfSize:(CGFloat)size lineSpacing:(CGFloat)lineSpacing;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -24,6 +24,7 @@
     
     NSDateComponents *deltaWithNow = createdDate.deltaWithNow;
     NSInteger day = deltaWithNow.hour/24;
+    NSInteger month = deltaWithNow.month;
     
     if(day == 0) {
         if (createdDate.deltaWithNow.hour >= 1) {
@@ -33,13 +34,13 @@
         } else {
             return @"刚刚";
         }
-    } else if (day > 0 && day < 7) {
+    } else if (day > 0 && day < 30) {
         return [NSString stringWithFormat:@"%ld天前", day];
     } else {
-        return @"7天前";
+        return @"1个月前";
     }
     
-    return @"7天前";
+    return @"1个月前";
 }
 
 @end

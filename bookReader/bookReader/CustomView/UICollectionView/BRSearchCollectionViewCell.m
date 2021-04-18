@@ -24,21 +24,21 @@
         
         self.backgroundColor = CFUIColorFromRGBAInHex(0xffffff, 1);
         
-        UIImageView *icon = [[UIImageView alloc] init];
-        icon.image = [UIImage imageNamed:@"icon_search_recommend"];
-        [self addSubview:icon];
-        [icon mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.centerY.mas_equalTo(0);
-            make.size.mas_equalTo(CGSizeMake(16, 17));
-        }];
+//        UIImageView *icon = [[UIImageView alloc] init];
+//        icon.image = [UIImage imageNamed:@"icon_search_recommend"];
+//        [self addSubview:icon];
+//        [icon mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(0);
+//            make.centerY.mas_equalTo(0);
+//            make.size.mas_equalTo(CGSizeMake(16, 17));
+//        }];
         
         _searchLabel = [[UILabel alloc] init];
         _searchLabel.font = [UIFont systemFontOfSize:13];
-        _searchLabel.textColor = CFUIColorFromRGBAInHex(0x292F3D, 1);
+        _searchLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_searchLabel];
         [_searchLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(icon.mas_right).offset(8);
+            make.left.mas_equalTo(0);
             make.height.mas_equalTo(20);
         }];
     }

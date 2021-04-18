@@ -21,6 +21,7 @@
     NSArray *_recommendArray;
     NSArray *_hotArray;
     NSArray *_endArray;
+    NSArray *_likeArray;
 }
 
 @end
@@ -41,16 +42,18 @@
     
     
     kWeakSelf(self)
-    [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray, NSArray * _Nonnull hotArray, NSArray * _Nonnull endArray) {
+    [BRBookInfoModel getRecommendSuccess:^(NSArray * _Nonnull rotationArray, NSArray * _Nonnull recommendArray, NSArray * _Nonnull hotArray, NSArray * _Nonnull endArray, NSArray *_Nonnull likeArray) {
         self->_rotationArray = [rotationArray mutableCopy];
         self->_recommendArray = [recommendArray mutableCopy];
         self->_hotArray = [hotArray mutableCopy];
         self->_endArray = [endArray mutableCopy];
+        self->_likeArray = [likeArray mutableCopy];
         
         [self cacheRecords:rotationArray key:@"rotationArray"];
         [self cacheRecords:recommendArray key:@"recommendArray"];
         [self cacheRecords:hotArray key:@"hotArray"];
         [self cacheRecords:endArray key:@"endArray"];
+        [self cacheRecords:likeArray key:@"likeArray"];
         
         [self.collectionView reloadData];
         [self hideBookProgressMessage];
@@ -108,8 +111,19 @@
 #pragma mark- UICollectionViewDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    BRBookInfoModel *model = [_recommendArray objectAtIndex:indexPath.row];
+    BRBookInfoModel *model = nil;
+    
+    if (indexPath.section == 0) {
+        model = [_recommendArray objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 1) {
+        model = [_hotArray objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 2) {
+        model = [_endArray objectAtIndex:indexPath.row];
+    } else if (indexPath.section == 3) {
+        model = [_likeArray objectAtIndex:indexPath.row];
+    }
     [self goBookInfoViewWIthBook:model];
+    
 }
 
 
@@ -130,6 +144,10 @@
     } else if (indexPath.section == 2) {
         BRRecommendSectionHeaderCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendSectionHeaderCollectionReusableView" forIndexPath:indexPath];
         [view setSectionHeader:@"完本精选"];
+        return view;
+    } else if (indexPath.section == 3) {
+        BRRecommendSectionHeaderCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"BRRecommendSectionHeaderCollectionReusableView" forIndexPath:indexPath];
+        [view setSectionHeader:@"女生最爱"];
         return view;
     } else {
         return nil;
@@ -165,6 +183,11 @@
         BRRecommendCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendCollectionViewCell" forIndexPath:indexPath];
         cell.bookInfo = model;
         return cell;
+    } else if (indexPath.section == 3) {
+        BRBookInfoModel *model = [_likeArray objectAtIndex:indexPath.row];
+        BRRecommendBigCollectionViewCell *bigCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BRRecommendBigCollectionViewCell" forIndexPath:indexPath];
+        bigCell.bookInfo = model;
+        return bigCell;
     }
     
     return nil;
@@ -191,6 +214,8 @@
         return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
     } else if (indexPath.section == 2) {
         return CGSizeMake(75, 100 +46);
+    } else if (indexPath.section == 3) {
+        return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
     } else {
         return CGSizeMake(SCREEN_WIDTH -15*2, kBRRecommendBigCollectionViewCellHeight);
     }
@@ -205,12 +230,14 @@
         rows = _hotArray.count;
     } else if (section == 2){
         rows = _endArray.count;
+    } else if (section == 3){
+        rows = _likeArray.count;
     }
     return rows;
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 3;
+    return 4;
 }
 
 #pragma mark- UICollectionViewDelegateFlowLayout

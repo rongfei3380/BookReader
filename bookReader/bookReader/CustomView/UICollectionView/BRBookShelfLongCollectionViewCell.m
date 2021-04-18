@@ -132,7 +132,7 @@
     _bookNameLabel.text = _bookInfo.bookName;
     _chapterNameLabel.text = _bookInfo.lastChapterName;
     _readStatusLabel.text = _bookInfo.chapterIndexStatus;
-    _updataTimeLabel.text = [NSString stringWithFormat:@"最后更新:%@", [CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate]];
+    _updataTimeLabel.text = [NSString stringWithFormat:@"%@更新", [CFDataUtils createBookUpdateTime:self.bookInfo.lastupdateDate]];
     
     if (_bookInfo.updateFlag.boolValue) {
         _updateFlagView.hidden = NO;
