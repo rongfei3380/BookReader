@@ -155,7 +155,7 @@
         
 //        女生最爱
         NSDictionary *likeDict = [dict objectForKey:@"10"];
-        NSArray *like = [BRBookInfoModel parseDictionaryIntoRecords:[endDict objectForKey:@"list"]];
+        NSArray *like = [BRBookInfoModel parseDictionaryIntoRecords:[likeDict objectForKey:@"list"]];
 
         
         
