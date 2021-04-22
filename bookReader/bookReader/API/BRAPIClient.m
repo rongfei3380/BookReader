@@ -119,7 +119,7 @@ static NSString *_BRNSStringMD5(NSString *string) {
         NSString *key = @"21skcy2021";
         NSString *codeStr = [NSString stringWithFormat:@"%@%ld/%@", key, timestamp, path];
         NSString *md5hashStr = _BRNSStringMD5(codeStr);
-        path = [NSString stringWithFormat:@"%ld/%@/%@", timestamp, md5hashStr, path];
+//        path = [NSString stringWithFormat:@"%ld/%@/%@", timestamp, md5hashStr, path];
     }
 //    BRHTTPSessionManager* manager = [BRHTTPSessionManager sharedManager];
     switch (method) {

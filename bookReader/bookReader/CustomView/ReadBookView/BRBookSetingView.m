@@ -12,6 +12,7 @@
 #import "GVUserDefaults+BRUserDefaults.h"
 #import "BRReadBgCollectionViewCell.h"
 #import "CFUtils.h"
+#import <UMCommon/MobClick.h>
 
 
 
@@ -453,6 +454,9 @@
     if (size == 0) {
         size = KReadFontCustom;
     }
+    
+    [MobClick event:@"bookRead_setting_Font" label:[NSString stringWithFormat:@"%d", size]];
+    
     _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
 }
 
@@ -476,10 +480,13 @@
 - (void)transitionClick:(UIButton*)btn {
     if (btn == self.tranPageCurlBtn){
         BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStylePageCurl;
+        [MobClick event:@"bookRead_setting_TransitionStyle" label:@"PageCurl"];
     } else if (btn == self.tranScrollBtn){
         BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStyleScroll;
+        [MobClick event:@"bookRead_setting_TransitionStyle" label:@"Scroll"];
     } else if (btn == self.tranUpDownBtn) {
         BRUserDefault.PageTransitionStyle = BRPageViewControllerTransitionStyleUpDown;
+        [MobClick event:@"bookRead_setting_TransitionStyle" label:@"UpDown"];
     }
     
     if (self.block){
@@ -561,6 +568,8 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     //    space = nil;
     BRUserDefault.readBackColorIndex = indexPath.row;
+
+    [MobClick event:@"bookRead_setting_bg" label:[NSString stringWithFormat:@"%ld", indexPath.row]];
     
     [self reloadBackColor];
     if (self.block){

@@ -45,6 +45,9 @@
         [dic setObject:CFUIColorFromRGBAInHex(0x292F3D, 1) forKey:NSForegroundColorAttributeName];
     }
     
+
+
+    
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:self.text?:@"" attributes:dic];
     
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((CFAttributedStringRef)attrString);

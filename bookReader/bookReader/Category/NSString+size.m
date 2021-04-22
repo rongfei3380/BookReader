@@ -19,6 +19,7 @@
         NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
         paragraphStyle.lineSpacing = kLineSpacingCustom;
         paragraphStyle.paragraphSpacing = kParagraphSpacingCustom;
+        paragraphStyle.firstLineHeadIndent = kFirstLineHeadIndent;
         NSDictionary* dic = @{
                               NSFontAttributeName: [UIFont systemFontOfSize:KReadFontCustom],
                               NSForegroundColorAttributeName: CFUIColorFromRGBAInHex(0x311b0e, 1),
@@ -27,6 +28,16 @@
                               };
         BRUserDefault.userReadAttConfig = dic;
     }
+    NSMutableParagraphStyle *paragraphStyle = [BRUserDefault.userReadAttConfig objectForKey:NSParagraphStyleAttributeName];
+    if (paragraphStyle.firstLineHeadIndent == 0) {
+        paragraphStyle.firstLineHeadIndent = kFirstLineHeadIndent;
+        NSMutableDictionary* dic = [BRUserDefault.userReadAttConfig mutableCopy];
+        [dic setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
+        BRUserDefault.userReadAttConfig = dic;
+    }
+    
+    
+    
     NSAttributedString* att = [[NSAttributedString alloc] initWithString:text attributes:BRUserDefault.userReadAttConfig];
     return [self pagingWithAttStr:att Size:size];
 }
