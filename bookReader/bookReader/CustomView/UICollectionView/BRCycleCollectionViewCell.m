@@ -27,6 +27,7 @@
         
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.clipsToBounds = YES;
+        _coverImageView.layer.cornerRadius = 8.f;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:_coverImageView];
         [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {

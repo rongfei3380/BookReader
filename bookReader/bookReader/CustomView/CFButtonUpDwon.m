@@ -29,7 +29,7 @@
      // 文字label的x靠着button左侧(或距离多少)
      tempLabelRect.origin.x = 0;
      // y靠着图片的下部
-     tempLabelRect.origin.y = CGRectGetMaxY(self.imageView.frame);
+     tempLabelRect.origin.y = CGRectGetMaxY(self.imageView.frame) +5;
      // 宽度与button一致，或者自己改
      tempLabelRect.size.width = self.bounds.size.width;
      // 高度等于button高度减去上方图片高度

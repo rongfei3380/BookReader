@@ -47,7 +47,7 @@
     
         
         _bookNameLabel = [[UILabel alloc] init];
-        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:15];
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:16];
 //        _bookNameLabel.font = [UIFont systemFontOfSize:15];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_bookNameLabel];
@@ -58,8 +58,8 @@
         [self addSubview:_chapterNameLabel];
         
         _introLabel = [[UILabel alloc] init];
-       _introLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:13];
-       _introLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
+       _introLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:14];
+       _introLabel.textColor = CFUIColorFromRGBAInHex(0x999999, 1);
        _introLabel.numberOfLines = 2;
        _introLabel.lineBreakMode = NSLineBreakByWordWrapping;
        [self addSubview:_introLabel];
@@ -67,7 +67,7 @@
         
         _categoryLabel = [[UILabel alloc] init];
         _categoryLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
-        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
+        _categoryLabel.textColor = CFUIColorFromRGBAInHex(0x999999, 1);
         [self addSubview:_categoryLabel];
         
         
@@ -97,18 +97,18 @@
     [_bookNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_coverImgView.mas_top).offset(0);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(15.5);
-        make.right.mas_equalTo(-15);
+        make.right.mas_equalTo(0);
         make.height.mas_equalTo(25);
     }];
     
     [_introLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(_bookNameLabel.mas_bottom).offset(5);
         make.left.mas_equalTo(_coverImgView.mas_right).offset(15.5);
-        make.right.mas_equalTo(-18.5);
+        make.right.mas_equalTo(0);
     }];
     
     [_categoryLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(_coverImgView.mas_right).offset(18);
+        make.left.mas_equalTo(_bookNameLabel.mas_left).offset(0);
         make.height.mas_equalTo(28);
         make.bottom.mas_equalTo(_coverImgView.mas_bottom).offset(0);
     }];

@@ -455,8 +455,6 @@
         size = KReadFontCustom;
     }
     
-    [MobClick event:@"bookRead_setting_Font" label:[NSString stringWithFormat:@"%d", size]];
-    
     _fontSizeLabel.text = [NSString stringWithFormat:@"%.0f", size];
 }
 
@@ -503,12 +501,15 @@
     if (btn == self.spaceBtn1){
         paragraphStyle.lineSpacing = kLineSpacingCompact;
         paragraphStyle.paragraphSpacing = kParagraphSpacingCompact;
+        [MobClick event:@"bookRead_setting_lineSpacing" label:@"Compact"];
     }else if (btn == self.spaceBtn2){
         paragraphStyle.lineSpacing = kLineSpacingCustom;
         paragraphStyle.paragraphSpacing = kParagraphSpacingCustom;
+        [MobClick event:@"bookRead_setting_lineSpacing" label:@"Custom"];
     }else if (btn == self.spaceBtn3){
         paragraphStyle.lineSpacing = kLineSpacingLoose;
         paragraphStyle.paragraphSpacing = kParagraphSpacingLoose;
+        [MobClick event:@"bookRead_setting_lineSpacing" label:@"Loose"];
     }
     [dic setObject:paragraphStyle forKey:NSParagraphStyleAttributeName];
     BRUserDefault.userReadAttConfig = dic;
@@ -530,6 +531,8 @@
         BRUserDefault.userReadAttConfig = dic;
         [self reloadFontLable];
     }
+    
+    [MobClick event:@"bookRead_setting_Font" label:[NSString stringWithFormat:@"%0.f", size]];
     if (self.block){
         self.block();
     }
@@ -545,6 +548,7 @@
         BRUserDefault.userReadAttConfig = dic;
         [self reloadFontLable];
     }
+    [MobClick event:@"bookRead_setting_Font" label:[NSString stringWithFormat:@"%0.f", size]];
     if (self.block){
         self.block();
     }

@@ -119,7 +119,7 @@
     
     [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(15);
-        make.top.mas_equalTo(cycleScrollView.mas_bottom).offset(95);
+        make.top.mas_equalTo(cycleScrollView.mas_bottom).offset(95 +20);
         make.height.mas_offset(22);
     }];
     
@@ -150,7 +150,7 @@
 - (CFButtonUpDwon*)btnWithTitle:(NSString*)title Image:(NSString *)image{
     
     CFButtonUpDwon* btn = [CFButtonUpDwon buttonWithType:UIButtonTypeCustom];
-    btn.titleLabel.font = [UIFont systemFontOfSize:12];
+    btn.titleLabel.font = [UIFont systemFontOfSize:13];
 //    btn.titleLabel.font = [UIFont fontWithName:@"PingFang-SC" size:12];
     [btn setTitle:title forState:UIControlStateNormal];
     [btn setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];

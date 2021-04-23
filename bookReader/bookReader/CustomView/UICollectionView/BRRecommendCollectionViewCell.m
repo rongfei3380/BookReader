@@ -43,17 +43,17 @@
         
         _bookNameLabel = [[UILabel alloc] init];
         _bookNameLabel.numberOfLines = 2;
-//        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC" size:13];
-        _bookNameLabel.font = [UIFont systemFontOfSize:13];
+        _bookNameLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:14];
+//        _bookNameLabel.font = [UIFont systemFontOfSize:14];
         _bookNameLabel.textColor = CFUIColorFromRGBAInHex(0x161C2C, 1);
         [self addSubview:_bookNameLabel];
         
         
         _authorLabel = [[UILabel alloc] init];
         _authorLabel.numberOfLines = 2;
-//        _authorLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
-        _authorLabel.font = [UIFont systemFontOfSize:12];
-        _authorLabel.textColor = CFUIColorFromRGBAInHex(0x9196AA, 1);
+        _authorLabel.font = [UIFont fontWithName:@"PingFang-SC-Regular" size:12];
+//        _authorLabel.font = [UIFont systemFontOfSize:12];
+        _authorLabel.textColor = CFUIColorFromRGBAInHex(0x999999, 1);
         [self addSubview:_authorLabel];
         
         
