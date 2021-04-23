@@ -119,7 +119,7 @@
         [BRChapter getChaptersListWithBookId:self.bookInfo.bookId siteId:site.siteId.integerValue sortType:1 sucess:^(NSArray * _Nonnull recodes) {
             kStrongSelf(self)
             [self hideBookProgressMessage];
-            self->_sitesArray = [recodes mutableCopy];
+//            self->_chaptersView = [recodes mutableCopy];
             self->_chaptersView.chapters = recodes;
             self->_chaptersView.bookInfo = self.bookInfo;
             [self.view addSubview:self->_chaptersView];

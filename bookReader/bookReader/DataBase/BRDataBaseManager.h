@@ -72,7 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 批量保存章节信息
 /// @param modelsArray 章节array
-- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray bookId:(NSNumber *)bookId;
+/// @param bookId
+/// @param siteId   这里的siteId 要从选择的源传入  不能使用章节列表里的源id
+- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray
+                       bookId:(NSNumber *)bookId
+                       siteId:(NSNumber *)siteId;
 
 /// 查询书籍相关的章节缓存
 /// @param bookId 书籍id

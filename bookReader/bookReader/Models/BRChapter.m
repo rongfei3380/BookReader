@@ -44,9 +44,9 @@
                            sucess:(BRObjectSuccessBlock)successBlock
                      failureBlock:(BRObjectFailureBlock)failureBlock {
     return [[BRAPIClient sharedInstance] getChaptersListWithBookId:bookId siteId:siteId sortType:sortType sucess:^(id  _Nonnull dataBody) {
-        
+        NSNumber *site = [NSNumber numberWithInteger:siteId];
         NSArray *list = [BRChapter parseDictionaryIntoRecords:dataBody];
-        [[BRDataBaseManager sharedInstance] saveChaptersWithArray:list bookId:bookId];
+        [[BRDataBaseManager sharedInstance] saveChaptersWithArray:list bookId:bookId siteId:site];
         if (successBlock) {
             successBlock(list);
         }

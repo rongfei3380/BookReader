@@ -357,7 +357,7 @@
     return YES;
 }
 
-- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray bookId:(NSNumber *)bookId{
+- (void)saveChaptersWithArray:(NSArray<BRChapter*>*)modelsArray bookId:(NSNumber *)bookId siteId:(NSNumber *)siteId{
     
     kDISPATCH_ON_GLOBAL_QUEUE_HIGH(^(){
         [self.databaseQueue inDatabase:^(FMDatabase * _Nonnull db) {
@@ -367,7 +367,7 @@
                 BOOL isRollBack = NO;
                 @try {
                     for (BRChapter *model in modelsArray) {
-                        [db executeUpdate:kBRDBInsertChapter(bookId, model.chapterId, model.name, model.siteId, model.siteName, model.time)];
+                        [db executeUpdate:kBRDBInsertChapter(bookId, model.chapterId, model.name, siteId, model.siteName, model.time)];
                     }
                 } @catch (NSException *exception) {
                     isRollBack = YES;
